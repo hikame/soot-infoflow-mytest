@@ -101,9 +101,8 @@ public class MultiThreadAnalyzer {
 			return null;
 		}
 		cpSoot = cpSoot + appendLibsFromPath(JavaLibPath);
-		
-cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\workspace\\TestCodeForMultiThreadHandler\\bin";
-cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\workspace\\TestAPKForHandlerDevelopment\\bin\\classes";
+cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestCodeForMultiThreadHandler\\bin";
+cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestAPKForHandlerDevelopment\\bin\\classes";
 		
 		return cpSoot.substring(1);
 	}
