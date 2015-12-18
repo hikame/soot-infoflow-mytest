@@ -100,10 +100,11 @@ public class MultiThreadAnalyzer {
 			e.printStackTrace();
 			return null;
 		}
+
 		cpSoot = cpSoot + appendLibsFromPath(JavaLibPath);
 cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestCodeForMultiThreadHandler\\bin";
 cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestAPKForHandlerDevelopment\\bin\\classes";
-		
+System.out.println("ClassPath is: " + cpSoot);		
 		return cpSoot.substring(1);
 	}
 	
