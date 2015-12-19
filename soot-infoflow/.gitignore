@@ -2,7 +2,7 @@
 bin
 target
 /JimpleFiles
-/sootOutput
+#/sootOutput
 /ant.settings
 reports
 /build
