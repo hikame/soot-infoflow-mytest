@@ -83,12 +83,16 @@ public class MyMultiThreadPatcher {
 			}
 			if(!hasRunableParam)
 				continue;
-			patchThreadConstructor(sm, runnable, fldTarget, count);	
+			patchThreadConstructor(sm, runnable, fldTarget, count);
+			if(Options.v().debug())
+				System.out.println("[KM] " + sm.getSignature() + "\n" + sm.getActiveBody());
 		}
 		
 		
 		// Create a new Thread.start() method
 		patchThreadRunMethod(smRun, runnable, fldTarget);
+		if(Options.v().debug())
+			System.out.println("[KM] " + smRun.getSignature() + "\n" + smRun.getActiveBody());
 	}
 	
 	/**
@@ -153,7 +157,7 @@ public class MyMultiThreadPatcher {
 			b.getLocals().add(paramLocal);
 			
 			b.getUnits().add(Jimple.v().newIdentityStmt(paramLocal,
-					Jimple.v().newParameterRef(runnable.getType(), count)));
+					Jimple.v().newParameterRef(type, count)));
 			
 			if(count == targetCount)
 				b.getUnits().add(Jimple.v().newAssignStmt(Jimple.v().newInstanceFieldRef(thisLocal,
@@ -234,6 +238,8 @@ public class MyMultiThreadPatcher {
 		
 		Unit retStmt = Jimple.v().newReturnStmt(IntConstant.v(1));
 		b.getUnits().add(retStmt);
+		if(Options.v().debug())
+			System.out.println("[KM] " + method.getSignature() + "\n" + b.toString());
 		return b;
 	}
 }

@@ -10,20 +10,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity {
-	String tainted;
-	Handler mhandler = new Handler(){
-//	     @Override
-//	     public void handleMessage(Message msg) {
-//	    	 new Publisher().publish(msg.toString());
-//	     }
-	};
+	class MyHandler extends Handler{
+	     @Override
+	     public void handleMessage(Message msg) {
+	    	 new Publisher().publish(msg.toString());
+	     }
+	}
 	
-	Runnable rn = new Runnable() {
+	class MyRunnable implements Runnable{
 		@Override
 		public void run() {
 			new Publisher().publish(tainted);
 		}
-	};
+	}
+	
+	String tainted;
+	Handler mhandler = new MyHandler();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +35,9 @@ public class MainActivity extends Activity {
 	}
 
 	private void testHandler(final String s) {
-//		mhandler.sendEmptyMessage(0);
 		tainted = s;
-		Runnable rn = new Runnable() {
-			@Override
-			public void run() {
-				new Publisher().publish(s);
-			}
-		};
+//		mhandler.sendEmptyMessage(0);
+		Runnable rn = new MyRunnable();
 		mhandler.post(rn);
 	}
 

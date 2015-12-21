@@ -25,6 +25,7 @@ import heros.solver.CountingThreadPoolExecutor;
 import heros.solver.Pair;
 import heros.solver.PathEdge;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +45,7 @@ import soot.jimple.infoflow.collect.ConcurrentHashSet;
 import soot.jimple.infoflow.collect.MyConcurrentHashMap;
 import soot.jimple.infoflow.solver.IMemoryManager;
 import soot.jimple.toolkits.ide.icfg.BiDiInterproceduralCFG;
+import soot.options.Options;
 
 import com.google.common.cache.CacheBuilder;
 
@@ -617,6 +619,9 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 			logger.info("No statistics were collected, as DEBUG is disabled.");
 		}
 	}
+
+	
+static List<SootMethod> outSMList = new ArrayList<SootMethod>();
 	
 	private class PathEdgeProcessingTask implements Runnable {
 		
@@ -626,8 +631,15 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 			this.edge = edge;
 		}
 
+
 		public void run() {
+if(Options.v().debug()){
 SootMethod sm = (SootMethod) icfg.getMethodOf(edge.getTarget());
+if(!outSMList.contains(sm)){
+	outSMList.add(sm);
+	System.out.println("[KM] " + sm.getSignature() + "\n" + sm.getActiveBody());
+}
+}
 
 			if(icfg.isCallStmt(edge.getTarget())) {
 				processCall(edge);
