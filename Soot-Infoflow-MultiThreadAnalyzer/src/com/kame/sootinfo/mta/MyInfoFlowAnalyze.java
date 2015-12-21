@@ -16,12 +16,17 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import soot.Local;
 import soot.MethodOrMethodContext;
 import soot.PackManager;
 import soot.PatchingChain;
 import soot.Scene;
 import soot.SootMethod;
+import soot.Type;
 import soot.Unit;
+import soot.UnitBox;
+import soot.Value;
+import soot.ValueBox;
 import soot.jimple.Stmt;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowManager;
@@ -51,8 +56,10 @@ import soot.jimple.infoflow.solver.fastSolver.InfoflowSolver;
 import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.taintWrappers.ITaintPropagationWrapper;
 import soot.jimple.infoflow.util.SystemClassHandler;
+import soot.jimple.internal.JimpleLocalBox;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.options.Options;
+import soot.util.Chain;
 
 public class MyInfoFlowAnalyze {
 
@@ -157,11 +164,55 @@ public class MyInfoFlowAnalyze {
 		int sinkCount = 0;
         logger.info("Looking for sources and sinks...");
         
-        for (SootMethod sm : getMethodsForSeeds(iCfg)){
-		if(Options.v().debug())
-			System.out.print(sm.getDeclaringClass() + " - ");
-			System.out.println(sm.getActiveBody().toString());
-        	sinkCount += scanMethodForSourcesSinks(ssm, forwardProblem, sm);
+        for (SootMethod thrunSM : getMethodsForSeeds(iCfg)){
+			int result = scanMethodForSourcesSinks(ssm, forwardProblem, thrunSM);
+        	sinkCount += result;
+        	//------------------------------------------------
+			if(result > 0 && Options.v().debug()){
+				System.out.print(thrunSM.getDeclaringClass() + " - ");
+				if(thrunSM.hasActiveBody()){
+					System.out.println("[KM] Thread.run will call sinks: \n" + thrunSM);
+					System.out.println(thrunSM.getActiveBody().toString());
+					System.out.println("-------------------------------------------");
+				}
+					Collection<Unit> thrunCallerUnits = iCfg.getCallersOf(thrunSM); //返回的是thread.run的调用者方法被调用的语句！
+				if(thrunCallerUnits != null && !thrunCallerUnits.isEmpty())
+					for(Unit thstartUnit : thrunCallerUnits){
+						SootMethod thstartMth = iCfg.getCalleesOfCallAt(thstartUnit).iterator().next();
+						System.out.println("[KM] Thread.start will call thread.run: " + thstartMth);
+						System.out.println(thstartMth.getActiveBody());
+						System.out.println("-------------------------------------------");
+						
+						SootMethod testMethod = iCfg.getMethodOf(thstartUnit);
+						System.out.println("[KM] MyTestMethod will call Thread.start: " + testMethod);
+						System.out.println(testMethod.getActiveBody().toString());
+						System.out.println("-------------------------------------------");
+//						
+//						
+//						System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+//						List<ValueBox> vbList = thstartUnit.getUseAndDefBoxes();
+//						System.out.println("Unit: " + thstartUnit);
+//						System.out.println("In Method: " + testMethod);
+//						for(ValueBox vb : vbList){
+//							if(!(vb instanceof JimpleLocalBox))
+//								continue;
+//							vb = (JimpleLocalBox)vb;
+//							Iterator<Local> locals = testMethod.getActiveBody().getLocals().iterator();
+//							Local target = null;
+//							while(locals.hasNext()){
+//								Local local = locals.next();
+//								if(local.getName().equals(vb.getValue().toString())){
+//									target = local;
+//									break;
+//								}
+//							}
+//							if(target == null)
+//								break;
+//							Iterator<Local>  box = target.getUseBoxes();
+//							
+//						}
+					}
+			}
         }
         
 //		// We optionally also allow additional seeds to be specified

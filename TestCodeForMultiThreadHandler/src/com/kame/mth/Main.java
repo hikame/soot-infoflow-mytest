@@ -10,7 +10,8 @@ public class Main {
 	String field;
 	
 //	Thread threadField = new MyThread();
-	Thread threadField;
+//	Thread threadField;
+	MyThread threadField;
 	
 	class MyThread extends Thread{
 		@Override
@@ -38,10 +39,14 @@ public class Main {
 	}
 	
 	public void simpleTest(String s){
-    	Publisher pl = new Publisher();
-		pl.publish(s);
+    	foo(s);
 	}
 	
+
+	private void foo(String fooStr) {
+		Publisher pl = new Publisher();
+		pl.publish(fooStr);
+	}
 
 	public void testThreadWithField0a(final String s){
 		field = s;
@@ -51,10 +56,15 @@ public class Main {
 	
 	public void testThreadWithField0b(final String s){
 		field = s;
+//		Thread thread = generateThread();
 		Thread thread = new MyThread();
 		thread.start();
 	}
 	
+	private Thread generateThread() {
+		return new MyThread();
+	}
+
 	Runnable rn = new Runnable() {
 		@Override
 		public void run() {

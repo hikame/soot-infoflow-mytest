@@ -259,7 +259,7 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		for(M sCalledProcN: callees) { //still line 14
 			//compute the call-flow function
 			FlowFunction<D> function = flowFunctions.getCallFlowFunction(n, sCalledProcN);
-			Set<D> res = computeCallFlowFunction(function, d1, d2);
+			Set<D> res = computeCallFlowFunction(function, d1, d2);		//计算的是call edges，返回的是从caller到callee的污点值影响，即callee的代码开始处的污点信息
 			
 			Collection<N> startPointsOf = icfg.getStartPointsOf(sCalledProcN);
 			//for each result node of the call-flow function
@@ -627,6 +627,8 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		}
 
 		public void run() {
+SootMethod sm = (SootMethod) icfg.getMethodOf(edge.getTarget());
+
 			if(icfg.isCallStmt(edge.getTarget())) {
 				processCall(edge);
 			} else {
@@ -637,6 +639,7 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 				if(!icfg.getSuccsOf(edge.getTarget()).isEmpty())
 					processNormalFlow(edge);
 			}
+			return;
 		}
 
 		@Override

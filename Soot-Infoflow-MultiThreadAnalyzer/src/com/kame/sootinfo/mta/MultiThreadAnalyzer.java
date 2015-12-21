@@ -67,43 +67,34 @@ public class MultiThreadAnalyzer {
 		Options.v().set_debug(true);
 		Options.v().set_debug_resolver(true);
 		Options.v().setPhaseOption("cg", "verbose:true");
+Options.v().set_prepend_classpath(true);
 
-//		targetMethodsList.add("<com.kame.mth.Main: void testThread0(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.mth.Main: void testThread1(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.mth.Main: void testThread2(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.mth.Main: void testThread3(java.lang.String)>");
+		// The following config are important to achieve analysis in multi-threads.
+		InfoflowConfiguration.setUseThisChainReduction(false);
+		InfoflowConfiguration.setUseRecursiveAccessPaths(false);
 
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandler(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0a(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField1(java.lang.String)>");
-		
-		targetMethodsList.add("<com.kame.mth.Main: void simpleTest(java.lang.String)>");
+		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0a(java.lang.String)>");
+		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
+
 		
 		sinksList.add("<com.kame.mth.Publisher: void publish(java.lang.String)>");
 		sinksList.add("<com.kame.tafhd.Publisher: void publish(java.lang.String)>");
-		
-//		targetMethodsList.add("<com.android.server.pm.PackageManagerService: " +
-//				"void movePackageInternal(" +
-//				"java.lang.String,java.lang.String,int)>");
-		
-//		sinksList.add("<android.os.Handler: boolean sendMessage(android.os.Message)>");
-//		sinksList.add("<java.lang.Thread: void start()>");
-//		sinksList.add("<com.android.server.pm.PackageManagerService$MoveCallbacks: void notifyStatusChanged(int,int)>");
 	}
 	
 	private String constructClasspath() {		
-		String cpSoot;
+		String cpSoot = "";
 		try {
 			cpSoot = appendLibOfClasspath();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+//			return null;
 		}
 
 		cpSoot = cpSoot + appendLibsFromPath(JavaLibPath);
-cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestCodeForMultiThreadHandler\\bin";
-cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestAPKForHandlerDevelopment\\bin\\classes";
+cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytest\\TestCodeForMultiThreadHandler\\bin";
+cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytest\\TestAPKForHandlerDevelopment\\bin\\classes";
+//cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestCodeForMultiThreadHandler\\bin";
+//cpSoot = cpSoot + File.pathSeparator + "E:\\Android\\Soot\\soot-infoflow-mytest\\TestAPKForHandlerDevelopment\\bin\\classes";
 System.out.println("ClassPath is: " + cpSoot);		
 		return cpSoot.substring(1);
 	}
