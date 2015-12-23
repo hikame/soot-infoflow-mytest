@@ -21,6 +21,7 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
+import soot.jimple.infoflow.InfoflowConfiguration.CodeEliminationMode;
 import soot.jimple.infoflow.ipc.IIPCManager;
 import soot.jimple.infoflow.nativ.DefaultNativeCallHandler;
 import soot.jimple.infoflow.nativ.INativeCallHandler;
@@ -34,9 +35,8 @@ public class MultiThreadAnalyzer {
 //	private final Options opts = Options.v();
 	
 	public static String TargetSystemPath = "A:\\android-6.0.0_r1-MRA58K";
-	public static String JavaLibPath = TargetSystemPath + "\\out\\target\\common_bak\\obj\\JAVA_LIBRARIES";
-	public static String AppPath = TargetSystemPath + "\\out\\target\\common_bak\\obj\\APPS";
-	private static String JarsFolderPath = "A:\\workspace\\JarsForSootOnAndroid";
+	public static String JavaLibPath = TargetSystemPath + "\\out\\target\\common\\obj\\JAVA_LIBRARIES";
+	public static String AppPath = TargetSystemPath + "\\out\\target\\common\\obj\\APPS";
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	protected InfoflowConfiguration config = new InfoflowConfiguration();	
@@ -72,10 +72,14 @@ Options.v().set_prepend_classpath(true);
 		// The following config are important to achieve analysis in multi-threads.
 		InfoflowConfiguration.setUseThisChainReduction(false);
 		InfoflowConfiguration.setUseRecursiveAccessPaths(false);
+//		config.setCodeEliminationMode(CodeEliminationMode.RemoveSideEffectFreeCode);
+//		config.setEnableImplicitFlows(false);
+		
 
 //		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0a(java.lang.String)>");
-		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandler(java.lang.String)>");
+//		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(java.lang.String)>");
+		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
 
 		
 		sinksList.add("<com.kame.mth.Publisher: void publish(java.lang.String)>");
@@ -128,6 +132,7 @@ System.out.println("ClassPath is: " + cpSoot);
 		npList.add("com.android.server.*");
 		npList.add("android.os.Handler");
 		npList.add("com.kame.*");
+		npList.add("android.os.Message");
 	}
 	
 	

@@ -167,52 +167,6 @@ public class MyInfoFlowAnalyze {
         for (SootMethod thrunSM : getMethodsForSeeds(iCfg)){
 			int result = scanMethodForSourcesSinks(ssm, forwardProblem, thrunSM);
         	sinkCount += result;
-        	//------------------------------------------------
-//			if(result > 0 && Options.v().debug()){
-//				System.out.print(thrunSM.getDeclaringClass() + " - ");
-//				if(thrunSM.hasActiveBody()){
-//					System.out.println("[KM] Thread.run will call sinks: \n" + thrunSM);
-//					System.out.println(thrunSM.getActiveBody().toString());
-//					System.out.println("-------------------------------------------");
-//				}
-//					Collection<Unit> thrunCallerUnits = iCfg.getCallersOf(thrunSM); //返回的是thread.run的调用者方法被调用的语句！
-//				if(thrunCallerUnits != null && !thrunCallerUnits.isEmpty())
-//					for(Unit thstartUnit : thrunCallerUnits){
-//						SootMethod thstartMth = iCfg.getCalleesOfCallAt(thstartUnit).iterator().next();
-//						System.out.println("[KM] Thread.start will call thread.run: " + thstartMth);
-//						System.out.println(thstartMth.getActiveBody());
-//						System.out.println("-------------------------------------------");
-//						
-//						SootMethod testMethod = iCfg.getMethodOf(thstartUnit);
-//						System.out.println("[KM] MyTestMethod will call Thread.start: " + testMethod);
-//						System.out.println(testMethod.getActiveBody().toString());
-//						System.out.println("-------------------------------------------");
-////						
-////						
-////						System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-////						List<ValueBox> vbList = thstartUnit.getUseAndDefBoxes();
-////						System.out.println("Unit: " + thstartUnit);
-////						System.out.println("In Method: " + testMethod);
-////						for(ValueBox vb : vbList){
-////							if(!(vb instanceof JimpleLocalBox))
-////								continue;
-////							vb = (JimpleLocalBox)vb;
-////							Iterator<Local> locals = testMethod.getActiveBody().getLocals().iterator();
-////							Local target = null;
-////							while(locals.hasNext()){
-////								Local local = locals.next();
-////								if(local.getName().equals(vb.getValue().toString())){
-////									target = local;
-////									break;
-////								}
-////							}
-////							if(target == null)
-////								break;
-////							Iterator<Local>  box = target.getUseBoxes();
-////							
-////						}
-//					}
-//			}
         }
         
 //		// We optionally also allow additional seeds to be specified

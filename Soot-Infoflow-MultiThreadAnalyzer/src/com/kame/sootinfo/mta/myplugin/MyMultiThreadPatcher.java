@@ -1,5 +1,6 @@
 package com.kame.sootinfo.mta.myplugin;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -203,8 +204,38 @@ public class MyMultiThreadPatcher {
 			patchHandlerPostBody(smPostAtTimeWithToken, runnable);
 		if (smPostDelayed != null && !smPostDelayed.hasActiveBody())
 			patchHandlerPostBody(smPostDelayed, runnable);
+		
+		SootMethod smsendMSG = sc.getMethodUnsafe("boolean sendMessage(android.os.Message)");
+		if(smsendMSG != null && !smsendMSG.hasActiveBody())
+			patchHandlerSendMSGBody(smsendMSG);
 	}
 	
+	/**Creates a new body for sendMessage in androis.os.Handler
+	 * make it to directly call the handleMessage() method*/
+	private void patchHandlerSendMSGBody(SootMethod smsendMSG) {
+		SootClass sc = smsendMSG.getDeclaringClass();
+		Body b = Jimple.v().newBody(smsendMSG);
+		smsendMSG.setActiveBody(b);
+		
+		Local thisLocal = Jimple.v().newLocal("this", sc.getType());
+		b.getLocals().add(thisLocal);
+		b.getUnits().add(Jimple.v().newIdentityStmt(thisLocal,
+				Jimple.v().newThisRef(sc.getType())));
+		
+		Local paramLocal = Jimple.v().newLocal("msg", smsendMSG.getParameterType(0));
+		b.getLocals().add(paramLocal);
+		b.getUnits().add(Jimple.v().newIdentityStmt(paramLocal,
+					Jimple.v().newParameterRef(smsendMSG.getParameterType(0), 0)));
+		
+		SootMethod smhandlerMSG = sc.getMethodUnsafe("void handleMessage(android.os.Message)");
+		
+		b.getUnits().add(Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(thisLocal, smhandlerMSG.makeRef(), paramLocal)));
+		
+		Unit retStmt = Jimple.v().newReturnStmt(soot.jimple.IntConstant.v(1));
+		b.getUnits().add(retStmt);
+		return;
+	}
+
 	/**
 	 * Creates a new body for one of the postXXX methods in android.os.Handler
 	 * @param method The method for which to create the implementation

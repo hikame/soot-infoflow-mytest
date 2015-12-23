@@ -13,7 +13,17 @@ public class MainActivity extends Activity {
 	class MyHandler extends Handler{
 	     @Override
 	     public void handleMessage(Message msg) {
-	    	 new Publisher().publish(msg.toString());
+	    	 new Publisher().publish("I am in hanlderMessage()");
+	    	 switch (msg.what) {
+			case UNRELEVANT_MSG:
+				new Publisher().publish((String)msg.obj);
+				break;
+			case TEST_MSG:
+				new Publisher().publish("I am in the unrelevent parts.");
+				break;
+			default:
+				break;
+			}
 	     }
 	}
 	
@@ -23,6 +33,9 @@ public class MainActivity extends Activity {
 			new Publisher().publish(tainted);
 		}
 	}
+
+	private static final int TEST_MSG = 0;
+	private static final int UNRELEVANT_MSG = 1;
 	
 	String tainted;
 	Handler mhandler = new MyHandler();
@@ -31,10 +44,18 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		testHandler("Test");
+		testHandlerPost("TestPost");
+		testHandlerSendMSG("TestSendMSG");
 	}
 
-	private void testHandler(final String s) {
+	private void testHandlerSendMSG(String s) {
+//		tainted = s;
+		Message msg = mhandler.obtainMessage(TEST_MSG);
+		msg.obj = s;
+		mhandler.sendMessage(msg);
+	}
+
+	private void testHandlerPost(final String s) {
 		tainted = s;
 //		mhandler.sendEmptyMessage(0);
 		Runnable rn = new MyRunnable();

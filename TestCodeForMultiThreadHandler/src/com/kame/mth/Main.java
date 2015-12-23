@@ -3,8 +3,6 @@ package com.kame.mth;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import android.os.Handler;
-
 /**对于Thread：R表示原本soot-info可以识别，W表示我们做了扩展之后可以识别*/
 public class Main {	
 	String field;
@@ -48,7 +46,14 @@ public class Main {
 		pl.publish(fooStr);
 	}
 
+	private boolean atest(String s){
+    	Publisher pl = new Publisher();
+		pl.publish(field);
+		return true;
+	}
+	
 	public void testThreadWithField0a(final String s){
+		atest(s);
 		field = s;
 		threadField = new MyThread();
 		threadField.start();

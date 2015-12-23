@@ -466,6 +466,9 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		final N n = edge.getTarget(); 
 		final D d2 = edge.factAtTarget();
 		List<N> nlist = icfg.getSuccsOf(n);
+		
+//		((Unit) n).addTag();
+		
 		for (N m : nlist) {
 			FlowFunction<D> flowFunction = flowFunctions.getNormalFlowFunction(n,m);
 			Set<D> res = computeNormalFlowFunction(flowFunction, d1, d2);
