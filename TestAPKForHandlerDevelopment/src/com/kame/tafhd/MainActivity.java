@@ -15,10 +15,10 @@ public class MainActivity extends Activity {
 	     public void handleMessage(Message msg) {
 	    	 new Publisher().publish("I am in hanlderMessage()");
 	    	 switch (msg.what) {
-			case UNRELEVANT_MSG:
+			case TEST_MSG:
 				new Publisher().publish((String)msg.obj);
 				break;
-			case TEST_MSG:
+			case UNRELEVANT_MSG:
 				new Publisher().publish("I am in the unrelevent parts.");
 				break;
 			default:
@@ -52,7 +52,12 @@ public class MainActivity extends Activity {
 //		tainted = s;
 		Message msg = mhandler.obtainMessage(TEST_MSG);
 		msg.obj = s;
+//		msg.what = getCase();
 		mhandler.sendMessage(msg);
+	}
+
+	private int getCase() {
+		return android.os.Process.myPid();
 	}
 
 	private void testHandlerPost(final String s) {
