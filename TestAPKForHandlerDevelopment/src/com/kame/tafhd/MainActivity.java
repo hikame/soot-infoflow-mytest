@@ -49,10 +49,8 @@ public class MainActivity extends Activity {
 	}
 
 	private void testHandlerSendMSG(String s) {
-//		tainted = s;
 		Message msg = mhandler.obtainMessage(TEST_MSG);
 		msg.obj = s;
-//		msg.what = getCase();
 		mhandler.sendMessage(msg);
 	}
 

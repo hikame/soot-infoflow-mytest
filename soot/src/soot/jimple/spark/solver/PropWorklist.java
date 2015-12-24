@@ -46,7 +46,7 @@ public final class PropWorklist extends Propagator {
                 G.v().out.println( "Worklist has "+varNodeWorkList.size()+
                         " nodes." );
             }
-            while( !varNodeWorkList.isEmpty() ) {
+            while( !varNodeWorkList.isEmpty() ) {	//[LocalVarNode 3 $r1 <dummyMainClass: void dummyMainMethod(java.lang.String[])>]
                 VarNode src = varNodeWorkList.iterator().next();
                 varNodeWorkList.remove( src );
                 handleVarNode( src );

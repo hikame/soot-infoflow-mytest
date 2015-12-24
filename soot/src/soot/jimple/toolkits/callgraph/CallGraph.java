@@ -28,6 +28,7 @@ import soot.Kind;
 import soot.MethodOrMethodContext;
 import soot.SootMethod;
 import soot.Unit;
+import soot.jimple.InvokeStmt;
 import soot.jimple.Stmt;
 import soot.util.queue.ChunkedQueue;
 import soot.util.queue.QueueReader;
@@ -102,14 +103,16 @@ public class CallGraph implements Iterable<Edge>
      * @param out The old statement
      * @param in The new statement
      * @return True if at least one edge was affected by this operation
+     * 
+     * KM: It is not correct by now i think.
      */
     public boolean swapEdgesOutOf(Stmt out, Stmt in) {
     	boolean hasSwapped = false;
     	for (QueueReader<Edge> edgeRdr = listener(); edgeRdr.hasNext(); ) {
     		Edge e = edgeRdr.next();
     		if (e.srcUnit() == out) {
-    			removeEdge(e);
-    			addEdge(new Edge(e.getSrc(), in, e.getTgt()));
+    			boolean retult = removeEdge(e);
+    			addEdge(new Edge(e.getSrc(), in, ((InvokeStmt) in).getInvokeExpr().getMethod()));
     			hasSwapped = true;
     		}
     	}

@@ -85,11 +85,8 @@ public class MyInfoFlowAnalyze {
 			nativeCallHandler = nch;
 	}
 	
-	public void setInfoflowCFG(IInfoflowCFG ic){
-		iCfg = ic;
-	}
-	
-	public void start() {
+	public void start(IInfoflowCFG iInfoflowCFG) {
+		iCfg = iInfoflowCFG;
         int numThreads = Runtime.getRuntime().availableProcessors();
 		CountingThreadPoolExecutor executor = createExecutor(numThreads);
 		// Initialize the memory manager

@@ -29,6 +29,8 @@ import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.taintWrappers.EasyTaintWrapper;
 import soot.jimple.infoflow.taintWrappers.ITaintPropagationWrapper;
 import soot.jimple.infoflow.test.junit.MyMethodArgsSourceSinkManager;
+import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.options.Options;
 
 public class MultiThreadAnalyzer {
@@ -60,6 +62,7 @@ public class MultiThreadAnalyzer {
 	/**Parser control flow */
 	MyCFGParser myCFGPaerser = new MyCFGParser(config, ssm, taintWrapper);
 	MyInfoFlowAnalyze myInfoFlowAnalyze = new MyInfoFlowAnalyze(config, ssm, taintWrapper, nativeCallHandler);
+	MyHandlerHandler myHandlerHandler = new MyHandlerHandler();
 	
 	private void myTestConfig() throws Exception {
 //		ssm = new MyMethodArgsSourceSinkManager(true, targetMethods, sinks);
@@ -67,7 +70,6 @@ public class MultiThreadAnalyzer {
 		Options.v().set_debug(true);
 		Options.v().set_debug_resolver(true);
 		Options.v().setPhaseOption("cg", "verbose:true");
-Options.v().set_prepend_classpath(true);
 
 		// The following config are important to achieve analysis in multi-threads.
 		InfoflowConfiguration.setUseThisChainReduction(false);
@@ -152,18 +154,25 @@ System.out.println("ClassPath is: " + cpSoot);
 
 
 
-	private void startAnalyze() {		
+	private void startAnalyze() throws Exception {		
 		//Config classpath, entrypoints and resolve classes.
 		myClassResolver.start();
 		// Build the callgraph
 		myCGConstructor.start();
+		System.out.println("[TEST] " + Scene.v().getCallGraph());
 		//cut down dead code & parse CFG
 		myCFGPaerser.start();
-		
-		myInfoFlowAnalyze.setInfoflowCFG(myCFGPaerser.getInfoflowCFG());
-		
-		//Information Flow Analyze
-		myInfoFlowAnalyze.start();
+		System.out.println("[TEST] " + Scene.v().getCallGraph());
+		// do special handling for android.os.Handler
+		if(myHandlerHandler.start(myCFGPaerser.getInfoflowCFG())){
+			//重新构造
+			ReachableMethods mths = Scene.v().getReachableMethods();
+			CallGraph cg = Scene.v().getCallGraph();
+			myCFGPaerser.start();
+		}
+System.out.println("[TEST] " + Scene.v().getCallGraph());
+		//Information
+		myInfoFlowAnalyze.start(myCFGPaerser.getInfoflowCFG());
 	}
 
 	private void initializeSoot() {

@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import com.kame.sootinfo.mta.myplugin.MyMultiThreadPatcher;
 
+import soot.Pack;
 import soot.PackManager;
 import soot.Scene;
 import soot.SootClass;
@@ -69,7 +70,8 @@ public class MyCGConstructor {
 		if (config.getCallgraphAlgorithm() != CallgraphAlgorithm.OnDemand
 				&& !Scene.v().hasCallGraph()) {
 	        PackManager.v().getPack("wjpp").apply();
-	        PackManager.v().getPack("cg").apply();
+	        Pack tmp = PackManager.v().getPack("cg");
+	        tmp.apply();
 		}
 		
 		// Run the preprocessors
