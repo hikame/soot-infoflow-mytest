@@ -637,11 +637,11 @@ static List<SootMethod> outSMList = new ArrayList<SootMethod>();
 
 		public void run() {
 if(Options.v().debug()){
-SootMethod sm = (SootMethod) icfg.getMethodOf(edge.getTarget());
-if(!outSMList.contains(sm)){
-	outSMList.add(sm);
-	System.out.println("[KM] " + sm.getSignature() + "\n" + sm.getActiveBody());
-}
+	SootMethod sm = (SootMethod) icfg.getMethodOf(edge.getTarget());
+	if(!outSMList.contains(sm)){
+		outSMList.add(sm);
+		System.out.println("[KM] " + sm.getSignature() + "\n" + sm.getActiveBody());
+	}
 }
 
 			if(icfg.isCallStmt(edge.getTarget())) {

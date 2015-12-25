@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import soot.Body;
+import soot.Kind;
 import soot.Local;
 import soot.Pack;
 import soot.PackManager;
@@ -97,22 +98,22 @@ public class MyHandlerHandler {
 				continue;
 			}
 			PatchingChain<Unit> smUnits = callerSM.getActiveBody().getUnits();
-			Stmt replaceStmt = Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr((Local)hdValue, replaceMethod.makeRef()));
+			Stmt replaceStmt = Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr((Local)hdValue, replaceMethod.makeRef(), msgValue));
 			smUnits.swapWith(callerUnit, replaceStmt);
 			
 			CallGraph cg = Scene.v().getCallGraph();
 //			cg.swapEdgesOutOf((Stmt) callerUnit, replaceStmt);
-			cg.removeAllEdgesOutOf(callerUnit);
+			boolean b = cg.removeAllEdgesOutOf(callerUnit);
 			cg.addEdge(new Edge(callerSM, replaceStmt, ((InvokeStmt) replaceStmt).getInvokeExpr().getMethod()));
 			
+			System.out.println(cg.toString());
+			System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 			
 			//需要以新加的方法myhandler[n]为起点，将其内部的调用关系进行后续分析。
-	        PackManager.v().getPack("wjpp").apply();
-	        Pack tmp = PackManager.v().getPack("cg");
-			tmp.apply();
 			changed = true;
-//			System.out.println(callerSM.getActiveBody());
 		}
+		SootClass tmpCls = Scene.v().getSootClass("com.kame.tafhd.MainActivity$MyHandler");
+		SootMethod tmpMth = Scene.v().getMethod("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
 		return changed;
 	}
 	
@@ -160,6 +161,7 @@ public class MyHandlerHandler {
 		//creat handleMSG_[n] and replace the handler.sendMessage(msg) with it in the targetMethod
 		SootMethod sendmsgMethod = iCfg.getCalleesOfCallAt(callerUnit).iterator().next();
 		Set<Unit> callUnits = iCfg.getCallsFromWithin(sendmsgMethod);
+		CallGraph cg = Scene.v().getCallGraph();
 		
 		InvokeStmt handleMessageInvoker = null;
 		for(Unit u : callUnits){
@@ -217,7 +219,8 @@ public class MyHandlerHandler {
 				switchTable = (JTableSwitchStmt) u;
 				break;
 			}
-			myUnitsChain.add(u);
+			addUnitToTargetBody(myUnitsChain, u, cg, myHandler);
+//			myUnitsChain.add(u);
 		}
 		if(switchTable == null)
 			return null;
@@ -230,11 +233,22 @@ public class MyHandlerHandler {
 				targetUnit = gt.getTarget();
 				continue;
 			}
-			myUnitsChain.add(targetUnit);
+			addUnitToTargetBody(myUnitsChain, targetUnit, cg, myHandler);
+//			myUnitsChain.add(targetUnit);
 			targetUnit = hdMsgUnits.getSuccOf(targetUnit);
 		}
 		
 		return myHandler;
+	}
+
+	private void addUnitToTargetBody(PatchingChain<Unit> myUnitsChain, Unit u, CallGraph cg, SootMethod myHandler) {
+		myUnitsChain.add(u);
+		if(u instanceof InvokeStmt){
+			SootMethod tgt = ((InvokeStmt) u).getInvokeExpr().getMethod();
+			Kind kind = cg.findEdge(u, tgt).kind();
+			Edge newEdge = new Edge(myHandler, u, tgt, kind);
+			cg.addEdge(newEdge);
+		}
 	}
 
 }

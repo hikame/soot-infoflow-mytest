@@ -21,6 +21,9 @@ public class MainActivity extends Activity {
 			case UNRELEVANT_MSG:
 				new Publisher().publish("I am in the unrelevent parts.");
 				break;
+			case ANOTHER:
+				new Publisher().publish((String)msg.obj);
+				break;
 			default:
 				break;
 			}
@@ -36,6 +39,7 @@ public class MainActivity extends Activity {
 
 	private static final int TEST_MSG = 0;
 	private static final int UNRELEVANT_MSG = 1;
+	private static final int ANOTHER = 2;
 	
 	String tainted;
 	Handler mhandler = new MyHandler();
@@ -46,10 +50,29 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		testHandlerPost("TestPost");
 		testHandlerSendMSG("TestSendMSG");
+		testHandlerSendMSGAgain("TestSendMSG");
+		testHandlerSendMSGUnrelevant("TestSendMSG");
 	}
 
 	private void testHandlerSendMSG(String s) {
+		Message msg = mhandler.obtainMessage( ANOTHER );
+		msg.obj = s;
+		mhandler.sendMessage(msg);
+		
+		Message msg2 = mhandler.obtainMessage(UNRELEVANT_MSG);
+		msg2.obj = s;
+		mhandler.sendMessage(msg2);
+	}
+
+	private void testHandlerSendMSGAgain(String s) {
 		Message msg = mhandler.obtainMessage(TEST_MSG);
+		msg.obj = s;
+		mhandler.sendMessage(msg);
+	}
+
+	
+	private void testHandlerSendMSGUnrelevant(String s) {
+		Message msg = mhandler.obtainMessage(UNRELEVANT_MSG);
 		msg.obj = s;
 		mhandler.sendMessage(msg);
 	}

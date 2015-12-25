@@ -165,9 +165,14 @@ public class InterproceduralConstantValuePropagator extends SceneTransformer {
 				continue;
 			
 			if (sm.getReturnType() != VoidType.v() || sm.getParameterCount() > 0) {
-				if (sm.getParameterCount() > 0)
+				if (sm.getParameterCount() > 0){
+					System.out.println("[Test]");
+					if(sm.toString().contains("myHandler0"))
+						System.out.println(sm.getActiveBody().toString());
+					if(sm.toString().contains("sendMessage"))
+						System.out.println(sm.getActiveBody().toString());
 					propagateConstantsIntoCallee(sm);
-				
+				}
 				if (typeSupportsConstants(sm.getReturnType()))
 					propagateReturnValueIntoCallers(sm);
 			}

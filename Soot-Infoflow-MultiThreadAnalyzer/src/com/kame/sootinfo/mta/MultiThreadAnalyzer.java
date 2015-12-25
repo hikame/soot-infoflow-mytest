@@ -82,6 +82,8 @@ public class MultiThreadAnalyzer {
 //		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(java.lang.String)>");
 		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGAgain(java.lang.String)>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGUnrelevant(java.lang.String)>");
 
 		
 		sinksList.add("<com.kame.mth.Publisher: void publish(java.lang.String)>");
