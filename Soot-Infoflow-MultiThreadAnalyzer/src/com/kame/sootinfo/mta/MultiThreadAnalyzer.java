@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,15 +17,18 @@ import com.kame.sootinfo.mta.myplugin.MyIPCManager;
 import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager;
 import com.kame.sootinfo.mta.myplugin.MyTaintWrapper;
 
+import soot.MethodOrMethodContext;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
+import soot.Unit;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
 import soot.jimple.infoflow.InfoflowConfiguration.CodeEliminationMode;
 import soot.jimple.infoflow.ipc.IIPCManager;
 import soot.jimple.infoflow.nativ.DefaultNativeCallHandler;
 import soot.jimple.infoflow.nativ.INativeCallHandler;
+import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
 import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.taintWrappers.EasyTaintWrapper;
 import soot.jimple.infoflow.taintWrappers.ITaintPropagationWrapper;
@@ -32,6 +36,7 @@ import soot.jimple.infoflow.test.junit.MyMethodArgsSourceSinkManager;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.options.Options;
+import soot.util.queue.QueueReader;
 
 public class MultiThreadAnalyzer {
 //	private final Options opts = Options.v();
@@ -81,9 +86,9 @@ public class MultiThreadAnalyzer {
 //		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0a(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(java.lang.String)>");
-		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGAgain(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGUnrelevant(java.lang.String)>");
+		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String,java.lang.String)>");
+		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGAgain(java.lang.String)>");
+		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGUnrelevant(java.lang.String)>");
 
 		
 		sinksList.add("<com.kame.mth.Publisher: void publish(java.lang.String)>");
@@ -161,10 +166,8 @@ System.out.println("ClassPath is: " + cpSoot);
 		myClassResolver.start();
 		// Build the callgraph
 		myCGConstructor.start();
-		System.out.println("[TEST] " + Scene.v().getCallGraph());
 		//cut down dead code & parse CFG
 		myCFGPaerser.start();
-		System.out.println("[TEST] " + Scene.v().getCallGraph());
 		// do special handling for android.os.Handler
 		if(myHandlerHandler.start(myCFGPaerser.getInfoflowCFG())){
 			//重新构造
@@ -172,7 +175,6 @@ System.out.println("ClassPath is: " + cpSoot);
 			CallGraph cg = Scene.v().getCallGraph();
 			myCFGPaerser.start();
 		}
-System.out.println("[TEST] " + Scene.v().getCallGraph());
 		//Information
 		myInfoFlowAnalyze.start(myCFGPaerser.getInfoflowCFG());
 	}
@@ -285,7 +287,6 @@ System.out.println("[TEST] " + Scene.v().getCallGraph());
 				continue;
 			String mark = "path=\"";
 			line = TargetSystemPath + File.separator + line.substring(line.indexOf(mark) + mark.length()).replace("\"/>", "");
-//			apclsList.add(line.replace("/", File.separator).replace("\\", )File.separator));
 			result = result 
 					+ File.pathSeparator 
 					+ line.replace("/", File.separator).replace("\\", File.separator);

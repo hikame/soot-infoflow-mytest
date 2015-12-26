@@ -6,17 +6,24 @@ import java.util.List;
 
 import soot.Body;
 import soot.Local;
+import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootField;
+import soot.SootFieldRef;
 import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
 import soot.VoidType;
+import soot.javaToJimple.LocalGenerator;
+import soot.jimple.AssignStmt;
 import soot.jimple.IntConstant;
 import soot.jimple.Jimple;
+import soot.jimple.NewExpr;
 import soot.jimple.NullConstant;
+import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.infoflow.cfg.LibraryClassPatcher;
+import soot.jimple.internal.JInstanceFieldRef;
 import soot.options.Options;
 
 /**soot-info中提供的LibraryClassPatcher实现了对于简单的Thread和Handler机制的补充，但是这并不足够，需要我们进一步进行功能增强*/
@@ -34,8 +41,15 @@ public class MyMultiThreadPatcher {
 		
 		// Patch the android.os.Handler implementation
 		patchThreadImplementation();
+		
+//		pathcMessageImplementation();
 	}
 	
+//	private void pathcMessageImplementation() {
+//		SootClass sc = Scene.v().forceResolve("android.os.Message", SootClass.BODIES);
+//		
+//	}
+
 	/**
 	 * Creates a synthetic minimal implementation of the java.lang.Thread class
 	 * to model threading correctly even if we don't have a real implementation.
@@ -208,8 +222,55 @@ public class MyMultiThreadPatcher {
 		SootMethod smsendMSG = sc.getMethodUnsafe("boolean sendMessage(android.os.Message)");
 		if(smsendMSG != null && !smsendMSG.hasActiveBody())
 			patchHandlerSendMSGBody(smsendMSG);
+		
+		SootMethod smobtainMSG = sc.getMethodUnsafe("android.os.Message obtainMessage(int)");
+		if(smobtainMSG != null && !smobtainMSG.hasActiveBody())
+			patchHandlerObtainMSGBody(smobtainMSG);
 	}
 	
+	private void patchHandlerObtainMSGBody(SootMethod smobtainMSG) {
+		SootClass sc = smobtainMSG.getDeclaringClass();
+		Body b = Jimple.v().newBody(smobtainMSG);
+		smobtainMSG.setActiveBody(b);
+		
+		Local thisLocal = Jimple.v().newLocal("this", sc.getType());
+		b.getLocals().add(thisLocal);
+		b.getUnits().add(Jimple.v().newIdentityStmt(thisLocal,
+				Jimple.v().newThisRef(sc.getType())));
+		
+		Local paramWhat = Jimple.v().newLocal("what", smobtainMSG.getParameterType(0));
+		b.getLocals().add(paramWhat);
+		b.getUnits().add(Jimple.v().newIdentityStmt(paramWhat,
+				Jimple.v().newParameterRef(smobtainMSG.getParameterType(0), 0)));
+		
+//        $r1 = new com.kame.tafhd.MainActivity;
+//        specialinvoke $r1.<com.kame.tafhd.MainActivity: void <init>()>();
+		SootClass msgSC = Scene.v().getSootClass("android.os.Message");
+		SootMethod msgInit = msgSC.getMethod("void <init>()");
+		Local result = Jimple.v().newLocal("result", RefType.v(msgSC));
+		b.getLocals().add(result);
+		
+		NewExpr newExpr = Jimple.v().newNewExpr(RefType.v(msgSC));
+//		Local tempLocal = new LocalGenerator(b).generateLocal(RefType.v(msgSC));			
+		AssignStmt assignStmt = Jimple.v().newAssignStmt(result, newExpr);
+		b.getUnits().add(assignStmt);
+		
+		SpecialInvokeExpr vInvokeExpr = Jimple.v().newSpecialInvokeExpr(result, msgInit.makeRef());
+		b.getUnits().add(Jimple.v().newInvokeStmt(vInvokeExpr));
+//		b.getUnits().add(Jimple.v().newIdentityStmt(result, tempLocal));
+//		
+		
+		SootFieldRef whatFieldRef = msgSC.getFieldByName("what").makeRef();
+		JInstanceFieldRef whatRef = new JInstanceFieldRef(result, whatFieldRef);
+		b.getUnits().add(Jimple.v().newAssignStmt(whatRef, paramWhat));
+		
+		SootFieldRef targetFieldRef = msgSC.getFieldByName("target").makeRef();
+		JInstanceFieldRef targetField = new JInstanceFieldRef(result, targetFieldRef);
+		b.getUnits().add(Jimple.v().newAssignStmt(targetField, thisLocal));
+		
+		return;
+	}
+
 	/**Creates a new body for sendMessage in androis.os.Handler
 	 * make it to directly call the handleMessage() method*/
 	private void patchHandlerSendMSGBody(SootMethod smsendMSG) {
