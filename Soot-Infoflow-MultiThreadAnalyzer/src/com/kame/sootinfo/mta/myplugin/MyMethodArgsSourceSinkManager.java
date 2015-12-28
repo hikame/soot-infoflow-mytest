@@ -1,9 +1,12 @@
 package com.kame.sootinfo.mta.myplugin;
 
 import heros.InterproceduralCFG;
+import soot.Local;
 import soot.SootMethod;
 import soot.Unit;
+import soot.Value;
 import soot.jimple.DefinitionStmt;
+import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.ParameterRef;
 import soot.jimple.Stmt;
 import soot.jimple.infoflow.data.AccessPath;
@@ -36,10 +39,6 @@ public class MyMethodArgsSourceSinkManager implements ISourceSinkManager {
 	@Override
 	public SourceInfo getSourceInfo(Stmt sCallSite,
 			InterproceduralCFG<Unit, SootMethod> cfg) {
-//long id = Thread.currentThread().getId();
-//System.out.println("[TSrc-" + id + "] Method: " + cfg.getMethodOf(sCallSite));
-//System.out.println("[TSrc-" + id + "] Stmt: " + sCallSite);
-		
 //参照jimple的格式，方法的参数在方法的实现代码中是通过左操作数为临时操作变量，右操作数为实参的形式进行表示的，这种情况下，为左操作数创建TaintedPath信息。
 		if(!cfg.getMethodOf(sCallSite).toString().equals(targetMethods))
 			return null;
@@ -63,6 +62,10 @@ public class MyMethodArgsSourceSinkManager implements ISourceSinkManager {
 		if (!sCallSite.containsInvokeExpr())
 			return false;
 		SootMethod target = sCallSite.getInvokeExpr().getMethod();
+		
+		if(target.toString().contains("equal"))
+			System.out.println();
+		
 		if ((target.getSignature().equals(sinks))
 				&& sCallSite.getInvokeExpr().getArgCount() > 0) {
 			if (ap == null){
@@ -74,6 +77,13 @@ public class MyMethodArgsSourceSinkManager implements ISourceSinkManager {
 //System.out.println("[TSink-" + id + "] [!] This is a sink! AP: " + ap);
 					return true;
 				}
+		}
+		
+		else if(sCallSite instanceof InstanceInvokeExpr){
+			Value base = ((InstanceInvokeExpr) sCallSite).getBase();
+			Local local = ap.getPlainValue();
+			if(base.equals(local))
+				System.out.println();
 		}
 		return false;
 	}

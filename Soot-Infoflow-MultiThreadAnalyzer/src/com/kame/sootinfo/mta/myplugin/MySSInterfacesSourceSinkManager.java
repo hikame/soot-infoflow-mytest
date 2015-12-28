@@ -3,9 +3,13 @@ package com.kame.sootinfo.mta.myplugin;
 import java.util.List;
 
 import heros.InterproceduralCFG;
+import soot.Local;
 import soot.SootMethod;
 import soot.Unit;
+import soot.Value;
 import soot.jimple.DefinitionStmt;
+import soot.jimple.InstanceInvokeExpr;
+import soot.jimple.InvokeExpr;
 import soot.jimple.ParameterRef;
 import soot.jimple.Stmt;
 import soot.jimple.infoflow.data.AccessPath;
@@ -63,34 +67,27 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 	@Override
 	public boolean isSink(Stmt sCallSite, InterproceduralCFG<Unit, SootMethod> cfg,
 			AccessPath ap) {
-//long id = Thread.currentThread().getId();
-//System.out.println("[TSink-" + id + "] Method: " + cfg.getMethodOf(sCallSite));
-//System.out.println("[TSink-" + id + "] Stmt:" + sCallSite);
 		if (!sCallSite.containsInvokeExpr())
 			return false;
-//		SootMethod target = sCallSite.getInvokeExpr().getMethod();
 		String targetMth = sCallSite.getInvokeExpr().getMethod().getSignature();
-//System.out.println("[T] " + targetMth);
 		boolean isSink = false;
 		for(String sk : sinks)
 			if(sk.equals(targetMth)){
 				isSink = true;
 				break;
 			}
+		
+		if(isSink == false) {
+			InvokeExpr ie = sCallSite.getInvokeExpr();
+			if((ie instanceof InstanceInvokeExpr) && ap != null){
+				Value base = ((InstanceInvokeExpr) ie).getBase();
+				Local local = ap.getPlainValue();
+				
+				if(base.equals(local))
+					isSink = true;
+			}
+		}
 		return isSink;
-//		if (isSink) {
-////				&& sCallSite.getInvokeExpr().getArgCount() > 0) {
-//			if (ap == null){
-////System.out.println("[TSink-" + id + "] [!] This is a sink! AP: " + ap);
-//				return true;
-//			}
-//			else if (ap.getPlainValue() == sCallSite.getInvokeExpr().getArg(0))	//!!!此处需要配置！
-//				if (ap.isLocal() || ap.getTaintSubFields()){
-////System.out.println("[TSink-" + id + "] [!] This is a sink! AP: " + ap);
-//					return true;
-//				}
-//		}
-//		return false;
 	}
 
 }

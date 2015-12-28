@@ -13,7 +13,7 @@ public class MainActivity extends Activity {
 	class MyHandler extends Handler{
 	     @Override
 	     public void handleMessage(Message msg) {
-//	    	 new Publisher().publish("I am in hanlderMessage()");
+	    	 new Publisher().publish("I am in hanlderMessage()");
 	    	 switch (msg.what) {
 			case TEST_MSG:
 				new Publisher().publish((String)msg.obj);
@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 	class MyRunnable implements Runnable{
 		@Override
 		public void run() {
-//			new Publisher().publish(tainted);
+			new Publisher().publish(tainted);
 		}
 	}
 
@@ -49,31 +49,18 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		testHandlerPost("TestPost");
-		testHandlerSendMSG("TestSendMSG", "test2");
+		testHandlerSendMSG("TestSendMSG", new StringBuilder("abc"));
 		testHandlerSendMSGAgain("TestSendMSG");
 		testHandlerSendMSGUnrelevant("TestSendMSG");
 	}
 
-	private void testHandlerSendMSG(String s1, String s2) {
-		Message msg = mhandler.obtainMessage(TEST_MSG);
-		msg.obj = s1;
+	private void testHandlerSendMSG(String s, StringBuilder builder) {
+		Message msg = mhandler.obtainMessage( TEST_MSG );
+		s.equals("test");
+		builder.length();
+		msg.obj = s + "abcd";
 		mhandler.sendMessage(msg);
-//		directSink(msg);
-		
-//		Message msg2 = mhandler.obtainMessage(TEST_MSG);
-//		msg2.obj = s2;
-//		mhandler.sendMessage(msg2);
-////		directNOSink(msg2);
 	}
-
-//	private void directNOSink(Message msg2) {
-//		new Publisher().publish("");
-//	}
-//
-//	private void directSink(Message msg) {
-//		// TODO Auto-generated method stub
-//		new Publisher().publish((String)msg.obj);
-//	}
 
 	private void testHandlerSendMSGAgain(String s) {
 		Message msg = mhandler.obtainMessage(TEST_MSG);

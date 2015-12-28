@@ -23,7 +23,6 @@ import soot.VoidType;
 import soot.jimple.AssignStmt;
 import soot.jimple.GotoStmt;
 import soot.jimple.InstanceFieldRef;
-import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
@@ -63,9 +62,32 @@ public class MyHandlerHandler {
 				continue;
 
 			Value msgValue = null, hdValue = null;
-			InvokeStmt invokeStmt = (InvokeStmt)callerUnit;
-			msgValue = invokeStmt.getInvokeExpr().getArg(0);
-			hdValue = ((InstanceInvokeExpr)invokeStmt.getInvokeExpr()).getBase();
+			for(ValueBox vb : useList){		//找到调用处的message对象并做处理
+				//Search the used list to find message localvalue
+				Value tmpValue = vb.getValue();
+				RefType tmpType = null;
+				try{
+					tmpType = (RefType) tmpValue.getType();
+				}catch(Exception e){
+					continue;
+				}
+
+				SootClass tmpClass = tmpType.getSootClass();
+				SootClass handlerClass = Scene.v().getSootClass("android.os.Handler");
+				if(tmpClass.equals(Scene.v().getSootClass("android.os.Message"))){
+					if(!(tmpValue instanceof Local)){
+						System.out.println("[E] The founded msg object is not a local value: " + tmpValue);
+						break;
+					}
+					else{
+						msgValue = tmpValue;
+					}
+				}
+				else if(tmpClass.equals(handlerClass) || tmpClass.getSuperclass().equals(handlerClass))
+					hdValue = tmpValue;
+			}
+			if(msgValue == null || hdValue == null)
+				continue;
 			
 			Integer caseCode = parseCaseCode(callerSM, msgValue, callerUnit); 
 			if(caseCode == null)
@@ -84,10 +106,12 @@ public class MyHandlerHandler {
 			boolean b = cg.removeAllEdgesOutOf(callerUnit);
 			cg.addEdge(new Edge(callerSM, replaceStmt, ((InvokeStmt) replaceStmt).getInvokeExpr().getMethod()));
 			
+			System.out.println(cg.toString());
+			System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+			
 			//需要以新加的方法myhandler[n]为起点，将其内部的调用关系进行后续分析。
 			changed = true;
 		}
-
 		return changed;
 	}
 	
@@ -216,12 +240,11 @@ public class MyHandlerHandler {
 	}
 
 	private void addUnitToTargetBody(PatchingChain<Unit> myUnitsChain, Unit u, CallGraph cg, SootMethod myHandler) {
-		Unit newUnit = (Unit) u.clone();
-		myUnitsChain.add(newUnit);
+		myUnitsChain.add(u);
 		if(u instanceof InvokeStmt){
 			SootMethod tgt = ((InvokeStmt) u).getInvokeExpr().getMethod();
 			Kind kind = cg.findEdge(u, tgt).kind();
-			Edge newEdge = new Edge(myHandler, newUnit, tgt, kind);
+			Edge newEdge = new Edge(myHandler, u, tgt, kind);
 			cg.addEdge(newEdge);
 		}
 	}
