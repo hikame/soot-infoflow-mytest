@@ -28,6 +28,7 @@ import heros.solver.PathEdge;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -539,7 +540,7 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		if (existingVal != null) {
 			if (existingVal != targetVal) {
 				existingVal.addNeighbor(targetVal);
-			}
+			} 
 		}
 		else {
 			scheduleEdgeProcessing(edge);

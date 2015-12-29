@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
 	    	 switch (msg.what) {
 			case TEST_MSG:
 				new Publisher().publish((String)msg.obj);
+				msg.obj.equals("EqualTest");
 				break;
 			case UNRELEVANT_MSG:
 				new Publisher().publish("I am in the unrelevent parts.");
@@ -49,16 +50,50 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		testHandlerPost("TestPost");
-		testHandlerSendMSG("TestSendMSG", new StringBuilder("abc"));
+		testHandlerSendMSG("TestSendMSG");
 		testHandlerSendMSGAgain("TestSendMSG");
 		testHandlerSendMSGUnrelevant("TestSendMSG");
 	}
+	
+	class InnerClass{
+		private void setField(String s){
+			setPath(s + 1);
+		}
+		
+		private void setPath(String string) {
+			tainted = string;
+		}
 
-	private void testHandlerSendMSG(String s, StringBuilder builder) {
+		private void sinkField(){
+			String out = getPath();
+			doSink(out);
+
+		}
+
+		private void doSink(String out2) {
+			tainted = out2;
+			dodoSink(out2 + 1);
+			//dodoSink();
+		}
+
+		private void dodoSink(String out3) {
+			dododoSink(out3);
+		}
+
+		private void dododoSink(String out4) {
+			Publisher p = new Publisher();
+			p.publish(out4 + 1);
+		}
+
+		private String getPath() {
+			return tainted;
+		}	
+	}
+	
+	private void testHandlerSendMSG(String s) {
 		Message msg = mhandler.obtainMessage( TEST_MSG );
 		s.equals("test");
-		builder.length();
-		msg.obj = s + "abcd";
+		msg.obj = s;
 		mhandler.sendMessage(msg);
 	}
 

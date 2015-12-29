@@ -23,7 +23,9 @@ import soot.VoidType;
 import soot.jimple.AssignStmt;
 import soot.jimple.GotoStmt;
 import soot.jimple.InstanceFieldRef;
+import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.Stmt;
@@ -35,7 +37,7 @@ import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
 
-/**Ö»¶ÔÓÚmsgÊÇÍ¬Ò»·½·¨ÄÚµÄlocal±äÁ¿£¬ÇÒÔÚ¶ÔÏó³õÊ¼»¯Ê±¸ø³öconstantÖµ×÷Îªwhat¡¢»ò¶¯Ì¬ÉèÖÃmsg.whatÎªconstantÊ±ÓĞĞ§
+/**åªå¯¹äºmsgæ˜¯åŒä¸€æ–¹æ³•å†…çš„localå˜é‡ï¼Œä¸”åœ¨å¯¹è±¡åˆå§‹åŒ–æ—¶ç»™å‡ºconstantå€¼ä½œä¸ºwhatã€æˆ–åŠ¨æ€è®¾ç½®msg.whatä¸ºconstantæ—¶æœ‰æ•ˆ
  * @throws Exception */
 public class MyHandlerHandler {
 	private IInfoflowCFG iCfg;
@@ -53,7 +55,7 @@ public class MyHandlerHandler {
 		sendMSG = Scene.v().getMethod("<android.os.Handler: boolean sendMessage(android.os.Message)>");
 		
 		Collection<Unit> unitCollection = iCfg.getCallersOf(sendMSG);
-		for(Unit callerUnit : unitCollection){	//Ã¿¸ösendMsgµÄµ÷ÓÃ´¦
+		for(Unit callerUnit : unitCollection){	//æ¯ä¸ªsendMsgçš„è°ƒç”¨å¤„
 			SootMethod callerSM = iCfg.getMethodOf(callerUnit);
 			if(Options.v().debug())
 				System.out.println("[KM] " + callerSM + "--->" + callerUnit.toString());
@@ -62,32 +64,9 @@ public class MyHandlerHandler {
 				continue;
 
 			Value msgValue = null, hdValue = null;
-			for(ValueBox vb : useList){		//ÕÒµ½µ÷ÓÃ´¦µÄmessage¶ÔÏó²¢×ö´¦Àí
-				//Search the used list to find message localvalue
-				Value tmpValue = vb.getValue();
-				RefType tmpType = null;
-				try{
-					tmpType = (RefType) tmpValue.getType();
-				}catch(Exception e){
-					continue;
-				}
-
-				SootClass tmpClass = tmpType.getSootClass();
-				SootClass handlerClass = Scene.v().getSootClass("android.os.Handler");
-				if(tmpClass.equals(Scene.v().getSootClass("android.os.Message"))){
-					if(!(tmpValue instanceof Local)){
-						System.out.println("[E] The founded msg object is not a local value: " + tmpValue);
-						break;
-					}
-					else{
-						msgValue = tmpValue;
-					}
-				}
-				else if(tmpClass.equals(handlerClass) || tmpClass.getSuperclass().equals(handlerClass))
-					hdValue = tmpValue;
-			}
-			if(msgValue == null || hdValue == null)
-				continue;
+			InvokeStmt invokeStmt = (InvokeStmt)callerUnit;
+			msgValue = invokeStmt.getInvokeExpr().getArg(0);
+			hdValue = ((InstanceInvokeExpr)invokeStmt.getInvokeExpr()).getBase();
 			
 			Integer caseCode = parseCaseCode(callerSM, msgValue, callerUnit); 
 			if(caseCode == null)
@@ -106,12 +85,10 @@ public class MyHandlerHandler {
 			boolean b = cg.removeAllEdgesOutOf(callerUnit);
 			cg.addEdge(new Edge(callerSM, replaceStmt, ((InvokeStmt) replaceStmt).getInvokeExpr().getMethod()));
 			
-			System.out.println(cg.toString());
-			System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-			
-			//ĞèÒªÒÔĞÂ¼ÓµÄ·½·¨myhandler[n]ÎªÆğµã£¬½«ÆäÄÚ²¿µÄµ÷ÓÃ¹ØÏµ½øĞĞºóĞø·ÖÎö¡£
+			//éœ€è¦ä»¥æ–°åŠ çš„æ–¹æ³•myhandler[n]ä¸ºèµ·ç‚¹ï¼Œå°†å…¶å†…éƒ¨çš„è°ƒç”¨å…³ç³»è¿›è¡Œåç»­åˆ†æã€‚
 			changed = true;
 		}
+
 		return changed;
 	}
 	
@@ -202,12 +179,9 @@ public class MyHandlerHandler {
 		Body myThinBody = Jimple.v().newBody();
 		myThinBody.setMethod(myHandler);
 		myHandler.setActiveBody(myThinBody);
-//		LocalGenerator lg = new LocalGenerator(myThinBody);
 		PatchingChain<Unit> myUnitsChain = myThinBody.getUnits();
 		
 		for(Local loc : handleMsg.getActiveBody().getLocals()){
-//	        Local sootLocal = soot.jimple.Jimple.v().newLocal(loc.getName(), loc.getType());
-//	        body.getLocals().add(sootLocal);
 			myThinBody.getLocals().add(loc);
 		}
 		
@@ -218,7 +192,6 @@ public class MyHandlerHandler {
 				break;
 			}
 			addUnitToTargetBody(myUnitsChain, u, cg, myHandler);
-//			myUnitsChain.add(u);
 		}
 		if(switchTable == null)
 			return null;
@@ -232,7 +205,6 @@ public class MyHandlerHandler {
 				continue;
 			}
 			addUnitToTargetBody(myUnitsChain, targetUnit, cg, myHandler);
-//			myUnitsChain.add(targetUnit);
 			targetUnit = hdMsgUnits.getSuccOf(targetUnit);
 		}
 		
@@ -240,11 +212,13 @@ public class MyHandlerHandler {
 	}
 
 	private void addUnitToTargetBody(PatchingChain<Unit> myUnitsChain, Unit u, CallGraph cg, SootMethod myHandler) {
-		myUnitsChain.add(u);
+		Unit newUnit = (Unit) u.clone();
+		myUnitsChain.add(newUnit);
 		if(u instanceof InvokeStmt){
-			SootMethod tgt = ((InvokeStmt) u).getInvokeExpr().getMethod();
-			Kind kind = cg.findEdge(u, tgt).kind();
-			Edge newEdge = new Edge(myHandler, u, tgt, kind);
+			InvokeExpr invokeExpr = ((InvokeStmt) u).getInvokeExpr();
+			SootMethod tgt = invokeExpr.getMethod();
+			Kind kind = Edge.ieToKind(invokeExpr);
+			Edge newEdge = new Edge(myHandler, newUnit, tgt, kind);
 			cg.addEdge(newEdge);
 		}
 	}

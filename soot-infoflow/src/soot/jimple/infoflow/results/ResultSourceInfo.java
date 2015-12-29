@@ -41,11 +41,11 @@ public class ResultSourceInfo {
 		this.pathAPs = pathAPs == null || pathAPs.isEmpty() ? null :
 			pathAPs.toArray(new AccessPath[pathAPs.size()]);
 	}
-
+	/**污点源的起始AccessPath*/
 	public AccessPath getAccessPath() {
 		return this.accessPath;
 	}
-	
+	/**污点源的产生处的语句*/
 	public Stmt getSource() {
 		return this.source;
 	}
@@ -53,11 +53,11 @@ public class ResultSourceInfo {
 	public Object getUserData() {
 		return this.userData;
 	}
-	
+	/**污点值被作为参数传递的调用语句？*/
 	public Stmt[] getPath() {
 		return this.path;
 	}
-	
+	/**污点值被作为参数传递时的AccessPath*/
 	public AccessPath[] getPathAccessPaths() {
 		return this.pathAPs;
 	}

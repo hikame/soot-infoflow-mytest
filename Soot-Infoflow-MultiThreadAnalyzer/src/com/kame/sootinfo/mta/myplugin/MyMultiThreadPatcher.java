@@ -189,6 +189,10 @@ public class MyMultiThreadPatcher {
 	 * Creates a dummy implementation of android.os.Handler if we don't have one
 	 */
 	private void patchHandlerImplementation() {
+		SootClass msgSC = Scene.v().forceResolve("android.os.Message", SootClass.BODIES);
+		if(msgSC== null || msgSC.isPhantom())
+			return;
+		
 		SootClass sc = Scene.v().forceResolve("android.os.Handler", SootClass.BODIES);
 		if(sc == null || sc.isPhantom())
 			return;

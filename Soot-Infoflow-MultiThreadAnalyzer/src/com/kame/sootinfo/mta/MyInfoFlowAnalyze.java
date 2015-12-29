@@ -37,10 +37,13 @@ import soot.jimple.infoflow.cfg.BiDirICFGFactory;
 import soot.jimple.infoflow.cfg.DefaultBiDiICFGFactory;
 import soot.jimple.infoflow.data.Abstraction;
 import soot.jimple.infoflow.data.AbstractionAtSink;
+import soot.jimple.infoflow.data.AccessPath;
 import soot.jimple.infoflow.data.FlowDroidMemoryManager;
+import soot.jimple.infoflow.data.SourceContextAndPath;
 import soot.jimple.infoflow.data.pathBuilders.DefaultPathBuilderFactory;
 import soot.jimple.infoflow.data.pathBuilders.IAbstractionPathBuilder;
 import soot.jimple.infoflow.data.pathBuilders.IPathBuilderFactory;
+import soot.jimple.infoflow.data.pathBuilders.DefaultPathBuilderFactory.PathBuilder;
 import soot.jimple.infoflow.handlers.ResultsAvailableHandler;
 import soot.jimple.infoflow.handlers.TaintPropagationHandler;
 import soot.jimple.infoflow.nativ.INativeCallHandler;
@@ -59,6 +62,8 @@ import soot.jimple.infoflow.util.SystemClassHandler;
 import soot.jimple.internal.JimpleLocalBox;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.options.Options;
+import soot.tagkit.StringTag;
+import soot.tagkit.Tag;
 import soot.util.Chain;
 
 public class MyInfoFlowAnalyze {
@@ -70,7 +75,8 @@ public class MyInfoFlowAnalyze {
 	private INativeCallHandler nativeCallHandler;
 	private IInfoflowCFG iCfg;
 	
-	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory();
+	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory(PathBuilder.ContextSensitive, true);
+//	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory();
 	private TaintPropagationHandler taintPropagationHandler = null;		//4.a Handler interface for callbacks during taint propagation，可以不做设置
 	private TaintPropagationHandler backwardsPropagationHandler = null;  //4.b Handler interface for callbacks during taint propagation，可以不做设置
 	private Set<ResultsAvailableHandler> onResultsAvailable = new HashSet<ResultsAvailableHandler>();
@@ -259,15 +265,29 @@ public class MyInfoFlowAnalyze {
 		forwardProblem = null;
 		Runtime.getRuntime().gc();
 		
-		computeTaintPaths(res);
+		computeTaintPaths(res);		
 		
 		if (results == null || results.getResults().isEmpty())
 			logger.warn("No results found.");
 		else for (ResultSinkInfo sink : results.getResults().keySet()) {
 			logger.info("The sink {} in method {} was called with values from the following sources:",
                     sink, iCfg.getMethodOf(sink.getSink()).getSignature() );
+			
+			String tags = "";
+			for(Tag st : sink.getSink().getTags()){
+				tags = tags + "; " + ((StringTag)st).getInfo();
+			}
+			logger.info("Sink Type: " + tags.substring(2));
+			
 			for (ResultSourceInfo source : results.getResults().get(sink)) {
 				logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
+				
+//				AccessPath[] aps = source.getPathAccessPaths();
+//				Stmt[] stmts = source.getPath();
+//				for(int count = 0; count < aps.length; count++){
+//					logger.info(String.format("[%d] %s --> %s", count, aps[count].toString(), stmts[count].toString()));
+//				}
+				
 				if (source.getPath() != null) {
 					logger.info("\ton Path: ");
 					for (Unit p : source.getPath()) {
@@ -393,7 +413,7 @@ public class MyInfoFlowAnalyze {
 	 * @param res The data flow tracker results
 	 */
 	protected void computeTaintPaths(final Set<AbstractionAtSink> res) {
-		IAbstractionPathBuilder builder = this.pathBuilderFactory.createPathBuilder
+		IAbstractionPathBuilder builder = this.pathBuilderFactory.createPathBuilder	//pathBuilderFactory构造处若设置为true？
 				(config.getMaxThreadNum(), iCfg);
    		builder.computeTaintPaths(res);
    		if (this.results == null)

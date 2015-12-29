@@ -16,6 +16,8 @@ import soot.jimple.infoflow.data.AccessPath;
 import soot.jimple.infoflow.data.AccessPathFactory;
 import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.source.SourceInfo;
+import soot.tagkit.StringTag;
+import soot.tagkit.Tag;
 
 public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 	boolean taintSubFields = true;
@@ -67,14 +69,31 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 	@Override
 	public boolean isSink(Stmt sCallSite, InterproceduralCFG<Unit, SootMethod> cfg,
 			AccessPath ap) {
-		if (!sCallSite.containsInvokeExpr())
+		if (!sCallSite.containsInvokeExpr())	//此处暂时可以这么写，但是随着要捕获的exception的增加，此处应该是需要给修改的
 			return false;
 		String targetMth = sCallSite.getInvokeExpr().getMethod().getSignature();
 		boolean isSink = false;
 		for(String sk : sinks)
 			if(sk.equals(targetMth)){
-				isSink = true;
-				break;
+				if(ap == null){
+					isSink = true;
+					break;
+				}
+				
+				Value param = sCallSite.getInvokeExpr().getArg(0);	//这个0不应是写死的！
+				if(ap.getPlainValue().equals(param)){
+					isSink = true;
+					Tag newTag = createNewTag(sCallSite, "Sink-Pulisher");
+					if(newTag != null)
+						sCallSite.addTag(newTag);
+					break;
+				}
+//				
+//				if(!sCallSite.toString().equals("virtualinvoke $r1.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r3)"))
+//					continue;
+//				if(sCallSite.getTags().size() > 0)
+//					System.out.println();
+//				break;
 			}
 		
 		if(isSink == false) {
@@ -83,11 +102,29 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 				Value base = ((InstanceInvokeExpr) ie).getBase();
 				Local local = ap.getPlainValue();
 				
-				if(base.equals(local))
+				if(base.equals(local)){
 					isSink = true;
+					Tag newTag = createNewTag(sCallSite, "Sink-NullPointExcption");
+					if(newTag != null)
+						sCallSite.addTag(newTag);
+				}
 			}
 		}
 		return isSink;
+	}
+
+	private Tag createNewTag(Stmt sCallSite, String tagString) {
+		List<Tag> currentTags = sCallSite.getTags();
+		boolean exist = false;
+		for(Tag tag : currentTags){
+			if((tag instanceof StringTag) && ((StringTag) tag).getInfo().equals(tagString)){
+				exist = true;
+				break;
+			}
+		}
+		if(exist)
+			return null;
+		return new StringTag(tagString);
 	}
 
 }

@@ -47,11 +47,13 @@ public class Abstraction implements Cloneable, FastSolverLinkedNode<Abstraction,
 	
 	/**
 	 * the access path contains the currently tainted variable or field
+	 * 目前被污染的值或者域
 	 */
 	private AccessPath accessPath;
-	
+	/** 本污染值的直接污染来源*/
 	private Abstraction predecessor = null;
 	private Set<Abstraction> neighbors = null;
+	/** */
 	private Stmt currentStmt = null;
 	private Stmt correspondingCallSite = null;
 	
@@ -62,6 +64,7 @@ public class Abstraction implements Cloneable, FastSolverLinkedNode<Abstraction,
 	
 	/**
 	 * Unit/Stmt which activates the taint when the abstraction passes it
+	 * 导致污染传播过来的语句
 	 */
 	private Unit activationUnit = null;
 	/**

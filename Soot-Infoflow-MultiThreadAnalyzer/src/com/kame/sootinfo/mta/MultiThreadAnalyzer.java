@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,22 +13,13 @@ import org.slf4j.LoggerFactory;
 import com.kame.sootinfo.mta.myplugin.MyIPCManager;
 import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager;
 import com.kame.sootinfo.mta.myplugin.MyTaintWrapper;
-
-import soot.Scene;
-import soot.SootClass;
-import soot.SootMethod;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
-import soot.jimple.infoflow.InfoflowConfiguration.CodeEliminationMode;
 import soot.jimple.infoflow.ipc.IIPCManager;
 import soot.jimple.infoflow.nativ.DefaultNativeCallHandler;
 import soot.jimple.infoflow.nativ.INativeCallHandler;
 import soot.jimple.infoflow.source.ISourceSinkManager;
-import soot.jimple.infoflow.taintWrappers.EasyTaintWrapper;
 import soot.jimple.infoflow.taintWrappers.ITaintPropagationWrapper;
-import soot.jimple.infoflow.test.junit.MyMethodArgsSourceSinkManager;
-import soot.jimple.toolkits.callgraph.CallGraph;
-import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.options.Options;
 
 public class MultiThreadAnalyzer {
@@ -80,8 +69,11 @@ public class MultiThreadAnalyzer {
 
 //		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0a(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(java.lang.String)>");
-		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String,java.lang.StringBuilder)>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void sinkField( )>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void setField(java.lang.String)>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void doSink(java.lang.String)>");
+		
+		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGAgain(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGUnrelevant(java.lang.String)>");
 
@@ -91,14 +83,17 @@ public class MultiThreadAnalyzer {
 	
 	private String constructClasspath() {		
 		String cpSoot = "";
-		try {
-			cpSoot = appendLibOfClasspath();
-		} catch (Exception e) {
-			e.printStackTrace();
-//			return null;
-		}
+//		try {
+//			cpSoot = appendLibOfClasspath();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+////			return null;
+//		}
 
 		cpSoot = cpSoot + appendLibsFromPath(JavaLibPath);
+		
+//		cpSoot = ";A:\\android-6.0.0_r1-MRA58K\\out\\target\\common\\obj\\JAVA_LIBRARIES\\core-libart_intermediates\\classes.jar;";
+//		cpSoot += "A:\\android-6.0.0_r1-MRA58K\\out\\target\\common\\obj\\JAVA_LIBRARIES\\framework_intermediates\\classes.jar";
 cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytest\\TestCodeForMultiThreadHandler\\bin";
 cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytest\\TestAPKForHandlerDevelopment\\bin\\classes";
 System.out.println("ClassPath is: " + cpSoot);		
@@ -160,18 +155,13 @@ System.out.println("ClassPath is: " + cpSoot);
 		myClassResolver.start();
 		// Build the callgraph
 		myCGConstructor.start();
-		System.out.println("[TEST] " + Scene.v().getCallGraph());
 		//cut down dead code & parse CFG
 		myCFGPaerser.start();
-		System.out.println("[TEST] " + Scene.v().getCallGraph());
 		// do special handling for android.os.Handler
 		if(myHandlerHandler.start(myCFGPaerser.getInfoflowCFG())){
 			//重新构造
-			ReachableMethods mths = Scene.v().getReachableMethods();
-			CallGraph cg = Scene.v().getCallGraph();
 			myCFGPaerser.start();
 		}
-System.out.println("[TEST] " + Scene.v().getCallGraph());
 		//Information
 		myInfoFlowAnalyze.start(myCFGPaerser.getInfoflowCFG());
 	}
@@ -255,17 +245,24 @@ System.out.println("[TEST] " + Scene.v().getCallGraph());
 			if(intermediates == null || !intermediates.exists() || !intermediates.isDirectory())
 				continue;
 			
-			File clssFolder = new File(intermediates.getAbsolutePath() + File.separator + "classes");
+			String absolutePath = intermediates.getAbsolutePath();
+			if(absolutePath.contains("android_stubs_current_intermediates") ||
+					absolutePath.contains("sdk_v"))
+				continue;
+			
+			File clssFolder = new File(absolutePath + File.separator + "classes");
 			if(clssFolder.exists() && clssFolder.isDirectory()){
 				result = result + File.pathSeparator + clssFolder.getAbsolutePath();
 				continue;
 			}
-			File dex2jar = new File(intermediates.getAbsolutePath() + File.separator + "classes-dex2jar.jar");
+			
+			File dex2jar = new File(absolutePath + File.separator + "classes-dex2jar.jar");
 			if(dex2jar.exists()){
 				result = result + File.pathSeparator + dex2jar.getAbsolutePath();
 				continue;
 			}
-			File jar = new File(intermediates.getAbsolutePath() + File.separator + "classes.jar");
+
+			File jar = new File(absolutePath + File.separator + "classes.jar");
 			if(jar.exists()){
 				result = result + File.pathSeparator + jar.getAbsolutePath();
 				continue;
