@@ -1,5 +1,6 @@
 package com.kame.sootinfo.mta;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -8,12 +9,11 @@ import java.util.Set;
 import soot.Body;
 import soot.Kind;
 import soot.Local;
-import soot.Pack;
-import soot.PackManager;
 import soot.PatchingChain;
 import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
+import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
@@ -22,6 +22,8 @@ import soot.ValueBox;
 import soot.VoidType;
 import soot.jimple.AssignStmt;
 import soot.jimple.GotoStmt;
+import soot.jimple.IdentityStmt;
+import soot.jimple.IfStmt;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
@@ -32,6 +34,7 @@ import soot.jimple.Stmt;
 import soot.jimple.SwitchStmt;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
+import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JTableSwitchStmt;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
@@ -179,41 +182,85 @@ public class MyHandlerHandler {
 		Body myThinBody = Jimple.v().newBody();
 		myThinBody.setMethod(myHandler);
 		myHandler.setActiveBody(myThinBody);
-		PatchingChain<Unit> myUnitsChain = myThinBody.getUnits();
 		
 		for(Local loc : handleMsg.getActiveBody().getLocals()){
 			myThinBody.getLocals().add(loc);
 		}
 		
+		List<Unit> branches = new ArrayList<Unit>();
 		JTableSwitchStmt switchTable = null;
+		List<Value> whats = new ArrayList<Value>();
+//		Value arg = handleMessageInvoker.getInvokeExpr().getArg(0);
+		Local msg = handleMsg.getActiveBody().getParameterLocal(0);
+		SootField whatField = ((RefType)msg.getType()).getSootClass().getFieldByName("what");
+		JInstanceFieldRef jifr = new JInstanceFieldRef(msg, whatField.makeRef());
+		
 		for(Unit u : hdMsgUnits){
 			if(u instanceof SwitchStmt){
 				switchTable = (JTableSwitchStmt) u;
-				break;
+				if(whats.contains(switchTable.getKey()))
+					break;
+				else 
+					switchTable = null;
 			}
-			addUnitToTargetBody(myUnitsChain, u, cg, myHandler);
+			if(u instanceof AssignStmt){	//当是$i0 = msg.<android.os.Message: int what>语句时进行break
+				Value tmp = ((AssignStmt) u).getRightOp();
+				if(tmp.toString().equals(jifr.toString()))
+					whats.add(((AssignStmt) u).getLeftOp());
+			}
+			Unit newUnit = addOneUnit(u, cg, myHandler);
+			if(u.branches())
+				branches.add(newUnit);
 		}
+		
+		addBranches(branches, cg, myHandler, hdMsgUnits);
+		
 		if(switchTable == null)
 			return null;
-
-		Unit targetUnit = switchTable.getTarget(caseCode - switchTable.getLowIndex());
-		
-		while(targetUnit != null){
-			if(targetUnit instanceof GotoStmt){
-				GotoStmt gt = (GotoStmt) targetUnit;
-				targetUnit = gt.getTarget();
-				continue;
-			}
-			addUnitToTargetBody(myUnitsChain, targetUnit, cg, myHandler);
-			targetUnit = hdMsgUnits.getSuccOf(targetUnit);
-		}
-		
+		Unit targetUnit = switchTable.getTarget(caseCode - switchTable.getLowIndex());		
+		List<Unit> newBranches = addUnitsStartFromTarget(targetUnit, cg, myHandler, hdMsgUnits);
+		addBranches(newBranches, cg, myHandler, hdMsgUnits);
 		return myHandler;
 	}
 
-	private void addUnitToTargetBody(PatchingChain<Unit> myUnitsChain, Unit u, CallGraph cg, SootMethod myHandler) {
+	private void addBranches(List<Unit> branches, CallGraph cg, SootMethod myHandler,
+			PatchingChain<Unit> hdMsgUnits) {
+		if(branches == null || branches.size() == 0)
+			return;
+		List<Unit> newBranches = new ArrayList<Unit>();
+		for(Unit branch : branches){
+			if(branch instanceof IfStmt){
+				IfStmt is = (IfStmt) branch;
+				Unit originalTarget = is.getTarget();
+				Unit newUnit = addOneUnit(originalTarget, cg, myHandler);
+				is.setTarget(newUnit);
+				if(newUnit.branches())
+					newBranches.add(newUnit);
+				newBranches.addAll(addUnitsStartFromTarget(hdMsgUnits.getSuccOf(originalTarget), cg, myHandler, hdMsgUnits));
+			}
+		}
+		addBranches(newBranches, cg, myHandler, hdMsgUnits);
+	}
+
+	private List<Unit> addUnitsStartFromTarget(Unit targetUnit, CallGraph cg, SootMethod myHandler, PatchingChain<Unit> hdMsgUnits) {
+		List<Unit> branches = new ArrayList<Unit>();
+		while(targetUnit != null){
+			Unit newBranch = addOneUnit(targetUnit, cg, myHandler);
+			if(newBranch.branches())
+				branches.add(newBranch);
+			targetUnit = hdMsgUnits.getSuccOf(targetUnit);
+			//If it is a goto stmt, we will break the looper. Otherwise, it may go through to some unneccesary codes.
+			if(targetUnit instanceof GotoStmt)	 
+				break;
+		}
+		return branches;
+	}
+
+	private Unit addOneUnit(Unit u, CallGraph cg, SootMethod myHandler) {
 		Unit newUnit = (Unit) u.clone();
-		myUnitsChain.add(newUnit);
+		PatchingChain<Unit> unitsChain = myHandler.getActiveBody().getUnits();
+		if(unitsChain.contains(newUnit))
+			return newUnit;
 		if(u instanceof InvokeStmt){
 			InvokeExpr invokeExpr = ((InvokeStmt) u).getInvokeExpr();
 			SootMethod tgt = invokeExpr.getMethod();
@@ -221,6 +268,13 @@ public class MyHandlerHandler {
 			Edge newEdge = new Edge(myHandler, newUnit, tgt, kind);
 			cg.addEdge(newEdge);
 		}
+		if(u instanceof GotoStmt){
+			Unit target = ((GotoStmt) u).getTarget();
+			Unit newTarget = addOneUnit(target, cg, myHandler);
+			((GotoStmt) unitsChain).setTarget(newTarget);
+		}
+		unitsChain.add(newUnit);
+		return newUnit;
 	}
 
 }

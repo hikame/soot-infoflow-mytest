@@ -54,7 +54,6 @@ public class MultiThreadAnalyzer {
 	MyHandlerHandler myHandlerHandler = new MyHandlerHandler();
 	
 	private void myTestConfig() throws Exception {
-//		ssm = new MyMethodArgsSourceSinkManager(true, targetMethods, sinks);
 		Options.v().set_verbose(true);
 		Options.v().set_debug(true);
 		Options.v().set_debug_resolver(true);
@@ -73,7 +72,7 @@ public class MultiThreadAnalyzer {
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void setField(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void doSink(java.lang.String)>");
 		
-		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
+		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String,java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGAgain(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGUnrelevant(java.lang.String)>");
 
@@ -83,20 +82,10 @@ public class MultiThreadAnalyzer {
 	
 	private String constructClasspath() {		
 		String cpSoot = "";
-//		try {
-//			cpSoot = appendLibOfClasspath();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-////			return null;
-//		}
 
 		cpSoot = cpSoot + appendLibsFromPath(JavaLibPath);
-		
-//		cpSoot = ";A:\\android-6.0.0_r1-MRA58K\\out\\target\\common\\obj\\JAVA_LIBRARIES\\core-libart_intermediates\\classes.jar;";
-//		cpSoot += "A:\\android-6.0.0_r1-MRA58K\\out\\target\\common\\obj\\JAVA_LIBRARIES\\framework_intermediates\\classes.jar";
 cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytest\\TestCodeForMultiThreadHandler\\bin";
 cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytest\\TestAPKForHandlerDevelopment\\bin\\classes";
-System.out.println("ClassPath is: " + cpSoot);		
 		return cpSoot.substring(1);
 	}
 	

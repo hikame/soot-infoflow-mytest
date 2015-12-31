@@ -14,10 +14,17 @@ public class MainActivity extends Activity {
 	     @Override
 	     public void handleMessage(Message msg) {
 	    	 new Publisher().publish("I am in hanlderMessage()");
-	    	 switch (msg.what) {
+	    	 if(tainted.length() < 1)
+	    		 return;
+	    	switch (msg.what) {
 			case TEST_MSG:
-				new Publisher().publish((String)msg.obj);
-				msg.obj.equals("EqualTest");
+//				new Publisher().publish((String)msg.obj + tainted);
+				if(msg.obj.equals("0"))
+					new Publisher().publish((String)msg.obj);
+				else if(msg.obj.equals("1"))
+					new Publisher().publish(tainted);
+				else return;
+//				msg.obj.equals("EqualTest");
 				break;
 			case UNRELEVANT_MSG:
 				new Publisher().publish("I am in the unrelevent parts.");
@@ -50,68 +57,15 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		testHandlerPost("TestPost");
-		testHandlerSendMSG("TestSendMSG");
-		testHandlerSendMSGAgain("TestSendMSG");
-		testHandlerSendMSGUnrelevant("TestSendMSG");
+		testHandlerSendMSG("TestSendMSG", "TEST2");
 	}
+
 	
-	class InnerClass{
-		private void setField(String s){
-			setPath(s + 1);
-		}
-		
-		private void setPath(String string) {
-			tainted = string;
-		}
-
-		private void sinkField(){
-			String out = getPath();
-			doSink(out);
-
-		}
-
-		private void doSink(String out2) {
-			tainted = out2;
-			dodoSink(out2 + 1);
-			//dodoSink();
-		}
-
-		private void dodoSink(String out3) {
-			dododoSink(out3);
-		}
-
-		private void dododoSink(String out4) {
-			Publisher p = new Publisher();
-			p.publish(out4 + 1);
-		}
-
-		private String getPath() {
-			return tainted;
-		}	
-	}
-	
-	private void testHandlerSendMSG(String s) {
+	private void testHandlerSendMSG(String s0, String s1) {
 		Message msg = mhandler.obtainMessage( TEST_MSG );
-		s.equals("test");
-		msg.obj = s;
+		msg.obj = s0;
+		tainted = s1;
 		mhandler.sendMessage(msg);
-	}
-
-	private void testHandlerSendMSGAgain(String s) {
-		Message msg = mhandler.obtainMessage(TEST_MSG);
-		msg.obj = s;
-		mhandler.sendMessage(msg);
-	}
-
-	
-	private void testHandlerSendMSGUnrelevant(String s) {
-		Message msg = mhandler.obtainMessage(UNRELEVANT_MSG);
-		msg.obj = s;
-		mhandler.sendMessage(msg);
-	}
-
-	private int getCase() {
-		return android.os.Process.myPid();
 	}
 
 	private void testHandlerPost(final String s) {

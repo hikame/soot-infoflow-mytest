@@ -16,6 +16,10 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager;
+import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager.SinkType;
+
+import soot.IdentityUnit;
 import soot.Local;
 import soot.MethodOrMethodContext;
 import soot.PackManager;
@@ -27,6 +31,9 @@ import soot.Unit;
 import soot.UnitBox;
 import soot.Value;
 import soot.ValueBox;
+import soot.jimple.AssignStmt;
+import soot.jimple.IdentityStmt;
+import soot.jimple.InvokeStmt;
 import soot.jimple.Stmt;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowManager;
@@ -65,6 +72,7 @@ import soot.options.Options;
 import soot.tagkit.StringTag;
 import soot.tagkit.Tag;
 import soot.util.Chain;
+import soot.util.MultiMap;
 
 public class MyInfoFlowAnalyze {
 
@@ -171,18 +179,6 @@ public class MyInfoFlowAnalyze {
 			int result = scanMethodForSourcesSinks(ssm, forwardProblem, thrunSM);
         	sinkCount += result;
         }
-        
-//		// We optionally also allow additional seeds to be specified
-//		if (additionalSeeds != null)
-//			for (String meth : additionalSeeds) {
-//				SootMethod m = Scene.v().getMethod(meth);
-//				if (!m.hasActiveBody()) {
-//					logger.warn("Seed method {} has no active body", m);
-//					continue;
-//				}
-//				forwardProblem.addInitialSeeds(m.getActiveBody().getUnits().getFirst(),
-//						Collections.singleton(forwardProblem.zeroValue()));
-//			}
 		
 		// Report on the sources and sinks we have found
 		if (!forwardProblem.hasInitialSeeds()) {
@@ -198,7 +194,7 @@ public class MyInfoFlowAnalyze {
 		
 		// Initialize the taint wrapper if we have one
 		if (taintWrapper != null)
-			taintWrapper.initialize(manager);
+			taintWrapper.initialize(manager); 
 		if (nativeCallHandler != null)
 			nativeCallHandler.initialize(manager);
 		
@@ -274,25 +270,40 @@ public class MyInfoFlowAnalyze {
                     sink, iCfg.getMethodOf(sink.getSink()).getSignature() );
 			
 			String tags = "";
+if(sink.getSink().getTags().size() > 1)
+	System.out.println("En~ This is interesting!");
+			List<SinkType> typeList = new ArrayList<SinkType>();
 			for(Tag st : sink.getSink().getTags()){
-				tags = tags + "; " + ((StringTag)st).getInfo();
+				String info = ((StringTag)st).getInfo();
+				SinkType sinkType = SinkType.valueOf(SinkType.class, info);
+				boolean interestingSink = false;
+				switch (sinkType) {
+				case NullPointException:	
+					//If there are some statement that will initialize the tainted object, then it should not be regarded as NullPointExcepiton
+					interestingSink = checkNullPointExceptionSinks(sink, results.getResults());
+					break;
+				case Publish:
+					interestingSink = true;
+					break;
+				default:
+					break;
+				}
+				if(interestingSink){
+					typeList.add(sinkType);
+					tags = tags + "; " + info;
+				}
 			}
+			if(typeList.size() == 0)
+				continue;
 			logger.info("Sink Type: " + tags.substring(2));
-			
 			for (ResultSourceInfo source : results.getResults().get(sink)) {
 				logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
-				
-//				AccessPath[] aps = source.getPathAccessPaths();
-//				Stmt[] stmts = source.getPath();
-//				for(int count = 0; count < aps.length; count++){
-//					logger.info(String.format("[%d] %s --> %s", count, aps[count].toString(), stmts[count].toString()));
-//				}
 				
 				if (source.getPath() != null) {
 					logger.info("\ton Path: ");
 					for (Unit p : source.getPath()) {
 						logger.info("\t -> " + iCfg.getMethodOf(p));
-						logger.info("\t\t -> " + p);
+						logger.info("\t\t -> " + "[" + p.getClass().toString() + "]" + p);
 					}
 				}
 			}
@@ -308,6 +319,30 @@ public class MyInfoFlowAnalyze {
 		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");
 	}
 
+
+	private boolean checkNullPointExceptionSinks(ResultSinkInfo sink,
+			MultiMap<ResultSinkInfo, ResultSourceInfo> analysisResult) {
+		Set<ResultSourceInfo> sourceSet = analysisResult.get(sink);
+		for(ResultSourceInfo source : sourceSet){	//try to find the 
+			for (Unit unit : source.getPath()) {
+				if(source.getSource().equals(unit))
+					continue;
+				if(unit instanceof IdentityStmt){
+					IdentityStmt is = (IdentityStmt)unit;
+					Value left = is.getLeftOp();
+					
+				}
+				else if(unit instanceof AssignStmt){
+					AssignStmt as = (AssignStmt) unit;
+//					as.getle
+				}
+				else if(unit instanceof InvokeStmt){	
+					
+				}
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Creates a new executor object for spawning worker threads

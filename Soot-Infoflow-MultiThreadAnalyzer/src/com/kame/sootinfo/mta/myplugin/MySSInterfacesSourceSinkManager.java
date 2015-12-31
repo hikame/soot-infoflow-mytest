@@ -23,8 +23,11 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 	boolean taintSubFields = true;
 	List<String> targetMethods = null; 
 	List<String> sinks = null;
-//	private static final String sinkAP = "<soot.jimple.infoflow.test.SourceSinkTestCode: void doleakSecret2(soot.jimple.infoflow.test.SourceSinkTestCode$A)>";
-//	protected static final String sink = "<soot.jimple.infoflow.test.android.ConnectionManager: void publish(java.lang.String)>";
+	
+	public enum SinkType{
+		NullPointException,
+		Publish
+	};
 	
 	/**
 	 * @param taintSubFields
@@ -41,11 +44,7 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 	
 	@Override
 	public SourceInfo getSourceInfo(Stmt sCallSite,
-			InterproceduralCFG<Unit, SootMethod> cfg) {
-//long id = Thread.currentThread().getId();
-//System.out.println("[TSrc-" + id + "] Method: " + cfg.getMethodOf(sCallSite));
-//System.out.println("[TSrc-" + id + "] Stmt: " + sCallSite);
-		
+			InterproceduralCFG<Unit, SootMethod> cfg) {		
 //参照jimple的格式，方法的参数在方法的实现代码中是通过左操作数为临时操作变量，右操作数为实参的形式进行表示的，这种情况下，为左操作数创建TaintedPath信息。
 		String mth = cfg.getMethodOf(sCallSite).toString();
 		boolean isTarget = false;
@@ -60,8 +59,9 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 		DefinitionStmt ds = (DefinitionStmt) sCallSite;
 		if(!(ds.getRightOp() instanceof ParameterRef))
 			return null;
+		Value leftOp = ((DefinitionStmt) sCallSite).getLeftOp();
 		AccessPath ap = AccessPathFactory.v().createAccessPath(
-				((DefinitionStmt) sCallSite).getLeftOp(), taintSubFields);
+				leftOp, taintSubFields);
 //System.out.println("[TSrc-" + id + "] [!] This is a source! AP: " + ap);
 		return new SourceInfo(ap);
 	}
@@ -83,17 +83,11 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 				Value param = sCallSite.getInvokeExpr().getArg(0);	//这个0不应是写死的！
 				if(ap.getPlainValue().equals(param)){
 					isSink = true;
-					Tag newTag = createNewTag(sCallSite, "Sink-Pulisher");
+					Tag newTag = createNewTag(sCallSite, SinkType.Publish);
 					if(newTag != null)
 						sCallSite.addTag(newTag);
 					break;
 				}
-//				
-//				if(!sCallSite.toString().equals("virtualinvoke $r1.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r3)"))
-//					continue;
-//				if(sCallSite.getTags().size() > 0)
-//					System.out.println();
-//				break;
 			}
 		
 		if(isSink == false) {
@@ -104,7 +98,7 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 				
 				if(base.equals(local)){
 					isSink = true;
-					Tag newTag = createNewTag(sCallSite, "Sink-NullPointExcption");
+					Tag newTag = createNewTag(sCallSite, SinkType.NullPointException);
 					if(newTag != null)
 						sCallSite.addTag(newTag);
 				}
@@ -113,18 +107,18 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 		return isSink;
 	}
 
-	private Tag createNewTag(Stmt sCallSite, String tagString) {
+	private Tag createNewTag(Stmt sCallSite, SinkType sinkType) {
 		List<Tag> currentTags = sCallSite.getTags();
 		boolean exist = false;
 		for(Tag tag : currentTags){
-			if((tag instanceof StringTag) && ((StringTag) tag).getInfo().equals(tagString)){
+			if((tag instanceof StringTag) && ((StringTag) tag).getInfo().equals(sinkType.toString())){
 				exist = true;
 				break;
 			}
 		}
 		if(exist)
 			return null;
-		return new StringTag(tagString);
+		return new StringTag(sinkType.toString());
 	}
 
 }
