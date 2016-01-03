@@ -7,6 +7,11 @@ import java.lang.reflect.Method;
 public class Main {	
 	String field;
 	
+	class ParamClass {
+		public String fieldString;
+		public int fieldInt;
+	}
+	
 //	Thread threadField = new MyThread();
 //	Thread threadField;
 	MyThread threadField;
@@ -37,6 +42,9 @@ public class Main {
 	}
 	
 	public void simpleTest(String s){
+		ParamClass pc = new ParamClass();
+		System.out.println(pc.fieldInt);
+		System.out.println(pc.fieldString);
     	foo(s);
 	}
 	

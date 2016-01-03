@@ -3,6 +3,7 @@ package com.kame.sootinfo.mta;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import com.kame.sootinfo.mta.myplugin.MyIPCManager;
 import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager;
 import com.kame.sootinfo.mta.myplugin.MyTaintWrapper;
+
+import soot.Scene;
+import soot.SootMethod;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
 import soot.jimple.infoflow.ipc.IIPCManager;
@@ -25,7 +29,7 @@ import soot.options.Options;
 public class MultiThreadAnalyzer {
 //	private final Options opts = Options.v();
 	
-	public static String TargetSystemPath = "A:\\android-6.0.0_r1-MRA58K";
+	public static String TargetSystemPath = "E:\\android-6.0.0_r1-MRA58K";
 	public static String JavaLibPath = TargetSystemPath + "\\out\\target\\common\\obj\\JAVA_LIBRARIES";
 	public static String AppPath = TargetSystemPath + "\\out\\target\\common\\obj\\APPS";
 
@@ -35,9 +39,8 @@ public class MultiThreadAnalyzer {
 	protected List<String> sinksList = new ArrayList<String>();
 	
 	private ISourceSinkManager ssm = new MySSInterfacesSourceSinkManager(true, targetMethodsList, sinksList);		//1. 配置Source、Sink管理器
-//	private ISourceSinkManager ssm = new MyMethodArgsSourceSinkManager(true, targetMethodsList, sinksList);
 	private IIPCManager ipcManager = new MyIPCManager();			//2. 配置IPC管理器
-	private ITaintPropagationWrapper taintWrapper = new MyTaintWrapper();
+	private ITaintPropagationWrapper taintWrapper;
 	private INativeCallHandler nativeCallHandler = new DefaultNativeCallHandler();  //5.  The NativeCallHandler defines the taint propagation behavior for native code
 
 	//一些参数设置
@@ -53,6 +56,14 @@ public class MultiThreadAnalyzer {
 	MyInfoFlowAnalyze myInfoFlowAnalyze = new MyInfoFlowAnalyze(config, ssm, taintWrapper, nativeCallHandler);
 	MyHandlerHandler myHandlerHandler = new MyHandlerHandler();
 	
+	public MultiThreadAnalyzer(){
+		try {
+			taintWrapper = new MyTaintWrapper(new File("EasyTaintWrapperSource.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void myTestConfig() throws Exception {
 		Options.v().set_verbose(true);
 		Options.v().set_debug(true);
@@ -64,19 +75,13 @@ public class MultiThreadAnalyzer {
 		InfoflowConfiguration.setUseRecursiveAccessPaths(false);
 //		config.setCodeEliminationMode(CodeEliminationMode.RemoveSideEffectFreeCode);
 //		config.setEnableImplicitFlows(false);
-		
 
-//		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0a(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.mth.Main: void testThreadWithField0b(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void sinkField( )>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void setField(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity$InnerClass: void doSink(java.lang.String)>");
-		
 		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String,java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGAgain(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGUnrelevant(java.lang.String)>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(java.lang.String)>");
+//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(com.kame.tafhd.MainActivity$ParamClass)>");
 
-		sinksList.add("<com.kame.mth.Publisher: void publish(java.lang.String)>");
+//		sinksList.add("<com.kame.mth.Publisher: void publish(java.lang.String)>");
 		sinksList.add("<com.kame.tafhd.Publisher: void publish(java.lang.String)>");
 	}
 	

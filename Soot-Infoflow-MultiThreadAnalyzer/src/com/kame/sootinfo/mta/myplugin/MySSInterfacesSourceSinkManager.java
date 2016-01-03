@@ -71,9 +71,13 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 			AccessPath ap) {
 		if (!sCallSite.containsInvokeExpr())	//此处暂时可以这么写，但是随着要捕获的exception的增加，此处应该是需要给修改的
 			return false;
+SootMethod sm = cfg.getMethodOf(sCallSite);
+System.out.println("[TEST] Method: " + sm);
+System.out.println("[TEST] Stmt: " + sCallSite);
+System.out.println("[TEST] ap: " + ap);
 		String targetMth = sCallSite.getInvokeExpr().getMethod().getSignature();
 		boolean isSink = false;
-		for(String sk : sinks)
+		for(String sk : sinks){
 			if(sk.equals(targetMth)){
 				if(ap == null){
 					isSink = true;
@@ -89,14 +93,19 @@ public class MySSInterfacesSourceSinkManager implements ISourceSinkManager {
 					break;
 				}
 			}
+		}
 		
 		if(isSink == false) {
 			InvokeExpr ie = sCallSite.getInvokeExpr();
-			if((ie instanceof InstanceInvokeExpr) && ap != null){
+			if((ie instanceof InstanceInvokeExpr)){
+				if(ap == null)
+					return false;
 				Value base = ((InstanceInvokeExpr) ie).getBase();
-				Local local = ap.getPlainValue();
 				
+				Local local = ap.getPlainValue();
 				if(base.equals(local)){
+					if(ap.getFieldCount() != 0)
+						return false;
 					isSink = true;
 					Tag newTag = createNewTag(sCallSite, SinkType.NullPointException);
 					if(newTag != null)

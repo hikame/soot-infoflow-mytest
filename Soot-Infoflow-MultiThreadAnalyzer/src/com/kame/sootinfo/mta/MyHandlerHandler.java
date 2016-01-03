@@ -37,16 +37,16 @@ import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
 import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JNopStmt;
-import soot.jimple.internal.JReturnStmt;
 import soot.jimple.internal.JTableSwitchStmt;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
 
-/**鍙浜巑sg鏄悓涓�鏂规硶鍐呯殑local鍙橀噺锛屼笖鍦ㄥ璞″垵濮嬪寲鏃剁粰鍑篶onstant鍊间綔涓簑hat銆佹垨鍔ㄦ�佽缃甿sg.what涓篶onstant鏃舵湁鏁�
+/**
  * @throws Exception */
 public class MyHandlerHandler {
 	private IInfoflowCFG iCfg;
+	
 	private Map<Unit, Unit> existingTargets; 	
 	JTableSwitchStmt switchTableUnit = null;
 	Unit switchTablePreUnit = null;
@@ -57,10 +57,6 @@ public class MyHandlerHandler {
 	SootMethod myHandler = null;
 	PatchingChain<Unit> hdMsgUnits = null;
 	
-	public MyHandlerHandler(){
-		existingTargets = new HashMap<Unit, Unit>();
-	}
-		
 	public boolean start(IInfoflowCFG iCfg) throws Exception{
 		this.iCfg = iCfg;
 		return handleAndroidHandler();
@@ -74,6 +70,8 @@ public class MyHandlerHandler {
 		
 		Collection<Unit> unitCollection = iCfg.getCallersOf(sendMSG);
 		for(Unit callerUnit : unitCollection){	//姣忎釜sendMsg鐨勮皟鐢ㄥ
+			reInitFields();
+			
 			SootMethod callerSM = iCfg.getMethodOf(callerUnit);
 			if(Options.v().debug())
 				System.out.println("[KM] " + callerSM + "--->" + callerUnit.toString());
@@ -109,6 +107,14 @@ public class MyHandlerHandler {
 		return changed;
 	}
 	
+
+	private void reInitFields() {
+		existingTargets = new HashMap<Unit, Unit>();
+		switchTableUnit = null;
+		switchTablePreUnit = null;
+		whats = new ArrayList<Value>();
+		jifr = null;
+	}
 
 	private Integer parseCaseCode(SootMethod callerSM, Value msgValue, Unit callerUnit) {
 		Body callerBody = callerSM.getActiveBody();

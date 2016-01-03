@@ -643,6 +643,10 @@ if(Options.v().debug()){
 	}
 }
 
+//if(edge.getTarget().toString().equals("this.<com.kame.tafhd.MainActivity: java.lang.String tainted> = s0"))
+//	System.out.println();
+//if(edge.getTarget().toString().equals("virtualinvoke $r1.<com.kame.tafhd.MainActivity$MyHandler: void myHandler4(android.os.Message)>(msg)"))
+//	System.out.println();
 			if(icfg.isCallStmt(edge.getTarget())) {
 				processCall(edge);
 			} else {

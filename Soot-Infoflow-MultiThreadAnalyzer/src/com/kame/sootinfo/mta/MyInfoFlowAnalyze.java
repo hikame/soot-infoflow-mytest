@@ -303,7 +303,7 @@ if(sink.getSink().getTags().size() > 1)
 					logger.info("\ton Path: ");
 					for (Unit p : source.getPath()) {
 						logger.info("\t -> " + iCfg.getMethodOf(p));
-						logger.info("\t\t -> " + "[" + p.getClass().toString() + "]" + p);
+						logger.info("\t\t -> " + p + "[" + p.getClass().toString() + "]");
 					}
 				}
 			}
