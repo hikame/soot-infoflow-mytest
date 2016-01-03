@@ -3,7 +3,9 @@ package com.kame.sootinfo.mta;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import soot.Body;
@@ -12,7 +14,6 @@ import soot.Local;
 import soot.PatchingChain;
 import soot.RefType;
 import soot.Scene;
-import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
@@ -22,7 +23,6 @@ import soot.ValueBox;
 import soot.VoidType;
 import soot.jimple.AssignStmt;
 import soot.jimple.GotoStmt;
-import soot.jimple.IdentityStmt;
 import soot.jimple.IfStmt;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
@@ -30,23 +30,37 @@ import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
+import soot.jimple.ReturnVoidStmt;
 import soot.jimple.Stmt;
-import soot.jimple.SwitchStmt;
+import soot.jimple.TableSwitchStmt;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
 import soot.jimple.internal.JInstanceFieldRef;
+import soot.jimple.internal.JNopStmt;
+import soot.jimple.internal.JReturnStmt;
 import soot.jimple.internal.JTableSwitchStmt;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
 
-/**只对于msg是同一方法内的local变量，且在对象初始化时给出constant值作为what、或动态设置msg.what为constant时有效
+/**鍙浜巑sg鏄悓涓�鏂规硶鍐呯殑local鍙橀噺锛屼笖鍦ㄥ璞″垵濮嬪寲鏃剁粰鍑篶onstant鍊间綔涓簑hat銆佹垨鍔ㄦ�佽缃甿sg.what涓篶onstant鏃舵湁鏁�
  * @throws Exception */
 public class MyHandlerHandler {
 	private IInfoflowCFG iCfg;
+	private Map<Unit, Unit> existingTargets; 	
+	JTableSwitchStmt switchTableUnit = null;
+	Unit switchTablePreUnit = null;
+	List<Value> whats = new ArrayList<Value>();
+	JInstanceFieldRef jifr = null;
 	
+	CallGraph cg = null;
+	SootMethod myHandler = null;
+	PatchingChain<Unit> hdMsgUnits = null;
 	
-
+	public MyHandlerHandler(){
+		existingTargets = new HashMap<Unit, Unit>();
+	}
+		
 	public boolean start(IInfoflowCFG iCfg) throws Exception{
 		this.iCfg = iCfg;
 		return handleAndroidHandler();
@@ -56,9 +70,10 @@ public class MyHandlerHandler {
 		boolean changed = false;
 		SootMethod sendMSG = null;
 		sendMSG = Scene.v().getMethod("<android.os.Handler: boolean sendMessage(android.os.Message)>");
+		cg = Scene.v().getCallGraph();
 		
 		Collection<Unit> unitCollection = iCfg.getCallersOf(sendMSG);
-		for(Unit callerUnit : unitCollection){	//每个sendMsg的调用处
+		for(Unit callerUnit : unitCollection){	//姣忎釜sendMsg鐨勮皟鐢ㄥ
 			SootMethod callerSM = iCfg.getMethodOf(callerUnit);
 			if(Options.v().debug())
 				System.out.println("[KM] " + callerSM + "--->" + callerUnit.toString());
@@ -74,21 +89,20 @@ public class MyHandlerHandler {
 			Integer caseCode = parseCaseCode(callerSM, msgValue, callerUnit); 
 			if(caseCode == null)
 				break;
-			SootMethod replaceMethod = creatMSGHandler(callerUnit, hdValue, caseCode);
-			if(replaceMethod == null){
+			creatMSGHandler(callerUnit, hdValue, caseCode);
+			if(myHandler == null){
 				System.out.println("[E] Can not creat the replace method for handlerMessage() normally: " + callerUnit);
 				continue;
 			}
 			PatchingChain<Unit> smUnits = callerSM.getActiveBody().getUnits();
-			Stmt replaceStmt = Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr((Local)hdValue, replaceMethod.makeRef(), msgValue));
+			Stmt replaceStmt = Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr((Local)hdValue, myHandler.makeRef(), msgValue));
 			smUnits.swapWith(callerUnit, replaceStmt);
 			
-			CallGraph cg = Scene.v().getCallGraph();
-//			cg.swapEdgesOutOf((Stmt) callerUnit, replaceStmt);
+			cg = Scene.v().getCallGraph();
 			boolean b = cg.removeAllEdgesOutOf(callerUnit);
 			cg.addEdge(new Edge(callerSM, replaceStmt, ((InvokeStmt) replaceStmt).getInvokeExpr().getMethod()));
 			
-			//需要以新加的方法myhandler[n]为起点，将其内部的调用关系进行后续分析。
+			//闇�瑕佷互鏂板姞鐨勬柟娉昺yhandler[n]涓鸿捣鐐癸紝灏嗗叾鍐呴儴鐨勮皟鐢ㄥ叧绯昏繘琛屽悗缁垎鏋愩��
 			changed = true;
 		}
 
@@ -139,7 +153,6 @@ public class MyHandlerHandler {
 		//creat handleMSG_[n] and replace the handler.sendMessage(msg) with it in the targetMethod
 		SootMethod sendmsgMethod = iCfg.getCalleesOfCallAt(callerUnit).iterator().next();
 		Set<Unit> callUnits = iCfg.getCallsFromWithin(sendmsgMethod);
-		CallGraph cg = Scene.v().getCallGraph();
 		
 		InvokeStmt handleMessageInvoker = null;
 		for(Unit u : callUnits){
@@ -166,114 +179,102 @@ public class MyHandlerHandler {
 		if(handleMsg == null)
 			throw new Exception("Error when find the handleMessage() method in the body of sendMessage()");
 
-		PatchingChain<Unit> hdMsgUnits = handleMsg.getActiveBody().getUnits();
+		hdMsgUnits = handleMsg.getActiveBody().getUnits();
 
-		SootMethod myHandler = new SootMethod(
+		myHandler = new SootMethod(
 				"myHandler" + caseCode, 
 				Collections.singletonList((Type)RefType.v("android.os.Message")), 
 				VoidType.v());
-		SootClass sc = handleMsg.getDeclaringClass();
-		try{
-			sc.addMethod(myHandler);
-		}catch(Exception e){
-			return sc.getMethod(myHandler.getSubSignature());
-		}
+		handleMsg.getDeclaringClass().addMethod(myHandler);
 		
 		Body myThinBody = Jimple.v().newBody();
 		myThinBody.setMethod(myHandler);
 		myHandler.setActiveBody(myThinBody);
 		
-		for(Local loc : handleMsg.getActiveBody().getLocals()){
+		for(Local loc : handleMsg.getActiveBody().getLocals())
 			myThinBody.getLocals().add(loc);
-		}
 		
-		List<Unit> branches = new ArrayList<Unit>();
-		JTableSwitchStmt switchTable = null;
-		List<Value> whats = new ArrayList<Value>();
-//		Value arg = handleMessageInvoker.getInvokeExpr().getArg(0);
 		Local msg = handleMsg.getActiveBody().getParameterLocal(0);
 		SootField whatField = ((RefType)msg.getType()).getSootClass().getFieldByName("what");
-		JInstanceFieldRef jifr = new JInstanceFieldRef(msg, whatField.makeRef());
+		jifr = new JInstanceFieldRef(msg, whatField.makeRef());
 		
-		for(Unit u : hdMsgUnits){
-			if(u instanceof SwitchStmt){
-				switchTable = (JTableSwitchStmt) u;
-				if(whats.contains(switchTable.getKey()))
-					break;
-				else 
-					switchTable = null;
-			}
-			if(u instanceof AssignStmt){	//当是$i0 = msg.<android.os.Message: int what>语句时进行break
-				Value tmp = ((AssignStmt) u).getRightOp();
-				if(tmp.toString().equals(jifr.toString()))
-					whats.add(((AssignStmt) u).getLeftOp());
-			}
-			Unit newUnit = addOneUnit(u, cg, myHandler);
-			if(u.branches())
-				branches.add(newUnit);
-		}
+		addUnitsStartFromTarget(hdMsgUnits.getFirst(), true);
 		
-		addBranches(branches, cg, myHandler, hdMsgUnits);
-		
-		if(switchTable == null)
+		if(switchTableUnit == null)
 			return null;
-		Unit targetUnit = switchTable.getTarget(caseCode - switchTable.getLowIndex());		
-		List<Unit> newBranches = addUnitsStartFromTarget(targetUnit, cg, myHandler, hdMsgUnits);
-		addBranches(newBranches, cg, myHandler, hdMsgUnits);
+		Unit targetUnit = switchTableUnit.getTarget(caseCode - switchTableUnit.getLowIndex());		
+		addUnitsStartFromTarget(targetUnit, false);
 		return myHandler;
 	}
-
-	private void addBranches(List<Unit> branches, CallGraph cg, SootMethod myHandler,
-			PatchingChain<Unit> hdMsgUnits) {
-		if(branches == null || branches.size() == 0)
-			return;
-		List<Unit> newBranches = new ArrayList<Unit>();
-		for(Unit branch : branches){
-			if(branch instanceof IfStmt){
-				IfStmt is = (IfStmt) branch;
-				Unit originalTarget = is.getTarget();
-				Unit newUnit = addOneUnit(originalTarget, cg, myHandler);
-				is.setTarget(newUnit);
-				if(newUnit.branches())
-					newBranches.add(newUnit);
-				newBranches.addAll(addUnitsStartFromTarget(hdMsgUnits.getSuccOf(originalTarget), cg, myHandler, hdMsgUnits));
+	
+	/**it will append the codes starting from startUnit and end with null or goto stmt
+	 * the the return value is the new unit in the created method.
+	 * @param searchForSwitchTable */
+	private Unit addUnitsStartFromTarget(Unit startUnit, boolean searchForSwitchTable) {
+		if(existingTargets.containsKey(startUnit))	
+			return (Unit) existingTargets.get(startUnit);
+		
+		Unit result = null;
+		Unit preUnit = null;
+//		if(startUnit.equals(switchTableUnit))
+		if(switchTableUnit != null && switchTableUnit.getTargets().contains(startUnit))
+			preUnit = switchTablePreUnit;
+		for(Unit u = startUnit; u != null; u = hdMsgUnits.getSuccOf(u)){
+			preUnit = addOneUnit(u, searchForSwitchTable, preUnit);
+			if(u.equals(startUnit)){
+				result = preUnit;
+				existingTargets.put(startUnit, result);
 			}
-		}
-		addBranches(newBranches, cg, myHandler, hdMsgUnits);
-	}
-
-	private List<Unit> addUnitsStartFromTarget(Unit targetUnit, CallGraph cg, SootMethod myHandler, PatchingChain<Unit> hdMsgUnits) {
-		List<Unit> branches = new ArrayList<Unit>();
-		while(targetUnit != null){
-			Unit newBranch = addOneUnit(targetUnit, cg, myHandler);
-			if(newBranch.branches())
-				branches.add(newBranch);
-			targetUnit = hdMsgUnits.getSuccOf(targetUnit);
-			//If it is a goto stmt, we will break the looper. Otherwise, it may go through to some unneccesary codes.
-			if(targetUnit instanceof GotoStmt)	 
+			if(searchForSwitchTable && switchTableUnit != null && u.equals(switchTableUnit))	//当u就是我们的目标SwitchTable时
+				break;
+			if((u instanceof GotoStmt) || (u instanceof ReturnVoidStmt))
 				break;
 		}
-		return branches;
+		
+		return result;
 	}
 
-	private Unit addOneUnit(Unit u, CallGraph cg, SootMethod myHandler) {
+	private Unit addOneUnit(Unit u, boolean searchForSwitchTable, Unit preUnit) {
 		Unit newUnit = (Unit) u.clone();
-		PatchingChain<Unit> unitsChain = myHandler.getActiveBody().getUnits();
-		if(unitsChain.contains(newUnit))
-			return newUnit;
-		if(u instanceof InvokeStmt){
+		PatchingChain<Unit> unitsChain = myHandler.getActiveBody().getUnits(); 	
+		if(u instanceof InvokeStmt){	//当时方法调用语句时，对call graph进行处理
 			InvokeExpr invokeExpr = ((InvokeStmt) u).getInvokeExpr();
 			SootMethod tgt = invokeExpr.getMethod();
 			Kind kind = Edge.ieToKind(invokeExpr);
 			Edge newEdge = new Edge(myHandler, newUnit, tgt, kind);
 			cg.addEdge(newEdge);
 		}
-		if(u instanceof GotoStmt){
+		else if(u instanceof GotoStmt){		
 			Unit target = ((GotoStmt) u).getTarget();
-			Unit newTarget = addOneUnit(target, cg, myHandler);
-			((GotoStmt) unitsChain).setTarget(newTarget);
+			Unit newTarget = addUnitsStartFromTarget(target, searchForSwitchTable);
+			((GotoStmt) newUnit).setTarget(newTarget);
 		}
-		unitsChain.add(newUnit);
+		else if(u instanceof IfStmt){
+			Unit target = ((IfStmt) u).getTarget();
+			Unit newTarget = addUnitsStartFromTarget(target, searchForSwitchTable);
+			((IfStmt) newUnit).setTarget(newTarget);
+		}
+		else if(u instanceof TableSwitchStmt){
+			TableSwitchStmt uu = (TableSwitchStmt) u;
+			if(searchForSwitchTable && whats.contains(((TableSwitchStmt)u).getKey())){
+				switchTableUnit = (JTableSwitchStmt) u;
+				newUnit = new JNopStmt();
+				switchTablePreUnit = newUnit;
+			}
+			else for(int i = uu.getLowIndex(); i <= uu.getHighIndex(); i++){
+				Unit target = uu.getTarget(i);
+				Unit newTarget = addUnitsStartFromTarget(target, searchForSwitchTable);
+				((TableSwitchStmt) newUnit).setTarget(i, newTarget);
+			}
+		}	
+		else if((u instanceof AssignStmt) && ((AssignStmt) u).getRightOp().toString().equals(jifr.toString()))
+			whats.add(((AssignStmt)u).getLeftOp());
+		if(preUnit == null)
+			unitsChain.add(newUnit);
+		else
+			unitsChain.insertAfter(newUnit, preUnit);
+		//TODO：实践证明这样做还是很有问题的！需要用精确地insertAfter  
+//		???关于newUnit的插入位置目前存疑，是否需要记录其prenode呢？或是用下面这条语句呢？
 		return newUnit;
 	}
 
