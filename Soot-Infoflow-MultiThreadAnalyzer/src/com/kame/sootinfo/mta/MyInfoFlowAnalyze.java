@@ -5,10 +5,12 @@ import heros.solver.CountingThreadPoolExecutor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -16,8 +18,11 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager;
-import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager.SinkType;
+import com.kame.sootinfo.mta.myplugin.MySourceSinkManager;
+import com.kame.sootinfo.mta.myplugin.MyTaintPropagationHandler;
+import com.kame.sootinfo.mta.myplugin.MySourceSinkManager.SinkType;
+import com.kame.sootinfo.mta.tags.MyMethodTag;
+import com.kame.sootinfo.mta.tags.MySinkTag;
 
 import soot.IdentityUnit;
 import soot.Local;
@@ -25,7 +30,9 @@ import soot.MethodOrMethodContext;
 import soot.PackManager;
 import soot.PatchingChain;
 import soot.Scene;
+import soot.SootClass;
 import soot.SootMethod;
+import soot.Trap;
 import soot.Type;
 import soot.Unit;
 import soot.UnitBox;
@@ -71,6 +78,8 @@ import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.options.Options;
 import soot.tagkit.StringTag;
 import soot.tagkit.Tag;
+import soot.toolkits.graph.ExceptionalUnitGraph;
+import soot.toolkits.graph.ExceptionalUnitGraph.ExceptionDest;
 import soot.util.Chain;
 import soot.util.MultiMap;
 
@@ -85,7 +94,7 @@ public class MyInfoFlowAnalyze {
 	
 	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory(PathBuilder.ContextSensitive, true);
 //	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory();
-	private TaintPropagationHandler taintPropagationHandler = null;		//4.a Handler interface for callbacks during taint propagation，可以不做设置
+	private MyTaintPropagationHandler taintPropagationHandler;		//4.a Handler interface for callbacks during taint propagation，可以不做设置
 	private TaintPropagationHandler backwardsPropagationHandler = null;  //4.b Handler interface for callbacks during taint propagation，可以不做设置
 	private Set<ResultsAvailableHandler> onResultsAvailable = new HashSet<ResultsAvailableHandler>();
 	
@@ -97,6 +106,13 @@ public class MyInfoFlowAnalyze {
 			ssm = is;
 			taintWrapper = tw;
 			nativeCallHandler = nch;
+			taintPropagationHandler = null;//new MyTaintPropagationHandler(ssm);
+	}
+	
+	private enum StmtType{
+		StartMultiThread,
+		ReturnMultiThread,
+		None
 	}
 	
 	public void start(IInfoflowCFG iInfoflowCFG) {
@@ -120,9 +136,7 @@ public class MyInfoFlowAnalyze {
 				backProblem = new BackwardsInfoflowProblem(backwardsManager);
 				backSolver = new InfoflowSolver(backProblem, executor);
 				backSolver.setMemoryManager(memoryManager);
-				backSolver.setJumpPredecessors(!pathBuilderFactory.supportsPathReconstruction());
-	//			backSolver.setEnableMergePointChecking(true);
-				
+				backSolver.setJumpPredecessors(!pathBuilderFactory.supportsPathReconstruction());				
 				aliasingStrategy = new FlowSensitiveAliasStrategy(iCfg, backSolver);
 				break;
 			case PtsBased:
@@ -138,6 +152,8 @@ public class MyInfoFlowAnalyze {
 		Abstraction zeroValue = backProblem != null ? backProblem.createZeroValue() : null;
 		InfoflowProblem forwardProblem  = new InfoflowProblem(manager,
 				aliasingStrategy, zeroValue);
+		
+//		taintPropagationHandler.setInfoflowProblem(forwardProblem);
 		
 		// Set the options
 		InfoflowSolver forwardSolver = new InfoflowSolver(forwardProblem, executor);
@@ -181,15 +197,17 @@ public class MyInfoFlowAnalyze {
         }
 		
 		// Report on the sources and sinks we have found
-		if (!forwardProblem.hasInitialSeeds()) {
-			logger.error("No sources found, aborting analysis");
-			return;
-		}
-		if (sinkCount == 0) {
-			logger.error("No sinks found, aborting analysis");
-			return;
-		}
-		logger.info("Source lookup done, found {} sources and {} sinks.", forwardProblem.getInitialSeeds().size(),
+        // KM: Like NullPointExceptions. There is no sinks for sink searching without detailed AccessPath.
+//		if (!forwardProblem.hasInitialSeeds()) {
+//			logger.error("No sources found, aborting analysis");
+//			return;
+//		}
+//		if (sinkCount == 0) {
+//			logger.error("No sinks found, aborting analysis");
+//			return;
+//		}
+        
+		logger.info("Preliminary source lookup done, found {} sources and {} sinks.", forwardProblem.getInitialSeeds().size(),
 				sinkCount);
 		
 		// Initialize the taint wrapper if we have one
@@ -264,49 +282,28 @@ public class MyInfoFlowAnalyze {
 		computeTaintPaths(res);		
 		
 		if (results == null || results.getResults().isEmpty())
-			logger.warn("No results found.");
+			logger.warn("[KM-Results] No results found.");
 		else for (ResultSinkInfo sink : results.getResults().keySet()) {
-			logger.info("The sink {} in method {} was called with values from the following sources:",
+			Set<ResultSourceInfo> interestingSources = results.getResults().get(sink);
+			interestingSources = new HashSet<ResultSourceInfo>(interestingSources);
+			if(interestingSources == null || interestingSources.isEmpty())
+				continue;
+			if(checkForMultiThread(sink, interestingSources).isEmpty())
+				continue;
+			Map<ResultSourceInfo, Set<SootClass>> scExMap = checkForExceptionHandler(sink, interestingSources);
+			if(scExMap == null){	//返回null代表是我们自己的publish的sink
+				outputPublishSinkResults(sink, interestingSources);
+				continue;
+			}
+			if(scExMap.isEmpty())
+				continue;
+			if(checkForPreExceptionChecker(sink, scExMap).isEmpty())	//结果会直接反应到scExMap中	
+				continue;
+			
+			logger.info("[KM-Results] The sink {} in method {} was called with values from the following sources:",
                     sink, iCfg.getMethodOf(sink.getSink()).getSignature() );
 			
-			String tags = "";
-if(sink.getSink().getTags().size() > 1)
-	System.out.println("En~ This is interesting!");
-			List<SinkType> typeList = new ArrayList<SinkType>();
-			for(Tag st : sink.getSink().getTags()){
-				String info = ((StringTag)st).getInfo();
-				SinkType sinkType = SinkType.valueOf(SinkType.class, info);
-				boolean interestingSink = false;
-				switch (sinkType) {
-				case NullPointException:	
-					//If there are some statement that will initialize the tainted object, then it should not be regarded as NullPointExcepiton
-					interestingSink = checkNullPointExceptionSinks(sink, results.getResults());
-					break;
-				case Publish:
-					interestingSink = true;
-					break;
-				default:
-					break;
-				}
-				if(interestingSink){
-					typeList.add(sinkType);
-					tags = tags + "; " + info;
-				}
-			}
-			if(typeList.size() == 0)
-				continue;
-			logger.info("Sink Type: " + tags.substring(2));
-			for (ResultSourceInfo source : results.getResults().get(sink)) {
-				logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
-				
-				if (source.getPath() != null) {
-					logger.info("\ton Path: ");
-					for (Unit p : source.getPath()) {
-						logger.info("\t -> " + iCfg.getMethodOf(p));
-						logger.info("\t\t -> " + p + "[" + p.getClass().toString() + "]");
-					}
-				}
-			}
+			outputExceptionSinkResults(sink, scExMap);
 		}
 		
 		for (ResultsAvailableHandler handler : onResultsAvailable)
@@ -319,30 +316,226 @@ if(sink.getSink().getTags().size() > 1)
 		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");
 	}
 
-
-	private boolean checkNullPointExceptionSinks(ResultSinkInfo sink,
-			MultiMap<ResultSinkInfo, ResultSourceInfo> analysisResult) {
-		Set<ResultSourceInfo> sourceSet = analysisResult.get(sink);
-		for(ResultSourceInfo source : sourceSet){	//try to find the 
-			for (Unit unit : source.getPath()) {
-				if(source.getSource().equals(unit))
-					continue;
-				if(unit instanceof IdentityStmt){
-					IdentityStmt is = (IdentityStmt)unit;
-					Value left = is.getLeftOp();
-					
-				}
-				else if(unit instanceof AssignStmt){
-					AssignStmt as = (AssignStmt) unit;
-//					as.getle
-				}
-				else if(unit instanceof InvokeStmt){	
-					
-				}
+	private void outputExceptionSinkResults(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) {
+		Set<ResultSourceInfo> sourceSet = scExMap.keySet();
+		for (ResultSourceInfo source : sourceSet) {
+			String exceptionStr = "";
+			for(SootClass sc : scExMap.get(source)){
+				exceptionStr = exceptionStr + "; " + sc.getName();
+			}
+			
+			logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
+			logger.info("-- Exceptions: " + exceptionStr.substring(2));
+			
+			if (source.getPath() == null) {
+				continue;
+			}
+			logger.info("\ton Path: ");
+			Stmt[] pathes = source.getPath();
+			AccessPath[] aps = source.getPathAccessPaths();
+			int size = pathes.length;
+			for(int count = 0; count < size; count++){
+				logger.info("\t -> " + iCfg.getMethodOf(pathes[count]));
+				logger.info("\t\t -> AP: " + aps[count]);
+				logger.info("\t\t -> PT: " + pathes[count]);
 			}
 		}
-		return true;
 	}
+
+	/**check every source and its exceptions one by one to find some pre-check code which can prevent those exceptions.*/
+	private Map<ResultSourceInfo, Set<SootClass>> checkForPreExceptionChecker(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) {
+		Set<ResultSourceInfo> sources = scExMap.keySet();
+		for(ResultSourceInfo source : sources){
+			Set<SootClass> exceptions = scExMap.get(source);
+			for(Object obj : exceptions.toArray()){
+				SootClass exc = (SootClass) obj;
+				boolean checked = false;
+				String clsName = exc.getName();
+				switch(SinkType.valueOf(SinkType.class, clsName.substring(clsName.lastIndexOf(".") + 1))){
+					case NullPointerException:	//TODO only nullpointer by now.
+						checked = checkNullPointerPrechecker(source, exc);
+						break;
+					default:
+						break;
+				}
+				if(checked){
+					exceptions.remove(exc);
+					if(exceptions.isEmpty())
+						scExMap.remove(source);
+				}	
+			}
+		}
+		return scExMap;
+	}
+
+
+	private boolean checkNullPointerPrechecker(ResultSourceInfo source, SootClass exc) {
+		boolean checked = true;
+		return checked;
+	}
+
+	private Map<ResultSourceInfo, Set<SootClass>> checkForExceptionHandler(ResultSinkInfo sink,
+			Set<ResultSourceInfo> intSources) {
+		Map<ResultSourceInfo, Set<SootClass>> scExMap = new HashMap<ResultSourceInfo, Set<SootClass>>();
+		Stmt sinkStmt = sink.getSink();
+		
+		MySinkTag sinkTag = (MySinkTag) sinkStmt.getTag("MySinkTag");
+		String sinkTypeStr = sinkTag.getSinkType();
+		if(sinkTypeStr.equals(SinkType.MyTestPublish.getName() + ";"))	//我们不必处理此类
+			return null;
+		String sinkTypes[] = sinkTypeStr.split(";");
+		Set<SootClass> targetExceptions = new HashSet<SootClass>();
+		
+		for(String st : sinkTypes){
+			SootClass sc = Scene.v().getSootClass(st);
+			if(sc != null)
+				targetExceptions.add(sc);
+		}
+		
+		for(Object obj : intSources.toArray()){		//也就是对应了从各个source抵达sink的路径，每个路径的exception处理可能不通哦~
+			Set<SootClass> tgExs = new HashSet<SootClass>(targetExceptions);
+			ResultSourceInfo rsi = (ResultSourceInfo) obj;
+			boolean interestingSource = true;
+			
+			//设法证明其不interesting，存在了相应的异常捕获
+			if(caughtInsideMethod(tgExs, sinkStmt))	//全被catch则不感兴趣了，不分catch会直接影响到tgExs。
+				interestingSource = false;
+			else if(caughtOutsideMethod(tgExs, rsi.getPath().length - 2, rsi)) //实际上是从sinkStmt之前的那个语句验证是否会被catch
+				interestingSource = false;
+			
+			if(interestingSource)
+				scExMap.put(rsi, tgExs);
+			else
+				intSources.remove(rsi);
+		}
+		return scExMap;
+	}
+
+
+	private boolean caughtOutsideMethod(Set<SootClass> targetExceptions, int pos, ResultSourceInfo rsi) {
+		Stmt stmt = rsi.getPath()[pos];
+		if(caughtInsideMethod(targetExceptions, stmt))
+			return true;
+		if(pos == 0)	//代表已经遍历到最后一个path了	
+			return false;
+		else
+			return caughtOutsideMethod(targetExceptions, pos - 1, rsi);
+	}
+
+	private boolean caughtInsideMethod(Set<SootClass> targetExceptions, Stmt sinkStmt) {
+		SootMethod sm = iCfg.getMethodOf(sinkStmt);
+		ExceptionalUnitGraph graph = new ExceptionalUnitGraph(sm.getActiveBody());
+		Collection<ExceptionDest> eds = graph.getExceptionDests(sinkStmt);
+		for(ExceptionDest ed : eds){
+			Trap trap = ed.getTrap();
+			if(trap == null)
+				continue;
+			
+			SootClass caughtEx = trap.getException();
+			SootClass ex = Scene.v().getSootClass("java.lang.Exception");
+			if(caughtEx.equals(ex)){
+				targetExceptions.clear();
+				break;
+			}
+			
+			for(Object obj : targetExceptions.toArray()){
+				SootClass targetEx = (SootClass) obj;
+				boolean isCaught = false;
+				for(SootClass sc = targetEx; !sc.equals(ex); sc = sc.getSuperclass()){
+					if(sc.equals(caughtEx)){
+						isCaught = true;
+						break;
+					}
+				}
+				if(isCaught)
+					targetExceptions.remove(targetEx);
+			}
+		}
+		return targetExceptions.isEmpty();
+	}
+
+
+	private void outputPublishSinkResults(ResultSinkInfo sink, Set<ResultSourceInfo> interestingResults) {
+		for (ResultSourceInfo source : interestingResults) {
+			logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
+			if (source.getPath() == null) {
+				continue;
+			}
+			logger.info("\ton Path: ");
+			Stmt[] pathes = source.getPath();
+			AccessPath[] aps = source.getPathAccessPaths();
+			int size = pathes.length;
+			for(int count = 0; count < size; count++){
+				logger.info("\t -> " + iCfg.getMethodOf(pathes[count]));
+				logger.info("\t\t -> AP: " + aps[count]);
+				logger.info("\t\t -> PT: " + pathes[count]);
+			}
+		}
+	}
+
+
+
+	private Set<ResultSourceInfo> checkForMultiThread(ResultSinkInfo sink, Set<ResultSourceInfo> intSources) {
+		for(Object obj : intSources.toArray()){
+			ResultSourceInfo rsi = (ResultSourceInfo) obj;
+			Stmt[] paths = rsi.getPath();
+			int multiThreadCounter = 0;
+			for(Stmt pt : paths){
+				switch (checkStmtType(pt)){
+					case StartMultiThread:
+						multiThreadCounter++;
+						break;
+					case ReturnMultiThread:
+						multiThreadCounter--;
+						break;
+					default:
+						break;
+				}
+					
+			}
+			if(multiThreadCounter <= 0)
+				intSources.remove(rsi);
+		}
+		return intSources;
+	}
+
+	private StmtType checkStmtType(Stmt pt) {
+		StmtType tmp = StmtType.None;
+		SootMethod sm = null;
+		if(pt instanceof InvokeStmt){
+			tmp = StmtType.StartMultiThread;
+//			sm = iCfg.getCalleesOfCallAt(pt).iterator().next();
+			sm = ((InvokeStmt) pt).getInvokeExpr().getMethod();
+		}
+		else if(iCfg.isExitStmt(pt)){
+			tmp = StmtType.ReturnMultiThread;
+			sm = iCfg.getMethodOf(pt);
+		}
+		else
+			return StmtType.None;
+		if(sm == null)
+			return StmtType.None;
+		
+		boolean multiMth = false;
+		SootClass rnSC = Scene.v().getSootClass("java.lang.Runnable");
+		SootClass thSC = Scene.v().getSootClass("java.lang.Thread");
+		if(sm.hasTag("MyMethodTag") && sm.getTag("MyMethodTag").getValue()[0] > 0)
+			multiMth = true;
+		else if(sm.getSubSignature().equals("void run()")){
+			SootClass sc = sm.getDeclaringClass();
+			multiMth = (sc.equals(rnSC) ||
+						sc.equals(thSC) ||
+						sc.getSuperclass().equals(thSC) || 
+						sc.getInterfaces().contains(rnSC));
+		}
+		
+		if(multiMth)
+			return tmp;
+			
+		return StmtType.None;
+	}
+
+
 
 	/**
 	 * Creates a new executor object for spawning worker threads

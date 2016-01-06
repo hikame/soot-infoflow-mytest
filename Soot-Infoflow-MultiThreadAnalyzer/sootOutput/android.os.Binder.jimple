@@ -1,0 +1,686 @@
+public class android.os.Binder extends java.lang.Object implements android.os.IBinder
+{
+    private static final boolean FIND_POTENTIAL_LEAKS;
+    private static final boolean CHECK_PARCEL_SIZE;
+    static final java.lang.String TAG;
+    private static java.lang.String sDumpDisabled;
+    private long mObject;
+    private android.os.IInterface mOwner;
+    private java.lang.String mDescriptor;
+
+    public static final native int getCallingPid();
+
+    public static final native int getCallingUid();
+
+    public static final android.os.UserHandle getCallingUserHandle()
+    {
+        android.os.UserHandle $r0;
+        int $i0, $i1;
+
+        $r0 = new android.os.UserHandle;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = staticinvoke <android.os.UserHandle: int getUserId(int)>($i0);
+
+        specialinvoke $r0.<android.os.UserHandle: void <init>(int)>($i1);
+
+        return $r0;
+    }
+
+    public static final native long clearCallingIdentity();
+
+    public static final native void restoreCallingIdentity(long);
+
+    public static final native void setThreadStrictModePolicy(int);
+
+    public static final native int getThreadStrictModePolicy();
+
+    public static final native void flushPendingCommands();
+
+    public static final native void joinThreadPool();
+
+    public static final boolean isProxy(android.os.IInterface)
+    {
+        android.os.IInterface iface;
+        android.os.IBinder $r0;
+        boolean $z0;
+
+        iface := @parameter0: android.os.IInterface;
+
+        $r0 = interfaceinvoke iface.<android.os.IInterface: android.os.IBinder asBinder()>();
+
+        if $r0 == iface goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public static final native void blockUntilThreadAvailable();
+
+    public void <init>()
+    {
+        android.os.Binder this;
+
+        this := @this: android.os.Binder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        specialinvoke this.<android.os.Binder: void init()>();
+
+        return;
+    }
+
+    public void attachInterface(android.os.IInterface, java.lang.String)
+    {
+        android.os.Binder this;
+        android.os.IInterface owner;
+        java.lang.String descriptor;
+
+        this := @this: android.os.Binder;
+
+        owner := @parameter0: android.os.IInterface;
+
+        descriptor := @parameter1: java.lang.String;
+
+        this.<android.os.Binder: android.os.IInterface mOwner> = owner;
+
+        this.<android.os.Binder: java.lang.String mDescriptor> = descriptor;
+
+        return;
+    }
+
+    public java.lang.String getInterfaceDescriptor()
+    {
+        android.os.Binder this;
+        java.lang.String $r0;
+
+        this := @this: android.os.Binder;
+
+        $r0 = this.<android.os.Binder: java.lang.String mDescriptor>;
+
+        return $r0;
+    }
+
+    public boolean pingBinder()
+    {
+        android.os.Binder this;
+
+        this := @this: android.os.Binder;
+
+        return 1;
+    }
+
+    public boolean isBinderAlive()
+    {
+        android.os.Binder this;
+
+        this := @this: android.os.Binder;
+
+        return 1;
+    }
+
+    public android.os.IInterface queryLocalInterface(java.lang.String)
+    {
+        android.os.Binder this;
+        java.lang.String descriptor, $r0;
+        boolean $z0;
+        android.os.IInterface $r1;
+
+        this := @this: android.os.Binder;
+
+        descriptor := @parameter0: java.lang.String;
+
+        $r0 = this.<android.os.Binder: java.lang.String mDescriptor>;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(descriptor);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<android.os.Binder: android.os.IInterface mOwner>;
+
+        return $r1;
+
+     label1:
+        return null;
+    }
+
+    public static void setDumpDisabled(java.lang.String)
+    {
+        java.lang.String msg;
+        java.lang.Class l1;
+        java.lang.Throwable l2, $r0;
+
+        msg := @parameter0: java.lang.String;
+
+        l1 = class "android/os/Binder";
+
+        entermonitor class "android/os/Binder";
+
+        <android.os.Binder: java.lang.String sDumpDisabled> = msg;
+
+        exitmonitor l1;
+
+        goto label1;
+
+     label1:
+        return;
+    }
+
+    protected boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException
+    {
+        android.os.Binder this;
+        int code, flags;
+        android.os.Parcel data, reply;
+        android.os.ParcelFileDescriptor fd;
+        java.lang.String[] args;
+        java.io.IOException l7, l9, $r3, $r4;
+        java.lang.Throwable l8, $r2;
+        java.io.FileDescriptor $r0;
+        java.lang.String $r1;
+
+        this := @this: android.os.Binder;
+
+        code := @parameter0: int;
+
+        data := @parameter1: android.os.Parcel;
+
+        reply := @parameter2: android.os.Parcel;
+
+        flags := @parameter3: int;
+
+        if code != 1598968902 goto label01;
+
+        $r1 = virtualinvoke this.<android.os.Binder: java.lang.String getInterfaceDescriptor()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeString(java.lang.String)>($r1);
+
+        return 1;
+
+     label01:
+        if code != 1598311760 goto label14;
+
+        fd = virtualinvoke data.<android.os.Parcel: android.os.ParcelFileDescriptor readFileDescriptor()>();
+
+        args = virtualinvoke data.<android.os.Parcel: java.lang.String[] readStringArray()>();
+
+        if fd == null goto label11;
+
+     label02:
+        $r0 = virtualinvoke fd.<android.os.ParcelFileDescriptor: java.io.FileDescriptor getFileDescriptor()>();
+
+        virtualinvoke this.<android.os.Binder: void dump(java.io.FileDescriptor,java.lang.String[])>($r0, args);
+
+     label03:
+        virtualinvoke fd.<android.os.ParcelFileDescriptor: void close()>();
+
+     label04:
+        goto label11;
+
+     label05:
+        $r4 := @caughtexception;
+
+        l7 = $r4;
+
+        goto label11;
+
+     label06:
+        $r2 := @caughtexception;
+
+        l8 = $r2;
+
+     label07:
+        virtualinvoke fd.<android.os.ParcelFileDescriptor: void close()>();
+
+     label08:
+        goto label10;
+
+     label09:
+        $r3 := @caughtexception;
+
+        l9 = $r3;
+
+     label10:
+        throw l8;
+
+     label11:
+        if reply == null goto label12;
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        goto label13;
+
+     label12:
+        staticinvoke <android.os.StrictMode: void clearGatheredViolations()>();
+
+     label13:
+        return 1;
+
+     label14:
+        return 0;
+
+        catch java.io.IOException from label03 to label04 with label05;
+        catch java.lang.Throwable from label02 to label03 with label06;
+        catch java.io.IOException from label07 to label08 with label09;
+        catch java.lang.Throwable from label06 to label07 with label06;
+    }
+
+    public void dump(java.io.FileDescriptor, java.lang.String[])
+    {
+        android.os.Binder this;
+        java.io.FileDescriptor fd;
+        java.lang.String[] args;
+        java.io.FileOutputStream fout, $r0;
+        com.android.internal.util.FastPrintWriter pw, $r1;
+        java.lang.String disabled, $r2, $r6, $r8;
+        bottom_type e;
+        java.lang.Throwable l7, l8, $r3, $r10, $r11, e#3;
+        java.lang.SecurityException $r4, e#2;
+        java.lang.StringBuilder $r5, $r7, $r9;
+        java.lang.Class e#1;
+
+        this := @this: android.os.Binder;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        args := @parameter1: java.lang.String[];
+
+        $r0 = new java.io.FileOutputStream;
+
+        specialinvoke $r0.<java.io.FileOutputStream: void <init>(java.io.FileDescriptor)>(fd);
+
+        fout = $r0;
+
+        $r1 = new com.android.internal.util.FastPrintWriter;
+
+        specialinvoke $r1.<com.android.internal.util.FastPrintWriter: void <init>(java.io.OutputStream)>(fout);
+
+        pw = $r1;
+
+     label01:
+        e#1 = class "android/os/Binder";
+
+        entermonitor class "android/os/Binder";
+
+        disabled = <android.os.Binder: java.lang.String sDumpDisabled>;
+
+        exitmonitor e#1;
+
+        goto label02;
+
+     label02:
+        if disabled != null goto label07;
+
+     label03:
+        virtualinvoke this.<android.os.Binder: void dump(java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])>(fd, pw, args);
+
+     label04:
+        goto label08;
+
+     label05:
+        $r4 := @caughtexception;
+
+        e#2 = $r4;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Security exception: ");
+
+        $r6 = virtualinvoke e#2.<java.lang.SecurityException: java.lang.String getMessage()>();
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>($r8);
+
+        throw e#2;
+
+     label06:
+        $r3 := @caughtexception;
+
+        e#3 = $r3;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println()>();
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("Exception occurred while dumping:");
+
+        virtualinvoke e#3.<java.lang.Throwable: void printStackTrace(java.io.PrintWriter)>(pw);
+
+        goto label08;
+
+     label07:
+        $r2 = <android.os.Binder: java.lang.String sDumpDisabled>;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>($r2);
+
+     label08:
+        virtualinvoke pw.<java.io.PrintWriter: void flush()>();
+
+        goto label11;
+
+     label09:
+        $r11 := @caughtexception;
+
+        l8 = $r11;
+
+     label10:
+        virtualinvoke pw.<java.io.PrintWriter: void flush()>();
+
+        throw l8;
+
+     label11:
+        return;
+
+        catch java.lang.SecurityException from label03 to label04 with label05;
+        catch java.lang.Throwable from label03 to label04 with label06;
+        catch java.lang.Throwable from label01 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public void dumpAsync(java.io.FileDescriptor, java.lang.String[])
+    {
+        android.os.Binder this;
+        java.io.FileDescriptor fd;
+        java.lang.String[] args;
+        java.io.FileOutputStream fout, $r0;
+        com.android.internal.util.FastPrintWriter pw, $r1;
+        android.os.Binder$1 thr, $r2;
+
+        this := @this: android.os.Binder;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        args := @parameter1: java.lang.String[];
+
+        $r0 = new java.io.FileOutputStream;
+
+        specialinvoke $r0.<java.io.FileOutputStream: void <init>(java.io.FileDescriptor)>(fd);
+
+        fout = $r0;
+
+        $r1 = new com.android.internal.util.FastPrintWriter;
+
+        specialinvoke $r1.<com.android.internal.util.FastPrintWriter: void <init>(java.io.OutputStream)>(fout);
+
+        pw = $r1;
+
+        $r2 = new android.os.Binder$1;
+
+        specialinvoke $r2.<android.os.Binder$1: void <init>(android.os.Binder,java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])>(this, "Binder.dumpAsync", fd, pw, args);
+
+        thr = $r2;
+
+        virtualinvoke thr.<java.lang.Thread: void start()>();
+
+        return;
+    }
+
+    protected void dump(java.io.FileDescriptor, java.io.PrintWriter, java.lang.String[])
+    {
+        android.os.Binder this;
+        java.io.FileDescriptor fd;
+        java.io.PrintWriter fout;
+        java.lang.String[] args;
+
+        this := @this: android.os.Binder;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        fout := @parameter1: java.io.PrintWriter;
+
+        args := @parameter2: java.lang.String[];
+
+        return;
+    }
+
+    public final boolean transact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException
+    {
+        android.os.Binder this;
+        int code, flags;
+        android.os.Parcel data, reply;
+        boolean r;
+
+        this := @this: android.os.Binder;
+
+        code := @parameter0: int;
+
+        data := @parameter1: android.os.Parcel;
+
+        reply := @parameter2: android.os.Parcel;
+
+        flags := @parameter3: int;
+
+        if data == null goto label1;
+
+        virtualinvoke data.<android.os.Parcel: void setDataPosition(int)>(0);
+
+     label1:
+        r = virtualinvoke this.<android.os.Binder: boolean onTransact(int,android.os.Parcel,android.os.Parcel,int)>(code, data, reply, flags);
+
+        if reply == null goto label2;
+
+        virtualinvoke reply.<android.os.Parcel: void setDataPosition(int)>(0);
+
+     label2:
+        return r;
+    }
+
+    public void linkToDeath(android.os.IBinder$DeathRecipient, int)
+    {
+        android.os.Binder this;
+        android.os.IBinder$DeathRecipient recipient;
+        int flags;
+
+        this := @this: android.os.Binder;
+
+        recipient := @parameter0: android.os.IBinder$DeathRecipient;
+
+        flags := @parameter1: int;
+
+        return;
+    }
+
+    public boolean unlinkToDeath(android.os.IBinder$DeathRecipient, int)
+    {
+        android.os.Binder this;
+        android.os.IBinder$DeathRecipient recipient;
+        int flags;
+
+        this := @this: android.os.Binder;
+
+        recipient := @parameter0: android.os.IBinder$DeathRecipient;
+
+        flags := @parameter1: int;
+
+        return 1;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        android.os.Binder this;
+        java.lang.Throwable l1, $r0;
+
+        this := @this: android.os.Binder;
+
+     label1:
+        specialinvoke this.<android.os.Binder: void destroy()>();
+
+     label2:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        goto label5;
+
+     label3:
+        $r0 := @caughtexception;
+
+        l1 = $r0;
+
+     label4:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        throw l1;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    static void checkParcel(android.os.IBinder, int, android.os.Parcel, java.lang.String)
+    {
+        android.os.IBinder obj;
+        int code;
+        android.os.Parcel parcel;
+        java.lang.String msg;
+
+        obj := @parameter0: android.os.IBinder;
+
+        code := @parameter1: int;
+
+        parcel := @parameter2: android.os.Parcel;
+
+        msg := @parameter3: java.lang.String;
+
+        return;
+    }
+
+    private final native void init();
+
+    private final native void destroy();
+
+    private boolean execTransact(int, long, long, int)
+    {
+        android.os.Binder this;
+        int code, flags, $i1, $i2;
+        long dataObj, replyObj;
+        android.os.Parcel data, reply;
+        java.lang.RuntimeException re, $r0, $r3, e#3;
+        android.os.RemoteException $r1, e#2;
+        java.lang.OutOfMemoryError $r2, e#4;
+        boolean res#1;
+
+        this := @this: android.os.Binder;
+
+        code := @parameter0: int;
+
+        dataObj := @parameter1: long;
+
+        replyObj := @parameter2: long;
+
+        flags := @parameter3: int;
+
+        data = staticinvoke <android.os.Parcel: android.os.Parcel obtain(long)>(dataObj);
+
+        reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain(long)>(replyObj);
+
+     label01:
+        res#1 = virtualinvoke this.<android.os.Binder: boolean onTransact(int,android.os.Parcel,android.os.Parcel,int)>(code, data, reply, flags);
+
+     label02:
+        goto label10;
+
+     label03:
+        $r1 := @caughtexception;
+
+        e#2 = $r1;
+
+        $i2 = flags & 1;
+
+        if $i2 == 0 goto label04;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("Binder", "Binder call failed.", e#2);
+
+        goto label05;
+
+     label04:
+        virtualinvoke reply.<android.os.Parcel: void setDataPosition(int)>(0);
+
+        virtualinvoke reply.<android.os.Parcel: void writeException(java.lang.Exception)>(e#2);
+
+     label05:
+        res#1 = 1;
+
+        goto label10;
+
+     label06:
+        $r0 := @caughtexception;
+
+        e#3 = $r0;
+
+        $i1 = flags & 1;
+
+        if $i1 == 0 goto label07;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("Binder", "Caught a RuntimeException from the binder stub implementation.", e#3);
+
+        goto label08;
+
+     label07:
+        virtualinvoke reply.<android.os.Parcel: void setDataPosition(int)>(0);
+
+        virtualinvoke reply.<android.os.Parcel: void writeException(java.lang.Exception)>(e#3);
+
+     label08:
+        res#1 = 1;
+
+        goto label10;
+
+     label09:
+        $r2 := @caughtexception;
+
+        e#4 = $r2;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Binder", "Caught an OutOfMemoryError from the binder stub implementation.", e#4);
+
+        $r3 = new java.lang.RuntimeException;
+
+        specialinvoke $r3.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Out of memory", e#4);
+
+        re = $r3;
+
+        virtualinvoke reply.<android.os.Parcel: void setDataPosition(int)>(0);
+
+        virtualinvoke reply.<android.os.Parcel: void writeException(java.lang.Exception)>(re);
+
+        res#1 = 1;
+
+     label10:
+        staticinvoke <android.os.Binder: void checkParcel(android.os.IBinder,int,android.os.Parcel,java.lang.String)>(this, code, reply, "Unreasonably large binder reply buffer");
+
+        virtualinvoke reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke data.<android.os.Parcel: void recycle()>();
+
+        staticinvoke <android.os.StrictMode: void clearGatheredViolations()>();
+
+        return res#1;
+
+        catch android.os.RemoteException from label01 to label02 with label03;
+        catch java.lang.RuntimeException from label01 to label02 with label06;
+        catch java.lang.OutOfMemoryError from label01 to label02 with label09;
+    }
+
+    static void <clinit>()
+    {
+        <android.os.Binder: java.lang.String TAG> = "Binder";
+
+        <android.os.Binder: boolean CHECK_PARCEL_SIZE> = 0;
+
+        <android.os.Binder: boolean FIND_POTENTIAL_LEAKS> = 0;
+
+        <android.os.Binder: java.lang.String sDumpDisabled> = null;
+
+        return;
+    }
+}

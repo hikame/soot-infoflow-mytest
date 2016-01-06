@@ -1,0 +1,89 @@
+final class android.os.ParcelFileDescriptor$2 extends java.lang.Object implements android.os.Parcelable$Creator
+{
+
+    void <init>()
+    {
+        android.os.ParcelFileDescriptor$2 this;
+
+        this := @this: android.os.ParcelFileDescriptor$2;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public android.os.ParcelFileDescriptor createFromParcel(android.os.Parcel)
+    {
+        android.os.ParcelFileDescriptor$2 this;
+        android.os.Parcel in;
+        int hasCommChannel;
+        java.io.FileDescriptor fd, commChannel#1;
+        android.os.ParcelFileDescriptor $r0;
+
+        this := @this: android.os.ParcelFileDescriptor$2;
+
+        in := @parameter0: android.os.Parcel;
+
+        hasCommChannel = virtualinvoke in.<android.os.Parcel: int readInt()>();
+
+        fd = virtualinvoke in.<android.os.Parcel: java.io.FileDescriptor readRawFileDescriptor()>();
+
+        commChannel#1 = null;
+
+        if hasCommChannel == 0 goto label1;
+
+        commChannel#1 = virtualinvoke in.<android.os.Parcel: java.io.FileDescriptor readRawFileDescriptor()>();
+
+     label1:
+        $r0 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r0.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor,java.io.FileDescriptor)>(fd, commChannel#1);
+
+        return $r0;
+    }
+
+    public android.os.ParcelFileDescriptor[] newArray(int)
+    {
+        android.os.ParcelFileDescriptor$2 this;
+        int size;
+        android.os.ParcelFileDescriptor[] $r0;
+
+        this := @this: android.os.ParcelFileDescriptor$2;
+
+        size := @parameter0: int;
+
+        $r0 = newarray (android.os.ParcelFileDescriptor)[size];
+
+        return $r0;
+    }
+
+    public volatile java.lang.Object[] newArray(int)
+    {
+        android.os.ParcelFileDescriptor$2 this;
+        int l1;
+        android.os.ParcelFileDescriptor[] $r0;
+
+        this := @this: android.os.ParcelFileDescriptor$2;
+
+        l1 := @parameter0: int;
+
+        $r0 = virtualinvoke this.<android.os.ParcelFileDescriptor$2: android.os.ParcelFileDescriptor[] newArray(int)>(l1);
+
+        return $r0;
+    }
+
+    public volatile java.lang.Object createFromParcel(android.os.Parcel)
+    {
+        android.os.ParcelFileDescriptor$2 this;
+        android.os.Parcel l1;
+        android.os.ParcelFileDescriptor $r0;
+
+        this := @this: android.os.ParcelFileDescriptor$2;
+
+        l1 := @parameter0: android.os.Parcel;
+
+        $r0 = virtualinvoke this.<android.os.ParcelFileDescriptor$2: android.os.ParcelFileDescriptor createFromParcel(android.os.Parcel)>(l1);
+
+        return $r0;
+    }
+}

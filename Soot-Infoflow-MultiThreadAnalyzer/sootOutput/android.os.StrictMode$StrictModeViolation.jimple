@@ -1,0 +1,22 @@
+public class android.os.StrictMode$StrictModeViolation extends dalvik.system.BlockGuard$BlockGuardPolicyException
+{
+
+    public void <init>(int, int, java.lang.String)
+    {
+        android.os.StrictMode$StrictModeViolation this;
+        int policyState, policyViolated;
+        java.lang.String message;
+
+        this := @this: android.os.StrictMode$StrictModeViolation;
+
+        policyState := @parameter0: int;
+
+        policyViolated := @parameter1: int;
+
+        message := @parameter2: java.lang.String;
+
+        specialinvoke this.<dalvik.system.BlockGuard$BlockGuardPolicyException: void <init>(int,int,java.lang.String)>(policyState, policyViolated, message);
+
+        return;
+    }
+}

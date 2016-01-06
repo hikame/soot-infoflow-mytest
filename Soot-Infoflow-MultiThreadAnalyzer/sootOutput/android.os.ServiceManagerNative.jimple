@@ -1,0 +1,179 @@
+public abstract class android.os.ServiceManagerNative extends android.os.Binder implements android.os.IServiceManager
+{
+
+    public static android.os.IServiceManager asInterface(android.os.IBinder)
+    {
+        android.os.IBinder obj;
+        android.os.IServiceManager in;
+        android.os.IInterface $r0;
+        android.os.ServiceManagerProxy $r1;
+
+        obj := @parameter0: android.os.IBinder;
+
+        if obj != null goto label1;
+
+        return null;
+
+     label1:
+        $r0 = interfaceinvoke obj.<android.os.IBinder: android.os.IInterface queryLocalInterface(java.lang.String)>("android.os.IServiceManager");
+
+        in = (android.os.IServiceManager) $r0;
+
+        if in == null goto label2;
+
+        return in;
+
+     label2:
+        $r1 = new android.os.ServiceManagerProxy;
+
+        specialinvoke $r1.<android.os.ServiceManagerProxy: void <init>(android.os.IBinder)>(obj);
+
+        return $r1;
+    }
+
+    public void <init>()
+    {
+        android.os.ServiceManagerNative this;
+
+        this := @this: android.os.ServiceManagerNative;
+
+        specialinvoke this.<android.os.Binder: void <init>()>();
+
+        virtualinvoke this.<android.os.ServiceManagerNative: void attachInterface(android.os.IInterface,java.lang.String)>(this, "android.os.IServiceManager");
+
+        return;
+    }
+
+    public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int)
+    {
+        android.os.ServiceManagerNative this;
+        int code, flags, $i0;
+        android.os.Parcel data, reply;
+        boolean allowIsolated, $z0;
+        android.os.IBinder $r0, service#2, service#4, service#6;
+        android.os.RemoteException $r1, name#10;
+        java.lang.String name#1, name#3, name#5;
+        java.lang.String[] name#8;
+        android.os.IPermissionController name#9;
+
+        this := @this: android.os.ServiceManagerNative;
+
+        code := @parameter0: int;
+
+        data := @parameter1: android.os.Parcel;
+
+        reply := @parameter2: android.os.Parcel;
+
+        flags := @parameter3: int;
+
+     label01:
+        tableswitch(code)
+        {
+            case 1: goto label02;
+            case 2: goto label04;
+            case 3: goto label06;
+            case 4: goto label10;
+            case 5: goto label14;
+            case 6: goto label12;
+            default: goto label14;
+        };
+
+     label02:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IServiceManager");
+
+        name#1 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        service#2 = virtualinvoke this.<android.os.ServiceManagerNative: android.os.IBinder getService(java.lang.String)>(name#1);
+
+        virtualinvoke reply.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>(service#2);
+
+     label03:
+        return 1;
+
+     label04:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IServiceManager");
+
+        name#3 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        service#4 = virtualinvoke this.<android.os.ServiceManagerNative: android.os.IBinder checkService(java.lang.String)>(name#3);
+
+        virtualinvoke reply.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>(service#4);
+
+     label05:
+        return 1;
+
+     label06:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IServiceManager");
+
+        name#5 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        service#6 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
+
+        $i0 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if $i0 == 0 goto label07;
+
+        $z0 = 1;
+
+        goto label08;
+
+     label07:
+        $z0 = 0;
+
+     label08:
+        allowIsolated = $z0;
+
+        virtualinvoke this.<android.os.ServiceManagerNative: void addService(java.lang.String,android.os.IBinder,boolean)>(name#5, service#6, allowIsolated);
+
+     label09:
+        return 1;
+
+     label10:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IServiceManager");
+
+        name#8 = virtualinvoke this.<android.os.ServiceManagerNative: java.lang.String[] listServices()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeStringArray(java.lang.String[])>(name#8);
+
+     label11:
+        return 1;
+
+     label12:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IServiceManager");
+
+        $r0 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
+
+        name#9 = staticinvoke <android.os.IPermissionController$Stub: android.os.IPermissionController asInterface(android.os.IBinder)>($r0);
+
+        virtualinvoke this.<android.os.ServiceManagerNative: void setPermissionController(android.os.IPermissionController)>(name#9);
+
+     label13:
+        return 1;
+
+     label14:
+        goto label16;
+
+     label15:
+        $r1 := @caughtexception;
+
+        name#10 = $r1;
+
+     label16:
+        return 0;
+
+        catch android.os.RemoteException from label01 to label03 with label15;
+        catch android.os.RemoteException from label04 to label05 with label15;
+        catch android.os.RemoteException from label06 to label09 with label15;
+        catch android.os.RemoteException from label10 to label11 with label15;
+        catch android.os.RemoteException from label12 to label13 with label15;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        android.os.ServiceManagerNative this;
+
+        this := @this: android.os.ServiceManagerNative;
+
+        return this;
+    }
+}

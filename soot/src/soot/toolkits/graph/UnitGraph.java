@@ -92,48 +92,48 @@ public abstract class UnitGraph implements DirectedGraph<Unit>
      */
     protected void buildUnexceptionalEdges(Map<Unit,List<Unit>> unitToSuccs, Map<Unit,List<Unit>> unitToPreds) {
 
-	// Initialize the predecessor sets to empty
-	for (Unit u : unitChain) {
-	    unitToPreds.put(u, new ArrayList<Unit>());
-	}
-	
-	Iterator<Unit> unitIt = unitChain.iterator();
-	Unit currentUnit, nextUnit;
-                
-	nextUnit = unitIt.hasNext() ? (Unit) unitIt.next(): null;
-                
-	while(nextUnit != null) {
-	    currentUnit = nextUnit;
-	    nextUnit = unitIt.hasNext() ? (Unit) unitIt.next(): null;
-                    
-	    List<Unit> successors = new ArrayList<Unit>();
-                    
-	    if( currentUnit.fallsThrough() ) {
-		// Add the next unit as the successor
-		if(nextUnit != null) {
-		    successors.add(nextUnit);
-		    unitToPreds.get(nextUnit).add(currentUnit);
+		// Initialize the predecessor sets to empty
+		for (Unit u : unitChain) {
+		    unitToPreds.put(u, new ArrayList<Unit>());
 		}
-	    }
-                        
-	    if( currentUnit.branches() ) {
-		for (UnitBox targetBox : currentUnit.getUnitBoxes()) {
-		    Unit target = targetBox.getUnit();
-		    // Arbitrary bytecode can branch to the same
-		    // target it falls through to, so we screen for duplicates:
-		    if (! successors.contains(target)) {
-			successors.add(target);
-			List<Unit> preds = unitToPreds.get(target);
-			if (preds == null)
-				throw new RuntimeException("Unit graph contains jump to non-existing target");
-			preds.add(currentUnit);
+		
+		Iterator<Unit> unitIt = unitChain.iterator();
+		Unit currentUnit, nextUnit;
+	                
+		nextUnit = unitIt.hasNext() ? (Unit) unitIt.next(): null;
+	                
+		while(nextUnit != null) {
+		    currentUnit = nextUnit;
+		    nextUnit = unitIt.hasNext() ? (Unit) unitIt.next(): null;
+	                    
+		    List<Unit> successors = new ArrayList<Unit>();
+	                    
+		    if( currentUnit.fallsThrough() ) {
+				// Add the next unit as the successor
+				if(nextUnit != null) {
+				    successors.add(nextUnit);
+				    unitToPreds.get(nextUnit).add(currentUnit);
+				}
 		    }
+	                        
+		    if( currentUnit.branches() ) {
+				for (UnitBox targetBox : currentUnit.getUnitBoxes()) {
+				    Unit target = targetBox.getUnit();
+				    // Arbitrary bytecode can branch to the same
+				    // target it falls through to, so we screen for duplicates:
+				    if (! successors.contains(target)) {
+					successors.add(target);
+					List<Unit> preds = unitToPreds.get(target);
+					if (preds == null)
+						throw new RuntimeException("Unit graph contains jump to non-existing target");
+					preds.add(currentUnit);
+				    }
+				}
+		    }
+	
+		    // Store away successors
+		    unitToSuccs.put(currentUnit, successors);
 		}
-	    }
-
-	    // Store away successors
-	    unitToSuccs.put(currentUnit, successors);
-	}
     }
 
 
@@ -188,14 +188,14 @@ public abstract class UnitGraph implements DirectedGraph<Unit>
      * @param map      The map whose values are to be made unmodifiable.
      */
     protected static void makeMappedListsUnmodifiable(Map<?,List<Unit>> map) {
-	for (Entry<?, List<Unit>> entry : map.entrySet()) {
-	    List<Unit> value = entry.getValue();
-	    if (value.size() == 0) {
-		entry.setValue(Collections.<Unit>emptyList());
-	    } else {
-		entry.setValue(Collections.unmodifiableList(value));
-	    }
-	}
+		for (Entry<?, List<Unit>> entry : map.entrySet()) {
+		    List<Unit> value = entry.getValue();
+		    if (value.size() == 0) {
+		    	entry.setValue(Collections.<Unit>emptyList());
+		    } else {
+		    	entry.setValue(Collections.unmodifiableList(value));
+		    }
+		}
     }
 
 

@@ -1,0 +1,48 @@
+class android.os.ZygoteStartFailedEx extends java.lang.Exception
+{
+
+    void <init>(java.lang.String)
+    {
+        android.os.ZygoteStartFailedEx this;
+        java.lang.String s;
+
+        this := @this: android.os.ZygoteStartFailedEx;
+
+        s := @parameter0: java.lang.String;
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.String)>(s);
+
+        return;
+    }
+
+    void <init>(java.lang.Throwable)
+    {
+        android.os.ZygoteStartFailedEx this;
+        java.lang.Throwable cause;
+
+        this := @this: android.os.ZygoteStartFailedEx;
+
+        cause := @parameter0: java.lang.Throwable;
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.Throwable)>(cause);
+
+        return;
+    }
+
+    void <init>(java.lang.String, java.lang.Throwable)
+    {
+        android.os.ZygoteStartFailedEx this;
+        java.lang.String s;
+        java.lang.Throwable cause;
+
+        this := @this: android.os.ZygoteStartFailedEx;
+
+        s := @parameter0: java.lang.String;
+
+        cause := @parameter1: java.lang.Throwable;
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.String,java.lang.Throwable)>(s, cause);
+
+        return;
+    }
+}

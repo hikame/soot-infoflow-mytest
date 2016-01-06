@@ -1,0 +1,1093 @@
+public class android.os.Handler extends java.lang.Object
+{
+    private static final boolean FIND_POTENTIAL_LEAKS;
+    private static final java.lang.String TAG;
+    final android.os.MessageQueue mQueue;
+    final android.os.Looper mLooper;
+    final android.os.Handler$Callback mCallback;
+    final boolean mAsynchronous;
+    android.os.IMessenger mMessenger;
+
+    public void handleMessage(android.os.Message)
+    {
+        android.os.Handler this;
+        android.os.Message msg;
+
+        this := @this: android.os.Handler;
+
+        msg := @parameter0: android.os.Message;
+
+        return;
+    }
+
+    public void dispatchMessage(android.os.Message)
+    {
+        android.os.Handler this;
+        android.os.Message msg;
+        java.lang.Runnable $r0;
+        android.os.Handler$Callback $r1, $r2;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        msg := @parameter0: android.os.Message;
+
+        $r0 = msg.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        staticinvoke <android.os.Handler: void handleCallback(android.os.Message)>(msg);
+
+        goto label3;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        if $r1 == null goto label2;
+
+        $r2 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        $z0 = interfaceinvoke $r2.<android.os.Handler$Callback: boolean handleMessage(android.os.Message)>(msg);
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        virtualinvoke this.<android.os.Handler: void handleMessage(android.os.Message)>(msg);
+
+     label3:
+        return;
+    }
+
+    public void <init>()
+    {
+        android.os.Handler this;
+
+        this := @this: android.os.Handler;
+
+        specialinvoke this.<android.os.Handler: void <init>(android.os.Handler$Callback,boolean)>(null, 0);
+
+        return;
+    }
+
+    public void <init>(android.os.Handler$Callback)
+    {
+        android.os.Handler this;
+        android.os.Handler$Callback callback;
+
+        this := @this: android.os.Handler;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        specialinvoke this.<android.os.Handler: void <init>(android.os.Handler$Callback,boolean)>(callback, 0);
+
+        return;
+    }
+
+    public void <init>(android.os.Looper)
+    {
+        android.os.Handler this;
+        android.os.Looper looper;
+
+        this := @this: android.os.Handler;
+
+        looper := @parameter0: android.os.Looper;
+
+        specialinvoke this.<android.os.Handler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, null, 0);
+
+        return;
+    }
+
+    public void <init>(android.os.Looper, android.os.Handler$Callback)
+    {
+        android.os.Handler this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+
+        this := @this: android.os.Handler;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        specialinvoke this.<android.os.Handler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, callback, 0);
+
+        return;
+    }
+
+    public void <init>(boolean)
+    {
+        android.os.Handler this;
+        boolean async;
+
+        this := @this: android.os.Handler;
+
+        async := @parameter0: boolean;
+
+        specialinvoke this.<android.os.Handler: void <init>(android.os.Handler$Callback,boolean)>(null, async);
+
+        return;
+    }
+
+    public void <init>(android.os.Handler$Callback, boolean)
+    {
+        android.os.Handler this;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.Looper $r0, $r1, $r2;
+        android.os.MessageQueue $r3;
+        java.lang.RuntimeException $r4;
+
+        this := @this: android.os.Handler;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        async := @parameter1: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = $r0;
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r1 != null goto label1;
+
+        $r4 = new java.lang.RuntimeException;
+
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String)>("Can\'t create handler inside thread that has not called Looper.prepare()");
+
+        throw $r4;
+
+     label1:
+        $r2 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r3 = $r2.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r3;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = null;
+
+        this.<android.os.Handler: boolean mAsynchronous> = 0;
+
+        return;
+    }
+
+    public void <init>(android.os.Looper, android.os.Handler$Callback, boolean)
+    {
+        android.os.Handler this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.MessageQueue $r0;
+
+        this := @this: android.os.Handler;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        async := @parameter2: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = looper;
+
+        $r0 = looper.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r0;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = callback;
+
+        this.<android.os.Handler: boolean mAsynchronous> = async;
+
+        return;
+    }
+
+    public java.lang.String getMessageName(android.os.Message)
+    {
+        android.os.Handler this;
+        android.os.Message message;
+        java.lang.Runnable $r0, $r6;
+        java.lang.StringBuilder $r1, $r2, $r4;
+        int $i0;
+        java.lang.String $r3, $r5, $r8;
+        java.lang.Class $r7;
+
+        this := @this: android.os.Handler;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        $r6 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        $r7 = virtualinvoke $r6.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.Class: java.lang.String getName()>();
+
+        return $r8;
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0x");
+
+        $i0 = message.<android.os.Message: int what>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+    }
+
+    public final android.os.Message obtainMessage()
+    {
+        android.os.Handler this;
+        android.os.Message $r0;
+
+        this := @this: android.os.Handler;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler)>(this);
+
+        return $r0;
+    }
+
+    public final android.os.Message obtainMessage(int)
+    {
+        android.os.Handler this;
+        int what;
+        android.os.Message result;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        result = new android.os.Message;
+
+        specialinvoke result.<android.os.Message: void <init>()>();
+
+        result.<android.os.Message: int what> = 6;
+
+        result.<android.os.Message: android.os.Handler target> = this;
+    }
+
+    public final android.os.Message obtainMessage(int, java.lang.Object)
+    {
+        android.os.Handler this;
+        int what;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        obj := @parameter1: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,java.lang.Object)>(this, what, obj);
+
+        return $r0;
+    }
+
+    public final android.os.Message obtainMessage(int, int, int)
+    {
+        android.os.Handler this;
+        int what, arg1, arg2;
+        android.os.Message $r0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int)>(this, what, arg1, arg2);
+
+        return $r0;
+    }
+
+    public final android.os.Message obtainMessage(int, int, int, java.lang.Object)
+    {
+        android.os.Handler this;
+        int what, arg1, arg2;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        obj := @parameter3: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int,java.lang.Object)>(this, what, arg1, arg2, obj);
+
+        return $r0;
+    }
+
+    public final boolean post(java.lang.Runnable)
+    {
+        android.os.Handler this;
+        java.lang.Runnable param0;
+
+        this := @this: android.os.Handler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    public final boolean postAtTime(java.lang.Runnable, long)
+    {
+        android.os.Handler this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: android.os.Handler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    public final boolean postAtTime(java.lang.Runnable, java.lang.Object, long)
+    {
+        android.os.Handler this;
+        java.lang.Runnable param0;
+        java.lang.Object param1;
+        long param2;
+
+        this := @this: android.os.Handler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: java.lang.Object;
+
+        param2 := @parameter2: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    public final boolean postDelayed(java.lang.Runnable, long)
+    {
+        android.os.Handler this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: android.os.Handler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    public final boolean postAtFrontOfQueue(java.lang.Runnable)
+    {
+        android.os.Handler this;
+        java.lang.Runnable param0;
+
+        this := @this: android.os.Handler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    public final boolean runWithScissors(java.lang.Runnable, long)
+    {
+        android.os.Handler this;
+        java.lang.Runnable r;
+        long timeout;
+        android.os.Handler$BlockingRunnable br, $r2;
+        byte $b0;
+        android.os.Looper $r0, $r1;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r3, $r4;
+
+        this := @this: android.os.Handler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        timeout := @parameter1: long;
+
+        if r != null goto label1;
+
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("runnable must not be null");
+
+        throw $r4;
+
+     label1:
+        $b0 = timeout cmp 0L;
+
+        if $b0 >= 0 goto label2;
+
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("timeout must be non-negative");
+
+        throw $r3;
+
+     label2:
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r0 != $r1 goto label3;
+
+        interfaceinvoke r.<java.lang.Runnable: void run()>();
+
+        return 1;
+
+     label3:
+        $r2 = new android.os.Handler$BlockingRunnable;
+
+        specialinvoke $r2.<android.os.Handler$BlockingRunnable: void <init>(java.lang.Runnable)>(r);
+
+        br = $r2;
+
+        $z0 = virtualinvoke br.<android.os.Handler$BlockingRunnable: boolean postAndWait(android.os.Handler,long)>(this, timeout);
+
+        return $z0;
+    }
+
+    public final void removeCallbacks(java.lang.Runnable)
+    {
+        android.os.Handler this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+
+        this := @this: android.os.Handler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return;
+    }
+
+    public final void removeCallbacks(java.lang.Runnable, java.lang.Object)
+    {
+        android.os.Handler this;
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: android.os.Handler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, token);
+
+        return;
+    }
+
+    public final boolean sendMessage(android.os.Message)
+    {
+        android.os.Handler this;
+        android.os.Message msg;
+
+        this := @this: android.os.Handler;
+
+        msg := @parameter0: android.os.Message;
+
+        virtualinvoke this.<android.os.Handler: void handleMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    public final boolean sendEmptyMessage(int)
+    {
+        android.os.Handler this;
+        int what;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        $z0 = virtualinvoke this.<android.os.Handler: boolean sendEmptyMessageDelayed(int,long)>(what, 0L);
+
+        return $z0;
+    }
+
+    public final boolean sendEmptyMessageDelayed(int, long)
+    {
+        android.os.Handler this;
+        int what;
+        long delayMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        delayMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<android.os.Handler: boolean sendMessageDelayed(android.os.Message,long)>(msg, delayMillis);
+
+        return $z0;
+    }
+
+    public final boolean sendEmptyMessageAtTime(int, long)
+    {
+        android.os.Handler this;
+        int what;
+        long uptimeMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        uptimeMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<android.os.Handler: boolean sendMessageAtTime(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z0;
+    }
+
+    public final boolean sendMessageDelayed(android.os.Message, long)
+    {
+        android.os.Handler this;
+        android.os.Message msg;
+        byte $b0;
+        long $l1, $l2, delayMillis#1;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        msg := @parameter0: android.os.Message;
+
+        delayMillis#1 := @parameter1: long;
+
+        $b0 = delayMillis#1 cmp 0L;
+
+        if $b0 >= 0 goto label1;
+
+        delayMillis#1 = 0L;
+
+     label1:
+        $l1 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        $l2 = $l1 + delayMillis#1;
+
+        $z0 = virtualinvoke this.<android.os.Handler: boolean sendMessageAtTime(android.os.Message,long)>(msg, $l2);
+
+        return $z0;
+    }
+
+    public boolean sendMessageAtTime(android.os.Message, long)
+    {
+        android.os.Handler this;
+        android.os.Message msg;
+        long uptimeMillis;
+        android.os.MessageQueue queue;
+        java.lang.RuntimeException e, $r0;
+        boolean $z0;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        java.lang.String $r4, $r5;
+
+        this := @this: android.os.Handler;
+
+        msg := @parameter0: android.os.Message;
+
+        uptimeMillis := @parameter1: long;
+
+        queue = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        if queue != null goto label1;
+
+        $r0 = new java.lang.RuntimeException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" sendMessageAtTime() called with no mQueue");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.String)>($r4);
+
+        e = $r0;
+
+        $r5 = virtualinvoke e.<java.lang.RuntimeException: java.lang.String getMessage()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("Looper", $r5, e);
+
+        return 0;
+
+     label1:
+        $z0 = specialinvoke this.<android.os.Handler: boolean enqueueMessage(android.os.MessageQueue,android.os.Message,long)>(queue, msg, uptimeMillis);
+
+        return $z0;
+    }
+
+    public final boolean sendMessageAtFrontOfQueue(android.os.Message)
+    {
+        android.os.Handler this;
+        android.os.Message msg;
+        android.os.MessageQueue queue;
+        java.lang.RuntimeException e, $r0;
+        boolean $z0;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        java.lang.String $r4, $r5;
+
+        this := @this: android.os.Handler;
+
+        msg := @parameter0: android.os.Message;
+
+        queue = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        if queue != null goto label1;
+
+        $r0 = new java.lang.RuntimeException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" sendMessageAtTime() called with no mQueue");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.String)>($r4);
+
+        e = $r0;
+
+        $r5 = virtualinvoke e.<java.lang.RuntimeException: java.lang.String getMessage()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("Looper", $r5, e);
+
+        return 0;
+
+     label1:
+        $z0 = specialinvoke this.<android.os.Handler: boolean enqueueMessage(android.os.MessageQueue,android.os.Message,long)>(queue, msg, 0L);
+
+        return $z0;
+    }
+
+    private boolean enqueueMessage(android.os.MessageQueue, android.os.Message, long)
+    {
+        android.os.Handler this;
+        android.os.MessageQueue queue;
+        android.os.Message msg;
+        long uptimeMillis;
+        boolean $z0, $z1;
+
+        this := @this: android.os.Handler;
+
+        queue := @parameter0: android.os.MessageQueue;
+
+        msg := @parameter1: android.os.Message;
+
+        uptimeMillis := @parameter2: long;
+
+        msg.<android.os.Message: android.os.Handler target> = this;
+
+        $z0 = this.<android.os.Handler: boolean mAsynchronous>;
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke msg.<android.os.Message: void setAsynchronous(boolean)>(1);
+
+     label1:
+        $z1 = virtualinvoke queue.<android.os.MessageQueue: boolean enqueueMessage(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z1;
+    }
+
+    public final void removeMessages(int)
+    {
+        android.os.Handler this;
+        int what;
+        android.os.MessageQueue $r0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return;
+    }
+
+    public final void removeMessages(int, java.lang.Object)
+    {
+        android.os.Handler this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return;
+    }
+
+    public final void removeCallbacksAndMessages(java.lang.Object)
+    {
+        android.os.Handler this;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: android.os.Handler;
+
+        token := @parameter0: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeCallbacksAndMessages(android.os.Handler,java.lang.Object)>(this, token);
+
+        return;
+    }
+
+    public final boolean hasMessages(int)
+    {
+        android.os.Handler this;
+        int what;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return $z0;
+    }
+
+    public final boolean hasMessages(int, java.lang.Object)
+    {
+        android.os.Handler this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return $z0;
+    }
+
+    public final boolean hasCallbacks(java.lang.Runnable)
+    {
+        android.os.Handler this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: android.os.Handler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return $z0;
+    }
+
+    public final android.os.Looper getLooper()
+    {
+        android.os.Handler this;
+        android.os.Looper $r0;
+
+        this := @this: android.os.Handler;
+
+        $r0 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        return $r0;
+    }
+
+    public final void dump(android.util.Printer, java.lang.String)
+    {
+        android.os.Handler this;
+        android.util.Printer pw;
+        java.lang.String prefix, $r5, $r11, $r14;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r15;
+        long $l0;
+        android.os.Looper $r6, $r8;
+
+        this := @this: android.os.Handler;
+
+        pw := @parameter0: android.util.Printer;
+
+        prefix := @parameter1: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" @ ");
+
+        $l0 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r5);
+
+        $r6 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r6 != null goto label1;
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r14);
+
+        goto label2;
+
+     label1:
+        $r8 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<android.os.Looper: void dump(android.util.Printer,java.lang.String)>(pw, $r11);
+
+     label2:
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        android.os.Handler this;
+        java.lang.StringBuilder $r0, $r1, $r4, $r5, $r7, $r8;
+        java.lang.Class $r2;
+        java.lang.String $r3, $r6, $r9;
+        int $i0;
+
+        this := @this: android.os.Handler;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Handler (");
+
+        $r2 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") {");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r9;
+    }
+
+    final android.os.IMessenger getIMessenger()
+    {
+        android.os.Handler this;
+        android.os.MessageQueue l1, $r0;
+        java.lang.Throwable l2, $r5;
+        android.os.IMessenger $r1, $r3, $r4;
+        android.os.Handler$MessengerImpl $r2;
+
+        this := @this: android.os.Handler;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        if $r1 == null goto label3;
+
+        $r4 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label2:
+        return $r4;
+
+     label3:
+        $r2 = new android.os.Handler$MessengerImpl;
+
+        specialinvoke $r2.<android.os.Handler$MessengerImpl: void <init>(android.os.Handler,android.os.Handler$1)>(this, null);
+
+        this.<android.os.Handler: android.os.IMessenger mMessenger> = $r2;
+
+        $r3 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label4:
+        return $r3;
+
+     label5:
+        $r5 := @caughtexception;
+
+        l2 = $r5;
+
+        exitmonitor l1;
+
+     label6:
+        throw l2;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    private static android.os.Message getPostMessage(java.lang.Runnable)
+    {
+        java.lang.Runnable r;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    private static android.os.Message getPostMessage(java.lang.Runnable, java.lang.Object)
+    {
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Object obj> = token;
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    private static void handleCallback(android.os.Message)
+    {
+        android.os.Message message;
+        java.lang.Runnable $r0;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        interfaceinvoke $r0.<java.lang.Runnable: void run()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <android.os.Handler: java.lang.String TAG> = "Handler";
+
+        <android.os.Handler: boolean FIND_POTENTIAL_LEAKS> = 0;
+
+        return;
+    }
+}

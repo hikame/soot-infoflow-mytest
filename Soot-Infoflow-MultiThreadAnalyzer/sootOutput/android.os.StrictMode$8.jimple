@@ -1,0 +1,40 @@
+final class android.os.StrictMode$8 extends java.lang.ThreadLocal
+{
+
+    void <init>()
+    {
+        android.os.StrictMode$8 this;
+
+        this := @this: android.os.StrictMode$8;
+
+        specialinvoke this.<java.lang.ThreadLocal: void <init>()>();
+
+        return;
+    }
+
+    protected android.os.StrictMode$ThreadSpanState initialValue()
+    {
+        android.os.StrictMode$8 this;
+        android.os.StrictMode$ThreadSpanState $r0;
+
+        this := @this: android.os.StrictMode$8;
+
+        $r0 = new android.os.StrictMode$ThreadSpanState;
+
+        specialinvoke $r0.<android.os.StrictMode$ThreadSpanState: void <init>(android.os.StrictMode$1)>(null);
+
+        return $r0;
+    }
+
+    protected volatile java.lang.Object initialValue()
+    {
+        android.os.StrictMode$8 this;
+        android.os.StrictMode$ThreadSpanState $r0;
+
+        this := @this: android.os.StrictMode$8;
+
+        $r0 = virtualinvoke this.<android.os.StrictMode$8: android.os.StrictMode$ThreadSpanState initialValue()>();
+
+        return $r0;
+    }
+}

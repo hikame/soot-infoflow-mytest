@@ -1,0 +1,76 @@
+final class android.os.UserHandle$1 extends java.lang.Object implements android.os.Parcelable$Creator
+{
+
+    void <init>()
+    {
+        android.os.UserHandle$1 this;
+
+        this := @this: android.os.UserHandle$1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public android.os.UserHandle createFromParcel(android.os.Parcel)
+    {
+        android.os.UserHandle$1 this;
+        android.os.Parcel in;
+        android.os.UserHandle $r0;
+
+        this := @this: android.os.UserHandle$1;
+
+        in := @parameter0: android.os.Parcel;
+
+        $r0 = new android.os.UserHandle;
+
+        specialinvoke $r0.<android.os.UserHandle: void <init>(android.os.Parcel)>(in);
+
+        return $r0;
+    }
+
+    public android.os.UserHandle[] newArray(int)
+    {
+        android.os.UserHandle$1 this;
+        int size;
+        android.os.UserHandle[] $r0;
+
+        this := @this: android.os.UserHandle$1;
+
+        size := @parameter0: int;
+
+        $r0 = newarray (android.os.UserHandle)[size];
+
+        return $r0;
+    }
+
+    public volatile java.lang.Object[] newArray(int)
+    {
+        android.os.UserHandle$1 this;
+        int l1;
+        android.os.UserHandle[] $r0;
+
+        this := @this: android.os.UserHandle$1;
+
+        l1 := @parameter0: int;
+
+        $r0 = virtualinvoke this.<android.os.UserHandle$1: android.os.UserHandle[] newArray(int)>(l1);
+
+        return $r0;
+    }
+
+    public volatile java.lang.Object createFromParcel(android.os.Parcel)
+    {
+        android.os.UserHandle$1 this;
+        android.os.Parcel l1;
+        android.os.UserHandle $r0;
+
+        this := @this: android.os.UserHandle$1;
+
+        l1 := @parameter0: android.os.Parcel;
+
+        $r0 = virtualinvoke this.<android.os.UserHandle$1: android.os.UserHandle createFromParcel(android.os.Parcel)>(l1);
+
+        return $r0;
+    }
+}

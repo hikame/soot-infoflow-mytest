@@ -1,0 +1,32 @@
+class android.os.StrictMode$ThreadSpanState extends java.lang.Object
+{
+    public android.os.StrictMode$Span mActiveHead;
+    public int mActiveSize;
+    public android.os.StrictMode$Span mFreeListHead;
+    public int mFreeListSize;
+
+    private void <init>()
+    {
+        android.os.StrictMode$ThreadSpanState this;
+
+        this := @this: android.os.StrictMode$ThreadSpanState;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void <init>(android.os.StrictMode$1)
+    {
+        android.os.StrictMode$ThreadSpanState this;
+        android.os.StrictMode$1 x0;
+
+        this := @this: android.os.StrictMode$ThreadSpanState;
+
+        x0 := @parameter0: android.os.StrictMode$1;
+
+        specialinvoke this.<android.os.StrictMode$ThreadSpanState: void <init>()>();
+
+        return;
+    }
+}

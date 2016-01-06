@@ -4,7 +4,8 @@
 #################
 ## Eclipse
 #################
-
+# Java class files
+*.class
 *.pydevproject
 .project
 .metadata

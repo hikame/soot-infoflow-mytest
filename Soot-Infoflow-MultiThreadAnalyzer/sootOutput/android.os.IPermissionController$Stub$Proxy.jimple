@@ -1,0 +1,243 @@
+class android.os.IPermissionController$Stub$Proxy extends java.lang.Object implements android.os.IPermissionController
+{
+    private android.os.IBinder mRemote;
+
+    void <init>(android.os.IBinder)
+    {
+        android.os.IPermissionController$Stub$Proxy this;
+        android.os.IBinder remote;
+
+        this := @this: android.os.IPermissionController$Stub$Proxy;
+
+        remote := @parameter0: android.os.IBinder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.IPermissionController$Stub$Proxy: android.os.IBinder mRemote> = remote;
+
+        return;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        android.os.IPermissionController$Stub$Proxy this;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.IPermissionController$Stub$Proxy;
+
+        $r0 = this.<android.os.IPermissionController$Stub$Proxy: android.os.IBinder mRemote>;
+
+        return $r0;
+    }
+
+    public java.lang.String getInterfaceDescriptor()
+    {
+        android.os.IPermissionController$Stub$Proxy this;
+
+        this := @this: android.os.IPermissionController$Stub$Proxy;
+
+        return "android.os.IPermissionController";
+    }
+
+    public boolean checkPermission(java.lang.String, int, int) throws android.os.RemoteException
+    {
+        android.os.IPermissionController$Stub$Proxy this;
+        java.lang.String permission;
+        int pid, uid, $i0;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l7, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.IPermissionController$Stub$Proxy;
+
+        permission := @parameter0: java.lang.String;
+
+        pid := @parameter1: int;
+
+        uid := @parameter2: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.IPermissionController");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(permission);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(pid);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        $r0 = this.<android.os.IPermissionController$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(1, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l7 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l7;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public java.lang.String[] getPackagesForUid(int) throws android.os.RemoteException
+    {
+        android.os.IPermissionController$Stub$Proxy this;
+        int uid;
+        android.os.Parcel _data, _reply;
+        java.lang.String[] _result;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.IPermissionController$Stub$Proxy;
+
+        uid := @parameter0: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.IPermissionController");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        $r0 = this.<android.os.IPermissionController$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(2, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        _result = virtualinvoke _reply.<android.os.Parcel: java.lang.String[] createStringArray()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean isRuntimePermission(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.IPermissionController$Stub$Proxy this;
+        java.lang.String permission;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        int $i0;
+
+        this := @this: android.os.IPermissionController$Stub$Proxy;
+
+        permission := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.IPermissionController");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(permission);
+
+        $r0 = this.<android.os.IPermissionController$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(3, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+}

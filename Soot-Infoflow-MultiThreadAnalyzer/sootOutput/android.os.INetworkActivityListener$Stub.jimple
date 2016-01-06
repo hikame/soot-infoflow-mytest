@@ -1,0 +1,113 @@
+public abstract class android.os.INetworkActivityListener$Stub extends android.os.Binder implements android.os.INetworkActivityListener
+{
+    private static final java.lang.String DESCRIPTOR;
+    static final int TRANSACTION_onNetworkActive;
+
+    public void <init>()
+    {
+        android.os.INetworkActivityListener$Stub this;
+
+        this := @this: android.os.INetworkActivityListener$Stub;
+
+        specialinvoke this.<android.os.Binder: void <init>()>();
+
+        virtualinvoke this.<android.os.INetworkActivityListener$Stub: void attachInterface(android.os.IInterface,java.lang.String)>(this, "android.os.INetworkActivityListener");
+
+        return;
+    }
+
+    public static android.os.INetworkActivityListener asInterface(android.os.IBinder)
+    {
+        android.os.IBinder obj;
+        android.os.IInterface iin;
+        android.os.INetworkActivityListener$Stub$Proxy $r0;
+        boolean $z0;
+        android.os.INetworkActivityListener $r1;
+
+        obj := @parameter0: android.os.IBinder;
+
+        if obj != null goto label1;
+
+        return null;
+
+     label1:
+        iin = interfaceinvoke obj.<android.os.IBinder: android.os.IInterface queryLocalInterface(java.lang.String)>("android.os.INetworkActivityListener");
+
+        if iin == null goto label2;
+
+        $z0 = iin instanceof android.os.INetworkActivityListener;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (android.os.INetworkActivityListener) iin;
+
+        return $r1;
+
+     label2:
+        $r0 = new android.os.INetworkActivityListener$Stub$Proxy;
+
+        specialinvoke $r0.<android.os.INetworkActivityListener$Stub$Proxy: void <init>(android.os.IBinder)>(obj);
+
+        return $r0;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        android.os.INetworkActivityListener$Stub this;
+
+        this := @this: android.os.INetworkActivityListener$Stub;
+
+        return this;
+    }
+
+    public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException
+    {
+        android.os.INetworkActivityListener$Stub this;
+        int code, flags;
+        android.os.Parcel data, reply;
+        boolean $z0;
+
+        this := @this: android.os.INetworkActivityListener$Stub;
+
+        code := @parameter0: int;
+
+        data := @parameter1: android.os.Parcel;
+
+        reply := @parameter2: android.os.Parcel;
+
+        flags := @parameter3: int;
+
+        lookupswitch(code)
+        {
+            case 1: goto label2;
+            case 1598968902: goto label1;
+            default: goto label3;
+        };
+
+     label1:
+        virtualinvoke reply.<android.os.Parcel: void writeString(java.lang.String)>("android.os.INetworkActivityListener");
+
+        return 1;
+
+     label2:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkActivityListener");
+
+        virtualinvoke this.<android.os.INetworkActivityListener$Stub: void onNetworkActive()>();
+
+        return 1;
+
+     label3:
+        $z0 = specialinvoke this.<android.os.Binder: boolean onTransact(int,android.os.Parcel,android.os.Parcel,int)>(code, data, reply, flags);
+
+        return $z0;
+    }
+
+    public static void <clinit>()
+    {
+        <android.os.INetworkActivityListener$Stub: int TRANSACTION_onNetworkActive> = 1;
+
+        <android.os.INetworkActivityListener$Stub: java.lang.String DESCRIPTOR> = "android.os.INetworkActivityListener";
+
+        return;
+    }
+}

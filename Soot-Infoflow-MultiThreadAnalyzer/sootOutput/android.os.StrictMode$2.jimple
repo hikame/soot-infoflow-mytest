@@ -1,0 +1,40 @@
+final class android.os.StrictMode$2 extends java.lang.ThreadLocal
+{
+
+    void <init>()
+    {
+        android.os.StrictMode$2 this;
+
+        this := @this: android.os.StrictMode$2;
+
+        specialinvoke this.<java.lang.ThreadLocal: void <init>()>();
+
+        return;
+    }
+
+    protected java.util.ArrayList initialValue()
+    {
+        android.os.StrictMode$2 this;
+        java.util.ArrayList $r0;
+
+        this := @this: android.os.StrictMode$2;
+
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+        return $r0;
+    }
+
+    protected volatile java.lang.Object initialValue()
+    {
+        android.os.StrictMode$2 this;
+        java.util.ArrayList $r0;
+
+        this := @this: android.os.StrictMode$2;
+
+        $r0 = virtualinvoke this.<android.os.StrictMode$2: java.util.ArrayList initialValue()>();
+
+        return $r0;
+    }
+}

@@ -1,0 +1,31 @@
+public class android.os.BadParcelableException extends android.util.AndroidRuntimeException
+{
+
+    public void <init>(java.lang.String)
+    {
+        android.os.BadParcelableException this;
+        java.lang.String msg;
+
+        this := @this: android.os.BadParcelableException;
+
+        msg := @parameter0: java.lang.String;
+
+        specialinvoke this.<android.util.AndroidRuntimeException: void <init>(java.lang.String)>(msg);
+
+        return;
+    }
+
+    public void <init>(java.lang.Exception)
+    {
+        android.os.BadParcelableException this;
+        java.lang.Exception cause;
+
+        this := @this: android.os.BadParcelableException;
+
+        cause := @parameter0: java.lang.Exception;
+
+        specialinvoke this.<android.util.AndroidRuntimeException: void <init>(java.lang.Exception)>(cause);
+
+        return;
+    }
+}

@@ -1,5 +1,11 @@
 package com.kame.tafhd;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.kame.testapkforhandlerdevelopment.R;
 
 import android.app.Activity;
@@ -10,9 +16,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity {
+	ClassX taintedXField;
+	
 	class ParamClass {
 		public String fieldString;
 		public int fieldInt;
+	}
+	
+	class ClassX {
+		public ClassY objY;
+		public int fieldInt;
+		public ParamClass objPC;
+	}
+	
+	class ClassY{
+		public String tainted;
 	}
 	
 	
@@ -24,13 +42,9 @@ public class MainActivity extends Activity {
 //	    		 return;
 	    	switch (msg.what) {
 			case TEST_MSG:
-//				new Publisher().publish((String)msg.obj + tainted);
-				if(msg.obj.equals("0"))
-					new Publisher().publish((String)msg.obj);
-				else if(msg.obj.equals("1"))
-					new Publisher().publish(tainted);
-				else return;
-//				msg.obj.equals("EqualTest");
+				Publisher pub = new Publisher();
+				ClassX x = (ClassX) msg.obj;
+				pub.publish(x.objY.tainted);
 				break;
 			case UNRELEVANT_MSG:
 				new Publisher().publish("I am in the unrelevent parts.");
@@ -45,16 +59,41 @@ public class MainActivity extends Activity {
 				new Publisher().publish(tainted);
 				break;
 			case FIELD_NP:
-				tainted.equals(":");
+				try {
+					tainted.equals(":");
+					FileReader freader = new FileReader("");
+					freader.read();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+//				} catch (RuntimeException e) {
+//					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case OBJ_NP:
-				msg.obj.equals(":");
+				try {
+					msg.obj.equals("");
+					letsDoNP(msg.obj);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
 			default:
 				break;
 			}
 	     }
 	     
-	     public void doSinkDirectly(){
+	     private void letsDoNP(Object orz) throws IOException  {
+
+		    	 File orzF = new File(orz.toString());
+		    	 FileWriter orgFW = null;
+				orgFW = new FileWriter(orzF);
+		    	orgFW.toString();
+
+	     }
+
+		public void doSinkDirectly(){
 	    	 Publisher pb = new Publisher();
 	    	 pb.publish(tainted);
 	    	 
@@ -65,7 +104,8 @@ public class MainActivity extends Activity {
 	class MyRunnable implements Runnable{
 		@Override
 		public void run() {
-			new Publisher().publish(tainted);
+			String str = taintedXField.objPC.fieldString;
+			new Publisher().publish(str);
 		}
 	}
 
@@ -86,23 +126,36 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		testHandlerPost(new ParamClass());
-		testHandlerSendMSG("TestSendMSG", "TEST2");
+		testHandlerSendMSG("TestSendMSG");
 	}
 
 	
-	private void testHandlerSendMSG(String s0, String s1) {
-//		tainted = s0;
-////		doSink();
-//		((MyHandler) mhandler).doSinkDirectly();
+//	private void testHandlerSendMSG(String s0, String s1) {
+	private void testHandlerSendMSG(String s0) {
+		Message msg = mhandler.obtainMessage(FIELD_NP);
+		tainted = s0;
+		
+//		Message msg = mhandler.obtainMessage(OBJ_NP);
+//		msg.obj = s0;
+		
+		mhandler.sendMessage(msg);
 		
 		//		Message msg = mhandler.obtainMessage(OBJTEST);
 //		msg.obj = s0;
 //		mhandler.sendMessage(msg);
 
-		Message msg = mhandler.obtainMessage(OBJ_NP);
-		tainted = s0;
-		msg.obj = s1;
-		mhandler.sendMessage(msg);
+//		Message msg = mhandler.obtainMessage(FIELD_NP);
+//		tainted = s0;
+////		msg.obj = s1;
+//		mhandler.sendMessage(msg);
+		
+//		Message msg = mhandler.obtainMessage(TEST_MSG);
+//		ClassX objX = new ClassX();
+//		ClassY objY_Local = new ClassY();
+//		objX.objY = objY_Local;
+//		objY_Local.tainted = s0;
+//		msg.obj = objX;
+//		mhandler.sendMessage(msg);
 		
 		
 //		Message msg = mhandler.obtainMessage(ANOTHER);
@@ -118,16 +171,12 @@ public class MainActivity extends Activity {
 
 
 	private void testHandlerPost(final ParamClass pc) {
-		pc.equals("");
-		
-		tainted = pc.fieldString;
-		tainted.equals("");
-//		Publisher pub = new Publisher();
-////		pub.publish(this.anOtherField);
-//		pub.publish(s);
-//		mhandler.sendEmptyMessage(0);
-//		Runnable rn = new MyRunnable();
-//		mhandler.post(rn);
+//		pc.equals("");
+		ClassX objX = new ClassX();
+		objX.objPC = pc;
+		taintedXField = objX;
+		Runnable rn = new MyRunnable();
+		mhandler.post(rn);
 	}
 
 	@Override

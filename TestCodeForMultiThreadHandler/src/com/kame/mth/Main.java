@@ -2,6 +2,8 @@ package com.kame.mth;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 /**对于Thread：R表示原本soot-info可以识别，W表示我们做了扩展之后可以识别*/
 public class Main {	
@@ -42,6 +44,22 @@ public class Main {
 	}
 	
 	public void simpleTest(String s){
+		String test = "abc;def;ghi;";
+		String[] ts = test.split(";");
+		
+		
+		
+		Set<String> ints = new HashSet<String>();
+		ints.add("1");
+		ints.add("2");
+		ints.add("3");
+		ints.add("4");
+//		HashSet<String> ints_clone = new HashSet(ints);
+		for(Object str : ints.toArray()){
+			System.out.println(str);
+			ints.remove(str);
+		}
+		
 		ParamClass pc = new ParamClass();
 		System.out.println(pc.fieldInt);
 		System.out.println(pc.fieldString);

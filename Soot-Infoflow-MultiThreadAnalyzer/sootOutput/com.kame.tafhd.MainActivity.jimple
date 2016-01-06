@@ -1,0 +1,200 @@
+public class com.kame.tafhd.MainActivity extends android.app.Activity
+{
+    com.kame.tafhd.MainActivity$ClassX taintedXField;
+    private static final int TEST_MSG;
+    private static final int UNRELEVANT_MSG;
+    private static final int ANOTHER;
+    private static final int OBJ_Publish;
+    private static final int FIELD_Publish;
+    private static final int OBJ_NP;
+    private static final int FIELD_NP;
+    java.lang.String tainted;
+    java.lang.String anOtherField;
+    android.os.Handler mhandler;
+
+    public void <init>()
+    {
+        com.kame.tafhd.MainActivity this;
+        com.kame.tafhd.MainActivity$MyHandler $r0;
+
+        this := @this: com.kame.tafhd.MainActivity;
+
+        specialinvoke this.<android.app.Activity: void <init>()>();
+
+        $r0 = new com.kame.tafhd.MainActivity$MyHandler;
+
+        specialinvoke $r0.<com.kame.tafhd.MainActivity$MyHandler: void <init>(com.kame.tafhd.MainActivity)>(this);
+
+        this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler> = $r0;
+
+        return;
+    }
+
+    protected void onCreate(android.os.Bundle)
+    {
+        com.kame.tafhd.MainActivity this;
+        android.os.Bundle savedInstanceState;
+        com.kame.tafhd.MainActivity$ParamClass $r0;
+
+        this := @this: com.kame.tafhd.MainActivity;
+
+        savedInstanceState := @parameter0: android.os.Bundle;
+
+        specialinvoke this.<android.app.Activity: void onCreate(android.os.Bundle)>(savedInstanceState);
+
+        virtualinvoke this.<com.kame.tafhd.MainActivity: void setContentView(int)>(2130903040);
+
+        $r0 = new com.kame.tafhd.MainActivity$ParamClass;
+
+        specialinvoke $r0.<com.kame.tafhd.MainActivity$ParamClass: void <init>(com.kame.tafhd.MainActivity)>(this);
+
+        specialinvoke this.<com.kame.tafhd.MainActivity: void testHandlerPost(com.kame.tafhd.MainActivity$ParamClass)>($r0);
+
+        specialinvoke this.<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>("TestSendMSG");
+
+        return;
+    }
+
+    private void testHandlerSendMSG(java.lang.String)
+    {
+        com.kame.tafhd.MainActivity this;
+        java.lang.String s0;
+        android.os.Message msg;
+        android.os.Handler $r0, $r1;
+
+        this := @this: com.kame.tafhd.MainActivity;
+
+        s0 := @parameter0: java.lang.String;
+
+        $r0 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
+
+        msg = virtualinvoke $r0.<android.os.Handler: android.os.Message obtainMessage(int)>(6);
+
+        this.<com.kame.tafhd.MainActivity: java.lang.String tainted> = s0;
+
+        $r1 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
+
+        virtualinvoke $r1.<com.kame.tafhd.MainActivity$MyHandler: void myHandler6(android.os.Message)>(msg);
+
+        return;
+    }
+
+    private void doSink()
+    {
+        com.kame.tafhd.MainActivity this;
+        com.kame.tafhd.Publisher pb, $r0;
+        java.lang.String $r1, $r2;
+
+        this := @this: com.kame.tafhd.MainActivity;
+
+        $r0 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r0.<com.kame.tafhd.Publisher: void <init>()>();
+
+        pb = $r0;
+
+        $r1 = this.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke pb.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r1);
+
+        $r2 = this.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        return;
+    }
+
+    private void testHandlerPost(com.kame.tafhd.MainActivity$ParamClass)
+    {
+        com.kame.tafhd.MainActivity this;
+        com.kame.tafhd.MainActivity$ParamClass pc;
+        com.kame.tafhd.MainActivity$ClassX objX, $r0;
+        com.kame.tafhd.MainActivity$MyRunnable rn, $r1;
+        android.os.Handler $r2;
+
+        this := @this: com.kame.tafhd.MainActivity;
+
+        pc := @parameter0: com.kame.tafhd.MainActivity$ParamClass;
+
+        $r0 = new com.kame.tafhd.MainActivity$ClassX;
+
+        specialinvoke $r0.<com.kame.tafhd.MainActivity$ClassX: void <init>(com.kame.tafhd.MainActivity)>(this);
+
+        objX = $r0;
+
+        objX.<com.kame.tafhd.MainActivity$ClassX: com.kame.tafhd.MainActivity$ParamClass objPC> = pc;
+
+        this.<com.kame.tafhd.MainActivity: com.kame.tafhd.MainActivity$ClassX taintedXField> = objX;
+
+        $r1 = new com.kame.tafhd.MainActivity$MyRunnable;
+
+        specialinvoke $r1.<com.kame.tafhd.MainActivity$MyRunnable: void <init>(com.kame.tafhd.MainActivity)>(this);
+
+        rn = $r1;
+
+        $r2 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
+
+        virtualinvoke $r2.<android.os.Handler: boolean post(java.lang.Runnable)>(rn);
+
+        return;
+    }
+
+    public boolean onCreateOptionsMenu(android.view.Menu)
+    {
+        com.kame.tafhd.MainActivity this;
+        android.view.Menu menu;
+        android.view.MenuInflater $r0;
+
+        this := @this: com.kame.tafhd.MainActivity;
+
+        menu := @parameter0: android.view.Menu;
+
+        $r0 = virtualinvoke this.<com.kame.tafhd.MainActivity: android.view.MenuInflater getMenuInflater()>();
+
+        virtualinvoke $r0.<android.view.MenuInflater: void inflate(int,android.view.Menu)>(2131165184, menu);
+
+        return 1;
+    }
+
+    public boolean onOptionsItemSelected(android.view.MenuItem)
+    {
+        com.kame.tafhd.MainActivity this;
+        android.view.MenuItem item;
+        int id;
+        boolean $z0;
+
+        this := @this: com.kame.tafhd.MainActivity;
+
+        item := @parameter0: android.view.MenuItem;
+
+        id = interfaceinvoke item.<android.view.MenuItem: int getItemId()>();
+
+        if id != 2131230720 goto label1;
+
+        return 1;
+
+     label1:
+        $z0 = specialinvoke this.<android.app.Activity: boolean onOptionsItemSelected(android.view.MenuItem)>(item);
+
+        return $z0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.kame.tafhd.MainActivity: int FIELD_NP> = 6;
+
+        <com.kame.tafhd.MainActivity: int OBJ_NP> = 5;
+
+        <com.kame.tafhd.MainActivity: int FIELD_Publish> = 4;
+
+        <com.kame.tafhd.MainActivity: int OBJ_Publish> = 3;
+
+        <com.kame.tafhd.MainActivity: int ANOTHER> = 2;
+
+        <com.kame.tafhd.MainActivity: int UNRELEVANT_MSG> = 1;
+
+        <com.kame.tafhd.MainActivity: int TEST_MSG> = 0;
+
+        return;
+    }
+}

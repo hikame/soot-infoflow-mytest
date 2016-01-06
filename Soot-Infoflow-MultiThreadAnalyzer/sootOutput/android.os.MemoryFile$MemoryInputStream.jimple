@@ -1,0 +1,260 @@
+class android.os.MemoryFile$MemoryInputStream extends java.io.InputStream
+{
+    private int mMark;
+    private int mOffset;
+    private byte[] mSingleByte;
+    final android.os.MemoryFile this$0;
+
+    private void <init>(android.os.MemoryFile)
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        android.os.MemoryFile l1;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        l1 := @parameter0: android.os.MemoryFile;
+
+        this.<android.os.MemoryFile$MemoryInputStream: android.os.MemoryFile this$0> = l1;
+
+        specialinvoke this.<java.io.InputStream: void <init>()>();
+
+        this.<android.os.MemoryFile$MemoryInputStream: int mMark> = 0;
+
+        this.<android.os.MemoryFile$MemoryInputStream: int mOffset> = 0;
+
+        return;
+    }
+
+    public int available() throws java.io.IOException
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        android.os.MemoryFile $r0, $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        $i0 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        $r0 = this.<android.os.MemoryFile$MemoryInputStream: android.os.MemoryFile this$0>;
+
+        $i1 = staticinvoke <android.os.MemoryFile: int access$200(android.os.MemoryFile)>($r0);
+
+        if $i0 < $i1 goto label1;
+
+        return 0;
+
+     label1:
+        $r1 = this.<android.os.MemoryFile$MemoryInputStream: android.os.MemoryFile this$0>;
+
+        $i2 = staticinvoke <android.os.MemoryFile: int access$200(android.os.MemoryFile)>($r1);
+
+        $i3 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        $i4 = $i2 - $i3;
+
+        return $i4;
+    }
+
+    public boolean markSupported()
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        return 1;
+    }
+
+    public void mark(int)
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        int readlimit, $i0;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        readlimit := @parameter0: int;
+
+        $i0 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        this.<android.os.MemoryFile$MemoryInputStream: int mMark> = $i0;
+
+        return;
+    }
+
+    public void reset() throws java.io.IOException
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        int $i0;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        $i0 = this.<android.os.MemoryFile$MemoryInputStream: int mMark>;
+
+        this.<android.os.MemoryFile$MemoryInputStream: int mOffset> = $i0;
+
+        return;
+    }
+
+    public int read() throws java.io.IOException
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        int result;
+        byte[] $r0, $r1, $r2, $r3;
+        byte $b0;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        $r0 = this.<android.os.MemoryFile$MemoryInputStream: byte[] mSingleByte>;
+
+        if $r0 != null goto label1;
+
+        $r3 = newarray (byte)[1];
+
+        this.<android.os.MemoryFile$MemoryInputStream: byte[] mSingleByte> = $r3;
+
+     label1:
+        $r1 = this.<android.os.MemoryFile$MemoryInputStream: byte[] mSingleByte>;
+
+        result = virtualinvoke this.<android.os.MemoryFile$MemoryInputStream: int read(byte[],int,int)>($r1, 0, 1);
+
+        if result == 1 goto label2;
+
+        return -1;
+
+     label2:
+        $r2 = this.<android.os.MemoryFile$MemoryInputStream: byte[] mSingleByte>;
+
+        $b0 = $r2[0];
+
+        return $b0;
+    }
+
+    public int read(byte[], int, int) throws java.io.IOException
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        byte[] buffer;
+        int offset, result, $i0, $i1, $i2, $i3, $i4, $i5, count#1, count#2;
+        java.lang.IndexOutOfBoundsException $r0;
+        android.os.MemoryFile $r1;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        buffer := @parameter0: byte[];
+
+        offset := @parameter1: int;
+
+        count#1 := @parameter2: int;
+
+        if offset < 0 goto label1;
+
+        if count#1 < 0 goto label1;
+
+        $i1 = offset + count#1;
+
+        $i0 = lengthof buffer;
+
+        if $i1 <= $i0 goto label2;
+
+     label1:
+        $r0 = new java.lang.IndexOutOfBoundsException;
+
+        specialinvoke $r0.<java.lang.IndexOutOfBoundsException: void <init>()>();
+
+        throw $r0;
+
+     label2:
+        $i2 = virtualinvoke this.<android.os.MemoryFile$MemoryInputStream: int available()>();
+
+        count#2 = staticinvoke <java.lang.Math: int min(int,int)>(count#1, $i2);
+
+        if count#2 >= 1 goto label3;
+
+        return -1;
+
+     label3:
+        $r1 = this.<android.os.MemoryFile$MemoryInputStream: android.os.MemoryFile this$0>;
+
+        $i3 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        result = virtualinvoke $r1.<android.os.MemoryFile: int readBytes(byte[],int,int,int)>(buffer, $i3, offset, count#2);
+
+        if result <= 0 goto label4;
+
+        $i4 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        $i5 = $i4 + result;
+
+        this.<android.os.MemoryFile$MemoryInputStream: int mOffset> = $i5;
+
+     label4:
+        return result;
+    }
+
+    public long skip(long) throws java.io.IOException
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        int $i0, $i3, $i6, $i9, $i10, $i11, $i12;
+        long $l1, $l2, $l4, $l7, $l8, n#1;
+        android.os.MemoryFile $r0, $r1;
+        byte $b5;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        n#1 := @parameter0: long;
+
+        $i0 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        $l1 = (long) $i0;
+
+        $l2 = $l1 + n#1;
+
+        $r0 = this.<android.os.MemoryFile$MemoryInputStream: android.os.MemoryFile this$0>;
+
+        $i3 = staticinvoke <android.os.MemoryFile: int access$200(android.os.MemoryFile)>($r0);
+
+        $l4 = (long) $i3;
+
+        $b5 = $l2 cmp $l4;
+
+        if $b5 <= 0 goto label1;
+
+        $r1 = this.<android.os.MemoryFile$MemoryInputStream: android.os.MemoryFile this$0>;
+
+        $i10 = staticinvoke <android.os.MemoryFile: int access$200(android.os.MemoryFile)>($r1);
+
+        $i12 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        $i11 = $i10 - $i12;
+
+        n#1 = (long) $i11;
+
+     label1:
+        $i6 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+
+        $l7 = (long) $i6;
+
+        $l8 = $l7 + n#1;
+
+        $i9 = (int) $l8;
+
+        this.<android.os.MemoryFile$MemoryInputStream: int mOffset> = $i9;
+
+        return n#1;
+    }
+
+    void <init>(android.os.MemoryFile, android.os.MemoryFile$1)
+    {
+        android.os.MemoryFile$MemoryInputStream this;
+        android.os.MemoryFile x0;
+        android.os.MemoryFile$1 x1;
+
+        this := @this: android.os.MemoryFile$MemoryInputStream;
+
+        x0 := @parameter0: android.os.MemoryFile;
+
+        x1 := @parameter1: android.os.MemoryFile$1;
+
+        specialinvoke this.<android.os.MemoryFile$MemoryInputStream: void <init>(android.os.MemoryFile)>(x0);
+
+        return;
+    }
+}

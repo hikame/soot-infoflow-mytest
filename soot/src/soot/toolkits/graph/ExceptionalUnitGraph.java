@@ -245,6 +245,8 @@ public class ExceptionalUnitGraph extends UnitGraph implements
 	 */
 	protected void initialize(ThrowAnalysis throwAnalysis,
 			boolean omitExceptingUnitEdges) {
+if(this.body.getMethod().getName().equals("letsDoNP"))
+	System.out.println();
 		int size = unitChain.size();
 		Set<Unit> trapUnitsThatAreHeads = Collections.emptySet();
 

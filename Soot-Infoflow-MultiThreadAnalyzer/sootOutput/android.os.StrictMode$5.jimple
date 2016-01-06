@@ -1,0 +1,101 @@
+final class android.os.StrictMode$5 extends java.lang.Thread
+{
+    final int val$violationMaskSubset;
+    final android.os.StrictMode$ViolationInfo val$info;
+
+    void <init>(java.lang.String, int, android.os.StrictMode$ViolationInfo)
+    {
+        android.os.StrictMode$5 this;
+        java.lang.String x0;
+        int l2;
+        android.os.StrictMode$ViolationInfo l3;
+
+        this := @this: android.os.StrictMode$5;
+
+        x0 := @parameter0: java.lang.String;
+
+        l2 := @parameter1: int;
+
+        l3 := @parameter2: android.os.StrictMode$ViolationInfo;
+
+        this.<android.os.StrictMode$5: int val$violationMaskSubset> = l2;
+
+        this.<android.os.StrictMode$5: android.os.StrictMode$ViolationInfo val$info> = l3;
+
+        specialinvoke this.<java.lang.Thread: void <init>(java.lang.String)>(x0);
+
+        return;
+    }
+
+    public void run()
+    {
+        android.os.StrictMode$5 this;
+        android.os.IBinder $r0;
+        android.os.StrictMode$ViolationInfo $r1;
+        int $i0, am#3;
+        java.util.concurrent.atomic.AtomicInteger $r2;
+        boolean $z0;
+        java.lang.StringBuilder $r3, $r4, $r5;
+        java.lang.String $r6;
+        android.os.RemoteException $r7, am#2;
+        android.app.IActivityManager am#1;
+
+        this := @this: android.os.StrictMode$5;
+
+        staticinvoke <android.os.Process: void setThreadPriority(int)>(10);
+
+     label1:
+        am#1 = staticinvoke <android.app.ActivityManagerNative: android.app.IActivityManager getDefault()>();
+
+        if am#1 != null goto label2;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", "No activity manager; failed to Dropbox violation.");
+
+        goto label3;
+
+     label2:
+        $r0 = staticinvoke <com.android.internal.os.RuntimeInit: android.os.IBinder getApplicationObject()>();
+
+        $i0 = this.<android.os.StrictMode$5: int val$violationMaskSubset>;
+
+        $r1 = this.<android.os.StrictMode$5: android.os.StrictMode$ViolationInfo val$info>;
+
+        interfaceinvoke am#1.<android.app.IActivityManager: void handleApplicationStrictModeViolation(android.os.IBinder,int,android.os.StrictMode$ViolationInfo)>($r0, $i0, $r1);
+
+     label3:
+        goto label5;
+
+     label4:
+        $r7 := @caughtexception;
+
+        am#2 = $r7;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("StrictMode", "RemoteException handling StrictMode violation", am#2);
+
+     label5:
+        $r2 = staticinvoke <android.os.StrictMode: java.util.concurrent.atomic.AtomicInteger access$1400()>();
+
+        am#3 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicInteger: int decrementAndGet()>();
+
+        $z0 = staticinvoke <android.os.StrictMode: boolean access$800()>();
+
+        if $z0 == 0 goto label6;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Dropbox complete; in-flight=");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(am#3);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", $r6);
+
+     label6:
+        return;
+
+        catch android.os.RemoteException from label1 to label3 with label4;
+    }
+}

@@ -1,0 +1,17 @@
+public class android.os.StrictMode$StrictModeNetworkViolation extends android.os.StrictMode$StrictModeViolation
+{
+
+    public void <init>(int)
+    {
+        android.os.StrictMode$StrictModeNetworkViolation this;
+        int policyMask;
+
+        this := @this: android.os.StrictMode$StrictModeNetworkViolation;
+
+        policyMask := @parameter0: int;
+
+        specialinvoke this.<android.os.StrictMode$StrictModeViolation: void <init>(int,int,java.lang.String)>(policyMask, 4, null);
+
+        return;
+    }
+}

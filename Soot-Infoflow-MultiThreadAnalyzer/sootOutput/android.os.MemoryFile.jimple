@@ -1,0 +1,517 @@
+public class android.os.MemoryFile extends java.lang.Object
+{
+    private static java.lang.String TAG;
+    private static final int PROT_READ;
+    private static final int PROT_WRITE;
+    private java.io.FileDescriptor mFD;
+    private long mAddress;
+    private int mLength;
+    private boolean mAllowPurging;
+
+    private static native java.io.FileDescriptor native_open(java.lang.String, int) throws java.io.IOException;
+
+    private static native long native_mmap(java.io.FileDescriptor, int, int) throws java.io.IOException;
+
+    private static native void native_munmap(long, int) throws java.io.IOException;
+
+    private static native void native_close(java.io.FileDescriptor);
+
+    private static native int native_read(java.io.FileDescriptor, long, byte[], int, int, int, boolean) throws java.io.IOException;
+
+    private static native void native_write(java.io.FileDescriptor, long, byte[], int, int, int, boolean) throws java.io.IOException;
+
+    private static native void native_pin(java.io.FileDescriptor, boolean) throws java.io.IOException;
+
+    private static native int native_get_size(java.io.FileDescriptor) throws java.io.IOException;
+
+    public void <init>(java.lang.String, int) throws java.io.IOException
+    {
+        android.os.MemoryFile this;
+        java.lang.String name, $r4;
+        int length;
+        java.io.IOException $r0;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        java.io.FileDescriptor $r5, $r6;
+        long $l0;
+
+        this := @this: android.os.MemoryFile;
+
+        name := @parameter0: java.lang.String;
+
+        length := @parameter1: int;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.MemoryFile: boolean mAllowPurging> = 0;
+
+        this.<android.os.MemoryFile: int mLength> = length;
+
+        if length < 0 goto label1;
+
+        $r5 = staticinvoke <android.os.MemoryFile: java.io.FileDescriptor native_open(java.lang.String,int)>(name, length);
+
+        this.<android.os.MemoryFile: java.io.FileDescriptor mFD> = $r5;
+
+        goto label2;
+
+     label1:
+        $r0 = new java.io.IOException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid length: ");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(length);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r0;
+
+     label2:
+        if length <= 0 goto label3;
+
+        $r6 = this.<android.os.MemoryFile: java.io.FileDescriptor mFD>;
+
+        $l0 = staticinvoke <android.os.MemoryFile: long native_mmap(java.io.FileDescriptor,int,int)>($r6, length, 3);
+
+        this.<android.os.MemoryFile: long mAddress> = $l0;
+
+        goto label4;
+
+     label3:
+        this.<android.os.MemoryFile: long mAddress> = 0L;
+
+     label4:
+        return;
+    }
+
+    public void close()
+    {
+        android.os.MemoryFile this;
+        boolean $z0;
+        java.io.FileDescriptor $r0;
+
+        this := @this: android.os.MemoryFile;
+
+        virtualinvoke this.<android.os.MemoryFile: void deactivate()>();
+
+        $z0 = specialinvoke this.<android.os.MemoryFile: boolean isClosed()>();
+
+        if $z0 != 0 goto label1;
+
+        $r0 = this.<android.os.MemoryFile: java.io.FileDescriptor mFD>;
+
+        staticinvoke <android.os.MemoryFile: void native_close(java.io.FileDescriptor)>($r0);
+
+     label1:
+        return;
+    }
+
+    void deactivate()
+    {
+        android.os.MemoryFile this;
+        java.io.IOException ex, $r0;
+        boolean $z0;
+        int $i0;
+        long $l1;
+        java.lang.String $r1, $r2;
+
+        this := @this: android.os.MemoryFile;
+
+        $z0 = specialinvoke this.<android.os.MemoryFile: boolean isDeactivated()>();
+
+        if $z0 != 0 goto label4;
+
+     label1:
+        $l1 = this.<android.os.MemoryFile: long mAddress>;
+
+        $i0 = this.<android.os.MemoryFile: int mLength>;
+
+        staticinvoke <android.os.MemoryFile: void native_munmap(long,int)>($l1, $i0);
+
+        this.<android.os.MemoryFile: long mAddress> = 0L;
+
+     label2:
+        goto label4;
+
+     label3:
+        $r0 := @caughtexception;
+
+        ex = $r0;
+
+        $r1 = <android.os.MemoryFile: java.lang.String TAG>;
+
+        $r2 = virtualinvoke ex.<java.io.IOException: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>($r1, $r2);
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    private boolean isDeactivated()
+    {
+        android.os.MemoryFile this;
+        long $l0;
+        byte $b1;
+        boolean $z0;
+
+        this := @this: android.os.MemoryFile;
+
+        $l0 = this.<android.os.MemoryFile: long mAddress>;
+
+        $b1 = $l0 cmp 0L;
+
+        if $b1 != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    private boolean isClosed()
+    {
+        android.os.MemoryFile this;
+        java.io.FileDescriptor $r0;
+        boolean $z0, $z1;
+
+        this := @this: android.os.MemoryFile;
+
+        $r0 = this.<android.os.MemoryFile: java.io.FileDescriptor mFD>;
+
+        $z0 = virtualinvoke $r0.<java.io.FileDescriptor: boolean valid()>();
+
+        if $z0 != 0 goto label1;
+
+        $z1 = 1;
+
+        goto label2;
+
+     label1:
+        $z1 = 0;
+
+     label2:
+        return $z1;
+    }
+
+    protected void finalize()
+    {
+        android.os.MemoryFile this;
+        boolean $z0;
+        java.lang.String $r0;
+
+        this := @this: android.os.MemoryFile;
+
+        $z0 = specialinvoke this.<android.os.MemoryFile: boolean isClosed()>();
+
+        if $z0 != 0 goto label1;
+
+        $r0 = <android.os.MemoryFile: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>($r0, "MemoryFile.finalize() called while ashmem still open");
+
+        virtualinvoke this.<android.os.MemoryFile: void close()>();
+
+     label1:
+        return;
+    }
+
+    public int length()
+    {
+        android.os.MemoryFile this;
+        int $i0;
+
+        this := @this: android.os.MemoryFile;
+
+        $i0 = this.<android.os.MemoryFile: int mLength>;
+
+        return $i0;
+    }
+
+    public boolean isPurgingAllowed()
+    {
+        android.os.MemoryFile this;
+        boolean $z0;
+
+        this := @this: android.os.MemoryFile;
+
+        $z0 = this.<android.os.MemoryFile: boolean mAllowPurging>;
+
+        return $z0;
+    }
+
+    public synchronized boolean allowPurging(boolean) throws java.io.IOException
+    {
+        android.os.MemoryFile this;
+        boolean allowPurging, oldValue, $z0;
+        java.io.FileDescriptor $r0;
+
+        this := @this: android.os.MemoryFile;
+
+        allowPurging := @parameter0: boolean;
+
+        oldValue = this.<android.os.MemoryFile: boolean mAllowPurging>;
+
+        if oldValue == allowPurging goto label3;
+
+        $r0 = this.<android.os.MemoryFile: java.io.FileDescriptor mFD>;
+
+        if allowPurging != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <android.os.MemoryFile: void native_pin(java.io.FileDescriptor,boolean)>($r0, $z0);
+
+        this.<android.os.MemoryFile: boolean mAllowPurging> = allowPurging;
+
+     label3:
+        return oldValue;
+    }
+
+    public java.io.InputStream getInputStream()
+    {
+        android.os.MemoryFile this;
+        android.os.MemoryFile$MemoryInputStream $r0;
+
+        this := @this: android.os.MemoryFile;
+
+        $r0 = new android.os.MemoryFile$MemoryInputStream;
+
+        specialinvoke $r0.<android.os.MemoryFile$MemoryInputStream: void <init>(android.os.MemoryFile,android.os.MemoryFile$1)>(this, null);
+
+        return $r0;
+    }
+
+    public java.io.OutputStream getOutputStream()
+    {
+        android.os.MemoryFile this;
+        android.os.MemoryFile$MemoryOutputStream $r0;
+
+        this := @this: android.os.MemoryFile;
+
+        $r0 = new android.os.MemoryFile$MemoryOutputStream;
+
+        specialinvoke $r0.<android.os.MemoryFile$MemoryOutputStream: void <init>(android.os.MemoryFile,android.os.MemoryFile$1)>(this, null);
+
+        return $r0;
+    }
+
+    public int readBytes(byte[], int, int, int) throws java.io.IOException
+    {
+        android.os.MemoryFile this;
+        byte[] buffer;
+        int srcOffset, destOffset, count, $i0, $i1, $i2, $i3, $i4, $i5, $i7;
+        boolean $z0, $z1;
+        java.lang.IndexOutOfBoundsException $r0;
+        long $l6;
+        java.io.FileDescriptor $r1;
+        java.io.IOException $r2;
+
+        this := @this: android.os.MemoryFile;
+
+        buffer := @parameter0: byte[];
+
+        srcOffset := @parameter1: int;
+
+        destOffset := @parameter2: int;
+
+        count := @parameter3: int;
+
+        $z0 = specialinvoke this.<android.os.MemoryFile: boolean isDeactivated()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Can\'t read from deactivated memory file.");
+
+        throw $r2;
+
+     label1:
+        if destOffset < 0 goto label2;
+
+        $i0 = lengthof buffer;
+
+        if destOffset > $i0 goto label2;
+
+        if count < 0 goto label2;
+
+        $i1 = lengthof buffer;
+
+        $i2 = $i1 - destOffset;
+
+        if count > $i2 goto label2;
+
+        if srcOffset < 0 goto label2;
+
+        $i3 = this.<android.os.MemoryFile: int mLength>;
+
+        if srcOffset > $i3 goto label2;
+
+        $i4 = this.<android.os.MemoryFile: int mLength>;
+
+        $i5 = $i4 - srcOffset;
+
+        if count <= $i5 goto label3;
+
+     label2:
+        $r0 = new java.lang.IndexOutOfBoundsException;
+
+        specialinvoke $r0.<java.lang.IndexOutOfBoundsException: void <init>()>();
+
+        throw $r0;
+
+     label3:
+        $r1 = this.<android.os.MemoryFile: java.io.FileDescriptor mFD>;
+
+        $l6 = this.<android.os.MemoryFile: long mAddress>;
+
+        $z1 = this.<android.os.MemoryFile: boolean mAllowPurging>;
+
+        $i7 = staticinvoke <android.os.MemoryFile: int native_read(java.io.FileDescriptor,long,byte[],int,int,int,boolean)>($r1, $l6, buffer, srcOffset, destOffset, count, $z1);
+
+        return $i7;
+    }
+
+    public void writeBytes(byte[], int, int, int) throws java.io.IOException
+    {
+        android.os.MemoryFile this;
+        byte[] buffer;
+        int srcOffset, destOffset, count, $i0, $i1, $i2, $i3, $i4, $i5;
+        boolean $z0, $z1;
+        java.lang.IndexOutOfBoundsException $r0;
+        long $l6;
+        java.io.FileDescriptor $r1;
+        java.io.IOException $r2;
+
+        this := @this: android.os.MemoryFile;
+
+        buffer := @parameter0: byte[];
+
+        srcOffset := @parameter1: int;
+
+        destOffset := @parameter2: int;
+
+        count := @parameter3: int;
+
+        $z0 = specialinvoke this.<android.os.MemoryFile: boolean isDeactivated()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Can\'t write to deactivated memory file.");
+
+        throw $r2;
+
+     label1:
+        if srcOffset < 0 goto label2;
+
+        $i0 = lengthof buffer;
+
+        if srcOffset > $i0 goto label2;
+
+        if count < 0 goto label2;
+
+        $i1 = lengthof buffer;
+
+        $i2 = $i1 - srcOffset;
+
+        if count > $i2 goto label2;
+
+        if destOffset < 0 goto label2;
+
+        $i3 = this.<android.os.MemoryFile: int mLength>;
+
+        if destOffset > $i3 goto label2;
+
+        $i4 = this.<android.os.MemoryFile: int mLength>;
+
+        $i5 = $i4 - destOffset;
+
+        if count <= $i5 goto label3;
+
+     label2:
+        $r0 = new java.lang.IndexOutOfBoundsException;
+
+        specialinvoke $r0.<java.lang.IndexOutOfBoundsException: void <init>()>();
+
+        throw $r0;
+
+     label3:
+        $r1 = this.<android.os.MemoryFile: java.io.FileDescriptor mFD>;
+
+        $l6 = this.<android.os.MemoryFile: long mAddress>;
+
+        $z1 = this.<android.os.MemoryFile: boolean mAllowPurging>;
+
+        staticinvoke <android.os.MemoryFile: void native_write(java.io.FileDescriptor,long,byte[],int,int,int,boolean)>($r1, $l6, buffer, srcOffset, destOffset, count, $z1);
+
+        return;
+    }
+
+    public java.io.FileDescriptor getFileDescriptor() throws java.io.IOException
+    {
+        android.os.MemoryFile this;
+        java.io.FileDescriptor $r0;
+
+        this := @this: android.os.MemoryFile;
+
+        $r0 = this.<android.os.MemoryFile: java.io.FileDescriptor mFD>;
+
+        return $r0;
+    }
+
+    public static int getSize(java.io.FileDescriptor) throws java.io.IOException
+    {
+        java.io.FileDescriptor fd;
+        int $i0;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        $i0 = staticinvoke <android.os.MemoryFile: int native_get_size(java.io.FileDescriptor)>(fd);
+
+        return $i0;
+    }
+
+    static int access$200(android.os.MemoryFile)
+    {
+        android.os.MemoryFile x0;
+        int $i0;
+
+        x0 := @parameter0: android.os.MemoryFile;
+
+        $i0 = x0.<android.os.MemoryFile: int mLength>;
+
+        return $i0;
+    }
+
+    static void <clinit>()
+    {
+        <android.os.MemoryFile: int PROT_WRITE> = 2;
+
+        <android.os.MemoryFile: int PROT_READ> = 1;
+
+        <android.os.MemoryFile: java.lang.String TAG> = "MemoryFile";
+
+        return;
+    }
+}

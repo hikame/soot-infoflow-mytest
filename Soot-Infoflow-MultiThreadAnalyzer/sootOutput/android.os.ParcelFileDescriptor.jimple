@@ -1,0 +1,1894 @@
+public class android.os.ParcelFileDescriptor extends java.lang.Object implements android.os.Parcelable, java.io.Closeable
+{
+    private static final java.lang.String TAG;
+    private final java.io.FileDescriptor mFd;
+    private java.io.FileDescriptor mCommFd;
+    private final android.os.ParcelFileDescriptor mWrapped;
+    private static final int MAX_STATUS;
+    private byte[] mStatusBuf;
+    private android.os.ParcelFileDescriptor$Status mStatus;
+    private volatile boolean mClosed;
+    private final dalvik.system.CloseGuard mGuard;
+    public static final int MODE_WORLD_READABLE;
+    public static final int MODE_WORLD_WRITEABLE;
+    public static final int MODE_READ_ONLY;
+    public static final int MODE_WRITE_ONLY;
+    public static final int MODE_READ_WRITE;
+    public static final int MODE_CREATE;
+    public static final int MODE_TRUNCATE;
+    public static final int MODE_APPEND;
+    public static final android.os.Parcelable$Creator CREATOR;
+
+    public void <init>(android.os.ParcelFileDescriptor)
+    {
+        android.os.ParcelFileDescriptor this, wrapped;
+        dalvik.system.CloseGuard $r0;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        wrapped := @parameter0: android.os.ParcelFileDescriptor;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = staticinvoke <dalvik.system.CloseGuard: dalvik.system.CloseGuard get()>();
+
+        this.<android.os.ParcelFileDescriptor: dalvik.system.CloseGuard mGuard> = $r0;
+
+        this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped> = wrapped;
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd> = null;
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = null;
+
+        this.<android.os.ParcelFileDescriptor: boolean mClosed> = 1;
+
+        return;
+    }
+
+    public void <init>(java.io.FileDescriptor)
+    {
+        android.os.ParcelFileDescriptor this;
+        java.io.FileDescriptor fd;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        specialinvoke this.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor,java.io.FileDescriptor)>(fd, null);
+
+        return;
+    }
+
+    public void <init>(java.io.FileDescriptor, java.io.FileDescriptor)
+    {
+        android.os.ParcelFileDescriptor this;
+        java.io.FileDescriptor fd, commChannel;
+        dalvik.system.CloseGuard $r0, $r1;
+        java.lang.NullPointerException $r2;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        commChannel := @parameter1: java.io.FileDescriptor;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = staticinvoke <dalvik.system.CloseGuard: dalvik.system.CloseGuard get()>();
+
+        this.<android.os.ParcelFileDescriptor: dalvik.system.CloseGuard mGuard> = $r0;
+
+        if fd != null goto label1;
+
+        $r2 = new java.lang.NullPointerException;
+
+        specialinvoke $r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("FileDescriptor must not be null");
+
+        throw $r2;
+
+     label1:
+        this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped> = null;
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd> = fd;
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = commChannel;
+
+        $r1 = this.<android.os.ParcelFileDescriptor: dalvik.system.CloseGuard mGuard>;
+
+        virtualinvoke $r1.<dalvik.system.CloseGuard: void open(java.lang.String)>("close");
+
+        return;
+    }
+
+    public static android.os.ParcelFileDescriptor open(java.io.File, int) throws java.io.FileNotFoundException
+    {
+        java.io.File file;
+        int mode;
+        java.io.FileDescriptor fd;
+        android.os.ParcelFileDescriptor $r0;
+
+        file := @parameter0: java.io.File;
+
+        mode := @parameter1: int;
+
+        fd = staticinvoke <android.os.ParcelFileDescriptor: java.io.FileDescriptor openInternal(java.io.File,int)>(file, mode);
+
+        if fd != null goto label1;
+
+        return null;
+
+     label1:
+        $r0 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r0.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fd);
+
+        return $r0;
+    }
+
+    public static android.os.ParcelFileDescriptor open(java.io.File, int, android.os.Handler, android.os.ParcelFileDescriptor$OnCloseListener) throws java.io.IOException
+    {
+        java.io.File file;
+        int mode;
+        android.os.Handler handler;
+        android.os.ParcelFileDescriptor$OnCloseListener listener;
+        java.io.FileDescriptor fd, $r1, $r4;
+        java.io.FileDescriptor[] comm;
+        android.os.ParcelFileDescriptor pfd, $r0;
+        android.os.MessageQueue queue;
+        android.os.Looper $r2;
+        android.os.ParcelFileDescriptor$1 $r3;
+        java.lang.IllegalArgumentException $r5, $r6;
+
+        file := @parameter0: java.io.File;
+
+        mode := @parameter1: int;
+
+        handler := @parameter2: android.os.Handler;
+
+        listener := @parameter3: android.os.ParcelFileDescriptor$OnCloseListener;
+
+        if handler != null goto label1;
+
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Handler must not be null");
+
+        throw $r6;
+
+     label1:
+        if listener != null goto label2;
+
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Listener must not be null");
+
+        throw $r5;
+
+     label2:
+        fd = staticinvoke <android.os.ParcelFileDescriptor: java.io.FileDescriptor openInternal(java.io.File,int)>(file, mode);
+
+        if fd != null goto label3;
+
+        return null;
+
+     label3:
+        comm = staticinvoke <android.os.ParcelFileDescriptor: java.io.FileDescriptor[] createCommSocketPair()>();
+
+        $r0 = new android.os.ParcelFileDescriptor;
+
+        $r1 = comm[0];
+
+        specialinvoke $r0.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor,java.io.FileDescriptor)>(fd, $r1);
+
+        pfd = $r0;
+
+        $r2 = virtualinvoke handler.<android.os.Handler: android.os.Looper getLooper()>();
+
+        queue = virtualinvoke $r2.<android.os.Looper: android.os.MessageQueue getQueue()>();
+
+        $r4 = comm[1];
+
+        $r3 = new android.os.ParcelFileDescriptor$1;
+
+        specialinvoke $r3.<android.os.ParcelFileDescriptor$1: void <init>(android.os.MessageQueue,android.os.ParcelFileDescriptor$OnCloseListener)>(queue, listener);
+
+        virtualinvoke queue.<android.os.MessageQueue: void addOnFileDescriptorEventListener(java.io.FileDescriptor,int,android.os.MessageQueue$OnFileDescriptorEventListener)>($r4, 1, $r3);
+
+        return pfd;
+    }
+
+    private static java.io.FileDescriptor openInternal(java.io.File, int) throws java.io.FileNotFoundException
+    {
+        java.io.File file;
+        int mode, $i0;
+        java.lang.String path;
+        java.io.FileDescriptor $r0;
+        java.lang.IllegalArgumentException $r1;
+
+        file := @parameter0: java.io.File;
+
+        mode := @parameter1: int;
+
+        $i0 = mode & 805306368;
+
+        if $i0 != 0 goto label1;
+
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Must specify MODE_READ_ONLY, MODE_WRITE_ONLY, or MODE_READ_WRITE");
+
+        throw $r1;
+
+     label1:
+        path = virtualinvoke file.<java.io.File: java.lang.String getPath()>();
+
+        $r0 = staticinvoke <android.os.Parcel: java.io.FileDescriptor openFileDescriptor(java.lang.String,int)>(path, mode);
+
+        return $r0;
+    }
+
+    public static android.os.ParcelFileDescriptor dup(java.io.FileDescriptor) throws java.io.IOException
+    {
+        java.io.FileDescriptor orig, fd#1;
+        android.os.ParcelFileDescriptor $r0;
+        android.system.ErrnoException $r1, fd#2;
+        java.io.IOException $r2;
+
+        orig := @parameter0: java.io.FileDescriptor;
+
+     label1:
+        fd#1 = staticinvoke <android.system.Os: java.io.FileDescriptor dup(java.io.FileDescriptor)>(orig);
+
+        $r0 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r0.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fd#1);
+
+     label2:
+        return $r0;
+
+     label3:
+        $r1 := @caughtexception;
+
+        fd#2 = $r1;
+
+        $r2 = virtualinvoke fd#2.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r2;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    public android.os.ParcelFileDescriptor dup() throws java.io.IOException
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r2, $r3, $r4;
+        java.io.FileDescriptor $r1;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r3 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $r4 = virtualinvoke $r3.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor dup()>();
+
+        return $r4;
+
+     label1:
+        $r1 = virtualinvoke this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor getFileDescriptor()>();
+
+        $r2 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor dup(java.io.FileDescriptor)>($r1);
+
+        return $r2;
+    }
+
+    public static android.os.ParcelFileDescriptor fromFd(int) throws java.io.IOException
+    {
+        int fd;
+        java.io.FileDescriptor original, $r0, dup#1;
+        android.os.ParcelFileDescriptor $r1;
+        android.system.ErrnoException $r2, dup#2;
+        java.io.IOException $r3;
+
+        fd := @parameter0: int;
+
+        $r0 = new java.io.FileDescriptor;
+
+        specialinvoke $r0.<java.io.FileDescriptor: void <init>()>();
+
+        original = $r0;
+
+        virtualinvoke original.<java.io.FileDescriptor: void setInt$(int)>(fd);
+
+     label1:
+        dup#1 = staticinvoke <android.system.Os: java.io.FileDescriptor dup(java.io.FileDescriptor)>(original);
+
+        $r1 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r1.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(dup#1);
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        dup#2 = $r2;
+
+        $r3 = virtualinvoke dup#2.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r3;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    public static android.os.ParcelFileDescriptor adoptFd(int)
+    {
+        int fd;
+        java.io.FileDescriptor fdesc, $r0;
+        android.os.ParcelFileDescriptor $r1;
+
+        fd := @parameter0: int;
+
+        $r0 = new java.io.FileDescriptor;
+
+        specialinvoke $r0.<java.io.FileDescriptor: void <init>()>();
+
+        fdesc = $r0;
+
+        virtualinvoke fdesc.<java.io.FileDescriptor: void setInt$(int)>(fd);
+
+        $r1 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r1.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fdesc);
+
+        return $r1;
+    }
+
+    public static android.os.ParcelFileDescriptor fromSocket(java.net.Socket)
+    {
+        java.net.Socket socket;
+        java.io.FileDescriptor fd;
+        android.os.ParcelFileDescriptor $r0;
+
+        socket := @parameter0: java.net.Socket;
+
+        fd = virtualinvoke socket.<java.net.Socket: java.io.FileDescriptor getFileDescriptor$()>();
+
+        if fd == null goto label1;
+
+        $r0 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r0.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fd);
+
+        goto label2;
+
+     label1:
+        $r0 = null;
+
+     label2:
+        return $r0;
+    }
+
+    public static android.os.ParcelFileDescriptor fromDatagramSocket(java.net.DatagramSocket)
+    {
+        java.net.DatagramSocket datagramSocket;
+        java.io.FileDescriptor fd;
+        android.os.ParcelFileDescriptor $r0;
+
+        datagramSocket := @parameter0: java.net.DatagramSocket;
+
+        fd = virtualinvoke datagramSocket.<java.net.DatagramSocket: java.io.FileDescriptor getFileDescriptor$()>();
+
+        if fd == null goto label1;
+
+        $r0 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r0.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fd);
+
+        goto label2;
+
+     label1:
+        $r0 = null;
+
+     label2:
+        return $r0;
+    }
+
+    public static android.os.ParcelFileDescriptor[] createPipe() throws java.io.IOException
+    {
+        android.os.ParcelFileDescriptor[] $r0;
+        android.os.ParcelFileDescriptor $r1, $r3;
+        java.io.FileDescriptor $r2, $r4;
+        android.system.ErrnoException $r5, fds#2;
+        java.io.IOException $r6;
+        java.io.FileDescriptor[] fds#1;
+
+     label1:
+        fds#1 = staticinvoke <android.system.Os: java.io.FileDescriptor[] pipe()>();
+
+        $r0 = newarray (android.os.ParcelFileDescriptor)[2];
+
+        $r1 = new android.os.ParcelFileDescriptor;
+
+        $r2 = fds#1[0];
+
+        specialinvoke $r1.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>($r2);
+
+        $r0[0] = $r1;
+
+        $r3 = new android.os.ParcelFileDescriptor;
+
+        $r4 = fds#1[1];
+
+        specialinvoke $r3.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>($r4);
+
+        $r0[1] = $r3;
+
+     label2:
+        return $r0;
+
+     label3:
+        $r5 := @caughtexception;
+
+        fds#2 = $r5;
+
+        $r6 = virtualinvoke fds#2.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r6;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    public static android.os.ParcelFileDescriptor[] createReliablePipe() throws java.io.IOException
+    {
+        java.io.FileDescriptor[] fds, comm#1;
+        android.os.ParcelFileDescriptor[] $r0;
+        android.os.ParcelFileDescriptor $r1, $r4;
+        java.io.FileDescriptor $r2, $r3, $r5, $r6;
+        android.system.ErrnoException $r7, comm#2;
+        java.io.IOException $r8;
+
+     label1:
+        comm#1 = staticinvoke <android.os.ParcelFileDescriptor: java.io.FileDescriptor[] createCommSocketPair()>();
+
+        fds = staticinvoke <android.system.Os: java.io.FileDescriptor[] pipe()>();
+
+        $r0 = newarray (android.os.ParcelFileDescriptor)[2];
+
+        $r1 = new android.os.ParcelFileDescriptor;
+
+        $r3 = fds[0];
+
+        $r2 = comm#1[0];
+
+        specialinvoke $r1.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor,java.io.FileDescriptor)>($r3, $r2);
+
+        $r0[0] = $r1;
+
+        $r4 = new android.os.ParcelFileDescriptor;
+
+        $r6 = fds[1];
+
+        $r5 = comm#1[1];
+
+        specialinvoke $r4.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor,java.io.FileDescriptor)>($r6, $r5);
+
+        $r0[1] = $r4;
+
+     label2:
+        return $r0;
+
+     label3:
+        $r7 := @caughtexception;
+
+        comm#2 = $r7;
+
+        $r8 = virtualinvoke comm#2.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r8;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    public static android.os.ParcelFileDescriptor[] createSocketPair() throws java.io.IOException
+    {
+        int $i0;
+        android.os.ParcelFileDescriptor[] $r0;
+
+        $i0 = <android.system.OsConstants: int SOCK_STREAM>;
+
+        $r0 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor[] createSocketPair(int)>($i0);
+
+        return $r0;
+    }
+
+    public static android.os.ParcelFileDescriptor[] createSocketPair(int) throws java.io.IOException
+    {
+        int type, $i0;
+        java.io.FileDescriptor fd1, $r0, $r1, fd0#1;
+        android.os.ParcelFileDescriptor[] $r2;
+        android.os.ParcelFileDescriptor $r3, $r4;
+        android.system.ErrnoException $r5, fd0#2;
+        java.io.IOException $r6;
+
+        type := @parameter0: int;
+
+     label1:
+        $r0 = new java.io.FileDescriptor;
+
+        specialinvoke $r0.<java.io.FileDescriptor: void <init>()>();
+
+        fd0#1 = $r0;
+
+        $r1 = new java.io.FileDescriptor;
+
+        specialinvoke $r1.<java.io.FileDescriptor: void <init>()>();
+
+        fd1 = $r1;
+
+        $i0 = <android.system.OsConstants: int AF_UNIX>;
+
+        staticinvoke <android.system.Os: void socketpair(int,int,int,java.io.FileDescriptor,java.io.FileDescriptor)>($i0, type, 0, fd0#1, fd1);
+
+        $r2 = newarray (android.os.ParcelFileDescriptor)[2];
+
+        $r3 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r3.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fd0#1);
+
+        $r2[0] = $r3;
+
+        $r4 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r4.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fd1);
+
+        $r2[1] = $r4;
+
+     label2:
+        return $r2;
+
+     label3:
+        $r5 := @caughtexception;
+
+        fd0#2 = $r5;
+
+        $r6 = virtualinvoke fd0#2.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r6;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    public static android.os.ParcelFileDescriptor[] createReliableSocketPair() throws java.io.IOException
+    {
+        int $i0;
+        android.os.ParcelFileDescriptor[] $r0;
+
+        $i0 = <android.system.OsConstants: int SOCK_STREAM>;
+
+        $r0 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor[] createReliableSocketPair(int)>($i0);
+
+        return $r0;
+    }
+
+    public static android.os.ParcelFileDescriptor[] createReliableSocketPair(int) throws java.io.IOException
+    {
+        int type, $i0;
+        java.io.FileDescriptor fd0, fd1, $r0, $r1, $r4, $r6;
+        android.os.ParcelFileDescriptor[] $r2;
+        android.os.ParcelFileDescriptor $r3, $r5;
+        android.system.ErrnoException $r7, comm#2;
+        java.io.IOException $r8;
+        java.io.FileDescriptor[] comm#1;
+
+        type := @parameter0: int;
+
+     label1:
+        comm#1 = staticinvoke <android.os.ParcelFileDescriptor: java.io.FileDescriptor[] createCommSocketPair()>();
+
+        $r0 = new java.io.FileDescriptor;
+
+        specialinvoke $r0.<java.io.FileDescriptor: void <init>()>();
+
+        fd0 = $r0;
+
+        $r1 = new java.io.FileDescriptor;
+
+        specialinvoke $r1.<java.io.FileDescriptor: void <init>()>();
+
+        fd1 = $r1;
+
+        $i0 = <android.system.OsConstants: int AF_UNIX>;
+
+        staticinvoke <android.system.Os: void socketpair(int,int,int,java.io.FileDescriptor,java.io.FileDescriptor)>($i0, type, 0, fd0, fd1);
+
+        $r2 = newarray (android.os.ParcelFileDescriptor)[2];
+
+        $r3 = new android.os.ParcelFileDescriptor;
+
+        $r4 = comm#1[0];
+
+        specialinvoke $r3.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor,java.io.FileDescriptor)>(fd0, $r4);
+
+        $r2[0] = $r3;
+
+        $r5 = new android.os.ParcelFileDescriptor;
+
+        $r6 = comm#1[1];
+
+        specialinvoke $r5.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor,java.io.FileDescriptor)>(fd1, $r6);
+
+        $r2[1] = $r5;
+
+     label2:
+        return $r2;
+
+     label3:
+        $r7 := @caughtexception;
+
+        comm#2 = $r7;
+
+        $r8 = virtualinvoke comm#2.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r8;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    private static java.io.FileDescriptor[] createCommSocketPair() throws java.io.IOException
+    {
+        java.io.FileDescriptor comm2, $r0, $r1, comm1#1;
+        int $i0, $i1;
+        java.io.FileDescriptor[] $r2;
+        android.system.ErrnoException $r3, comm1#2;
+        java.io.IOException $r4;
+
+     label1:
+        $r0 = new java.io.FileDescriptor;
+
+        specialinvoke $r0.<java.io.FileDescriptor: void <init>()>();
+
+        comm1#1 = $r0;
+
+        $r1 = new java.io.FileDescriptor;
+
+        specialinvoke $r1.<java.io.FileDescriptor: void <init>()>();
+
+        comm2 = $r1;
+
+        $i1 = <android.system.OsConstants: int AF_UNIX>;
+
+        $i0 = <android.system.OsConstants: int SOCK_SEQPACKET>;
+
+        staticinvoke <android.system.Os: void socketpair(int,int,int,java.io.FileDescriptor,java.io.FileDescriptor)>($i1, $i0, 0, comm1#1, comm2);
+
+        staticinvoke <libcore.io.IoUtils: void setBlocking(java.io.FileDescriptor,boolean)>(comm1#1, 0);
+
+        staticinvoke <libcore.io.IoUtils: void setBlocking(java.io.FileDescriptor,boolean)>(comm2, 0);
+
+        $r2 = newarray (java.io.FileDescriptor)[2];
+
+        $r2[0] = comm1#1;
+
+        $r2[1] = comm2;
+
+     label2:
+        return $r2;
+
+     label3:
+        $r3 := @caughtexception;
+
+        comm1#2 = $r3;
+
+        $r4 = virtualinvoke comm1#2.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r4;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    public static android.os.ParcelFileDescriptor fromData(byte[], java.lang.String) throws java.io.IOException
+    {
+        byte[] data;
+        java.lang.String name;
+        android.os.MemoryFile file, $r0;
+        java.io.FileDescriptor fd;
+        int $i0, $i1, $i2;
+        android.os.ParcelFileDescriptor $r1;
+
+        data := @parameter0: byte[];
+
+        name := @parameter1: java.lang.String;
+
+        if data != null goto label1;
+
+        return null;
+
+     label1:
+        $r0 = new android.os.MemoryFile;
+
+        $i0 = lengthof data;
+
+        specialinvoke $r0.<android.os.MemoryFile: void <init>(java.lang.String,int)>(name, $i0);
+
+        file = $r0;
+
+        $i1 = lengthof data;
+
+        if $i1 <= 0 goto label2;
+
+        $i2 = lengthof data;
+
+        virtualinvoke file.<android.os.MemoryFile: void writeBytes(byte[],int,int,int)>(data, 0, 0, $i2);
+
+     label2:
+        virtualinvoke file.<android.os.MemoryFile: void deactivate()>();
+
+        fd = virtualinvoke file.<android.os.MemoryFile: java.io.FileDescriptor getFileDescriptor()>();
+
+        if fd == null goto label3;
+
+        $r1 = new android.os.ParcelFileDescriptor;
+
+        specialinvoke $r1.<android.os.ParcelFileDescriptor: void <init>(java.io.FileDescriptor)>(fd);
+
+        goto label4;
+
+     label3:
+        $r1 = null;
+
+     label4:
+        return $r1;
+    }
+
+    public static int parseMode(java.lang.String)
+    {
+        java.lang.String mode, $r0, $r1, $r2, $r3, $r4, $r5, $r10;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5;
+        java.lang.IllegalArgumentException $r6;
+        java.lang.StringBuilder $r7, $r8, $r9, $r11;
+        int modeBits#1;
+
+        mode := @parameter0: java.lang.String;
+
+        $r0 = "r";
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(mode);
+
+        if $z0 == 0 goto label1;
+
+        modeBits#1 = 268435456;
+
+        goto label7;
+
+     label1:
+        $r1 = "w";
+
+        $z1 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(mode);
+
+        if $z1 != 0 goto label2;
+
+        $r2 = "wt";
+
+        $z2 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>(mode);
+
+        if $z2 == 0 goto label3;
+
+     label2:
+        modeBits#1 = 738197504;
+
+        goto label7;
+
+     label3:
+        $r3 = "wa";
+
+        $z3 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>(mode);
+
+        if $z3 == 0 goto label4;
+
+        modeBits#1 = 704643072;
+
+        goto label7;
+
+     label4:
+        $r4 = "rw";
+
+        $z4 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>(mode);
+
+        if $z4 == 0 goto label5;
+
+        modeBits#1 = 939524096;
+
+        goto label7;
+
+     label5:
+        $r5 = "rwt";
+
+        $z5 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>(mode);
+
+        if $z5 == 0 goto label6;
+
+        modeBits#1 = 1006632960;
+
+        goto label7;
+
+     label6:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bad mode \'");
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(mode);
+
+        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r10);
+
+        throw $r6;
+
+     label7:
+        return modeBits#1;
+    }
+
+    public java.io.FileDescriptor getFileDescriptor()
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r2;
+        java.io.FileDescriptor $r1, $r3;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r2 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $r3 = virtualinvoke $r2.<android.os.ParcelFileDescriptor: java.io.FileDescriptor getFileDescriptor()>();
+
+        return $r3;
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        return $r1;
+    }
+
+    public long getStatSize()
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r2;
+        java.io.FileDescriptor $r1;
+        int $i0, $i2;
+        boolean $z0, $z1;
+        long $l1, $l3;
+        android.system.ErrnoException $r3, st#2;
+        java.lang.StringBuilder $r4, $r5, $r7;
+        java.lang.String $r6;
+        android.system.StructStat st#1;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r2 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $l3 = virtualinvoke $r2.<android.os.ParcelFileDescriptor: long getStatSize()>();
+
+        return $l3;
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        st#1 = staticinvoke <android.system.Os: android.system.StructStat fstat(java.io.FileDescriptor)>($r1);
+
+        $i0 = st#1.<android.system.StructStat: int st_mode>;
+
+        $z0 = staticinvoke <android.system.OsConstants: boolean S_ISREG(int)>($i0);
+
+        if $z0 != 0 goto label2;
+
+        $i2 = st#1.<android.system.StructStat: int st_mode>;
+
+        $z1 = staticinvoke <android.system.OsConstants: boolean S_ISLNK(int)>($i2);
+
+        if $z1 == 0 goto label4;
+
+     label2:
+        $l1 = st#1.<android.system.StructStat: long st_size>;
+
+     label3:
+        return $l1;
+
+     label4:
+        return -1L;
+
+     label5:
+        $r3 := @caughtexception;
+
+        st#2 = $r3;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("fstat() failed: ");
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(st#2);
+
+        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r6);
+
+        return -1L;
+
+        catch android.system.ErrnoException from label1 to label3 with label5;
+    }
+
+    public long seekTo(long) throws java.io.IOException
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r2;
+        long pos, $l1, $l2;
+        android.system.ErrnoException e, $r3;
+        int $i0;
+        java.io.FileDescriptor $r1;
+        java.io.IOException $r4;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        pos := @parameter0: long;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r2 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $l2 = virtualinvoke $r2.<android.os.ParcelFileDescriptor: long seekTo(long)>(pos);
+
+        return $l2;
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        $i0 = <android.system.OsConstants: int SEEK_SET>;
+
+        $l1 = staticinvoke <android.system.Os: long lseek(java.io.FileDescriptor,long,int)>($r1, pos, $i0);
+
+     label2:
+        return $l1;
+
+     label3:
+        $r3 := @caughtexception;
+
+        e = $r3;
+
+        $r4 = virtualinvoke e.<android.system.ErrnoException: java.io.IOException rethrowAsIOException()>();
+
+        throw $r4;
+
+        catch android.system.ErrnoException from label1 to label2 with label3;
+    }
+
+    public int getFd()
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r3;
+        boolean $z0;
+        java.io.FileDescriptor $r1;
+        int $i0, $i1;
+        java.lang.IllegalStateException $r2;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r3 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $i1 = virtualinvoke $r3.<android.os.ParcelFileDescriptor: int getFd()>();
+
+        return $i1;
+
+     label1:
+        $z0 = this.<android.os.ParcelFileDescriptor: boolean mClosed>;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = new java.lang.IllegalStateException;
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Already closed");
+
+        throw $r2;
+
+     label2:
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        $i0 = virtualinvoke $r1.<java.io.FileDescriptor: int getInt$()>();
+
+        return $i0;
+    }
+
+    public int detachFd()
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r4;
+        int fd, $i0;
+        boolean $z0;
+        java.io.FileDescriptor $r1;
+        dalvik.system.CloseGuard $r2;
+        java.lang.IllegalStateException $r3;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r4 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $i0 = virtualinvoke $r4.<android.os.ParcelFileDescriptor: int detachFd()>();
+
+        return $i0;
+
+     label1:
+        $z0 = this.<android.os.ParcelFileDescriptor: boolean mClosed>;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = new java.lang.IllegalStateException;
+
+        specialinvoke $r3.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Already closed");
+
+        throw $r3;
+
+     label2:
+        fd = virtualinvoke this.<android.os.ParcelFileDescriptor: int getFd()>();
+
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        staticinvoke <android.os.Parcel: void clearFileDescriptor(java.io.FileDescriptor)>($r1);
+
+        specialinvoke this.<android.os.ParcelFileDescriptor: void writeCommStatusAndClose(int,java.lang.String)>(2, null);
+
+        this.<android.os.ParcelFileDescriptor: boolean mClosed> = 1;
+
+        $r2 = this.<android.os.ParcelFileDescriptor: dalvik.system.CloseGuard mGuard>;
+
+        virtualinvoke $r2.<dalvik.system.CloseGuard: void close()>();
+
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        return fd;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r1;
+        java.lang.Throwable l1, $r2;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label6;
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        virtualinvoke $r1.<android.os.ParcelFileDescriptor: void close()>();
+
+     label2:
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        goto label5;
+
+     label3:
+        $r2 := @caughtexception;
+
+        l1 = $r2;
+
+     label4:
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        throw l1;
+
+     label5:
+        goto label7;
+
+     label6:
+        specialinvoke this.<android.os.ParcelFileDescriptor: void closeWithStatus(int,java.lang.String)>(0, null);
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void closeWithError(java.lang.String) throws java.io.IOException
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r2;
+        java.lang.String msg;
+        java.lang.Throwable l2, $r3;
+        java.lang.IllegalArgumentException $r1;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        msg := @parameter0: java.lang.String;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label6;
+
+     label1:
+        $r2 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        virtualinvoke $r2.<android.os.ParcelFileDescriptor: void closeWithError(java.lang.String)>(msg);
+
+     label2:
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        goto label5;
+
+     label3:
+        $r3 := @caughtexception;
+
+        l2 = $r3;
+
+     label4:
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        throw l2;
+
+     label5:
+        goto label8;
+
+     label6:
+        if msg != null goto label7;
+
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Message must not be null");
+
+        throw $r1;
+
+     label7:
+        specialinvoke this.<android.os.ParcelFileDescriptor: void closeWithStatus(int,java.lang.String)>(1, msg);
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    private void closeWithStatus(int, java.lang.String)
+    {
+        android.os.ParcelFileDescriptor this;
+        int status;
+        java.lang.String msg;
+        boolean $z0;
+        dalvik.system.CloseGuard $r0;
+        java.io.FileDescriptor $r1;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        status := @parameter0: int;
+
+        msg := @parameter1: java.lang.String;
+
+        $z0 = this.<android.os.ParcelFileDescriptor: boolean mClosed>;
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        this.<android.os.ParcelFileDescriptor: boolean mClosed> = 1;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: dalvik.system.CloseGuard mGuard>;
+
+        virtualinvoke $r0.<dalvik.system.CloseGuard: void close()>();
+
+        specialinvoke this.<android.os.ParcelFileDescriptor: void writeCommStatusAndClose(int,java.lang.String)>(status, msg);
+
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r1);
+
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        return;
+    }
+
+    public void releaseResources()
+    {
+        android.os.ParcelFileDescriptor this;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        return;
+    }
+
+    private byte[] getOrCreateStatusBuffer()
+    {
+        android.os.ParcelFileDescriptor this;
+        byte[] $r0, $r1, $r2;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: byte[] mStatusBuf>;
+
+        if $r0 != null goto label1;
+
+        $r2 = newarray (byte)[1024];
+
+        this.<android.os.ParcelFileDescriptor: byte[] mStatusBuf> = $r2;
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: byte[] mStatusBuf>;
+
+        return $r1;
+    }
+
+    private void writeCommStatusAndClose(int, java.lang.String)
+    {
+        android.os.ParcelFileDescriptor this;
+        int status, len, $i1, $i2, $i3, writePtr#3;
+        java.lang.String msg, $r13, $r19, $r23;
+        byte[] rawMsg, $r2, buf#1;
+        java.lang.Throwable l7, $r17;
+        java.io.FileDescriptor $r0, $r1, $r6, $r7, $r8, $r9, $r21;
+        android.os.ParcelFileDescriptor$Status $r3, $r4;
+        java.nio.ByteOrder $r5;
+        java.lang.StringBuilder $r10, $r11, $r12, $r14, $r16, $r18, $r20, $r24, $r25;
+        java.io.InterruptedIOException $r15, buf#5;
+        android.system.ErrnoException $r22, buf#4;
+        byte writePtr#2;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        status := @parameter0: int;
+
+        msg := @parameter1: java.lang.String;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        if $r0 != null goto label02;
+
+        if msg == null goto label01;
+
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to inform peer: ");
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r13);
+
+     label01:
+        return;
+
+     label02:
+        if status != 2 goto label03;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", "Peer expected signal when closed; unable to deliver after detach");
+
+     label03:
+        if status != -1 goto label05;
+
+     label04:
+        $r9 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r9);
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = null;
+
+        return;
+
+     label05:
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        $r2 = specialinvoke this.<android.os.ParcelFileDescriptor: byte[] getOrCreateStatusBuffer()>();
+
+        $r3 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status readCommStatus(java.io.FileDescriptor,byte[])>($r1, $r2);
+
+        this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status mStatus> = $r3;
+
+        $r4 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status mStatus>;
+
+        if $r4 == null goto label07;
+
+     label06:
+        $r8 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r8);
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = null;
+
+        return;
+
+     label07:
+        buf#1 = specialinvoke this.<android.os.ParcelFileDescriptor: byte[] getOrCreateStatusBuffer()>();
+
+        writePtr#2 = 0;
+
+        $r5 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        staticinvoke <libcore.io.Memory: void pokeInt(byte[],int,int,java.nio.ByteOrder)>(buf#1, writePtr#2, status, $r5);
+
+        writePtr#3 = writePtr#2 + 4;
+
+        if msg == null goto label08;
+
+        rawMsg = virtualinvoke msg.<java.lang.String: byte[] getBytes()>();
+
+        $i2 = lengthof rawMsg;
+
+        $i1 = lengthof buf#1;
+
+        $i3 = $i1 - writePtr#3;
+
+        len = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i3);
+
+        staticinvoke <java.lang.System: void arraycopy(byte[],int,byte[],int,int)>(rawMsg, 0, buf#1, writePtr#3, len);
+
+        writePtr#3 = writePtr#3 + len;
+
+     label08:
+        $r6 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        staticinvoke <android.system.Os: int write(java.io.FileDescriptor,byte[],int,int)>($r6, buf#1, 0, writePtr#3);
+
+     label09:
+        goto label12;
+
+     label10:
+        $r22 := @caughtexception;
+
+        buf#4 = $r22;
+
+        $r20 = new java.lang.StringBuilder;
+
+        specialinvoke $r20.<java.lang.StringBuilder: void <init>()>();
+
+        $r24 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
+
+        $r25 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#4);
+
+        $r23 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r23);
+
+        goto label12;
+
+     label11:
+        $r15 := @caughtexception;
+
+        buf#5 = $r15;
+
+        $r16 = new java.lang.StringBuilder;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        $r14 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
+
+        $r18 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#5);
+
+        $r19 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r19);
+
+     label12:
+        $r7 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r7);
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = null;
+
+        goto label15;
+
+     label13:
+        $r17 := @caughtexception;
+
+        l7 = $r17;
+
+     label14:
+        $r21 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r21);
+
+        this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = null;
+
+        throw l7;
+
+     label15:
+        return;
+
+        catch android.system.ErrnoException from label07 to label09 with label10;
+        catch java.io.InterruptedIOException from label07 to label09 with label11;
+        catch java.lang.Throwable from label03 to label04 with label13;
+        catch java.lang.Throwable from label05 to label06 with label13;
+        catch java.lang.Throwable from label07 to label12 with label13;
+        catch java.lang.Throwable from label13 to label14 with label13;
+    }
+
+    private static android.os.ParcelFileDescriptor$Status readCommStatus(java.io.FileDescriptor, byte[])
+    {
+        java.io.FileDescriptor comm;
+        byte[] buf;
+        int status, $i0, $i1, $i3, $i4, n#1;
+        java.lang.String msg, $r2, $r8, $r14;
+        java.nio.ByteOrder $r0;
+        android.os.ParcelFileDescriptor$Status $r1, $r3, $r4, $r10, $r16;
+        java.io.InterruptedIOException $r5, n#3;
+        java.lang.StringBuilder $r6, $r7, $r9, $r12, $r13, $r15;
+        android.system.ErrnoException $r11, n#2;
+
+        comm := @parameter0: java.io.FileDescriptor;
+
+        buf := @parameter1: byte[];
+
+     label1:
+        $i0 = lengthof buf;
+
+        n#1 = staticinvoke <android.system.Os: int read(java.io.FileDescriptor,byte[],int,int)>(comm, buf, 0, $i0);
+
+        if n#1 != 0 goto label3;
+
+        $r4 = new android.os.ParcelFileDescriptor$Status;
+
+        specialinvoke $r4.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(-2);
+
+     label2:
+        return $r4;
+
+     label3:
+        $r0 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        status = staticinvoke <libcore.io.Memory: int peekInt(byte[],int,java.nio.ByteOrder)>(buf, 0, $r0);
+
+        if status != 1 goto label5;
+
+        $r2 = new java.lang.String;
+
+        $i1 = n#1 - 4;
+
+        specialinvoke $r2.<java.lang.String: void <init>(byte[],int,int)>(buf, 4, $i1);
+
+        msg = $r2;
+
+        $r3 = new android.os.ParcelFileDescriptor$Status;
+
+        specialinvoke $r3.<android.os.ParcelFileDescriptor$Status: void <init>(int,java.lang.String)>(status, msg);
+
+     label4:
+        return $r3;
+
+     label5:
+        $r1 = new android.os.ParcelFileDescriptor$Status;
+
+        specialinvoke $r1.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(status);
+
+     label6:
+        return $r1;
+
+     label7:
+        $r11 := @caughtexception;
+
+        n#2 = $r11;
+
+        $i4 = n#2.<android.system.ErrnoException: int errno>;
+
+        $i3 = <android.system.OsConstants: int EAGAIN>;
+
+        if $i4 != $i3 goto label8;
+
+        return null;
+
+     label8:
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
+
+        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#2);
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r14);
+
+        $r16 = new android.os.ParcelFileDescriptor$Status;
+
+        specialinvoke $r16.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(-2);
+
+        return $r16;
+
+     label9:
+        $r5 := @caughtexception;
+
+        n#3 = $r5;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#3);
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r8);
+
+        $r10 = new android.os.ParcelFileDescriptor$Status;
+
+        specialinvoke $r10.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(-2);
+
+        return $r10;
+
+        catch android.system.ErrnoException from label1 to label2 with label7;
+        catch android.system.ErrnoException from label3 to label4 with label7;
+        catch android.system.ErrnoException from label5 to label6 with label7;
+        catch java.io.InterruptedIOException from label1 to label2 with label9;
+        catch java.io.InterruptedIOException from label3 to label4 with label9;
+        catch java.io.InterruptedIOException from label5 to label6 with label9;
+    }
+
+    public boolean canDetectErrors()
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r2;
+        java.io.FileDescriptor $r1;
+        boolean $z0, $z1;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r2 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $z0 = virtualinvoke $r2.<android.os.ParcelFileDescriptor: boolean canDetectErrors()>();
+
+        return $z0;
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        if $r1 == null goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        return $z1;
+    }
+
+    public void checkError() throws java.io.IOException
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r10;
+        android.os.ParcelFileDescriptor$Status $r1, $r2, $r3, $r4, $r9;
+        int $i0;
+        java.io.IOException $r5;
+        java.io.FileDescriptor $r6, $r7;
+        byte[] $r8;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r10 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        virtualinvoke $r10.<android.os.ParcelFileDescriptor: void checkError()>();
+
+        goto label6;
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status mStatus>;
+
+        if $r1 != null goto label3;
+
+        $r6 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        if $r6 != null goto label2;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", "Peer didn\'t provide a comm channel; unable to check for errors");
+
+        return;
+
+     label2:
+        $r7 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        $r8 = specialinvoke this.<android.os.ParcelFileDescriptor: byte[] getOrCreateStatusBuffer()>();
+
+        $r9 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status readCommStatus(java.io.FileDescriptor,byte[])>($r7, $r8);
+
+        this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status mStatus> = $r9;
+
+     label3:
+        $r2 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status mStatus>;
+
+        if $r2 == null goto label4;
+
+        $r3 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status mStatus>;
+
+        $i0 = $r3.<android.os.ParcelFileDescriptor$Status: int status>;
+
+        if $i0 != 0 goto label5;
+
+     label4:
+        return;
+
+     label5:
+        $r4 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status mStatus>;
+
+        $r5 = virtualinvoke $r4.<android.os.ParcelFileDescriptor$Status: java.io.IOException asIOException()>();
+
+        throw $r5;
+
+     label6:
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r7;
+        java.lang.StringBuilder $r1, $r2, $r4, $r5;
+        java.io.FileDescriptor $r3;
+        java.lang.String $r6, $r8;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r7 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $r8 = virtualinvoke $r7.<android.os.ParcelFileDescriptor: java.lang.String toString()>();
+
+        return $r8;
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("{ParcelFileDescriptor: ");
+
+        $r3 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r6;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        android.os.ParcelFileDescriptor this, $r0;
+        java.lang.Throwable l1, $r3;
+        dalvik.system.CloseGuard $r1, $r2;
+        boolean $z0;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+     label1:
+        $r1 = this.<android.os.ParcelFileDescriptor: dalvik.system.CloseGuard mGuard>;
+
+        if $r1 == null goto label2;
+
+        $r2 = this.<android.os.ParcelFileDescriptor: dalvik.system.CloseGuard mGuard>;
+
+        virtualinvoke $r2.<dalvik.system.CloseGuard: void warnIfOpen()>();
+
+     label2:
+        $z0 = this.<android.os.ParcelFileDescriptor: boolean mClosed>;
+
+        if $z0 != 0 goto label3;
+
+        specialinvoke this.<android.os.ParcelFileDescriptor: void closeWithStatus(int,java.lang.String)>(3, null);
+
+     label3:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l1 = $r3;
+
+     label5:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        throw l1;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public int describeContents()
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r1;
+        int $i0;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label1;
+
+        $r1 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        $i0 = virtualinvoke $r1.<android.os.ParcelFileDescriptor: int describeContents()>();
+
+        return $i0;
+
+     label1:
+        return 1;
+    }
+
+    public void writeToParcel(android.os.Parcel, int)
+    {
+        android.os.ParcelFileDescriptor this, $r0, $r5;
+        android.os.Parcel out;
+        int flags, $i0;
+        java.lang.Throwable l3, $r6;
+        java.io.FileDescriptor $r1, $r2, $r3, $r4;
+        boolean $z0;
+
+        this := @this: android.os.ParcelFileDescriptor;
+
+        out := @parameter0: android.os.Parcel;
+
+        flags := @parameter1: int;
+
+        $r0 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        if $r0 == null goto label6;
+
+     label1:
+        $r5 = this.<android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor mWrapped>;
+
+        virtualinvoke $r5.<android.os.ParcelFileDescriptor: void writeToParcel(android.os.Parcel,int)>(out, flags);
+
+     label2:
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        goto label5;
+
+     label3:
+        $r6 := @caughtexception;
+
+        l3 = $r6;
+
+     label4:
+        virtualinvoke this.<android.os.ParcelFileDescriptor: void releaseResources()>();
+
+        throw l3;
+
+     label5:
+        goto label9;
+
+     label6:
+        $r1 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        if $r1 == null goto label7;
+
+        virtualinvoke out.<android.os.Parcel: void writeInt(int)>(1);
+
+        $r3 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        virtualinvoke out.<android.os.Parcel: void writeFileDescriptor(java.io.FileDescriptor)>($r3);
+
+        $r4 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+
+        virtualinvoke out.<android.os.Parcel: void writeFileDescriptor(java.io.FileDescriptor)>($r4);
+
+        goto label8;
+
+     label7:
+        virtualinvoke out.<android.os.Parcel: void writeInt(int)>(0);
+
+        $r2 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mFd>;
+
+        virtualinvoke out.<android.os.Parcel: void writeFileDescriptor(java.io.FileDescriptor)>($r2);
+
+     label8:
+        $i0 = flags & 1;
+
+        if $i0 == 0 goto label9;
+
+        $z0 = this.<android.os.ParcelFileDescriptor: boolean mClosed>;
+
+        if $z0 != 0 goto label9;
+
+        specialinvoke this.<android.os.ParcelFileDescriptor: void closeWithStatus(int,java.lang.String)>(-1, null);
+
+     label9:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    static android.os.ParcelFileDescriptor$Status access$000(java.io.FileDescriptor, byte[])
+    {
+        java.io.FileDescriptor x0;
+        byte[] x1;
+        android.os.ParcelFileDescriptor$Status $r0;
+
+        x0 := @parameter0: java.io.FileDescriptor;
+
+        x1 := @parameter1: byte[];
+
+        $r0 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status readCommStatus(java.io.FileDescriptor,byte[])>(x0, x1);
+
+        return $r0;
+    }
+
+    static void <clinit>()
+    {
+        android.os.ParcelFileDescriptor$2 $r0;
+
+        <android.os.ParcelFileDescriptor: int MODE_APPEND> = 33554432;
+
+        <android.os.ParcelFileDescriptor: int MODE_TRUNCATE> = 67108864;
+
+        <android.os.ParcelFileDescriptor: int MODE_CREATE> = 134217728;
+
+        <android.os.ParcelFileDescriptor: int MODE_READ_WRITE> = 805306368;
+
+        <android.os.ParcelFileDescriptor: int MODE_WRITE_ONLY> = 536870912;
+
+        <android.os.ParcelFileDescriptor: int MODE_READ_ONLY> = 268435456;
+
+        <android.os.ParcelFileDescriptor: int MODE_WORLD_WRITEABLE> = 2;
+
+        <android.os.ParcelFileDescriptor: int MODE_WORLD_READABLE> = 1;
+
+        <android.os.ParcelFileDescriptor: int MAX_STATUS> = 1024;
+
+        <android.os.ParcelFileDescriptor: java.lang.String TAG> = "ParcelFileDescriptor";
+
+        $r0 = new android.os.ParcelFileDescriptor$2;
+
+        specialinvoke $r0.<android.os.ParcelFileDescriptor$2: void <init>()>();
+
+        <android.os.ParcelFileDescriptor: android.os.Parcelable$Creator CREATOR> = $r0;
+
+        return;
+    }
+}

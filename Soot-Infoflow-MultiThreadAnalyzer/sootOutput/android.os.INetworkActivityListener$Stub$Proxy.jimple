@@ -1,0 +1,81 @@
+class android.os.INetworkActivityListener$Stub$Proxy extends java.lang.Object implements android.os.INetworkActivityListener
+{
+    private android.os.IBinder mRemote;
+
+    void <init>(android.os.IBinder)
+    {
+        android.os.INetworkActivityListener$Stub$Proxy this;
+        android.os.IBinder remote;
+
+        this := @this: android.os.INetworkActivityListener$Stub$Proxy;
+
+        remote := @parameter0: android.os.IBinder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.INetworkActivityListener$Stub$Proxy: android.os.IBinder mRemote> = remote;
+
+        return;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        android.os.INetworkActivityListener$Stub$Proxy this;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkActivityListener$Stub$Proxy;
+
+        $r0 = this.<android.os.INetworkActivityListener$Stub$Proxy: android.os.IBinder mRemote>;
+
+        return $r0;
+    }
+
+    public java.lang.String getInterfaceDescriptor()
+    {
+        android.os.INetworkActivityListener$Stub$Proxy this;
+
+        this := @this: android.os.INetworkActivityListener$Stub$Proxy;
+
+        return "android.os.INetworkActivityListener";
+    }
+
+    public void onNetworkActive() throws android.os.RemoteException
+    {
+        android.os.INetworkActivityListener$Stub$Proxy this;
+        android.os.Parcel _data;
+        java.lang.Throwable l2, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkActivityListener$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkActivityListener");
+
+        $r0 = this.<android.os.INetworkActivityListener$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(1, _data, null, 1);
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l2 = $r1;
+
+     label4:
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l2;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

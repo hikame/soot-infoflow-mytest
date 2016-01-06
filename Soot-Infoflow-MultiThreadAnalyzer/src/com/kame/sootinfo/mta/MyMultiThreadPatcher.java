@@ -1,4 +1,4 @@
-package com.kame.sootinfo.mta.myplugin;
+package com.kame.sootinfo.mta;
 
 import java.util.ArrayList;
 import java.util.Collections;

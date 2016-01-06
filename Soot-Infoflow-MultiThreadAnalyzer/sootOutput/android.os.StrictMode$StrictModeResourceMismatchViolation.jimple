@@ -1,0 +1,31 @@
+class android.os.StrictMode$StrictModeResourceMismatchViolation extends android.os.StrictMode$StrictModeViolation
+{
+
+    public void <init>(int, java.lang.Object)
+    {
+        android.os.StrictMode$StrictModeResourceMismatchViolation this;
+        int policyMask;
+        java.lang.Object tag;
+        java.lang.String $r0;
+
+        this := @this: android.os.StrictMode$StrictModeResourceMismatchViolation;
+
+        policyMask := @parameter0: int;
+
+        tag := @parameter1: java.lang.Object;
+
+        if tag == null goto label1;
+
+        $r0 = virtualinvoke tag.<java.lang.Object: java.lang.String toString()>();
+
+        goto label2;
+
+     label1:
+        $r0 = null;
+
+     label2:
+        specialinvoke this.<android.os.StrictMode$StrictModeViolation: void <init>(int,int,java.lang.String)>(policyMask, 16, $r0);
+
+        return;
+    }
+}

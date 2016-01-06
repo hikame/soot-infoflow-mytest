@@ -1,0 +1,41 @@
+final class android.os.StrictMode$9 extends android.util.Singleton
+{
+
+    void <init>()
+    {
+        android.os.StrictMode$9 this;
+
+        this := @this: android.os.StrictMode$9;
+
+        specialinvoke this.<android.util.Singleton: void <init>()>();
+
+        return;
+    }
+
+    protected android.view.IWindowManager create()
+    {
+        android.os.StrictMode$9 this;
+        android.os.IBinder $r0;
+        android.view.IWindowManager $r1;
+
+        this := @this: android.os.StrictMode$9;
+
+        $r0 = staticinvoke <android.os.ServiceManager: android.os.IBinder getService(java.lang.String)>("window");
+
+        $r1 = staticinvoke <android.view.IWindowManager$Stub: android.view.IWindowManager asInterface(android.os.IBinder)>($r0);
+
+        return $r1;
+    }
+
+    protected volatile java.lang.Object create()
+    {
+        android.os.StrictMode$9 this;
+        android.view.IWindowManager $r0;
+
+        this := @this: android.os.StrictMode$9;
+
+        $r0 = virtualinvoke this.<android.os.StrictMode$9: android.view.IWindowManager create()>();
+
+        return $r0;
+    }
+}

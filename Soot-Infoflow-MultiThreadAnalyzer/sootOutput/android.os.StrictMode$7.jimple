@@ -1,0 +1,23 @@
+final class android.os.StrictMode$7 extends android.os.StrictMode$Span
+{
+
+    void <init>()
+    {
+        android.os.StrictMode$7 this;
+
+        this := @this: android.os.StrictMode$7;
+
+        specialinvoke this.<android.os.StrictMode$Span: void <init>()>();
+
+        return;
+    }
+
+    public void finish()
+    {
+        android.os.StrictMode$7 this;
+
+        this := @this: android.os.StrictMode$7;
+
+        return;
+    }
+}

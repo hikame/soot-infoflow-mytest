@@ -1,0 +1,58 @@
+class android.os.PersistableBundle$MyReadMapCallback extends java.lang.Object implements com.android.internal.util.XmlUtils$ReadMapCallback
+{
+
+    void <init>()
+    {
+        android.os.PersistableBundle$MyReadMapCallback this;
+
+        this := @this: android.os.PersistableBundle$MyReadMapCallback;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public java.lang.Object readThisUnknownObjectXml(org.xmlpull.v1.XmlPullParser, java.lang.String) throws org.xmlpull.v1.XmlPullParserException, java.io.IOException
+    {
+        android.os.PersistableBundle$MyReadMapCallback this;
+        org.xmlpull.v1.XmlPullParser in;
+        java.lang.String tag, $r0, $r5;
+        boolean $z0;
+        org.xmlpull.v1.XmlPullParserException $r1;
+        java.lang.StringBuilder $r2, $r3, $r4;
+        android.os.PersistableBundle $r6;
+
+        this := @this: android.os.PersistableBundle$MyReadMapCallback;
+
+        in := @parameter0: org.xmlpull.v1.XmlPullParser;
+
+        tag := @parameter1: java.lang.String;
+
+        $r0 = "pbundle_as_map";
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(tag);
+
+        if $z0 == 0 goto label1;
+
+        $r6 = staticinvoke <android.os.PersistableBundle: android.os.PersistableBundle restoreFromXml(org.xmlpull.v1.XmlPullParser)>(in);
+
+        return $r6;
+
+     label1:
+        $r1 = new org.xmlpull.v1.XmlPullParserException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown tag=");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(tag);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<org.xmlpull.v1.XmlPullParserException: void <init>(java.lang.String)>($r5);
+
+        throw $r1;
+    }
+}

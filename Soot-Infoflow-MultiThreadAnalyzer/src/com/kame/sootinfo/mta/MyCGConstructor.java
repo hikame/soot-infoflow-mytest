@@ -3,8 +3,6 @@ package com.kame.sootinfo.mta;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.kame.sootinfo.mta.myplugin.MyMultiThreadPatcher;
-
 import soot.Pack;
 import soot.PackManager;
 import soot.Scene;

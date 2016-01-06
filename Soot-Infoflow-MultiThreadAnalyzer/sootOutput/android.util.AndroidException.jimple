@@ -1,0 +1,59 @@
+public class android.util.AndroidException extends java.lang.Exception
+{
+
+    public void <init>()
+    {
+        android.util.AndroidException this;
+
+        this := @this: android.util.AndroidException;
+
+        specialinvoke this.<java.lang.Exception: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        android.util.AndroidException this;
+        java.lang.String name;
+
+        this := @this: android.util.AndroidException;
+
+        name := @parameter0: java.lang.String;
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.String)>(name);
+
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.Throwable)
+    {
+        android.util.AndroidException this;
+        java.lang.String name;
+        java.lang.Throwable cause;
+
+        this := @this: android.util.AndroidException;
+
+        name := @parameter0: java.lang.String;
+
+        cause := @parameter1: java.lang.Throwable;
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.String,java.lang.Throwable)>(name, cause);
+
+        return;
+    }
+
+    public void <init>(java.lang.Exception)
+    {
+        android.util.AndroidException this;
+        java.lang.Exception cause;
+
+        this := @this: android.util.AndroidException;
+
+        cause := @parameter0: java.lang.Exception;
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.Throwable)>(cause);
+
+        return;
+    }
+}

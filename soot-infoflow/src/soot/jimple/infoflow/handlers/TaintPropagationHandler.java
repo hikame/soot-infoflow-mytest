@@ -4,6 +4,7 @@ import java.util.Set;
 
 import soot.Unit;
 import soot.jimple.infoflow.data.Abstraction;
+import soot.jimple.infoflow.problems.InfoflowProblem;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
 
 /**
@@ -27,6 +28,7 @@ public interface TaintPropagationHandler {
 	/**
 	 * Handler function that is invoked when a taint is proagated in the data
 	 * flow engine
+	 * 并且不论是正向还是反向都会调用。
 	 * @param stmt The statement over which the taint is propagated
 	 * @param taint The taint being propagated
 	 * @param cfg The interprocedural control flow graph containing the current
@@ -59,7 +61,5 @@ public interface TaintPropagationHandler {
 			Abstraction incoming,
 			Set<Abstraction> outgoing,
 			IInfoflowCFG cfg,
-			FlowFunctionType type);
-
-	
+			FlowFunctionType type);	
 }

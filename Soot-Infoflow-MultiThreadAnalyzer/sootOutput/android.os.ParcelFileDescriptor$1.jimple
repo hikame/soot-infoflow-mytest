@@ -1,0 +1,87 @@
+final class android.os.ParcelFileDescriptor$1 extends java.lang.Object implements android.os.MessageQueue$OnFileDescriptorEventListener
+{
+    final android.os.MessageQueue val$queue;
+    final android.os.ParcelFileDescriptor$OnCloseListener val$listener;
+
+    void <init>(android.os.MessageQueue, android.os.ParcelFileDescriptor$OnCloseListener)
+    {
+        android.os.ParcelFileDescriptor$1 this;
+        android.os.MessageQueue l1;
+        android.os.ParcelFileDescriptor$OnCloseListener l2;
+
+        this := @this: android.os.ParcelFileDescriptor$1;
+
+        l1 := @parameter0: android.os.MessageQueue;
+
+        l2 := @parameter1: android.os.ParcelFileDescriptor$OnCloseListener;
+
+        this.<android.os.ParcelFileDescriptor$1: android.os.MessageQueue val$queue> = l1;
+
+        this.<android.os.ParcelFileDescriptor$1: android.os.ParcelFileDescriptor$OnCloseListener val$listener> = l2;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public int onFileDescriptorEvents(java.io.FileDescriptor, int)
+    {
+        android.os.ParcelFileDescriptor$1 this;
+        java.io.FileDescriptor fd;
+        int events, $i0, $i1;
+        byte[] buf;
+        android.os.MessageQueue $r0;
+        android.os.ParcelFileDescriptor$OnCloseListener $r1;
+        java.io.IOException $r2;
+        android.os.ParcelFileDescriptor$Status $r3, status#1;
+
+        this := @this: android.os.ParcelFileDescriptor$1;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        events := @parameter1: int;
+
+        status#1 = null;
+
+        $i0 = events & 1;
+
+        if $i0 == 0 goto label1;
+
+        buf = newarray (byte)[1024];
+
+        status#1 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor$Status access$000(java.io.FileDescriptor,byte[])>(fd, buf);
+
+        goto label2;
+
+     label1:
+        $i1 = events & 4;
+
+        if $i1 == 0 goto label2;
+
+        $r3 = new android.os.ParcelFileDescriptor$Status;
+
+        specialinvoke $r3.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(-2);
+
+        status#1 = $r3;
+
+     label2:
+        if status#1 == null goto label3;
+
+        $r0 = this.<android.os.ParcelFileDescriptor$1: android.os.MessageQueue val$queue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeOnFileDescriptorEventListener(java.io.FileDescriptor)>(fd);
+
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>(fd);
+
+        $r1 = this.<android.os.ParcelFileDescriptor$1: android.os.ParcelFileDescriptor$OnCloseListener val$listener>;
+
+        $r2 = virtualinvoke status#1.<android.os.ParcelFileDescriptor$Status: java.io.IOException asIOException()>();
+
+        interfaceinvoke $r1.<android.os.ParcelFileDescriptor$OnCloseListener: void onClose(java.io.IOException)>($r2);
+
+        return 0;
+
+     label3:
+        return 1;
+    }
+}

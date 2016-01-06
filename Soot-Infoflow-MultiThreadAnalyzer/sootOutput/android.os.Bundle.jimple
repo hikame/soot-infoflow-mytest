@@ -1,0 +1,1892 @@
+public final class android.os.Bundle extends android.os.BaseBundle implements java.lang.Cloneable, android.os.Parcelable
+{
+    public static final android.os.Bundle EMPTY;
+    static final android.os.Parcel EMPTY_PARCEL;
+    private boolean mHasFds;
+    private boolean mFdsKnown;
+    private boolean mAllowFds;
+    public static final android.os.Parcelable$Creator CREATOR;
+
+    public void <init>()
+    {
+        android.os.Bundle this;
+
+        this := @this: android.os.Bundle;
+
+        specialinvoke this.<android.os.BaseBundle: void <init>()>();
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        this.<android.os.Bundle: boolean mAllowFds> = 1;
+
+        return;
+    }
+
+    void <init>(android.os.Parcel)
+    {
+        android.os.Bundle this;
+        android.os.Parcel parcelledData, $r0;
+        boolean $z0;
+
+        this := @this: android.os.Bundle;
+
+        parcelledData := @parameter0: android.os.Parcel;
+
+        specialinvoke this.<android.os.BaseBundle: void <init>(android.os.Parcel)>(parcelledData);
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        this.<android.os.Bundle: boolean mAllowFds> = 1;
+
+        $r0 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        $z0 = virtualinvoke $r0.<android.os.Parcel: boolean hasFileDescriptors()>();
+
+        this.<android.os.Bundle: boolean mHasFds> = $z0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        return;
+    }
+
+    void <init>(android.os.Parcel, int)
+    {
+        android.os.Bundle this;
+        android.os.Parcel parcelledData, $r0;
+        int length;
+        boolean $z0;
+
+        this := @this: android.os.Bundle;
+
+        parcelledData := @parameter0: android.os.Parcel;
+
+        length := @parameter1: int;
+
+        specialinvoke this.<android.os.BaseBundle: void <init>(android.os.Parcel,int)>(parcelledData, length);
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        this.<android.os.Bundle: boolean mAllowFds> = 1;
+
+        $r0 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        $z0 = virtualinvoke $r0.<android.os.Parcel: boolean hasFileDescriptors()>();
+
+        this.<android.os.Bundle: boolean mHasFds> = $z0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        return;
+    }
+
+    public void <init>(java.lang.ClassLoader)
+    {
+        android.os.Bundle this;
+        java.lang.ClassLoader loader;
+
+        this := @this: android.os.Bundle;
+
+        loader := @parameter0: java.lang.ClassLoader;
+
+        specialinvoke this.<android.os.BaseBundle: void <init>(java.lang.ClassLoader)>(loader);
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        this.<android.os.Bundle: boolean mAllowFds> = 1;
+
+        return;
+    }
+
+    public void <init>(int)
+    {
+        android.os.Bundle this;
+        int capacity;
+
+        this := @this: android.os.Bundle;
+
+        capacity := @parameter0: int;
+
+        specialinvoke this.<android.os.BaseBundle: void <init>(int)>(capacity);
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        this.<android.os.Bundle: boolean mAllowFds> = 1;
+
+        return;
+    }
+
+    public void <init>(android.os.Bundle)
+    {
+        android.os.Bundle this, b;
+        boolean $z0, $z1;
+
+        this := @this: android.os.Bundle;
+
+        b := @parameter0: android.os.Bundle;
+
+        specialinvoke this.<android.os.BaseBundle: void <init>(android.os.BaseBundle)>(b);
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        this.<android.os.Bundle: boolean mAllowFds> = 1;
+
+        $z0 = b.<android.os.Bundle: boolean mHasFds>;
+
+        this.<android.os.Bundle: boolean mHasFds> = $z0;
+
+        $z1 = b.<android.os.Bundle: boolean mFdsKnown>;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = $z1;
+
+        return;
+    }
+
+    public void <init>(android.os.PersistableBundle)
+    {
+        android.os.Bundle this;
+        android.os.PersistableBundle b;
+
+        this := @this: android.os.Bundle;
+
+        b := @parameter0: android.os.PersistableBundle;
+
+        specialinvoke this.<android.os.BaseBundle: void <init>(android.os.BaseBundle)>(b);
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        this.<android.os.Bundle: boolean mAllowFds> = 1;
+
+        return;
+    }
+
+    public static android.os.Bundle forPair(java.lang.String, java.lang.String)
+    {
+        java.lang.String key, value;
+        android.os.Bundle b, $r0;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.lang.String;
+
+        $r0 = new android.os.Bundle;
+
+        specialinvoke $r0.<android.os.Bundle: void <init>(int)>(1);
+
+        b = $r0;
+
+        virtualinvoke b.<android.os.Bundle: void putString(java.lang.String,java.lang.String)>(key, value);
+
+        return b;
+    }
+
+    public void setClassLoader(java.lang.ClassLoader)
+    {
+        android.os.Bundle this;
+        java.lang.ClassLoader loader;
+
+        this := @this: android.os.Bundle;
+
+        loader := @parameter0: java.lang.ClassLoader;
+
+        specialinvoke this.<android.os.BaseBundle: void setClassLoader(java.lang.ClassLoader)>(loader);
+
+        return;
+    }
+
+    public java.lang.ClassLoader getClassLoader()
+    {
+        android.os.Bundle this;
+        java.lang.ClassLoader $r0;
+
+        this := @this: android.os.Bundle;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.lang.ClassLoader getClassLoader()>();
+
+        return $r0;
+    }
+
+    public boolean setAllowFds(boolean)
+    {
+        android.os.Bundle this;
+        boolean allowFds, orig;
+
+        this := @this: android.os.Bundle;
+
+        allowFds := @parameter0: boolean;
+
+        orig = this.<android.os.Bundle: boolean mAllowFds>;
+
+        this.<android.os.Bundle: boolean mAllowFds> = allowFds;
+
+        return orig;
+    }
+
+    public java.lang.Object clone()
+    {
+        android.os.Bundle this, $r0;
+
+        this := @this: android.os.Bundle;
+
+        $r0 = new android.os.Bundle;
+
+        specialinvoke $r0.<android.os.Bundle: void <init>(android.os.Bundle)>(this);
+
+        return $r0;
+    }
+
+    public void clear()
+    {
+        android.os.Bundle this;
+
+        this := @this: android.os.Bundle;
+
+        specialinvoke this.<android.os.BaseBundle: void clear()>();
+
+        this.<android.os.Bundle: boolean mHasFds> = 0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        return;
+    }
+
+    public void putAll(android.os.Bundle)
+    {
+        android.os.Bundle this, bundle;
+        android.util.ArrayMap $r0, $r1;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5;
+
+        this := @this: android.os.Bundle;
+
+        bundle := @parameter0: android.os.Bundle;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        virtualinvoke bundle.<android.os.Bundle: void unparcel()>();
+
+        $r1 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        $r0 = bundle.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r1.<android.util.ArrayMap: void putAll(android.util.ArrayMap)>($r0);
+
+        $z1 = this.<android.os.Bundle: boolean mHasFds>;
+
+        $z0 = bundle.<android.os.Bundle: boolean mHasFds>;
+
+        $z2 = $z1 | $z0;
+
+        this.<android.os.Bundle: boolean mHasFds> = $z2;
+
+        $z3 = this.<android.os.Bundle: boolean mFdsKnown>;
+
+        if $z3 == 0 goto label1;
+
+        $z4 = bundle.<android.os.Bundle: boolean mFdsKnown>;
+
+        if $z4 == 0 goto label1;
+
+        $z5 = 1;
+
+        goto label2;
+
+     label1:
+        $z5 = 0;
+
+     label2:
+        this.<android.os.Bundle: boolean mFdsKnown> = $z5;
+
+        return;
+    }
+
+    public boolean hasFileDescriptors()
+    {
+        android.os.Bundle this;
+        java.lang.Object obj, $r3, $r4, $r5;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5, $z6, $z7, $z8, fdFound#1;
+        android.os.Parcel $r0, $r8;
+        android.util.ArrayMap $r1, $r2;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, i#2, n#4, n#7, n#10;
+        android.os.Parcelable[] $r6, array#3;
+        android.os.Parcelable $r7, p#5, p#8, p#11;
+        android.util.SparseArray array#6;
+        java.util.ArrayList array#9;
+
+        this := @this: android.os.Bundle;
+
+        $z0 = this.<android.os.Bundle: boolean mFdsKnown>;
+
+        if $z0 != 0 goto label16;
+
+        fdFound#1 = 0;
+
+        $r0 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        if $r0 == null goto label01;
+
+        $r8 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        $z8 = virtualinvoke $r8.<android.os.Parcel: boolean hasFileDescriptors()>();
+
+        if $z8 == 0 goto label15;
+
+        fdFound#1 = 1;
+
+        goto label15;
+
+     label01:
+        $r1 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        $i0 = virtualinvoke $r1.<android.util.ArrayMap: int size()>();
+
+        i#2 = $i0 - 1;
+
+     label02:
+        if i#2 < 0 goto label15;
+
+        $r2 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        obj = virtualinvoke $r2.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#2);
+
+        $z2 = obj instanceof android.os.Parcelable;
+
+        if $z2 == 0 goto label03;
+
+        $r7 = (android.os.Parcelable) obj;
+
+        $i9 = interfaceinvoke $r7.<android.os.Parcelable: int describeContents()>();
+
+        $i10 = $i9 & 1;
+
+        if $i10 == 0 goto label14;
+
+        fdFound#1 = 1;
+
+        goto label15;
+
+     label03:
+        $z3 = obj instanceof android.os.Parcelable[];
+
+        if $z3 == 0 goto label07;
+
+        $r6 = (android.os.Parcelable[]) obj;
+
+        array#3 = (android.os.Parcelable[]) $r6;
+
+        $i8 = lengthof array#3;
+
+        n#4 = $i8 - 1;
+
+     label04:
+        if n#4 < 0 goto label06;
+
+        p#5 = array#3[n#4];
+
+        if p#5 == null goto label05;
+
+        $i7 = interfaceinvoke p#5.<android.os.Parcelable: int describeContents()>();
+
+        $i11 = $i7 & 1;
+
+        if $i11 == 0 goto label05;
+
+        fdFound#1 = 1;
+
+        goto label06;
+
+     label05:
+        n#4 = n#4 + -1;
+
+        goto label04;
+
+     label06:
+        goto label14;
+
+     label07:
+        $z5 = obj instanceof android.util.SparseArray;
+
+        if $z5 == 0 goto label11;
+
+        array#6 = (android.util.SparseArray) obj;
+
+        $i3 = virtualinvoke array#6.<android.util.SparseArray: int size()>();
+
+        n#7 = $i3 - 1;
+
+     label08:
+        if n#7 < 0 goto label10;
+
+        $r5 = virtualinvoke array#6.<android.util.SparseArray: java.lang.Object valueAt(int)>(n#7);
+
+        p#8 = (android.os.Parcelable) $r5;
+
+        if p#8 == null goto label09;
+
+        $i5 = interfaceinvoke p#8.<android.os.Parcelable: int describeContents()>();
+
+        $i6 = $i5 & 1;
+
+        if $i6 == 0 goto label09;
+
+        fdFound#1 = 1;
+
+        goto label10;
+
+     label09:
+        n#7 = n#7 + -1;
+
+        goto label08;
+
+     label10:
+        goto label14;
+
+     label11:
+        $z4 = obj instanceof java.util.ArrayList;
+
+        if $z4 == 0 goto label14;
+
+        array#9 = (java.util.ArrayList) obj;
+
+        $z6 = virtualinvoke array#9.<java.util.ArrayList: boolean isEmpty()>();
+
+        if $z6 != 0 goto label14;
+
+        $r3 = virtualinvoke array#9.<java.util.ArrayList: java.lang.Object get(int)>(0);
+
+        $z7 = $r3 instanceof android.os.Parcelable;
+
+        if $z7 == 0 goto label14;
+
+        $i1 = virtualinvoke array#9.<java.util.ArrayList: int size()>();
+
+        n#10 = $i1 - 1;
+
+     label12:
+        if n#10 < 0 goto label14;
+
+        $r4 = virtualinvoke array#9.<java.util.ArrayList: java.lang.Object get(int)>(n#10);
+
+        p#11 = (android.os.Parcelable) $r4;
+
+        if p#11 == null goto label13;
+
+        $i2 = interfaceinvoke p#11.<android.os.Parcelable: int describeContents()>();
+
+        $i4 = $i2 & 1;
+
+        if $i4 == 0 goto label13;
+
+        fdFound#1 = 1;
+
+        goto label14;
+
+     label13:
+        n#10 = n#10 + -1;
+
+        goto label12;
+
+     label14:
+        i#2 = i#2 + -1;
+
+        goto label02;
+
+     label15:
+        this.<android.os.Bundle: boolean mHasFds> = fdFound#1;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+     label16:
+        $z1 = this.<android.os.Bundle: boolean mHasFds>;
+
+        return $z1;
+    }
+
+    public void filterValues()
+    {
+        android.os.Bundle this, $r7;
+        java.lang.Object value;
+        android.util.ArrayMap $r0, $r1, $r2, $r5;
+        int $i0, i#1;
+        boolean $z0, $z1, $z2;
+        java.lang.Class $r3;
+        java.lang.String $r4;
+
+        this := @this: android.os.Bundle;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        if $r0 == null goto label6;
+
+        $r1 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        $i0 = virtualinvoke $r1.<android.util.ArrayMap: int size()>();
+
+        i#1 = $i0 - 1;
+
+     label1:
+        if i#1 < 0 goto label6;
+
+        $r2 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        value = virtualinvoke $r2.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#1);
+
+        $z0 = staticinvoke <android.os.PersistableBundle: boolean isValidType(java.lang.Object)>(value);
+
+        if $z0 == 0 goto label2;
+
+        goto label5;
+
+     label2:
+        $z1 = value instanceof android.os.Bundle;
+
+        if $z1 == 0 goto label3;
+
+        $r7 = (android.os.Bundle) value;
+
+        virtualinvoke $r7.<android.os.Bundle: void filterValues()>();
+
+     label3:
+        $r3 = virtualinvoke value.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.String getName()>();
+
+        $z2 = virtualinvoke $r4.<java.lang.String: boolean startsWith(java.lang.String)>("android.");
+
+        if $z2 == 0 goto label4;
+
+        goto label5;
+
+     label4:
+        $r5 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r5.<android.util.ArrayMap: java.lang.Object removeAt(int)>(i#1);
+
+     label5:
+        i#1 = i#1 + -1;
+
+        goto label1;
+
+     label6:
+        return;
+    }
+
+    public void putByte(java.lang.String, byte)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        byte value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: byte;
+
+        specialinvoke this.<android.os.BaseBundle: void putByte(java.lang.String,byte)>(key, value);
+
+        return;
+    }
+
+    public void putChar(java.lang.String, char)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        char value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: char;
+
+        specialinvoke this.<android.os.BaseBundle: void putChar(java.lang.String,char)>(key, value);
+
+        return;
+    }
+
+    public void putShort(java.lang.String, short)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        short value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: short;
+
+        specialinvoke this.<android.os.BaseBundle: void putShort(java.lang.String,short)>(key, value);
+
+        return;
+    }
+
+    public void putFloat(java.lang.String, float)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        float value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: float;
+
+        specialinvoke this.<android.os.BaseBundle: void putFloat(java.lang.String,float)>(key, value);
+
+        return;
+    }
+
+    public void putCharSequence(java.lang.String, java.lang.CharSequence)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.CharSequence value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.lang.CharSequence;
+
+        specialinvoke this.<android.os.BaseBundle: void putCharSequence(java.lang.String,java.lang.CharSequence)>(key, value);
+
+        return;
+    }
+
+    public void putParcelable(java.lang.String, android.os.Parcelable)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        android.os.Parcelable value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.os.Parcelable;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 0;
+
+        return;
+    }
+
+    public void putSize(java.lang.String, android.util.Size)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        android.util.Size value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.util.Size;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        return;
+    }
+
+    public void putSizeF(java.lang.String, android.util.SizeF)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        android.util.SizeF value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.util.SizeF;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        return;
+    }
+
+    public void putParcelableArray(java.lang.String, android.os.Parcelable[])
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        android.os.Parcelable[] value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.os.Parcelable[];
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 0;
+
+        return;
+    }
+
+    public void putParcelableArrayList(java.lang.String, java.util.ArrayList)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.ArrayList value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.util.ArrayList;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 0;
+
+        return;
+    }
+
+    public void putParcelableList(java.lang.String, java.util.List)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.List value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.util.List;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 0;
+
+        return;
+    }
+
+    public void putSparseParcelableArray(java.lang.String, android.util.SparseArray)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        android.util.SparseArray value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.util.SparseArray;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 0;
+
+        return;
+    }
+
+    public void putIntegerArrayList(java.lang.String, java.util.ArrayList)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.ArrayList value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.util.ArrayList;
+
+        specialinvoke this.<android.os.BaseBundle: void putIntegerArrayList(java.lang.String,java.util.ArrayList)>(key, value);
+
+        return;
+    }
+
+    public void putStringArrayList(java.lang.String, java.util.ArrayList)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.ArrayList value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.util.ArrayList;
+
+        specialinvoke this.<android.os.BaseBundle: void putStringArrayList(java.lang.String,java.util.ArrayList)>(key, value);
+
+        return;
+    }
+
+    public void putCharSequenceArrayList(java.lang.String, java.util.ArrayList)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.ArrayList value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.util.ArrayList;
+
+        specialinvoke this.<android.os.BaseBundle: void putCharSequenceArrayList(java.lang.String,java.util.ArrayList)>(key, value);
+
+        return;
+    }
+
+    public void putSerializable(java.lang.String, java.io.Serializable)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.io.Serializable value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.io.Serializable;
+
+        specialinvoke this.<android.os.BaseBundle: void putSerializable(java.lang.String,java.io.Serializable)>(key, value);
+
+        return;
+    }
+
+    public void putByteArray(java.lang.String, byte[])
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        byte[] value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: byte[];
+
+        specialinvoke this.<android.os.BaseBundle: void putByteArray(java.lang.String,byte[])>(key, value);
+
+        return;
+    }
+
+    public void putShortArray(java.lang.String, short[])
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        short[] value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: short[];
+
+        specialinvoke this.<android.os.BaseBundle: void putShortArray(java.lang.String,short[])>(key, value);
+
+        return;
+    }
+
+    public void putCharArray(java.lang.String, char[])
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        char[] value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: char[];
+
+        specialinvoke this.<android.os.BaseBundle: void putCharArray(java.lang.String,char[])>(key, value);
+
+        return;
+    }
+
+    public void putFloatArray(java.lang.String, float[])
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        float[] value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: float[];
+
+        specialinvoke this.<android.os.BaseBundle: void putFloatArray(java.lang.String,float[])>(key, value);
+
+        return;
+    }
+
+    public void putCharSequenceArray(java.lang.String, java.lang.CharSequence[])
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.CharSequence[] value;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: java.lang.CharSequence[];
+
+        specialinvoke this.<android.os.BaseBundle: void putCharSequenceArray(java.lang.String,java.lang.CharSequence[])>(key, value);
+
+        return;
+    }
+
+    public void putBundle(java.lang.String, android.os.Bundle)
+    {
+        android.os.Bundle this, value;
+        java.lang.String key;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.os.Bundle;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        return;
+    }
+
+    public void putBinder(java.lang.String, android.os.IBinder)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        android.os.IBinder value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.os.IBinder;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        return;
+    }
+
+    public void putIBinder(java.lang.String, android.os.IBinder)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        android.os.IBinder value;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        value := @parameter1: android.os.IBinder;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+        return;
+    }
+
+    public byte getByte(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        byte $b0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $b0 = specialinvoke this.<android.os.BaseBundle: byte getByte(java.lang.String)>(key);
+
+        return $b0;
+    }
+
+    public java.lang.Byte getByte(java.lang.String, byte)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        byte defaultValue;
+        java.lang.Byte $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        defaultValue := @parameter1: byte;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.lang.Byte getByte(java.lang.String,byte)>(key, defaultValue);
+
+        return $r0;
+    }
+
+    public char getChar(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        char $c0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $c0 = specialinvoke this.<android.os.BaseBundle: char getChar(java.lang.String)>(key);
+
+        return $c0;
+    }
+
+    public char getChar(java.lang.String, char)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        char defaultValue, $c0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        defaultValue := @parameter1: char;
+
+        $c0 = specialinvoke this.<android.os.BaseBundle: char getChar(java.lang.String,char)>(key, defaultValue);
+
+        return $c0;
+    }
+
+    public short getShort(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        short $s0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $s0 = specialinvoke this.<android.os.BaseBundle: short getShort(java.lang.String)>(key);
+
+        return $s0;
+    }
+
+    public short getShort(java.lang.String, short)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        short defaultValue, $s0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        defaultValue := @parameter1: short;
+
+        $s0 = specialinvoke this.<android.os.BaseBundle: short getShort(java.lang.String,short)>(key, defaultValue);
+
+        return $s0;
+    }
+
+    public float getFloat(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        float $f0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $f0 = specialinvoke this.<android.os.BaseBundle: float getFloat(java.lang.String)>(key);
+
+        return $f0;
+    }
+
+    public float getFloat(java.lang.String, float)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        float defaultValue, $f0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        defaultValue := @parameter1: float;
+
+        $f0 = specialinvoke this.<android.os.BaseBundle: float getFloat(java.lang.String,float)>(key, defaultValue);
+
+        return $f0;
+    }
+
+    public java.lang.CharSequence getCharSequence(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.CharSequence $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.lang.CharSequence getCharSequence(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public java.lang.CharSequence getCharSequence(java.lang.String, java.lang.CharSequence)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.CharSequence defaultValue, $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        defaultValue := @parameter1: java.lang.CharSequence;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.lang.CharSequence getCharSequence(java.lang.String,java.lang.CharSequence)>(key, defaultValue);
+
+        return $r0;
+    }
+
+    public android.util.Size getSize(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+        android.util.Size $r1;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+     label1:
+        $r1 = (android.util.Size) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "Size", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public android.util.SizeF getSizeF(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+        android.util.SizeF $r1;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+     label1:
+        $r1 = (android.util.SizeF) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "SizeF", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public android.os.Bundle getBundle(java.lang.String)
+    {
+        android.os.Bundle this, $r1;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+        if o != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (android.os.Bundle) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "Bundle", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public android.os.Parcelable getParcelable(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+        android.os.Parcelable $r1;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+        if o != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (android.os.Parcelable) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "Parcelable", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public android.os.Parcelable[] getParcelableArray(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r3;
+        android.util.ArrayMap $r0;
+        android.os.Parcelable[] $r1, $r2;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+        if o != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (android.os.Parcelable[]) o;
+
+        $r2 = (android.os.Parcelable[]) $r1;
+
+     label2:
+        return $r2;
+
+     label3:
+        $r3 := @caughtexception;
+
+        e = $r3;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "Parcelable[]", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public java.util.ArrayList getParcelableArrayList(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+        java.util.ArrayList $r1;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+        if o != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (java.util.ArrayList) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "ArrayList", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public android.util.SparseArray getSparseParcelableArray(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+        android.util.SparseArray $r1;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+        if o != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (android.util.SparseArray) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "SparseArray", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public java.io.Serializable getSerializable(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.io.Serializable $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.io.Serializable getSerializable(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public java.util.ArrayList getIntegerArrayList(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.ArrayList $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.util.ArrayList getIntegerArrayList(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public java.util.ArrayList getStringArrayList(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.ArrayList $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.util.ArrayList getStringArrayList(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public java.util.ArrayList getCharSequenceArrayList(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.util.ArrayList $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.util.ArrayList getCharSequenceArrayList(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public byte[] getByteArray(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        byte[] $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: byte[] getByteArray(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public short[] getShortArray(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        short[] $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: short[] getShortArray(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public char[] getCharArray(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        char[] $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: char[] getCharArray(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public float[] getFloatArray(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        float[] $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: float[] getFloatArray(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public java.lang.CharSequence[] getCharSequenceArray(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.CharSequence[] $r0;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<android.os.BaseBundle: java.lang.CharSequence[] getCharSequenceArray(java.lang.String)>(key);
+
+        return $r0;
+    }
+
+    public android.os.IBinder getBinder(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+        android.os.IBinder $r1;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+        if o != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (android.os.IBinder) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "IBinder", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public android.os.IBinder getIBinder(java.lang.String)
+    {
+        android.os.Bundle this;
+        java.lang.String key;
+        java.lang.Object o;
+        java.lang.ClassCastException e, $r2;
+        android.util.ArrayMap $r0;
+        android.os.IBinder $r1;
+
+        this := @this: android.os.Bundle;
+
+        key := @parameter0: java.lang.String;
+
+        virtualinvoke this.<android.os.Bundle: void unparcel()>();
+
+        $r0 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        o = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(key);
+
+        if o != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (android.os.IBinder) o;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        virtualinvoke this.<android.os.Bundle: void typeWarning(java.lang.String,java.lang.Object,java.lang.String,java.lang.ClassCastException)>(key, o, "IBinder", e);
+
+        return null;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+
+    public int describeContents()
+    {
+        android.os.Bundle this;
+        boolean $z0;
+        byte mask#1;
+
+        this := @this: android.os.Bundle;
+
+        mask#1 = 0;
+
+        $z0 = virtualinvoke this.<android.os.Bundle: boolean hasFileDescriptors()>();
+
+        if $z0 == 0 goto label1;
+
+        mask#1 = mask#1 | 1;
+
+     label1:
+        return mask#1;
+    }
+
+    public void writeToParcel(android.os.Parcel, int)
+    {
+        android.os.Bundle this;
+        android.os.Parcel parcel;
+        int flags;
+        boolean oldAllowFds, $z0;
+        java.lang.Throwable l4, $r0;
+
+        this := @this: android.os.Bundle;
+
+        parcel := @parameter0: android.os.Parcel;
+
+        flags := @parameter1: int;
+
+        $z0 = this.<android.os.Bundle: boolean mAllowFds>;
+
+        oldAllowFds = virtualinvoke parcel.<android.os.Parcel: boolean pushAllowFds(boolean)>($z0);
+
+     label1:
+        specialinvoke this.<android.os.BaseBundle: void writeToParcelInner(android.os.Parcel,int)>(parcel, flags);
+
+     label2:
+        virtualinvoke parcel.<android.os.Parcel: void restoreAllowFds(boolean)>(oldAllowFds);
+
+        goto label5;
+
+     label3:
+        $r0 := @caughtexception;
+
+        l4 = $r0;
+
+     label4:
+        virtualinvoke parcel.<android.os.Parcel: void restoreAllowFds(boolean)>(oldAllowFds);
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void readFromParcel(android.os.Parcel)
+    {
+        android.os.Bundle this;
+        android.os.Parcel parcel, $r0;
+        boolean $z0;
+
+        this := @this: android.os.Bundle;
+
+        parcel := @parameter0: android.os.Parcel;
+
+        specialinvoke this.<android.os.BaseBundle: void readFromParcelInner(android.os.Parcel)>(parcel);
+
+        $r0 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        $z0 = virtualinvoke $r0.<android.os.Parcel: boolean hasFileDescriptors()>();
+
+        this.<android.os.Bundle: boolean mHasFds> = $z0;
+
+        this.<android.os.Bundle: boolean mFdsKnown> = 1;
+
+        return;
+    }
+
+    public synchronized java.lang.String toString()
+    {
+        android.os.Bundle this;
+        android.os.Parcel $r0, $r8, $r9, $r12;
+        java.lang.StringBuilder $r1, $r2, $r5, $r6, $r10, $r11, $r13, $r15;
+        android.util.ArrayMap $r3;
+        java.lang.String $r4, $r7, $r14;
+        int $i0;
+
+        this := @this: android.os.Bundle;
+
+        $r0 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        if $r0 == null goto label2;
+
+        $r9 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        $r8 = <android.os.Bundle: android.os.Parcel EMPTY_PARCEL>;
+
+        if $r9 != $r8 goto label1;
+
+        return "Bundle[EMPTY_PARCEL]";
+
+     label1:
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bundle[mParcelledData.dataSize=");
+
+        $r12 = this.<android.os.Bundle: android.os.Parcel mParcelledData>;
+
+        $i0 = virtualinvoke $r12.<android.os.Parcel: int dataSize()>();
+
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r14;
+
+     label2:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bundle[");
+
+        $r3 = this.<android.os.Bundle: android.util.ArrayMap mMap>;
+
+        $r4 = virtualinvoke $r3.<android.util.ArrayMap: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r7;
+    }
+
+    static void <clinit>()
+    {
+        android.os.Bundle $r0, $r2;
+        android.util.ArrayMap $r1;
+        android.os.Parcel $r3;
+        android.os.Bundle$1 $r4;
+
+        $r0 = new android.os.Bundle;
+
+        specialinvoke $r0.<android.os.Bundle: void <init>()>();
+
+        <android.os.Bundle: android.os.Bundle EMPTY> = $r0;
+
+        $r2 = <android.os.Bundle: android.os.Bundle EMPTY>;
+
+        $r1 = <android.util.ArrayMap: android.util.ArrayMap EMPTY>;
+
+        $r2.<android.os.Bundle: android.util.ArrayMap mMap> = $r1;
+
+        $r3 = <android.os.BaseBundle: android.os.Parcel EMPTY_PARCEL>;
+
+        <android.os.Bundle: android.os.Parcel EMPTY_PARCEL> = $r3;
+
+        $r4 = new android.os.Bundle$1;
+
+        specialinvoke $r4.<android.os.Bundle$1: void <init>()>();
+
+        <android.os.Bundle: android.os.Parcelable$Creator CREATOR> = $r4;
+
+        return;
+    }
+}

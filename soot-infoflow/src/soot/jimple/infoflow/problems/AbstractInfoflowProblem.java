@@ -314,6 +314,7 @@ public abstract class AbstractInfoflowProblem extends DefaultJimpleIFDSTabulatio
 			Abstraction incoming,
 			Set<Abstraction> outgoing,
 			FlowFunctionType functionType) {
+		
 		if (taintPropagationHandler != null
 				&& outgoing != null
 				&& !outgoing.isEmpty())

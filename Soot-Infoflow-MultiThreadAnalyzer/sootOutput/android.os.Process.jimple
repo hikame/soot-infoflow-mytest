@@ -1,0 +1,1180 @@
+public class android.os.Process extends java.lang.Object
+{
+    private static final java.lang.String LOG_TAG;
+    public static final java.lang.String ZYGOTE_SOCKET;
+    public static final java.lang.String SECONDARY_ZYGOTE_SOCKET;
+    public static final int ROOT_UID;
+    public static final int SYSTEM_UID;
+    public static final int PHONE_UID;
+    public static final int SHELL_UID;
+    public static final int LOG_UID;
+    public static final int WIFI_UID;
+    public static final int MEDIA_UID;
+    public static final int DRM_UID;
+    public static final int VPN_UID;
+    public static final int NFC_UID;
+    public static final int BLUETOOTH_UID;
+    public static final int MEDIA_RW_GID;
+    public static final int PACKAGE_INFO_GID;
+    public static final int SHARED_RELRO_UID;
+    public static final int FIRST_APPLICATION_UID;
+    public static final int LAST_APPLICATION_UID;
+    public static final int FIRST_ISOLATED_UID;
+    public static final int LAST_ISOLATED_UID;
+    public static final int SHARED_USER_GID;
+    public static final int FIRST_SHARED_APPLICATION_GID;
+    public static final int LAST_SHARED_APPLICATION_GID;
+    public static final int THREAD_PRIORITY_DEFAULT;
+    public static final int THREAD_PRIORITY_LOWEST;
+    public static final int THREAD_PRIORITY_BACKGROUND;
+    public static final int THREAD_PRIORITY_FOREGROUND;
+    public static final int THREAD_PRIORITY_DISPLAY;
+    public static final int THREAD_PRIORITY_URGENT_DISPLAY;
+    public static final int THREAD_PRIORITY_AUDIO;
+    public static final int THREAD_PRIORITY_URGENT_AUDIO;
+    public static final int THREAD_PRIORITY_MORE_FAVORABLE;
+    public static final int THREAD_PRIORITY_LESS_FAVORABLE;
+    public static final int SCHED_OTHER;
+    public static final int SCHED_FIFO;
+    public static final int SCHED_RR;
+    public static final int SCHED_BATCH;
+    public static final int SCHED_IDLE;
+    public static final int THREAD_GROUP_DEFAULT;
+    public static final int THREAD_GROUP_BG_NONINTERACTIVE;
+    private static final int THREAD_GROUP_FOREGROUND;
+    public static final int THREAD_GROUP_SYSTEM;
+    public static final int THREAD_GROUP_AUDIO_APP;
+    public static final int THREAD_GROUP_AUDIO_SYS;
+    public static final int SIGNAL_QUIT;
+    public static final int SIGNAL_KILL;
+    public static final int SIGNAL_USR1;
+    static android.os.Process$ZygoteState primaryZygoteState;
+    static android.os.Process$ZygoteState secondaryZygoteState;
+    static final int ZYGOTE_RETRY_MILLIS;
+    public static final int PROC_TERM_MASK;
+    public static final int PROC_ZERO_TERM;
+    public static final int PROC_SPACE_TERM;
+    public static final int PROC_TAB_TERM;
+    public static final int PROC_COMBINE;
+    public static final int PROC_PARENS;
+    public static final int PROC_QUOTES;
+    public static final int PROC_OUT_STRING;
+    public static final int PROC_OUT_LONG;
+    public static final int PROC_OUT_FLOAT;
+
+    public void <init>()
+    {
+        android.os.Process this;
+
+        this := @this: android.os.Process;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static final android.os.Process$ProcessStartResult start(java.lang.String, java.lang.String, int, int, int[], int, int, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String[])
+    {
+        java.lang.String processClass, niceName, seInfo, abi, instructionSet, appDataDir;
+        int uid, gid, debugFlags, mountExternal, targetSdkVersion;
+        int[] gids;
+        java.lang.String[] zygoteArgs;
+        android.os.ZygoteStartFailedEx ex, $r1;
+        android.os.Process$ProcessStartResult $r0;
+        java.lang.RuntimeException $r2;
+
+        processClass := @parameter0: java.lang.String;
+
+        niceName := @parameter1: java.lang.String;
+
+        uid := @parameter2: int;
+
+        gid := @parameter3: int;
+
+        gids := @parameter4: int[];
+
+        debugFlags := @parameter5: int;
+
+        mountExternal := @parameter6: int;
+
+        targetSdkVersion := @parameter7: int;
+
+        seInfo := @parameter8: java.lang.String;
+
+        abi := @parameter9: java.lang.String;
+
+        instructionSet := @parameter10: java.lang.String;
+
+        appDataDir := @parameter11: java.lang.String;
+
+        zygoteArgs := @parameter12: java.lang.String[];
+
+     label1:
+        $r0 = staticinvoke <android.os.Process: android.os.Process$ProcessStartResult startViaZygote(java.lang.String,java.lang.String,int,int,int[],int,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String[])>(processClass, niceName, uid, gid, gids, debugFlags, mountExternal, targetSdkVersion, seInfo, abi, instructionSet, appDataDir, zygoteArgs);
+
+     label2:
+        return $r0;
+
+     label3:
+        $r1 := @caughtexception;
+
+        ex = $r1;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("Process", "Starting VM process through Zygote failed");
+
+        $r2 = new java.lang.RuntimeException;
+
+        specialinvoke $r2.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Starting VM process through Zygote failed", ex);
+
+        throw $r2;
+
+        catch android.os.ZygoteStartFailedEx from label1 to label2 with label3;
+    }
+
+    private static java.lang.String getAbiList(java.io.BufferedWriter, java.io.DataInputStream) throws java.io.IOException
+    {
+        java.io.BufferedWriter writer;
+        java.io.DataInputStream inputStream;
+        int numBytes;
+        byte[] bytes;
+        java.lang.String $r0;
+        java.nio.charset.Charset $r1;
+
+        writer := @parameter0: java.io.BufferedWriter;
+
+        inputStream := @parameter1: java.io.DataInputStream;
+
+        virtualinvoke writer.<java.io.BufferedWriter: void write(java.lang.String)>("1");
+
+        virtualinvoke writer.<java.io.BufferedWriter: void newLine()>();
+
+        virtualinvoke writer.<java.io.BufferedWriter: void write(java.lang.String)>("--query-abi-list");
+
+        virtualinvoke writer.<java.io.BufferedWriter: void newLine()>();
+
+        virtualinvoke writer.<java.io.BufferedWriter: void flush()>();
+
+        numBytes = virtualinvoke inputStream.<java.io.DataInputStream: int readInt()>();
+
+        bytes = newarray (byte)[numBytes];
+
+        virtualinvoke inputStream.<java.io.DataInputStream: void readFully(byte[])>(bytes);
+
+        $r0 = new java.lang.String;
+
+        $r1 = <java.nio.charset.StandardCharsets: java.nio.charset.Charset US_ASCII>;
+
+        specialinvoke $r0.<java.lang.String: void <init>(byte[],java.nio.charset.Charset)>(bytes, $r1);
+
+        return $r0;
+    }
+
+    private static android.os.Process$ProcessStartResult zygoteSendArgsAndGetResult(android.os.Process$ZygoteState, java.util.ArrayList) throws android.os.ZygoteStartFailedEx
+    {
+        android.os.Process$ZygoteState zygoteState;
+        java.util.ArrayList args;
+        java.io.DataInputStream inputStream;
+        int sz, $i0, $i1, $i2, $i3, i#2;
+        java.lang.String arg, $r0;
+        android.os.Process$ProcessStartResult $r1, i#3;
+        boolean $z0;
+        android.os.ZygoteStartFailedEx $r2, $r4, $r5;
+        java.lang.Object $r3;
+        java.io.IOException $r6, writer#4;
+        java.io.BufferedWriter writer#1;
+
+        zygoteState := @parameter0: android.os.Process$ZygoteState;
+
+        args := @parameter1: java.util.ArrayList;
+
+     label1:
+        writer#1 = zygoteState.<android.os.Process$ZygoteState: java.io.BufferedWriter writer>;
+
+        inputStream = zygoteState.<android.os.Process$ZygoteState: java.io.DataInputStream inputStream>;
+
+        $i0 = virtualinvoke args.<java.util.ArrayList: int size()>();
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+
+        virtualinvoke writer#1.<java.io.BufferedWriter: void write(java.lang.String)>($r0);
+
+        virtualinvoke writer#1.<java.io.BufferedWriter: void newLine()>();
+
+        sz = virtualinvoke args.<java.util.ArrayList: int size()>();
+
+        i#2 = 0;
+
+     label2:
+        if i#2 >= sz goto label4;
+
+        $r3 = virtualinvoke args.<java.util.ArrayList: java.lang.Object get(int)>(i#2);
+
+        arg = (java.lang.String) $r3;
+
+        $i3 = virtualinvoke arg.<java.lang.String: int indexOf(int)>(10);
+
+        if $i3 < 0 goto label3;
+
+        $r4 = new android.os.ZygoteStartFailedEx;
+
+        specialinvoke $r4.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String)>("embedded newlines not allowed");
+
+        throw $r4;
+
+     label3:
+        virtualinvoke writer#1.<java.io.BufferedWriter: void write(java.lang.String)>(arg);
+
+        virtualinvoke writer#1.<java.io.BufferedWriter: void newLine()>();
+
+        i#2 = i#2 + 1;
+
+        goto label2;
+
+     label4:
+        virtualinvoke writer#1.<java.io.BufferedWriter: void flush()>();
+
+        $r1 = new android.os.Process$ProcessStartResult;
+
+        specialinvoke $r1.<android.os.Process$ProcessStartResult: void <init>()>();
+
+        i#3 = $r1;
+
+        $i1 = virtualinvoke inputStream.<java.io.DataInputStream: int readInt()>();
+
+        i#3.<android.os.Process$ProcessStartResult: int pid> = $i1;
+
+        $i2 = i#3.<android.os.Process$ProcessStartResult: int pid>;
+
+        if $i2 >= 0 goto label5;
+
+        $r2 = new android.os.ZygoteStartFailedEx;
+
+        specialinvoke $r2.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String)>("fork() failed");
+
+        throw $r2;
+
+     label5:
+        $z0 = virtualinvoke inputStream.<java.io.DataInputStream: boolean readBoolean()>();
+
+        i#3.<android.os.Process$ProcessStartResult: boolean usingWrapper> = $z0;
+
+     label6:
+        return i#3;
+
+     label7:
+        $r6 := @caughtexception;
+
+        writer#4 = $r6;
+
+        virtualinvoke zygoteState.<android.os.Process$ZygoteState: void close()>();
+
+        $r5 = new android.os.ZygoteStartFailedEx;
+
+        specialinvoke $r5.<android.os.ZygoteStartFailedEx: void <init>(java.lang.Throwable)>(writer#4);
+
+        throw $r5;
+
+        catch java.io.IOException from label1 to label6 with label7;
+    }
+
+    private static android.os.Process$ProcessStartResult startViaZygote(java.lang.String, java.lang.String, int, int, int[], int, int, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String[]) throws android.os.ZygoteStartFailedEx
+    {
+        java.lang.String processClass, niceName, seInfo, abi, instructionSet, appDataDir, arg, $r3, $r8, $r10, $r20, $r22, $r24, $r32, $r34;
+        int uid, gid, debugFlags, mountExternal, targetSdkVersion, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, sz#2, i#3, sz#5, i#6;
+        int[] gids;
+        java.lang.String[] extraArgs, sb#4;
+        java.lang.Class l13;
+        java.util.ArrayList argsForZygote, $r0;
+        java.lang.Throwable l19, $r36;
+        java.lang.StringBuilder $r1, $r2, $r4, $r5, $r6, $r7, $r9, $r11, $r12, $r15, $r16, $r17, $r18, $r19, $r21, $r23, $r25, $r26, $r27, $r29, $r30, $r31, sb#1;
+        android.os.Process$ProcessStartResult $r13;
+        android.os.Process$ZygoteState $r14;
+
+        processClass := @parameter0: java.lang.String;
+
+        niceName := @parameter1: java.lang.String;
+
+        uid := @parameter2: int;
+
+        gid := @parameter3: int;
+
+        gids := @parameter4: int[];
+
+        debugFlags := @parameter5: int;
+
+        mountExternal := @parameter6: int;
+
+        targetSdkVersion := @parameter7: int;
+
+        seInfo := @parameter8: java.lang.String;
+
+        abi := @parameter9: java.lang.String;
+
+        instructionSet := @parameter10: java.lang.String;
+
+        appDataDir := @parameter11: java.lang.String;
+
+        extraArgs := @parameter12: java.lang.String[];
+
+        l13 = class "android/os/Process";
+
+        entermonitor class "android/os/Process";
+
+     label01:
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+        argsForZygote = $r0;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--runtime-args");
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setuid=");
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r3);
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setgid=");
+
+        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(gid);
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r8);
+
+        $i2 = debugFlags & 16;
+
+        if $i2 == 0 goto label02;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-jni-logging");
+
+     label02:
+        $i3 = debugFlags & 8;
+
+        if $i3 == 0 goto label03;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-safemode");
+
+     label03:
+        $i0 = debugFlags & 1;
+
+        if $i0 == 0 goto label04;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-debugger");
+
+     label04:
+        $i1 = debugFlags & 2;
+
+        if $i1 == 0 goto label05;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-checkjni");
+
+     label05:
+        $i5 = debugFlags & 32;
+
+        if $i5 == 0 goto label06;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-jit");
+
+     label06:
+        $i6 = debugFlags & 64;
+
+        if $i6 == 0 goto label07;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--generate-debug-info");
+
+     label07:
+        $i4 = debugFlags & 4;
+
+        if $i4 == 0 goto label08;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-assert");
+
+     label08:
+        if mountExternal != 1 goto label09;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--mount-external-default");
+
+        goto label11;
+
+     label09:
+        if mountExternal != 2 goto label10;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--mount-external-read");
+
+        goto label11;
+
+     label10:
+        if mountExternal != 3 goto label11;
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--mount-external-write");
+
+     label11:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--target-sdk-version=");
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(targetSdkVersion);
+
+        $r10 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r10);
+
+        if gids == null goto label15;
+
+        $i7 = lengthof gids;
+
+        if $i7 <= 0 goto label15;
+
+        $r27 = new java.lang.StringBuilder;
+
+        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
+
+        sb#1 = $r27;
+
+        virtualinvoke sb#1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setgroups=");
+
+        sz#2 = lengthof gids;
+
+        i#3 = 0;
+
+     label12:
+        if i#3 >= sz#2 goto label14;
+
+        if i#3 == 0 goto label13;
+
+        virtualinvoke sb#1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(44);
+
+     label13:
+        $i8 = gids[i#3];
+
+        virtualinvoke sb#1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i8);
+
+        i#3 = i#3 + 1;
+
+        goto label12;
+
+     label14:
+        $r34 = virtualinvoke sb#1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r34);
+
+     label15:
+        if niceName == null goto label16;
+
+        $r29 = new java.lang.StringBuilder;
+
+        specialinvoke $r29.<java.lang.StringBuilder: void <init>()>();
+
+        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--nice-name=");
+
+        $r31 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(niceName);
+
+        $r32 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r32);
+
+     label16:
+        if seInfo == null goto label17;
+
+        $r21 = new java.lang.StringBuilder;
+
+        specialinvoke $r21.<java.lang.StringBuilder: void <init>()>();
+
+        $r26 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--seinfo=");
+
+        $r25 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(seInfo);
+
+        $r24 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r24);
+
+     label17:
+        if instructionSet == null goto label18;
+
+        $r19 = new java.lang.StringBuilder;
+
+        specialinvoke $r19.<java.lang.StringBuilder: void <init>()>();
+
+        $r18 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--instruction-set=");
+
+        $r23 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r22 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r22);
+
+     label18:
+        if appDataDir == null goto label19;
+
+        $r17 = new java.lang.StringBuilder;
+
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+
+        $r16 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--app-data-dir=");
+
+        $r15 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(appDataDir);
+
+        $r20 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r20);
+
+     label19:
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>(processClass);
+
+        if extraArgs == null goto label21;
+
+        sb#4 = extraArgs;
+
+        sz#5 = lengthof sb#4;
+
+        i#6 = 0;
+
+     label20:
+        if i#6 >= sz#5 goto label21;
+
+        arg = sb#4[i#6];
+
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>(arg);
+
+        i#6 = i#6 + 1;
+
+        goto label20;
+
+     label21:
+        $r14 = staticinvoke <android.os.Process: android.os.Process$ZygoteState openZygoteSocketIfNeeded(java.lang.String)>(abi);
+
+        $r13 = staticinvoke <android.os.Process: android.os.Process$ProcessStartResult zygoteSendArgsAndGetResult(android.os.Process$ZygoteState,java.util.ArrayList)>($r14, argsForZygote);
+
+        exitmonitor l13;
+
+     label22:
+        return $r13;
+
+     label23:
+        $r36 := @caughtexception;
+
+        l19 = $r36;
+
+        exitmonitor l13;
+
+     label24:
+        throw l19;
+
+        catch java.lang.Throwable from label01 to label22 with label23;
+        catch java.lang.Throwable from label23 to label24 with label23;
+    }
+
+    public static void establishZygoteConnectionForAbi(java.lang.String)
+    {
+        java.lang.String abi, $r6;
+        android.os.ZygoteStartFailedEx ex, $r1;
+        java.lang.RuntimeException $r2;
+        java.lang.StringBuilder $r3, $r4, $r5;
+
+        abi := @parameter0: java.lang.String;
+
+     label1:
+        staticinvoke <android.os.Process: android.os.Process$ZygoteState openZygoteSocketIfNeeded(java.lang.String)>(abi);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+
+        ex = $r1;
+
+        $r2 = new java.lang.RuntimeException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to connect to zygote for abi: ");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(abi);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r6, ex);
+
+        throw $r2;
+
+     label4:
+        return;
+
+        catch android.os.ZygoteStartFailedEx from label1 to label2 with label3;
+    }
+
+    private static android.os.Process$ZygoteState openZygoteSocketIfNeeded(java.lang.String) throws android.os.ZygoteStartFailedEx
+    {
+        java.lang.String abi, $r10;
+        android.os.Process$ZygoteState $r0, $r1, $r2, $r3, $r4, $r5, $r11, $r12, $r13, $r14;
+        boolean $z0, $z1, $z2, $z3;
+        android.os.ZygoteStartFailedEx $r6, $r17, $r18;
+        java.lang.StringBuilder $r7, $r8, $r9;
+        java.io.IOException $r15, $r16, ioe#1, ioe#2;
+
+        abi := @parameter0: java.lang.String;
+
+        $r0 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
+
+        if $r0 == null goto label01;
+
+        $r13 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
+
+        $z3 = virtualinvoke $r13.<android.os.Process$ZygoteState: boolean isClosed()>();
+
+        if $z3 == 0 goto label04;
+
+     label01:
+        $r1 = staticinvoke <android.os.Process$ZygoteState: android.os.Process$ZygoteState connect(java.lang.String)>("zygote");
+
+        <android.os.Process: android.os.Process$ZygoteState primaryZygoteState> = $r1;
+
+     label02:
+        goto label04;
+
+     label03:
+        $r15 := @caughtexception;
+
+        ioe#1 = $r15;
+
+        $r17 = new android.os.ZygoteStartFailedEx;
+
+        specialinvoke $r17.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to primary zygote", ioe#1);
+
+        throw $r17;
+
+     label04:
+        $r2 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
+
+        $z0 = virtualinvoke $r2.<android.os.Process$ZygoteState: boolean matches(java.lang.String)>(abi);
+
+        if $z0 == 0 goto label05;
+
+        $r14 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
+
+        return $r14;
+
+     label05:
+        $r3 = <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState>;
+
+        if $r3 == null goto label06;
+
+        $r12 = <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState>;
+
+        $z2 = virtualinvoke $r12.<android.os.Process$ZygoteState: boolean isClosed()>();
+
+        if $z2 == 0 goto label09;
+
+     label06:
+        $r4 = staticinvoke <android.os.Process$ZygoteState: android.os.Process$ZygoteState connect(java.lang.String)>("zygote_secondary");
+
+        <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState> = $r4;
+
+     label07:
+        goto label09;
+
+     label08:
+        $r16 := @caughtexception;
+
+        ioe#2 = $r16;
+
+        $r18 = new android.os.ZygoteStartFailedEx;
+
+        specialinvoke $r18.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to secondary zygote", ioe#2);
+
+        throw $r18;
+
+     label09:
+        $r5 = <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState>;
+
+        $z1 = virtualinvoke $r5.<android.os.Process$ZygoteState: boolean matches(java.lang.String)>(abi);
+
+        if $z1 == 0 goto label10;
+
+        $r11 = <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState>;
+
+        return $r11;
+
+     label10:
+        $r6 = new android.os.ZygoteStartFailedEx;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported zygote ABI: ");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(abi);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String)>($r10);
+
+        throw $r6;
+
+        catch java.io.IOException from label01 to label02 with label03;
+        catch java.io.IOException from label06 to label07 with label08;
+    }
+
+    public static final native long getElapsedCpuTime();
+
+    public static final boolean is64Bit()
+    {
+        dalvik.system.VMRuntime $r0;
+        boolean $z0;
+
+        $r0 = staticinvoke <dalvik.system.VMRuntime: dalvik.system.VMRuntime getRuntime()>();
+
+        $z0 = virtualinvoke $r0.<dalvik.system.VMRuntime: boolean is64Bit()>();
+
+        return $z0;
+    }
+
+    public static final int myPid()
+    {
+        int $i0;
+
+        $i0 = staticinvoke <android.system.Os: int getpid()>();
+
+        return $i0;
+    }
+
+    public static final int myPpid()
+    {
+        int $i0;
+
+        $i0 = staticinvoke <android.system.Os: int getppid()>();
+
+        return $i0;
+    }
+
+    public static final int myTid()
+    {
+        int $i0;
+
+        $i0 = staticinvoke <android.system.Os: int gettid()>();
+
+        return $i0;
+    }
+
+    public static final int myUid()
+    {
+        int $i0;
+
+        $i0 = staticinvoke <android.system.Os: int getuid()>();
+
+        return $i0;
+    }
+
+    public static final android.os.UserHandle myUserHandle()
+    {
+        android.os.UserHandle $r0;
+        int $i0, $i1;
+
+        $r0 = new android.os.UserHandle;
+
+        $i0 = staticinvoke <android.os.Process: int myUid()>();
+
+        $i1 = staticinvoke <android.os.UserHandle: int getUserId(int)>($i0);
+
+        specialinvoke $r0.<android.os.UserHandle: void <init>(int)>($i1);
+
+        return $r0;
+    }
+
+    public static final boolean isIsolated()
+    {
+        int $i0;
+        boolean $z0;
+
+        $i0 = staticinvoke <android.os.Process: int myUid()>();
+
+        $z0 = staticinvoke <android.os.Process: boolean isIsolated(int)>($i0);
+
+        return $z0;
+    }
+
+    public static final boolean isIsolated(int)
+    {
+        int uid#1, uid#2;
+        boolean $z0;
+
+        uid#1 := @parameter0: int;
+
+        uid#2 = staticinvoke <android.os.UserHandle: int getAppId(int)>(uid#1);
+
+        if uid#2 < 99000 goto label1;
+
+        if uid#2 > 99999 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public static final native int getUidForName(java.lang.String);
+
+    public static final native int getGidForName(java.lang.String);
+
+    public static final int getUidForPid(int)
+    {
+        int pid, $i1;
+        java.lang.String[] procStatusLabels, $r0;
+        long[] procStatusValues;
+        java.lang.StringBuilder $r1, $r2, $r3, $r4;
+        java.lang.String $r5;
+        long $l0;
+
+        pid := @parameter0: int;
+
+        $r0 = newarray (java.lang.String)[1];
+
+        $r0[0] = "Uid:";
+
+        procStatusLabels = $r0;
+
+        procStatusValues = newarray (long)[1];
+
+        procStatusValues[0] = -1L;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/proc/");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(pid);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/status");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.os.Process: void readProcLines(java.lang.String,java.lang.String[],long[])>($r5, procStatusLabels, procStatusValues);
+
+        $l0 = procStatusValues[0];
+
+        $i1 = (int) $l0;
+
+        return $i1;
+    }
+
+    public static final int getParentPid(int)
+    {
+        int pid, $i1;
+        java.lang.String[] procStatusLabels, $r0;
+        long[] procStatusValues;
+        java.lang.StringBuilder $r1, $r2, $r3, $r4;
+        java.lang.String $r5;
+        long $l0;
+
+        pid := @parameter0: int;
+
+        $r0 = newarray (java.lang.String)[1];
+
+        $r0[0] = "PPid:";
+
+        procStatusLabels = $r0;
+
+        procStatusValues = newarray (long)[1];
+
+        procStatusValues[0] = -1L;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/proc/");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(pid);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/status");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.os.Process: void readProcLines(java.lang.String,java.lang.String[],long[])>($r5, procStatusLabels, procStatusValues);
+
+        $l0 = procStatusValues[0];
+
+        $i1 = (int) $l0;
+
+        return $i1;
+    }
+
+    public static final int getThreadGroupLeader(int)
+    {
+        int tid, $i1;
+        java.lang.String[] procStatusLabels, $r0;
+        long[] procStatusValues;
+        java.lang.StringBuilder $r1, $r2, $r3, $r4;
+        java.lang.String $r5;
+        long $l0;
+
+        tid := @parameter0: int;
+
+        $r0 = newarray (java.lang.String)[1];
+
+        $r0[0] = "Tgid:";
+
+        procStatusLabels = $r0;
+
+        procStatusValues = newarray (long)[1];
+
+        procStatusValues[0] = -1L;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/proc/");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(tid);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/status");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.os.Process: void readProcLines(java.lang.String,java.lang.String[],long[])>($r5, procStatusLabels, procStatusValues);
+
+        $l0 = procStatusValues[0];
+
+        $i1 = (int) $l0;
+
+        return $i1;
+    }
+
+    public static final native void setThreadPriority(int, int) throws java.lang.IllegalArgumentException, java.lang.SecurityException;
+
+    public static final native void setCanSelfBackground(boolean);
+
+    public static final native void setThreadGroup(int, int) throws java.lang.IllegalArgumentException, java.lang.SecurityException;
+
+    public static final native void setProcessGroup(int, int) throws java.lang.IllegalArgumentException, java.lang.SecurityException;
+
+    public static final native int getProcessGroup(int) throws java.lang.IllegalArgumentException, java.lang.SecurityException;
+
+    public static final native void setThreadPriority(int) throws java.lang.IllegalArgumentException, java.lang.SecurityException;
+
+    public static final native int getThreadPriority(int) throws java.lang.IllegalArgumentException;
+
+    public static final native void setThreadScheduler(int, int, int) throws java.lang.IllegalArgumentException;
+
+    public static final boolean supportsProcesses()
+    {
+        return 1;
+    }
+
+    public static final native boolean setSwappiness(int, boolean);
+
+    public static final native void setArgV0(java.lang.String);
+
+    public static final void killProcess(int)
+    {
+        int pid;
+
+        pid := @parameter0: int;
+
+        staticinvoke <android.os.Process: void sendSignal(int,int)>(pid, 9);
+
+        return;
+    }
+
+    public static final native int setUid(int);
+
+    public static final native int setGid(int);
+
+    public static final native void sendSignal(int, int);
+
+    public static final void killProcessQuiet(int)
+    {
+        int pid;
+
+        pid := @parameter0: int;
+
+        staticinvoke <android.os.Process: void sendSignalQuiet(int,int)>(pid, 9);
+
+        return;
+    }
+
+    public static final native void sendSignalQuiet(int, int);
+
+    public static final native long getFreeMemory();
+
+    public static final native long getTotalMemory();
+
+    public static final native void readProcLines(java.lang.String, java.lang.String[], long[]);
+
+    public static final native int[] getPids(java.lang.String, int[]);
+
+    public static final native boolean readProcFile(java.lang.String, int[], java.lang.String[], long[], float[]);
+
+    public static final native boolean parseProcLine(byte[], int, int, int[], java.lang.String[], long[], float[]);
+
+    public static final native int[] getPidsForCommands(java.lang.String[]);
+
+    public static final native long getPss(int);
+
+    public static final native int killProcessGroup(int, int);
+
+    public static final native void removeAllProcessGroups();
+
+    static java.lang.String access$000(java.io.BufferedWriter, java.io.DataInputStream) throws java.io.IOException
+    {
+        java.io.BufferedWriter x0;
+        java.io.DataInputStream x1;
+        java.lang.String $r0;
+
+        x0 := @parameter0: java.io.BufferedWriter;
+
+        x1 := @parameter1: java.io.DataInputStream;
+
+        $r0 = staticinvoke <android.os.Process: java.lang.String getAbiList(java.io.BufferedWriter,java.io.DataInputStream)>(x0, x1);
+
+        return $r0;
+    }
+
+    public static void <clinit>()
+    {
+        <android.os.Process: int PROC_OUT_FLOAT> = 16384;
+
+        <android.os.Process: int PROC_OUT_LONG> = 8192;
+
+        <android.os.Process: int PROC_OUT_STRING> = 4096;
+
+        <android.os.Process: int PROC_QUOTES> = 1024;
+
+        <android.os.Process: int PROC_PARENS> = 512;
+
+        <android.os.Process: int PROC_COMBINE> = 256;
+
+        <android.os.Process: int PROC_TAB_TERM> = 9;
+
+        <android.os.Process: int PROC_SPACE_TERM> = 32;
+
+        <android.os.Process: int PROC_ZERO_TERM> = 0;
+
+        <android.os.Process: int PROC_TERM_MASK> = 255;
+
+        <android.os.Process: int ZYGOTE_RETRY_MILLIS> = 500;
+
+        <android.os.Process: int SIGNAL_USR1> = 10;
+
+        <android.os.Process: int SIGNAL_KILL> = 9;
+
+        <android.os.Process: int SIGNAL_QUIT> = 3;
+
+        <android.os.Process: int THREAD_GROUP_AUDIO_SYS> = 4;
+
+        <android.os.Process: int THREAD_GROUP_AUDIO_APP> = 3;
+
+        <android.os.Process: int THREAD_GROUP_SYSTEM> = 2;
+
+        <android.os.Process: int THREAD_GROUP_FOREGROUND> = 1;
+
+        <android.os.Process: int THREAD_GROUP_BG_NONINTERACTIVE> = 0;
+
+        <android.os.Process: int THREAD_GROUP_DEFAULT> = -1;
+
+        <android.os.Process: int SCHED_IDLE> = 5;
+
+        <android.os.Process: int SCHED_BATCH> = 3;
+
+        <android.os.Process: int SCHED_RR> = 2;
+
+        <android.os.Process: int SCHED_FIFO> = 1;
+
+        <android.os.Process: int SCHED_OTHER> = 0;
+
+        <android.os.Process: int THREAD_PRIORITY_LESS_FAVORABLE> = 1;
+
+        <android.os.Process: int THREAD_PRIORITY_MORE_FAVORABLE> = -1;
+
+        <android.os.Process: int THREAD_PRIORITY_URGENT_AUDIO> = -19;
+
+        <android.os.Process: int THREAD_PRIORITY_AUDIO> = -16;
+
+        <android.os.Process: int THREAD_PRIORITY_URGENT_DISPLAY> = -8;
+
+        <android.os.Process: int THREAD_PRIORITY_DISPLAY> = -4;
+
+        <android.os.Process: int THREAD_PRIORITY_FOREGROUND> = -2;
+
+        <android.os.Process: int THREAD_PRIORITY_BACKGROUND> = 10;
+
+        <android.os.Process: int THREAD_PRIORITY_LOWEST> = 19;
+
+        <android.os.Process: int THREAD_PRIORITY_DEFAULT> = 0;
+
+        <android.os.Process: int LAST_SHARED_APPLICATION_GID> = 59999;
+
+        <android.os.Process: int FIRST_SHARED_APPLICATION_GID> = 50000;
+
+        <android.os.Process: int SHARED_USER_GID> = 9997;
+
+        <android.os.Process: int LAST_ISOLATED_UID> = 99999;
+
+        <android.os.Process: int FIRST_ISOLATED_UID> = 99000;
+
+        <android.os.Process: int LAST_APPLICATION_UID> = 19999;
+
+        <android.os.Process: int FIRST_APPLICATION_UID> = 10000;
+
+        <android.os.Process: int SHARED_RELRO_UID> = 1037;
+
+        <android.os.Process: int PACKAGE_INFO_GID> = 1032;
+
+        <android.os.Process: int MEDIA_RW_GID> = 1023;
+
+        <android.os.Process: int BLUETOOTH_UID> = 1002;
+
+        <android.os.Process: int NFC_UID> = 1027;
+
+        <android.os.Process: int VPN_UID> = 1016;
+
+        <android.os.Process: int DRM_UID> = 1019;
+
+        <android.os.Process: int MEDIA_UID> = 1013;
+
+        <android.os.Process: int WIFI_UID> = 1010;
+
+        <android.os.Process: int LOG_UID> = 1007;
+
+        <android.os.Process: int SHELL_UID> = 2000;
+
+        <android.os.Process: int PHONE_UID> = 1001;
+
+        <android.os.Process: int SYSTEM_UID> = 1000;
+
+        <android.os.Process: int ROOT_UID> = 0;
+
+        <android.os.Process: java.lang.String SECONDARY_ZYGOTE_SOCKET> = "zygote_secondary";
+
+        <android.os.Process: java.lang.String ZYGOTE_SOCKET> = "zygote";
+
+        <android.os.Process: java.lang.String LOG_TAG> = "Process";
+
+        return;
+    }
+}

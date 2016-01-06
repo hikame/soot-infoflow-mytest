@@ -1,0 +1,180 @@
+public abstract class android.os.IPermissionController$Stub extends android.os.Binder implements android.os.IPermissionController
+{
+    private static final java.lang.String DESCRIPTOR;
+    static final int TRANSACTION_checkPermission;
+    static final int TRANSACTION_getPackagesForUid;
+    static final int TRANSACTION_isRuntimePermission;
+
+    public void <init>()
+    {
+        android.os.IPermissionController$Stub this;
+
+        this := @this: android.os.IPermissionController$Stub;
+
+        specialinvoke this.<android.os.Binder: void <init>()>();
+
+        virtualinvoke this.<android.os.IPermissionController$Stub: void attachInterface(android.os.IInterface,java.lang.String)>(this, "android.os.IPermissionController");
+
+        return;
+    }
+
+    public static android.os.IPermissionController asInterface(android.os.IBinder)
+    {
+        android.os.IBinder obj;
+        android.os.IInterface iin;
+        android.os.IPermissionController$Stub$Proxy $r0;
+        boolean $z0;
+        android.os.IPermissionController $r1;
+
+        obj := @parameter0: android.os.IBinder;
+
+        if obj != null goto label1;
+
+        return null;
+
+     label1:
+        iin = interfaceinvoke obj.<android.os.IBinder: android.os.IInterface queryLocalInterface(java.lang.String)>("android.os.IPermissionController");
+
+        if iin == null goto label2;
+
+        $z0 = iin instanceof android.os.IPermissionController;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (android.os.IPermissionController) iin;
+
+        return $r1;
+
+     label2:
+        $r0 = new android.os.IPermissionController$Stub$Proxy;
+
+        specialinvoke $r0.<android.os.IPermissionController$Stub$Proxy: void <init>(android.os.IBinder)>(obj);
+
+        return $r0;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        android.os.IPermissionController$Stub this;
+
+        this := @this: android.os.IPermissionController$Stub;
+
+        return this;
+    }
+
+    public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException
+    {
+        android.os.IPermissionController$Stub this;
+        int code, flags, _arg2, _arg1#2, _arg0#4;
+        android.os.Parcel data, reply;
+        boolean _result, $z0, _arg1#7;
+        java.lang.String _arg0#1, _arg0#6;
+        byte $b0, $b1;
+        java.lang.String[] _arg1#5;
+
+        this := @this: android.os.IPermissionController$Stub;
+
+        code := @parameter0: int;
+
+        data := @parameter1: android.os.Parcel;
+
+        reply := @parameter2: android.os.Parcel;
+
+        flags := @parameter3: int;
+
+        lookupswitch(code)
+        {
+            case 1: goto label2;
+            case 2: goto label5;
+            case 3: goto label6;
+            case 1598968902: goto label1;
+            default: goto label9;
+        };
+
+     label1:
+        virtualinvoke reply.<android.os.Parcel: void writeString(java.lang.String)>("android.os.IPermissionController");
+
+        return 1;
+
+     label2:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IPermissionController");
+
+        _arg0#1 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg1#2 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg2 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result = virtualinvoke this.<android.os.IPermissionController$Stub: boolean checkPermission(java.lang.String,int,int)>(_arg0#1, _arg1#2, _arg2);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result == 0 goto label3;
+
+        $b0 = 1;
+
+        goto label4;
+
+     label3:
+        $b0 = 0;
+
+     label4:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b0);
+
+        return 1;
+
+     label5:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IPermissionController");
+
+        _arg0#4 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg1#5 = virtualinvoke this.<android.os.IPermissionController$Stub: java.lang.String[] getPackagesForUid(int)>(_arg0#4);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeStringArray(java.lang.String[])>(_arg1#5);
+
+        return 1;
+
+     label6:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.IPermissionController");
+
+        _arg0#6 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg1#7 = virtualinvoke this.<android.os.IPermissionController$Stub: boolean isRuntimePermission(java.lang.String)>(_arg0#6);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _arg1#7 == 0 goto label7;
+
+        $b1 = 1;
+
+        goto label8;
+
+     label7:
+        $b1 = 0;
+
+     label8:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b1);
+
+        return 1;
+
+     label9:
+        $z0 = specialinvoke this.<android.os.Binder: boolean onTransact(int,android.os.Parcel,android.os.Parcel,int)>(code, data, reply, flags);
+
+        return $z0;
+    }
+
+    public static void <clinit>()
+    {
+        <android.os.IPermissionController$Stub: int TRANSACTION_isRuntimePermission> = 3;
+
+        <android.os.IPermissionController$Stub: int TRANSACTION_getPackagesForUid> = 2;
+
+        <android.os.IPermissionController$Stub: int TRANSACTION_checkPermission> = 1;
+
+        <android.os.IPermissionController$Stub: java.lang.String DESCRIPTOR> = "android.os.IPermissionController";
+
+        return;
+    }
+}

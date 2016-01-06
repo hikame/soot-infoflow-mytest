@@ -1,0 +1,59 @@
+public class android.util.AndroidRuntimeException extends java.lang.RuntimeException
+{
+
+    public void <init>()
+    {
+        android.util.AndroidRuntimeException this;
+
+        this := @this: android.util.AndroidRuntimeException;
+
+        specialinvoke this.<java.lang.RuntimeException: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        android.util.AndroidRuntimeException this;
+        java.lang.String name;
+
+        this := @this: android.util.AndroidRuntimeException;
+
+        name := @parameter0: java.lang.String;
+
+        specialinvoke this.<java.lang.RuntimeException: void <init>(java.lang.String)>(name);
+
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.Throwable)
+    {
+        android.util.AndroidRuntimeException this;
+        java.lang.String name;
+        java.lang.Throwable cause;
+
+        this := @this: android.util.AndroidRuntimeException;
+
+        name := @parameter0: java.lang.String;
+
+        cause := @parameter1: java.lang.Throwable;
+
+        specialinvoke this.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>(name, cause);
+
+        return;
+    }
+
+    public void <init>(java.lang.Exception)
+    {
+        android.util.AndroidRuntimeException this;
+        java.lang.Exception cause;
+
+        this := @this: android.util.AndroidRuntimeException;
+
+        cause := @parameter0: java.lang.Exception;
+
+        specialinvoke this.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>(cause);
+
+        return;
+    }
+}

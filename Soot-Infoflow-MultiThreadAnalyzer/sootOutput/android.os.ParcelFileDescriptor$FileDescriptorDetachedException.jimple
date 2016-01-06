@@ -1,0 +1,22 @@
+public class android.os.ParcelFileDescriptor$FileDescriptorDetachedException extends java.io.IOException
+{
+    private static final long serialVersionUID;
+
+    public void <init>()
+    {
+        android.os.ParcelFileDescriptor$FileDescriptorDetachedException this;
+
+        this := @this: android.os.ParcelFileDescriptor$FileDescriptorDetachedException;
+
+        specialinvoke this.<java.io.IOException: void <init>(java.lang.String)>("Remote side is detached");
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <android.os.ParcelFileDescriptor$FileDescriptorDetachedException: long serialVersionUID> = 955542466045L;
+
+        return;
+    }
+}

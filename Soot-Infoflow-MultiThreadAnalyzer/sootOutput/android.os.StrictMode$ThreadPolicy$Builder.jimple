@@ -1,0 +1,306 @@
+public final class android.os.StrictMode$ThreadPolicy$Builder extends java.lang.Object
+{
+    private int mMask;
+
+    public void <init>()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask> = 0;
+
+        this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask> = 0;
+
+        return;
+    }
+
+    public void <init>(android.os.StrictMode$ThreadPolicy)
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this;
+        android.os.StrictMode$ThreadPolicy policy;
+        int $i0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        policy := @parameter0: android.os.StrictMode$ThreadPolicy;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask> = 0;
+
+        $i0 = policy.<android.os.StrictMode$ThreadPolicy: int mask>;
+
+        this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask> = $i0;
+
+        return;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder detectAll()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(31);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder permitAll()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder disable(int)>(31);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder detectNetwork()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(4);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder permitNetwork()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder disable(int)>(4);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder detectDiskReads()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(2);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder permitDiskReads()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder disable(int)>(2);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder detectCustomSlowCalls()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(8);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder permitCustomSlowCalls()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder disable(int)>(8);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder permitResourceMismatches()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder disable(int)>(16);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder detectResourceMismatches()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(16);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder detectDiskWrites()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(1);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder permitDiskWrites()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder disable(int)>(1);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder penaltyDialog()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(131072);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder penaltyDeath()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(262144);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder penaltyDeathOnNetwork()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(524288);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder penaltyFlashScreen()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(1048576);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder penaltyLog()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(65536);
+
+        return $r0;
+    }
+
+    public android.os.StrictMode$ThreadPolicy$Builder penaltyDropBox()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this, $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $r0 = specialinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder enable(int)>(2097152);
+
+        return $r0;
+    }
+
+    private android.os.StrictMode$ThreadPolicy$Builder enable(int)
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this;
+        int bit, $i0, $i1;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        bit := @parameter0: int;
+
+        $i0 = this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask>;
+
+        $i1 = $i0 | bit;
+
+        this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask> = $i1;
+
+        return this;
+    }
+
+    private android.os.StrictMode$ThreadPolicy$Builder disable(int)
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this;
+        int bit, $i0, $i1, $i2;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        bit := @parameter0: int;
+
+        $i1 = this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask>;
+
+        $i0 = bit ^ -1;
+
+        $i2 = $i1 & $i0;
+
+        this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask> = $i2;
+
+        return this;
+    }
+
+    public android.os.StrictMode$ThreadPolicy build()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder this;
+        int $i0, $i1, $i2, $i3;
+        android.os.StrictMode$ThreadPolicy $r0;
+
+        this := @this: android.os.StrictMode$ThreadPolicy$Builder;
+
+        $i0 = this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask>;
+
+        if $i0 == 0 goto label1;
+
+        $i2 = this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask>;
+
+        $i3 = $i2 & 2555904;
+
+        if $i3 != 0 goto label1;
+
+        virtualinvoke this.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder penaltyLog()>();
+
+     label1:
+        $r0 = new android.os.StrictMode$ThreadPolicy;
+
+        $i1 = this.<android.os.StrictMode$ThreadPolicy$Builder: int mMask>;
+
+        specialinvoke $r0.<android.os.StrictMode$ThreadPolicy: void <init>(int,android.os.StrictMode$1)>($i1, null);
+
+        return $r0;
+    }
+}

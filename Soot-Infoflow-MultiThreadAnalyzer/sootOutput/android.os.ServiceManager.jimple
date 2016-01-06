@@ -1,0 +1,267 @@
+public final class android.os.ServiceManager extends java.lang.Object
+{
+    private static final java.lang.String TAG;
+    private static android.os.IServiceManager sServiceManager;
+    private static java.util.HashMap sCache;
+
+    public void <init>()
+    {
+        android.os.ServiceManager this;
+
+        this := @this: android.os.ServiceManager;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private static android.os.IServiceManager getIServiceManager()
+    {
+        android.os.IServiceManager $r0, $r2, $r3, $r4;
+        android.os.IBinder $r1;
+
+        $r0 = <android.os.ServiceManager: android.os.IServiceManager sServiceManager>;
+
+        if $r0 == null goto label1;
+
+        $r4 = <android.os.ServiceManager: android.os.IServiceManager sServiceManager>;
+
+        return $r4;
+
+     label1:
+        $r1 = staticinvoke <com.android.internal.os.BinderInternal: android.os.IBinder getContextObject()>();
+
+        $r2 = staticinvoke <android.os.ServiceManagerNative: android.os.IServiceManager asInterface(android.os.IBinder)>($r1);
+
+        <android.os.ServiceManager: android.os.IServiceManager sServiceManager> = $r2;
+
+        $r3 = <android.os.ServiceManager: android.os.IServiceManager sServiceManager>;
+
+        return $r3;
+    }
+
+    public static android.os.IBinder getService(java.lang.String)
+    {
+        java.lang.String name;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+        android.os.IServiceManager $r2;
+        android.os.IBinder $r3, service#1;
+        android.os.RemoteException $r4, service#2;
+
+        name := @parameter0: java.lang.String;
+
+     label1:
+        $r0 = <android.os.ServiceManager: java.util.HashMap sCache>;
+
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
+
+        service#1 = (android.os.IBinder) $r1;
+
+        if service#1 == null goto label3;
+
+     label2:
+        return service#1;
+
+     label3:
+        $r2 = staticinvoke <android.os.ServiceManager: android.os.IServiceManager getIServiceManager()>();
+
+        $r3 = interfaceinvoke $r2.<android.os.IServiceManager: android.os.IBinder getService(java.lang.String)>(name);
+
+     label4:
+        return $r3;
+
+     label5:
+        $r4 := @caughtexception;
+
+        service#2 = $r4;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("ServiceManager", "error in getService", service#2);
+
+        return null;
+
+        catch android.os.RemoteException from label1 to label2 with label5;
+        catch android.os.RemoteException from label3 to label4 with label5;
+    }
+
+    public static void addService(java.lang.String, android.os.IBinder)
+    {
+        java.lang.String name;
+        android.os.IBinder service;
+        android.os.RemoteException e, $r1;
+        android.os.IServiceManager $r0;
+
+        name := @parameter0: java.lang.String;
+
+        service := @parameter1: android.os.IBinder;
+
+     label1:
+        $r0 = staticinvoke <android.os.ServiceManager: android.os.IServiceManager getIServiceManager()>();
+
+        interfaceinvoke $r0.<android.os.IServiceManager: void addService(java.lang.String,android.os.IBinder,boolean)>(name, service, 0);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+
+        e = $r1;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("ServiceManager", "error in addService", e);
+
+     label4:
+        return;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+
+    public static void addService(java.lang.String, android.os.IBinder, boolean)
+    {
+        java.lang.String name;
+        android.os.IBinder service;
+        boolean allowIsolated;
+        android.os.RemoteException e, $r1;
+        android.os.IServiceManager $r0;
+
+        name := @parameter0: java.lang.String;
+
+        service := @parameter1: android.os.IBinder;
+
+        allowIsolated := @parameter2: boolean;
+
+     label1:
+        $r0 = staticinvoke <android.os.ServiceManager: android.os.IServiceManager getIServiceManager()>();
+
+        interfaceinvoke $r0.<android.os.IServiceManager: void addService(java.lang.String,android.os.IBinder,boolean)>(name, service, allowIsolated);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+
+        e = $r1;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("ServiceManager", "error in addService", e);
+
+     label4:
+        return;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+
+    public static android.os.IBinder checkService(java.lang.String)
+    {
+        java.lang.String name;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+        android.os.IServiceManager $r2;
+        android.os.IBinder $r3, service#1;
+        android.os.RemoteException $r4, service#2;
+
+        name := @parameter0: java.lang.String;
+
+     label1:
+        $r0 = <android.os.ServiceManager: java.util.HashMap sCache>;
+
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
+
+        service#1 = (android.os.IBinder) $r1;
+
+        if service#1 == null goto label3;
+
+     label2:
+        return service#1;
+
+     label3:
+        $r2 = staticinvoke <android.os.ServiceManager: android.os.IServiceManager getIServiceManager()>();
+
+        $r3 = interfaceinvoke $r2.<android.os.IServiceManager: android.os.IBinder checkService(java.lang.String)>(name);
+
+     label4:
+        return $r3;
+
+     label5:
+        $r4 := @caughtexception;
+
+        service#2 = $r4;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("ServiceManager", "error in checkService", service#2);
+
+        return null;
+
+        catch android.os.RemoteException from label1 to label2 with label5;
+        catch android.os.RemoteException from label3 to label4 with label5;
+    }
+
+    public static java.lang.String[] listServices() throws android.os.RemoteException
+    {
+        android.os.RemoteException e, $r2;
+        android.os.IServiceManager $r0;
+        java.lang.String[] $r1;
+
+     label1:
+        $r0 = staticinvoke <android.os.ServiceManager: android.os.IServiceManager getIServiceManager()>();
+
+        $r1 = interfaceinvoke $r0.<android.os.IServiceManager: java.lang.String[] listServices()>();
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("ServiceManager", "error in listServices", e);
+
+        return null;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+
+    public static void initServiceCache(java.util.Map)
+    {
+        java.util.Map cache;
+        java.util.HashMap $r0, $r1;
+        int $i0;
+        java.lang.IllegalStateException $r2;
+
+        cache := @parameter0: java.util.Map;
+
+        $r0 = <android.os.ServiceManager: java.util.HashMap sCache>;
+
+        $i0 = virtualinvoke $r0.<java.util.HashMap: int size()>();
+
+        if $i0 == 0 goto label1;
+
+        $r2 = new java.lang.IllegalStateException;
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>("setServiceCache may only be called once");
+
+        throw $r2;
+
+     label1:
+        $r1 = <android.os.ServiceManager: java.util.HashMap sCache>;
+
+        virtualinvoke $r1.<java.util.HashMap: void putAll(java.util.Map)>(cache);
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $r0;
+
+        <android.os.ServiceManager: java.lang.String TAG> = "ServiceManager";
+
+        $r0 = new java.util.HashMap;
+
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+
+        <android.os.ServiceManager: java.util.HashMap sCache> = $r0;
+
+        return;
+    }
+}

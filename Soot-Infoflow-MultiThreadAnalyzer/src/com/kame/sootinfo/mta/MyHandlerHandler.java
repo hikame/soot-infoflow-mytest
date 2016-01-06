@@ -8,19 +8,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.kame.sootinfo.mta.tags.MyMethodTag;
+
 import soot.Body;
+import soot.IdentityUnit;
 import soot.Kind;
 import soot.Local;
 import soot.PatchingChain;
 import soot.RefType;
 import soot.Scene;
+import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
+import soot.Trap;
 import soot.Type;
 import soot.Unit;
+import soot.UnitBox;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
+import soot.dexpler.DalvikThrowAnalysis;
 import soot.jimple.AssignStmt;
 import soot.jimple.GotoStmt;
 import soot.jimple.IfStmt;
@@ -30,17 +37,24 @@ import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
 import soot.jimple.ReturnVoidStmt;
 import soot.jimple.Stmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
+import soot.jimple.internal.JCaughtExceptionRef;
 import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JTableSwitchStmt;
+import soot.jimple.internal.JTrap;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
+import soot.toolkits.exceptions.ThrowableSet;
+import soot.toolkits.exceptions.UnitThrowAnalysis;
+import soot.util.Chain;
+import soot.util.HashChain;
 
 /**
  * @throws Exception */
@@ -51,6 +65,8 @@ public class MyHandlerHandler {
 	JTableSwitchStmt switchTableUnit = null;
 	Unit switchTablePreUnit = null;
 	List<Value> whats = new ArrayList<Value>();
+	List<TrapInfo> newTraps = null; 
+	Chain<Trap> orgTraps = null;
 	JInstanceFieldRef jifr = null;
 	
 	CallGraph cg = null;
@@ -112,6 +128,7 @@ public class MyHandlerHandler {
 		existingTargets = new HashMap<Unit, Unit>();
 		switchTableUnit = null;
 		switchTablePreUnit = null;
+		newTraps = null;
 		whats = new ArrayList<Value>();
 		jifr = null;
 	}
@@ -186,11 +203,21 @@ public class MyHandlerHandler {
 			throw new Exception("Error when find the handleMessage() method in the body of sendMessage()");
 
 		hdMsgUnits = handleMsg.getActiveBody().getUnits();
+		orgTraps = handleMsg.getActiveBody().getTraps();
+		if(orgTraps != null && orgTraps.size() > 0){
+			newTraps = new ArrayList<TrapInfo>(orgTraps.size());
+			for(int i = 0; i < orgTraps.size(); i++)
+				newTraps.add(i, null);
+		}
 
 		myHandler = new SootMethod(
 				"myHandler" + caseCode, 
 				Collections.singletonList((Type)RefType.v("android.os.Message")), 
 				VoidType.v());
+		
+		myHandler.addTag(new MyMethodTag(true));
+		
+		
 		handleMsg.getDeclaringClass().addMethod(myHandler);
 		
 		Body myThinBody = Jimple.v().newBody();
@@ -210,9 +237,40 @@ public class MyHandlerHandler {
 			return null;
 		Unit targetUnit = switchTableUnit.getTarget(caseCode - switchTableUnit.getLowIndex());		
 		addUnitsStartFromTarget(targetUnit, false);
+		
+		addTraps();
+
 		return myHandler;
 	}
 	
+	private void addTraps() {
+		Chain<Trap> newTrapChain = new HashChain<Trap>();
+		int count = 0;
+		for(Trap orgTrap = orgTraps.getFirst(); orgTrap != null; orgTrap = orgTraps.getSuccOf(orgTrap)){
+			TrapInfo ti = newTraps.get(count);
+			if(ti != null && ti.isValid()){
+				if(ti.handlerUnit == null)
+					ti.handlerUnit = addUnitsStartFromTarget(orgTrap.getHandlerUnit(), false);
+				newTrapChain.add(ti.generateTrap());
+			}
+			count++;
+		}
+		
+		if(newTrapChain.size() == 0)
+			return;
+		
+		Body handlerBody = myHandler.getActiveBody();
+		try {
+			java.lang.reflect.Field tcField = Body.class.getDeclaredField("trapChain");
+			boolean ac = tcField.isAccessible();
+			tcField.setAccessible(true);
+			tcField.set(handlerBody, newTrapChain);
+			tcField.setAccessible(ac);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+
 	/**it will append the codes starting from startUnit and end with null or goto stmt
 	 * the the return value is the new unit in the created method.
 	 * @param searchForSwitchTable */
@@ -222,10 +280,12 @@ public class MyHandlerHandler {
 		
 		Unit result = null;
 		Unit preUnit = null;
-//		if(startUnit.equals(switchTableUnit))
 		if(switchTableUnit != null && switchTableUnit.getTargets().contains(startUnit))
 			preUnit = switchTablePreUnit;
 		for(Unit u = startUnit; u != null; u = hdMsgUnits.getSuccOf(u)){
+			if(existingTargets.containsKey(u)){	//exception处理代码并不会有return语句，而其后面的代码有可能已经被加入进去过了~
+				break;
+			}
 			preUnit = addOneUnit(u, searchForSwitchTable, preUnit);
 			if(u.equals(startUnit)){
 				result = preUnit;
@@ -236,7 +296,7 @@ public class MyHandlerHandler {
 			if((u instanceof GotoStmt) || (u instanceof ReturnVoidStmt))
 				break;
 		}
-		
+
 		return result;
 	}
 
@@ -279,9 +339,54 @@ public class MyHandlerHandler {
 			unitsChain.add(newUnit);
 		else
 			unitsChain.insertAfter(newUnit, preUnit);
-		//TODO：实践证明这样做还是很有问题的！需要用精确地insertAfter  
-//		???关于newUnit的插入位置目前存疑，是否需要记录其prenode呢？或是用下面这条语句呢？
+		
+		checkForTraps(u, newUnit);
 		return newUnit;
 	}
 
+	private void checkForTraps(Unit u, Unit newUnit) {
+		int count = 0;
+		for(Trap trap : orgTraps){
+			if(trap.getBeginUnit().equals(u))
+				getTrapInfoAt(count, trap).beginUnit = newUnit;
+			if(trap.getEndUnit().equals(u))
+				getTrapInfoAt(count, trap).endUnit = newUnit;
+			if(trap.getHandlerUnit().equals(u))
+				getTrapInfoAt(count, trap).handlerUnit = newUnit;
+			count++;
+		}
+	}
+
+	private TrapInfo getTrapInfoAt(int count, Trap trap) {
+		TrapInfo ti = newTraps.get(count);
+		if(ti == null){
+			ti = new TrapInfo();
+			ti.exception = trap.getException();
+			newTraps.set(count, ti);
+		}
+		return ti;
+	}
+
+	private class TrapInfo{
+	    /** The exception being caught. */
+	    private transient SootClass exception;
+
+	    /** The first unit being trapped. */
+	    private Unit beginUnit;
+
+	    /** The unit just before the last unit being trapped. */
+	    private Unit endUnit;
+
+	    /** The unit to which execution flows after the caught exception is triggered. */
+	    private Unit handlerUnit;
+
+		public boolean isValid() {
+			boolean result = (exception != null) && (beginUnit != null) && (endUnit != null);
+			return result;
+		}
+
+		public Trap generateTrap() {
+			return new JTrap(exception, beginUnit, endUnit, handlerUnit);
+		}
+	}
 }

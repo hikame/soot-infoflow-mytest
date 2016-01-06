@@ -1,0 +1,48 @@
+class com.kame.tafhd.MainActivity$MyRunnable extends java.lang.Object implements java.lang.Runnable
+{
+    final com.kame.tafhd.MainActivity this$0;
+
+    void <init>(com.kame.tafhd.MainActivity)
+    {
+        com.kame.tafhd.MainActivity$MyRunnable this;
+        com.kame.tafhd.MainActivity l1;
+
+        this := @this: com.kame.tafhd.MainActivity$MyRunnable;
+
+        l1 := @parameter0: com.kame.tafhd.MainActivity;
+
+        this.<com.kame.tafhd.MainActivity$MyRunnable: com.kame.tafhd.MainActivity this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.kame.tafhd.MainActivity$MyRunnable this;
+        java.lang.String str;
+        com.kame.tafhd.MainActivity $r0;
+        com.kame.tafhd.MainActivity$ClassX $r1;
+        com.kame.tafhd.MainActivity$ParamClass $r2;
+        com.kame.tafhd.Publisher $r3;
+
+        this := @this: com.kame.tafhd.MainActivity$MyRunnable;
+
+        $r0 = this.<com.kame.tafhd.MainActivity$MyRunnable: com.kame.tafhd.MainActivity this$0>;
+
+        $r1 = $r0.<com.kame.tafhd.MainActivity: com.kame.tafhd.MainActivity$ClassX taintedXField>;
+
+        $r2 = $r1.<com.kame.tafhd.MainActivity$ClassX: com.kame.tafhd.MainActivity$ParamClass objPC>;
+
+        str = $r2.<com.kame.tafhd.MainActivity$ParamClass: java.lang.String fieldString>;
+
+        $r3 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r3.<com.kame.tafhd.Publisher: void <init>()>();
+
+        virtualinvoke $r3.<com.kame.tafhd.Publisher: void publish(java.lang.String)>(str);
+
+        return;
+    }
+}

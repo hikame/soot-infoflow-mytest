@@ -1,0 +1,203 @@
+public class android.os.Process$ZygoteState extends java.lang.Object
+{
+    final android.net.LocalSocket socket;
+    final java.io.DataInputStream inputStream;
+    final java.io.BufferedWriter writer;
+    final java.util.List abiList;
+    boolean mClosed;
+
+    private void <init>(android.net.LocalSocket, java.io.DataInputStream, java.io.BufferedWriter, java.util.List)
+    {
+        android.os.Process$ZygoteState this;
+        android.net.LocalSocket socket;
+        java.io.DataInputStream inputStream;
+        java.io.BufferedWriter writer;
+        java.util.List abiList;
+
+        this := @this: android.os.Process$ZygoteState;
+
+        socket := @parameter0: android.net.LocalSocket;
+
+        inputStream := @parameter1: java.io.DataInputStream;
+
+        writer := @parameter2: java.io.BufferedWriter;
+
+        abiList := @parameter3: java.util.List;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.Process$ZygoteState: android.net.LocalSocket socket> = socket;
+
+        this.<android.os.Process$ZygoteState: java.io.DataInputStream inputStream> = inputStream;
+
+        this.<android.os.Process$ZygoteState: java.io.BufferedWriter writer> = writer;
+
+        this.<android.os.Process$ZygoteState: java.util.List abiList> = abiList;
+
+        return;
+    }
+
+    public static android.os.Process$ZygoteState connect(java.lang.String) throws java.io.IOException
+    {
+        java.lang.String socketAddress, $r10, ex#6;
+        android.net.LocalSocket zygoteSocket, $r0;
+        android.net.LocalSocketAddress $r1;
+        android.net.LocalSocketAddress$Namespace $r2;
+        java.io.DataInputStream $r3, zygoteInputStream#3;
+        java.io.InputStream $r4;
+        java.io.BufferedWriter $r5, zygoteWriter#4;
+        java.io.OutputStreamWriter $r6;
+        java.io.OutputStream $r7;
+        java.lang.StringBuilder $r8, $r9, $r11;
+        android.os.Process$ZygoteState $r12;
+        java.util.List $r13;
+        java.lang.String[] $r14;
+        java.io.IOException $r15, $r16, ex#5;
+
+        socketAddress := @parameter0: java.lang.String;
+
+        $r0 = new android.net.LocalSocket;
+
+        specialinvoke $r0.<android.net.LocalSocket: void <init>()>();
+
+        zygoteSocket = $r0;
+
+     label1:
+        $r1 = new android.net.LocalSocketAddress;
+
+        $r2 = <android.net.LocalSocketAddress$Namespace: android.net.LocalSocketAddress$Namespace RESERVED>;
+
+        specialinvoke $r1.<android.net.LocalSocketAddress: void <init>(java.lang.String,android.net.LocalSocketAddress$Namespace)>(socketAddress, $r2);
+
+        virtualinvoke zygoteSocket.<android.net.LocalSocket: void connect(android.net.LocalSocketAddress)>($r1);
+
+        $r3 = new java.io.DataInputStream;
+
+        $r4 = virtualinvoke zygoteSocket.<android.net.LocalSocket: java.io.InputStream getInputStream()>();
+
+        specialinvoke $r3.<java.io.DataInputStream: void <init>(java.io.InputStream)>($r4);
+
+        zygoteInputStream#3 = $r3;
+
+        $r5 = new java.io.BufferedWriter;
+
+        $r6 = new java.io.OutputStreamWriter;
+
+        $r7 = virtualinvoke zygoteSocket.<android.net.LocalSocket: java.io.OutputStream getOutputStream()>();
+
+        specialinvoke $r6.<java.io.OutputStreamWriter: void <init>(java.io.OutputStream)>($r7);
+
+        specialinvoke $r5.<java.io.BufferedWriter: void <init>(java.io.Writer,int)>($r6, 256);
+
+        zygoteWriter#4 = $r5;
+
+     label2:
+        goto label8;
+
+     label3:
+        $r16 := @caughtexception;
+
+        ex#5 = $r16;
+
+     label4:
+        virtualinvoke zygoteSocket.<android.net.LocalSocket: void close()>();
+
+     label5:
+        goto label7;
+
+     label6:
+        $r15 := @caughtexception;
+
+     label7:
+        throw ex#5;
+
+     label8:
+        ex#6 = staticinvoke <android.os.Process: java.lang.String access$000(java.io.BufferedWriter,java.io.DataInputStream)>(zygoteWriter#4, zygoteInputStream#3);
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Process: zygote socket opened, supported ABIS: ");
+
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ex#6);
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("Zygote", $r10);
+
+        $r12 = new android.os.Process$ZygoteState;
+
+        $r14 = virtualinvoke ex#6.<java.lang.String: java.lang.String[] split(java.lang.String)>(",");
+
+        $r13 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r14);
+
+        specialinvoke $r12.<android.os.Process$ZygoteState: void <init>(android.net.LocalSocket,java.io.DataInputStream,java.io.BufferedWriter,java.util.List)>(zygoteSocket, zygoteInputStream#3, zygoteWriter#4, $r13);
+
+        return $r12;
+
+        catch java.io.IOException from label1 to label2 with label3;
+        catch java.io.IOException from label4 to label5 with label6;
+    }
+
+    boolean matches(java.lang.String)
+    {
+        android.os.Process$ZygoteState this;
+        java.lang.String abi;
+        java.util.List $r0;
+        boolean $z0;
+
+        this := @this: android.os.Process$ZygoteState;
+
+        abi := @parameter0: java.lang.String;
+
+        $r0 = this.<android.os.Process$ZygoteState: java.util.List abiList>;
+
+        $z0 = interfaceinvoke $r0.<java.util.List: boolean contains(java.lang.Object)>(abi);
+
+        return $z0;
+    }
+
+    public void close()
+    {
+        android.os.Process$ZygoteState this;
+        java.io.IOException ex, $r1;
+        android.net.LocalSocket $r0;
+
+        this := @this: android.os.Process$ZygoteState;
+
+     label1:
+        $r0 = this.<android.os.Process$ZygoteState: android.net.LocalSocket socket>;
+
+        virtualinvoke $r0.<android.net.LocalSocket: void close()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+
+        ex = $r1;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Process", "I/O exception on routine close", ex);
+
+     label4:
+        this.<android.os.Process$ZygoteState: boolean mClosed> = 1;
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    boolean isClosed()
+    {
+        android.os.Process$ZygoteState this;
+        boolean $z0;
+
+        this := @this: android.os.Process$ZygoteState;
+
+        $z0 = this.<android.os.Process$ZygoteState: boolean mClosed>;
+
+        return $z0;
+    }
+}

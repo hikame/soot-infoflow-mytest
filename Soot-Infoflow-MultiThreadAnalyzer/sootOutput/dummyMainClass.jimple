@@ -1,0 +1,24 @@
+class dummyMainClass
+{
+
+    public static void dummyMainMethod(java.lang.String[])
+    {
+        java.lang.String[] $r0;
+        com.kame.tafhd.MainActivity $r1;
+        int $i0;
+
+        $r0 := @parameter0: java.lang.String[];
+
+        $r1 = new com.kame.tafhd.MainActivity;
+
+        specialinvoke $r1.<com.kame.tafhd.MainActivity: void <init>()>();
+
+     label1:
+        if $i0 == 0 goto label2;
+
+        virtualinvoke $r1.<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>("");
+
+     label2:
+        goto label1;
+    }
+}

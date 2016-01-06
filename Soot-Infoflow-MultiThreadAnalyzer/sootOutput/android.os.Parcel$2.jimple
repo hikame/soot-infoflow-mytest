@@ -1,0 +1,61 @@
+class android.os.Parcel$2 extends java.io.ObjectInputStream
+{
+    final java.lang.ClassLoader val$loader;
+    final android.os.Parcel this$0;
+
+    void <init>(android.os.Parcel, java.io.InputStream, java.lang.ClassLoader)
+    {
+        android.os.Parcel$2 this;
+        android.os.Parcel l1;
+        java.io.InputStream x0;
+        java.lang.ClassLoader l3;
+
+        this := @this: android.os.Parcel$2;
+
+        l1 := @parameter0: android.os.Parcel;
+
+        x0 := @parameter1: java.io.InputStream;
+
+        l3 := @parameter2: java.lang.ClassLoader;
+
+        this.<android.os.Parcel$2: android.os.Parcel this$0> = l1;
+
+        this.<android.os.Parcel$2: java.lang.ClassLoader val$loader> = l3;
+
+        specialinvoke this.<java.io.ObjectInputStream: void <init>(java.io.InputStream)>(x0);
+
+        return;
+    }
+
+    protected java.lang.Class resolveClass(java.io.ObjectStreamClass) throws java.io.IOException, java.lang.ClassNotFoundException
+    {
+        android.os.Parcel$2 this;
+        java.io.ObjectStreamClass osClass;
+        java.lang.Class c, $r1;
+        java.lang.ClassLoader $r0, $r3;
+        java.lang.String $r2;
+
+        this := @this: android.os.Parcel$2;
+
+        osClass := @parameter0: java.io.ObjectStreamClass;
+
+        $r0 = this.<android.os.Parcel$2: java.lang.ClassLoader val$loader>;
+
+        if $r0 == null goto label1;
+
+        $r2 = virtualinvoke osClass.<java.io.ObjectStreamClass: java.lang.String getName()>();
+
+        $r3 = this.<android.os.Parcel$2: java.lang.ClassLoader val$loader>;
+
+        c = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String,boolean,java.lang.ClassLoader)>($r2, 0, $r3);
+
+        if c == null goto label1;
+
+        return c;
+
+     label1:
+        $r1 = specialinvoke this.<java.io.ObjectInputStream: java.lang.Class resolveClass(java.io.ObjectStreamClass)>(osClass);
+
+        return $r1;
+    }
+}

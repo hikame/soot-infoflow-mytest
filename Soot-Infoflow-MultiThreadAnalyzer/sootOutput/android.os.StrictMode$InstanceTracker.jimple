@@ -1,0 +1,243 @@
+final class android.os.StrictMode$InstanceTracker extends java.lang.Object
+{
+    private static final java.util.HashMap sInstanceCounts;
+    private final java.lang.Class mKlass;
+
+    public void <init>(java.lang.Object)
+    {
+        android.os.StrictMode$InstanceTracker this;
+        java.lang.Object instance, $r4;
+        java.util.HashMap l2, $r1, $r3, $r5;
+        java.lang.Integer value, $r7;
+        int newValue, $i0, $i1;
+        java.lang.Throwable l5, $r9;
+        java.lang.Class $r0, $r2, $r6;
+
+        this := @this: android.os.StrictMode$InstanceTracker;
+
+        instance := @parameter0: java.lang.Object;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = virtualinvoke instance.<java.lang.Object: java.lang.Class getClass()>();
+
+        this.<android.os.StrictMode$InstanceTracker: java.lang.Class mKlass> = $r0;
+
+        $r1 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r3 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        $r2 = this.<android.os.StrictMode$InstanceTracker: java.lang.Class mKlass>;
+
+        $r4 = virtualinvoke $r3.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r2);
+
+        value = (java.lang.Integer) $r4;
+
+        if value == null goto label2;
+
+        $i0 = virtualinvoke value.<java.lang.Integer: int intValue()>();
+
+        $i1 = $i0 + 1;
+
+        goto label3;
+
+     label2:
+        $i1 = 1;
+
+     label3:
+        newValue = $i1;
+
+        $r5 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        $r6 = this.<android.os.StrictMode$InstanceTracker: java.lang.Class mKlass>;
+
+        $r7 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(newValue);
+
+        virtualinvoke $r5.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        exitmonitor l2;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r9 := @caughtexception;
+
+        l5 = $r9;
+
+        exitmonitor l2;
+
+     label6:
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        android.os.StrictMode$InstanceTracker this;
+        java.util.HashMap l1, $r0, $r2, $r5, $r7;
+        java.lang.Integer value, $r8;
+        int newValue, $i0;
+        java.lang.Throwable l4, l5, $r10, $r12;
+        java.lang.Class $r1, $r4, $r9;
+        java.lang.Object $r3;
+
+        this := @this: android.os.StrictMode$InstanceTracker;
+
+     label01:
+        $r0 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label02:
+        $r2 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        $r1 = this.<android.os.StrictMode$InstanceTracker: java.lang.Class mKlass>;
+
+        $r3 = virtualinvoke $r2.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r1);
+
+        value = (java.lang.Integer) $r3;
+
+        if value == null goto label04;
+
+        $i0 = virtualinvoke value.<java.lang.Integer: int intValue()>();
+
+        newValue = $i0 - 1;
+
+        if newValue <= 0 goto label03;
+
+        $r7 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        $r9 = this.<android.os.StrictMode$InstanceTracker: java.lang.Class mKlass>;
+
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(newValue);
+
+        virtualinvoke $r7.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r9, $r8);
+
+        goto label04;
+
+     label03:
+        $r5 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        $r4 = this.<android.os.StrictMode$InstanceTracker: java.lang.Class mKlass>;
+
+        virtualinvoke $r5.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($r4);
+
+     label04:
+        exitmonitor l1;
+
+     label05:
+        goto label08;
+
+     label06:
+        $r10 := @caughtexception;
+
+        l4 = $r10;
+
+        exitmonitor l1;
+
+     label07:
+        throw l4;
+
+     label08:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        goto label11;
+
+     label09:
+        $r12 := @caughtexception;
+
+        l5 = $r12;
+
+     label10:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        throw l5;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label02 to label05 with label06;
+        catch java.lang.Throwable from label06 to label07 with label06;
+        catch java.lang.Throwable from label01 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public static int getInstanceCount(java.lang.Class)
+    {
+        java.lang.Class klass;
+        java.util.HashMap l1, $r0, $r1;
+        java.lang.Integer value;
+        java.lang.Throwable l3, $r3;
+        java.lang.Object $r2;
+        int $i0;
+
+        klass := @parameter0: java.lang.Class;
+
+        $r0 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts>;
+
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(klass);
+
+        value = (java.lang.Integer) $r2;
+
+        if value == null goto label2;
+
+        $i0 = virtualinvoke value.<java.lang.Integer: int intValue()>();
+
+        goto label3;
+
+     label2:
+        $i0 = 0;
+
+     label3:
+        exitmonitor l1;
+
+     label4:
+        return $i0;
+
+     label5:
+        $r3 := @caughtexception;
+
+        l3 = $r3;
+
+        exitmonitor l1;
+
+     label6:
+        throw l3;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $r0;
+
+        $r0 = new java.util.HashMap;
+
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+
+        <android.os.StrictMode$InstanceTracker: java.util.HashMap sInstanceCounts> = $r0;
+
+        return;
+    }
+}

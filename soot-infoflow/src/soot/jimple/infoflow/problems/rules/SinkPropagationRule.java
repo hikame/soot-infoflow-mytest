@@ -53,7 +53,17 @@ public class SinkPropagationRule extends AbstractTaintPropagationRule {
 		}
 		else if (stmt instanceof AssignStmt) {
 			final AssignStmt assignStmt = (AssignStmt) stmt;
-			checkForSink(d1, source, stmt, assignStmt.getRightOp());
+//			checkForSink(d1, source, stmt, assignStmt.getRightOp());
+//			changed by Kame Wang, 20160106, the following codes are based from checkForSink method.
+			for (Value val : BaseSelector.selectBaseList(assignStmt.getRightOp(), false)) {
+				if (getManager().getSourceSinkManager() != null
+						&& source.isAbstractionActive()
+//						&& getAliasing().mayAlias(val, source
+//								.getAccessPath().getPlainValue())
+						&& getManager().getSourceSinkManager().isSink(stmt,
+								getManager().getICFG(), source.getAccessPath()))
+					getResults().addResult(new AbstractionAtSink(source, stmt));
+			}
 		}
 		
 		return null;
@@ -95,7 +105,7 @@ public class SinkPropagationRule extends AbstractTaintPropagationRule {
 		// The given access path must at least be referenced somewhere in the
 		// sink
 		if (source.isAbstractionActive()
-				&& !source.getAccessPath().isStaticFieldRef()) {
+				&& !source.getAccessPath().isStaticFieldRef()) {//是一个无需激活的非静态域
 			InvokeExpr iexpr = stmt.getInvokeExpr();
 			boolean found = false;
 			for (int i = 0; i < iexpr.getArgCount(); i++)

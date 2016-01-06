@@ -249,8 +249,8 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 	 */
 	private void processCall(PathEdge<N,D> edge) {
 		final D d1 = edge.factAtSource();
-		final N n = edge.getTarget(); // a call node; line 14...
-
+		final N n = edge.getTarget(); // a call node; line 14...	
+		
         logger.trace("Processing call to {}", n);
         
 		final D d2 = edge.factAtTarget();
@@ -266,7 +266,7 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 			
 			Collection<N> startPointsOf = icfg.getStartPointsOf(sCalledProcN);
 			//for each result node of the call-flow function
-			for(D d3: res) {
+			for(D d3: res) {//obtainMessage在此res为空
 				if (memoryManager != null)
 					d3 = memoryManager.handleGeneratedMemoryObject(d2, d3);
 				if (d3 == null)
@@ -317,8 +317,9 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		//line 17-19 of Naeem/Lhotak/Rodriguez		
 		//process intra-procedural flows along call-to-return flow functions
 		for (N returnSiteN : returnSiteNs) {
-			FlowFunction<D> callToReturnFlowFunction = flowFunctions.getCallToReturnFlowFunction(n, returnSiteN);
-			for(D d3: computeCallToReturnFlowFunction(callToReturnFlowFunction, d1, d2)) {
+			FlowFunction<D> callToReturnFlowFunction = flowFunctions.getCallToReturnFlowFunction(n, returnSiteN);	//貌似仅仅是用来确认这里传入的污点值可以正常传出的！除非是通过taintwrapper或者是nativehandler处理的部分
+			Set<D> callToReturnRes = computeCallToReturnFlowFunction(callToReturnFlowFunction, d1, d2);
+			for(D d3: callToReturnRes) {
 				if (memoryManager != null)
 					d3 = memoryManager.handleGeneratedMemoryObject(d2, d3);
 				if (d3 != null)
@@ -467,7 +468,10 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		final N n = edge.getTarget(); 
 		final D d2 = edge.factAtTarget();
 		List<N> nlist = icfg.getSuccsOf(n);
-		
+//if(n.toString().equals("str = $r2.<com.kame.tafhd.MainActivity$ParamClass: java.lang.String fieldString>") &&
+//		d2.toString().equals("$r2(com.kame.tafhd.MainActivity$ParamClass) * <+length> | >>"))
+////if(n.toString().equals("str = $r2.<com.kame.tafhd.MainActivity$ParamClass: java.lang.String fieldString>"))
+//	n.toString();
 		for (N m : nlist) {
 			FlowFunction<D> flowFunction = flowFunctions.getNormalFlowFunction(n,m);
 			Set<D> res = computeNormalFlowFunction(flowFunction, d1, d2);
@@ -642,11 +646,6 @@ if(Options.v().debug()){
 		System.out.println("[KM] " + sm.getSignature() + "\n" + sm.getActiveBody());
 	}
 }
-
-//if(edge.getTarget().toString().equals("this.<com.kame.tafhd.MainActivity: java.lang.String tainted> = s0"))
-//	System.out.println();
-//if(edge.getTarget().toString().equals("virtualinvoke $r1.<com.kame.tafhd.MainActivity$MyHandler: void myHandler4(android.os.Message)>(msg)"))
-//	System.out.println();
 			if(icfg.isCallStmt(edge.getTarget())) {
 				processCall(edge);
 			} else {

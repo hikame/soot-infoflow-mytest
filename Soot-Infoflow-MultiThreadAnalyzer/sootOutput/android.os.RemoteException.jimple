@@ -1,0 +1,42 @@
+public class android.os.RemoteException extends android.util.AndroidException
+{
+
+    public void <init>()
+    {
+        android.os.RemoteException this;
+
+        this := @this: android.os.RemoteException;
+
+        specialinvoke this.<android.util.AndroidException: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        android.os.RemoteException this;
+        java.lang.String message;
+
+        this := @this: android.os.RemoteException;
+
+        message := @parameter0: java.lang.String;
+
+        specialinvoke this.<android.util.AndroidException: void <init>(java.lang.String)>(message);
+
+        return;
+    }
+
+    public java.lang.RuntimeException rethrowAsRuntimeException()
+    {
+        android.os.RemoteException this;
+        java.lang.RuntimeException $r0;
+
+        this := @this: android.os.RemoteException;
+
+        $r0 = new java.lang.RuntimeException;
+
+        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>(this);
+
+        throw $r0;
+    }
+}

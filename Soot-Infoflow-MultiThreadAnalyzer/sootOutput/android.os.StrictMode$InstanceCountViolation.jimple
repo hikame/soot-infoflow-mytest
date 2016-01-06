@@ -1,0 +1,76 @@
+class android.os.StrictMode$InstanceCountViolation extends java.lang.Throwable
+{
+    final java.lang.Class mClass;
+    final long mInstances;
+    final int mLimit;
+    private static final java.lang.StackTraceElement[] FAKE_STACK;
+
+    public void <init>(java.lang.Class, long, int)
+    {
+        android.os.StrictMode$InstanceCountViolation this;
+        java.lang.Class klass;
+        long instances;
+        int limit;
+        java.lang.StringBuilder $r0, $r2, $r3, $r4, $r5, $r6;
+        java.lang.String $r1, $r7;
+        java.lang.StackTraceElement[] $r8;
+
+        this := @this: android.os.StrictMode$InstanceCountViolation;
+
+        klass := @parameter0: java.lang.Class;
+
+        instances := @parameter1: long;
+
+        limit := @parameter2: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke klass.<java.lang.Class: java.lang.String toString()>();
+
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; instances=");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(instances);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; limit=");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(limit);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke this.<java.lang.Throwable: void <init>(java.lang.String)>($r7);
+
+        $r8 = <android.os.StrictMode$InstanceCountViolation: java.lang.StackTraceElement[] FAKE_STACK>;
+
+        virtualinvoke this.<android.os.StrictMode$InstanceCountViolation: void setStackTrace(java.lang.StackTraceElement[])>($r8);
+
+        this.<android.os.StrictMode$InstanceCountViolation: java.lang.Class mClass> = klass;
+
+        this.<android.os.StrictMode$InstanceCountViolation: long mInstances> = instances;
+
+        this.<android.os.StrictMode$InstanceCountViolation: int mLimit> = limit;
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.StackTraceElement[] $r0;
+        java.lang.StackTraceElement $r1;
+
+        $r0 = newarray (java.lang.StackTraceElement)[1];
+
+        $r1 = new java.lang.StackTraceElement;
+
+        specialinvoke $r1.<java.lang.StackTraceElement: void <init>(java.lang.String,java.lang.String,java.lang.String,int)>("android.os.StrictMode", "setClassInstanceLimit", "StrictMode.java", 1);
+
+        $r0[0] = $r1;
+
+        <android.os.StrictMode$InstanceCountViolation: java.lang.StackTraceElement[] FAKE_STACK> = $r0;
+
+        return;
+    }
+}

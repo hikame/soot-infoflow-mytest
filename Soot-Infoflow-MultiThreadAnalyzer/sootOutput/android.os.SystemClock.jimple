@@ -1,0 +1,134 @@
+public final class android.os.SystemClock extends java.lang.Object
+{
+    private static final java.lang.String TAG;
+
+    private void <init>()
+    {
+        android.os.SystemClock this;
+
+        this := @this: android.os.SystemClock;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void sleep(long)
+    {
+        long ms, start, $l0, $l1, duration#1;
+        java.lang.InterruptedException e, $r1;
+        byte $b2;
+        java.lang.Thread $r0;
+        boolean interrupted#2;
+
+        ms := @parameter0: long;
+
+        start = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        duration#1 = ms;
+
+        interrupted#2 = 0;
+
+     label1:
+        staticinvoke <java.lang.Thread: void sleep(long)>(duration#1);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+
+        e = $r1;
+
+        interrupted#2 = 1;
+
+     label4:
+        $l0 = start + ms;
+
+        $l1 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        duration#1 = $l0 - $l1;
+
+        $b2 = duration#1 cmp 0L;
+
+        if $b2 > 0 goto label1;
+
+        if interrupted#2 == 0 goto label5;
+
+        $r0 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r0.<java.lang.Thread: void interrupt()>();
+
+     label5:
+        return;
+
+        catch java.lang.InterruptedException from label1 to label2 with label3;
+    }
+
+    public static boolean setCurrentTimeMillis(long)
+    {
+        long millis;
+        android.os.IBinder b;
+        android.app.IAlarmManager mgr;
+        boolean $z0;
+        java.lang.SecurityException $r0, e#2;
+        android.os.RemoteException $r1, e#1;
+
+        millis := @parameter0: long;
+
+        b = staticinvoke <android.os.ServiceManager: android.os.IBinder getService(java.lang.String)>("alarm");
+
+        mgr = staticinvoke <android.app.IAlarmManager$Stub: android.app.IAlarmManager asInterface(android.os.IBinder)>(b);
+
+        if mgr != null goto label1;
+
+        return 0;
+
+     label1:
+        $z0 = interfaceinvoke mgr.<android.app.IAlarmManager: boolean setTime(long)>(millis);
+
+     label2:
+        return $z0;
+
+     label3:
+        $r1 := @caughtexception;
+
+        e#1 = $r1;
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("SystemClock", "Unable to set RTC", e#1);
+
+        goto label5;
+
+     label4:
+        $r0 := @caughtexception;
+
+        e#2 = $r0;
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("SystemClock", "Unable to set RTC", e#2);
+
+     label5:
+        return 0;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+        catch java.lang.SecurityException from label1 to label2 with label4;
+    }
+
+    public static native long uptimeMillis();
+
+    public static native long elapsedRealtime();
+
+    public static native long elapsedRealtimeNanos();
+
+    public static native long currentThreadTimeMillis();
+
+    public static native long currentThreadTimeMicro();
+
+    public static native long currentTimeMicro();
+
+    public static void <clinit>()
+    {
+        <android.os.SystemClock: java.lang.String TAG> = "SystemClock";
+
+        return;
+    }
+}

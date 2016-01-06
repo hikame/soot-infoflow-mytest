@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.kame.sootinfo.mta.myplugin.MyIPCManager;
-import com.kame.sootinfo.mta.myplugin.MySSInterfacesSourceSinkManager;
+import com.kame.sootinfo.mta.myplugin.MySourceSinkManager;
 import com.kame.sootinfo.mta.myplugin.MyTaintWrapper;
 
 import soot.Scene;
@@ -38,7 +38,7 @@ public class MultiThreadAnalyzer {
 	protected List<String> targetMethodsList = new ArrayList<String>();
 	protected List<String> sinksList = new ArrayList<String>();
 	
-	private ISourceSinkManager ssm = new MySSInterfacesSourceSinkManager(true, targetMethodsList, sinksList);		//1. 配置Source、Sink管理器
+	private ISourceSinkManager ssm = new MySourceSinkManager(true, targetMethodsList, sinksList);		//1. 配置Source、Sink管理器
 	private IIPCManager ipcManager = new MyIPCManager();			//2. 配置IPC管理器
 	private ITaintPropagationWrapper taintWrapper;
 	private INativeCallHandler nativeCallHandler = new DefaultNativeCallHandler();  //5.  The NativeCallHandler defines the taint propagation behavior for native code
@@ -73,16 +73,16 @@ public class MultiThreadAnalyzer {
 		// The following config are important to achieve analysis in multi-threads.
 		InfoflowConfiguration.setUseThisChainReduction(false);
 		InfoflowConfiguration.setUseRecursiveAccessPaths(false);
+		
 //		config.setCodeEliminationMode(CodeEliminationMode.RemoveSideEffectFreeCode);
 //		config.setEnableImplicitFlows(false);
 
-		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String,java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSGAgain(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(java.lang.String)>");
+		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(com.kame.tafhd.MainActivity$ParamClass)>");
 
-//		sinksList.add("<com.kame.mth.Publisher: void publish(java.lang.String)>");
 		sinksList.add("<com.kame.tafhd.Publisher: void publish(java.lang.String)>");
+		
+		
 	}
 	
 	private String constructClasspath() {		
@@ -115,14 +115,18 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 		includeList.add("libcore.icu.*");
 		includeList.add("securibench.*");
 		includeList.add("com.kame.*");
+		
+		List<String> excludeList = new LinkedList<String>();
+		Options.v().set_exclude(excludeList);
 	}
 
 	private void setNonPhantomList() {
 		List<String> npList = new LinkedList<String>();
 		Options.v().setNonPhantomList(npList);
-		npList.add("java.lang.*");
+		npList.add("java.lang.Thread");
+		npList.add("java.lang.Runnable");
 		npList.add("com.android.server.*");
-		npList.add("android.os.Handler");
+		npList.add("android.os.*");
 		npList.add("com.kame.*");
 		npList.add("android.os.Message");
 	}
@@ -219,15 +223,19 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 			Options.v().set_whole_program(true);
 			Options.v().setPhaseOption("cg", "trim-clinit:false");
 		}
+		
+		config.setInspectSinks(true);
+		
 		// do not merge variables (causes problems with PointsToSets)
 		Options.v().setPhaseOption("jb.ulp", "off");
 		Options.v().set_src_prec(Options.src_prec_class);		//different from Original
 	}
 
-	private void configSootInfo() {			//......
+	private void configSootInfo() {			//TODO
 		InfoflowConfiguration.setAccessPathLength(accessPathLength);
 		config.setEnableStaticFieldTracking(enableStaticFields);
-		config.setIgnoreFlowsInSystemPackages(false);	//...
+		config.setIgnoreFlowsInSystemPackages(false);	//TODO
+		config.setWriteOutputFiles(true);
 	}
 	
 	private String appendLibsFromPath(String path) {

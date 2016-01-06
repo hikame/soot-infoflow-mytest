@@ -1,0 +1,5204 @@
+class android.os.INetworkManagementService$Stub$Proxy extends java.lang.Object implements android.os.INetworkManagementService
+{
+    private android.os.IBinder mRemote;
+
+    void <init>(android.os.IBinder)
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.IBinder remote;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        remote := @parameter0: android.os.IBinder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote> = remote;
+
+        return;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        return $r0;
+    }
+
+    public java.lang.String getInterfaceDescriptor()
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        return "android.os.INetworkManagementService";
+    }
+
+    public void registerObserver(android.net.INetworkManagementEventObserver) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.net.INetworkManagementEventObserver obs;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0, $r2;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        obs := @parameter0: android.net.INetworkManagementEventObserver;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if obs == null goto label2;
+
+        $r2 = interfaceinvoke obs.<android.net.INetworkManagementEventObserver: android.os.IBinder asBinder()>();
+
+        goto label3;
+
+     label2:
+        $r2 = null;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>($r2);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(1, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void unregisterObserver(android.net.INetworkManagementEventObserver) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.net.INetworkManagementEventObserver obs;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0, $r2;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        obs := @parameter0: android.net.INetworkManagementEventObserver;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if obs == null goto label2;
+
+        $r2 = interfaceinvoke obs.<android.net.INetworkManagementEventObserver: android.os.IBinder asBinder()>();
+
+        goto label3;
+
+     label2:
+        $r2 = null;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>($r2);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(2, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public java.lang.String[] listInterfaces() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.String[] _result;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(3, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        _result = virtualinvoke _reply.<android.os.Parcel: java.lang.String[] createStringArray()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public android.net.InterfaceConfiguration getInterfaceConfig(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r3;
+        android.os.IBinder $r0;
+        int $i0;
+        android.os.Parcelable$Creator $r1;
+        java.lang.Object $r2;
+        android.net.InterfaceConfiguration _result#1;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(4, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $r1 = <android.net.InterfaceConfiguration: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = interfaceinvoke $r1.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(_reply);
+
+        _result#1 = (android.net.InterfaceConfiguration) $r2;
+
+        goto label3;
+
+     label2:
+        _result#1 = null;
+
+     label3:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l5 = $r3;
+
+     label5:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label6:
+        return _result#1;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void setInterfaceConfig(java.lang.String, android.net.InterfaceConfiguration) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.net.InterfaceConfiguration cfg;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        cfg := @parameter1: android.net.InterfaceConfiguration;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        if cfg == null goto label2;
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke cfg.<android.net.InterfaceConfiguration: void writeToParcel(android.os.Parcel,int)>(_data, 0);
+
+        goto label3;
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(0);
+
+     label3:
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(5, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void clearInterfaceAddresses(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(6, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setInterfaceDown(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(7, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setInterfaceUp(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(8, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setInterfaceIpv6PrivacyExtensions(java.lang.String, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        boolean enable;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        enable := @parameter1: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        if enable == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(9, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void disableIpv6(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(10, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void enableIpv6(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(11, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setInterfaceIpv6NdOffload(java.lang.String, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        boolean enable;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        enable := @parameter1: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        if enable == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(12, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public android.net.RouteInfo[] getRoutes(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        android.net.RouteInfo[] _result;
+        java.lang.Throwable l5, $r3;
+        android.os.IBinder $r0;
+        android.os.Parcelable$Creator $r1;
+        java.lang.Object[] $r2;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(13, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $r1 = <android.net.RouteInfo: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = virtualinvoke _reply.<android.os.Parcel: java.lang.Object[] createTypedArray(android.os.Parcelable$Creator)>($r1);
+
+        _result = (android.net.RouteInfo[]) $r2;
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r3 := @caughtexception;
+
+        l5 = $r3;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void addRoute(int, android.net.RouteInfo) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        android.net.RouteInfo route;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        route := @parameter1: android.net.RouteInfo;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        if route == null goto label2;
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke route.<android.net.RouteInfo: void writeToParcel(android.os.Parcel,int)>(_data, 0);
+
+        goto label3;
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(0);
+
+     label3:
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(14, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void removeRoute(int, android.net.RouteInfo) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        android.net.RouteInfo route;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        route := @parameter1: android.net.RouteInfo;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        if route == null goto label2;
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke route.<android.net.RouteInfo: void writeToParcel(android.os.Parcel,int)>(_data, 0);
+
+        goto label3;
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(0);
+
+     label3:
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(15, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setMtu(java.lang.String, int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        int mtu;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        mtu := @parameter1: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(mtu);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(16, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void shutdown() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l3, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(17, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l3 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean getIpForwardingEnabled() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+        int $i0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(18, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setIpForwardingEnabled(boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        boolean enabled;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        enabled := @parameter0: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if enabled == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(19, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void startTethering(java.lang.String[]) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String[] dhcpRanges;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        dhcpRanges := @parameter0: java.lang.String[];
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeStringArray(java.lang.String[])>(dhcpRanges);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(20, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void stopTethering() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l3, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(21, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l3 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean isTetheringStarted() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+        int $i0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(22, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void tetherInterface(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(23, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void untetherInterface(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(24, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public java.lang.String[] listTetheredInterfaces() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.String[] _result;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(25, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        _result = virtualinvoke _reply.<android.os.Parcel: java.lang.String[] createStringArray()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setDnsForwarders(android.net.Network, java.lang.String[]) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.net.Network network;
+        java.lang.String[] dns;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        network := @parameter0: android.net.Network;
+
+        dns := @parameter1: java.lang.String[];
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if network == null goto label2;
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke network.<android.net.Network: void writeToParcel(android.os.Parcel,int)>(_data, 0);
+
+        goto label3;
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(0);
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeStringArray(java.lang.String[])>(dns);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(26, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public java.lang.String[] getDnsForwarders() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.String[] _result;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(27, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        _result = virtualinvoke _reply.<android.os.Parcel: java.lang.String[] createStringArray()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void startInterfaceForwarding(java.lang.String, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String fromIface, toIface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        fromIface := @parameter0: java.lang.String;
+
+        toIface := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(fromIface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(toIface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(28, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void stopInterfaceForwarding(java.lang.String, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String fromIface, toIface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        fromIface := @parameter0: java.lang.String;
+
+        toIface := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(fromIface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(toIface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(29, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void enableNat(java.lang.String, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String internalInterface, externalInterface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        internalInterface := @parameter0: java.lang.String;
+
+        externalInterface := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(internalInterface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(externalInterface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(30, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void disableNat(java.lang.String, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String internalInterface, externalInterface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        internalInterface := @parameter0: java.lang.String;
+
+        externalInterface := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(internalInterface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(externalInterface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(31, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public java.lang.String[] listTtys() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.String[] _result;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(32, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        _result = virtualinvoke _reply.<android.os.Parcel: java.lang.String[] createStringArray()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void attachPppd(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String tty, localAddr, remoteAddr, dns1Addr, dns2Addr;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l8, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        tty := @parameter0: java.lang.String;
+
+        localAddr := @parameter1: java.lang.String;
+
+        remoteAddr := @parameter2: java.lang.String;
+
+        dns1Addr := @parameter3: java.lang.String;
+
+        dns2Addr := @parameter4: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(tty);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(localAddr);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(remoteAddr);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(dns1Addr);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(dns2Addr);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(33, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l8 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l8;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void detachPppd(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String tty;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        tty := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(tty);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(34, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void wifiFirmwareReload(java.lang.String, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String wlanIface, mode;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        wlanIface := @parameter0: java.lang.String;
+
+        mode := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(wlanIface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(mode);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(35, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void startAccessPoint(android.net.wifi.WifiConfiguration, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.net.wifi.WifiConfiguration wifiConfig;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        wifiConfig := @parameter0: android.net.wifi.WifiConfiguration;
+
+        iface := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if wifiConfig == null goto label2;
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke wifiConfig.<android.net.wifi.WifiConfiguration: void writeToParcel(android.os.Parcel,int)>(_data, 0);
+
+        goto label3;
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(0);
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(36, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void stopAccessPoint(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(37, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setAccessPoint(android.net.wifi.WifiConfiguration, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.net.wifi.WifiConfiguration wifiConfig;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        wifiConfig := @parameter0: android.net.wifi.WifiConfiguration;
+
+        iface := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if wifiConfig == null goto label2;
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke wifiConfig.<android.net.wifi.WifiConfiguration: void writeToParcel(android.os.Parcel,int)>(_data, 0);
+
+        goto label3;
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(0);
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(38, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public android.net.NetworkStats getNetworkStatsSummaryDev() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r3;
+        android.os.IBinder $r0;
+        int $i0;
+        android.os.Parcelable$Creator $r1;
+        java.lang.Object $r2;
+        android.net.NetworkStats _result#1;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(39, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $r1 = <android.net.NetworkStats: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = interfaceinvoke $r1.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(_reply);
+
+        _result#1 = (android.net.NetworkStats) $r2;
+
+        goto label3;
+
+     label2:
+        _result#1 = null;
+
+     label3:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l4 = $r3;
+
+     label5:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label6:
+        return _result#1;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public android.net.NetworkStats getNetworkStatsSummaryXt() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r3;
+        android.os.IBinder $r0;
+        int $i0;
+        android.os.Parcelable$Creator $r1;
+        java.lang.Object $r2;
+        android.net.NetworkStats _result#1;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(40, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $r1 = <android.net.NetworkStats: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = interfaceinvoke $r1.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(_reply);
+
+        _result#1 = (android.net.NetworkStats) $r2;
+
+        goto label3;
+
+     label2:
+        _result#1 = null;
+
+     label3:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l4 = $r3;
+
+     label5:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label6:
+        return _result#1;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public android.net.NetworkStats getNetworkStatsDetail() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r3;
+        android.os.IBinder $r0;
+        int $i0;
+        android.os.Parcelable$Creator $r1;
+        java.lang.Object $r2;
+        android.net.NetworkStats _result#1;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(41, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $r1 = <android.net.NetworkStats: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = interfaceinvoke $r1.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(_reply);
+
+        _result#1 = (android.net.NetworkStats) $r2;
+
+        goto label3;
+
+     label2:
+        _result#1 = null;
+
+     label3:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l4 = $r3;
+
+     label5:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label6:
+        return _result#1;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public android.net.NetworkStats getNetworkStatsUidDetail(int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int uid, $i0;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r3;
+        android.os.IBinder $r0;
+        android.os.Parcelable$Creator $r1;
+        java.lang.Object $r2;
+        android.net.NetworkStats _result#1;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        uid := @parameter0: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(42, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $r1 = <android.net.NetworkStats: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = interfaceinvoke $r1.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(_reply);
+
+        _result#1 = (android.net.NetworkStats) $r2;
+
+        goto label3;
+
+     label2:
+        _result#1 = null;
+
+     label3:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l5 = $r3;
+
+     label5:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label6:
+        return _result#1;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public android.net.NetworkStats getNetworkStatsTethering() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r3;
+        android.os.IBinder $r0;
+        int $i0;
+        android.os.Parcelable$Creator $r1;
+        java.lang.Object $r2;
+        android.net.NetworkStats _result#1;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(43, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $r1 = <android.net.NetworkStats: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = interfaceinvoke $r1.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(_reply);
+
+        _result#1 = (android.net.NetworkStats) $r2;
+
+        goto label3;
+
+     label2:
+        _result#1 = null;
+
+     label3:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l4 = $r3;
+
+     label5:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label6:
+        return _result#1;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void setInterfaceQuota(java.lang.String, long) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        long quotaBytes;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        quotaBytes := @parameter1: long;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeLong(long)>(quotaBytes);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(44, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void removeInterfaceQuota(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(45, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setInterfaceAlert(java.lang.String, long) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        long alertBytes;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        alertBytes := @parameter1: long;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeLong(long)>(alertBytes);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(46, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void removeInterfaceAlert(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(47, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setGlobalAlert(long) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        long alertBytes;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        alertBytes := @parameter0: long;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeLong(long)>(alertBytes);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(48, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setUidNetworkRules(int, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int uid;
+        boolean rejectOnQuotaInterfaces;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        uid := @parameter0: int;
+
+        rejectOnQuotaInterfaces := @parameter1: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        if rejectOnQuotaInterfaces == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(49, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setUidCleartextNetworkPolicy(int, int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int uid, policy;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        uid := @parameter0: int;
+
+        policy := @parameter1: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(policy);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(50, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean isBandwidthControlEnabled() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+        int $i0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(51, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void addIdleTimer(java.lang.String, int, int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        int timeout, type;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        timeout := @parameter1: int;
+
+        type := @parameter2: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(timeout);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(type);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(52, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void removeIdleTimer(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(53, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setDnsServersForNetwork(int, java.lang.String[], java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        java.lang.String[] servers;
+        java.lang.String domains;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        servers := @parameter1: java.lang.String[];
+
+        domains := @parameter2: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        virtualinvoke _data.<android.os.Parcel: void writeStringArray(java.lang.String[])>(servers);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(domains);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(54, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void flushNetworkDnsCache(int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(55, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setFirewallEnabled(boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        boolean enabled;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        enabled := @parameter0: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if enabled == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(56, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public boolean isFirewallEnabled() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+        int $i0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(57, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setFirewallInterfaceRule(java.lang.String, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        boolean allow;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        allow := @parameter1: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        if allow == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(58, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setFirewallEgressSourceRule(java.lang.String, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String addr;
+        boolean allow;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        addr := @parameter0: java.lang.String;
+
+        allow := @parameter1: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(addr);
+
+        if allow == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(59, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setFirewallEgressDestRule(java.lang.String, int, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String addr;
+        int port;
+        boolean allow;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        addr := @parameter0: java.lang.String;
+
+        port := @parameter1: int;
+
+        allow := @parameter2: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(addr);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(port);
+
+        if allow == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(60, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setFirewallUidRule(int, int, int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int chain, uid, rule;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        chain := @parameter0: int;
+
+        uid := @parameter1: int;
+
+        rule := @parameter2: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(chain);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(rule);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(61, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setFirewallUidRules(int, int[], int[]) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int chain;
+        int[] uids, rules;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        chain := @parameter0: int;
+
+        uids := @parameter1: int[];
+
+        rules := @parameter2: int[];
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(chain);
+
+        virtualinvoke _data.<android.os.Parcel: void writeIntArray(int[])>(uids);
+
+        virtualinvoke _data.<android.os.Parcel: void writeIntArray(int[])>(rules);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(62, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setFirewallChainEnabled(int, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int chain;
+        boolean enable;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        byte $b0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        chain := @parameter0: int;
+
+        enable := @parameter1: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(chain);
+
+        if enable == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(63, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void addVpnUidRanges(int, android.net.UidRange[]) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        android.net.UidRange[] ranges;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        android.os.Parcelable[] tmp$1607195324;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        ranges := @parameter1: android.net.UidRange[];
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        tmp$1607195324 = (android.os.Parcelable[]) ranges;
+
+        virtualinvoke _data.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$1607195324, 0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(64, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void removeVpnUidRanges(int, android.net.UidRange[]) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        android.net.UidRange[] ranges;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        android.os.Parcelable[] tmp$156490895;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        ranges := @parameter1: android.net.UidRange[];
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        tmp$156490895 = (android.os.Parcelable[]) ranges;
+
+        virtualinvoke _data.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$156490895, 0);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(65, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void startClatd(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String interfaceName;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        interfaceName := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(interfaceName);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(66, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void stopClatd(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String interfaceName;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        interfaceName := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(interfaceName);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(67, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean isClatdStarted(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String interfaceName;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+        int $i0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        interfaceName := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(interfaceName);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(68, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void registerNetworkActivityListener(android.os.INetworkActivityListener) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.INetworkActivityListener listener;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0, $r2;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        listener := @parameter0: android.os.INetworkActivityListener;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if listener == null goto label2;
+
+        $r2 = interfaceinvoke listener.<android.os.INetworkActivityListener: android.os.IBinder asBinder()>();
+
+        goto label3;
+
+     label2:
+        $r2 = null;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>($r2);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(69, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void unregisterNetworkActivityListener(android.os.INetworkActivityListener) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.INetworkActivityListener listener;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0, $r2;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        listener := @parameter0: android.os.INetworkActivityListener;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        if listener == null goto label2;
+
+        $r2 = interfaceinvoke listener.<android.os.INetworkActivityListener: android.os.IBinder asBinder()>();
+
+        goto label3;
+
+     label2:
+        $r2 = null;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>($r2);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(70, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public boolean isNetworkActive() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        boolean _result, $z1;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+        int $i0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(71, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+        $i0 = virtualinvoke _reply.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        _result = $z1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label7:
+        return _result;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void createPhysicalNetwork(int, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        java.lang.String permission;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        permission := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(permission);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(72, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void createVirtualNetwork(int, boolean, boolean) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        boolean hasDNS, secure;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+        byte $b0, $b1;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        hasDNS := @parameter1: boolean;
+
+        secure := @parameter2: boolean;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        if hasDNS == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b0);
+
+        if secure == 0 goto label4;
+
+        $b1 = 1;
+
+        goto label5;
+
+     label4:
+        $b1 = 0;
+
+     label5:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>($b1);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(73, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label9;
+
+     label7:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label8:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label9:
+        return;
+
+        catch java.lang.Throwable from label1 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    public void removeNetwork(int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(74, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void addInterfaceToNetwork(java.lang.String, int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        int netId;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        netId := @parameter1: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(75, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void removeInterfaceFromNetwork(java.lang.String, int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        int netId;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        netId := @parameter1: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(76, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void addLegacyRouteForNetId(int, android.net.RouteInfo, int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId, uid;
+        android.net.RouteInfo routeInfo;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l6, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        routeInfo := @parameter1: android.net.RouteInfo;
+
+        uid := @parameter2: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        if routeInfo == null goto label2;
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke routeInfo.<android.net.RouteInfo: void writeToParcel(android.os.Parcel,int)>(_data, 0);
+
+        goto label3;
+
+     label2:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(0);
+
+     label3:
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(77, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+     label6:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l6;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void setDefaultNetId(int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(78, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void clearDefaultNetId() throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l3, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(79, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l3 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setNetworkPermission(int, java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int netId;
+        java.lang.String permission;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        netId := @parameter0: int;
+
+        permission := @parameter1: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(permission);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(80, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setPermission(java.lang.String, int[]) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String permission;
+        int[] uids;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        permission := @parameter0: java.lang.String;
+
+        uids := @parameter1: int[];
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(permission);
+
+        virtualinvoke _data.<android.os.Parcel: void writeIntArray(int[])>(uids);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(81, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void clearPermission(int[]) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int[] uids;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        uids := @parameter0: int[];
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeIntArray(int[])>(uids);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(82, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void allowProtect(int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int uid;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        uid := @parameter0: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(83, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void denyProtect(int) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        int uid;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        uid := @parameter0: int;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(uid);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(84, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void addInterfaceToLocalNetwork(java.lang.String, java.util.List) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        java.util.List routes;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l5, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        routes := @parameter1: java.util.List;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        virtualinvoke _data.<android.os.Parcel: void writeTypedList(java.util.List)>(routes);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(85, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l5 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l5;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void removeInterfaceFromLocalNetwork(java.lang.String) throws android.os.RemoteException
+    {
+        android.os.INetworkManagementService$Stub$Proxy this;
+        java.lang.String iface;
+        android.os.Parcel _data, _reply;
+        java.lang.Throwable l4, $r1;
+        android.os.IBinder $r0;
+
+        this := @this: android.os.INetworkManagementService$Stub$Proxy;
+
+        iface := @parameter0: java.lang.String;
+
+        _data = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        _reply = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+     label1:
+        virtualinvoke _data.<android.os.Parcel: void writeInterfaceToken(java.lang.String)>("android.os.INetworkManagementService");
+
+        virtualinvoke _data.<android.os.Parcel: void writeString(java.lang.String)>(iface);
+
+        $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
+
+        interfaceinvoke $r0.<android.os.IBinder: boolean transact(int,android.os.Parcel,android.os.Parcel,int)>(86, _data, _reply, 0);
+
+        virtualinvoke _reply.<android.os.Parcel: void readException()>();
+
+     label2:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l4 = $r1;
+
+     label4:
+        virtualinvoke _reply.<android.os.Parcel: void recycle()>();
+
+        virtualinvoke _data.<android.os.Parcel: void recycle()>();
+
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

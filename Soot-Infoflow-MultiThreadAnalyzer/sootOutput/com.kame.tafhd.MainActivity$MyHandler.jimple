@@ -1,0 +1,308 @@
+class com.kame.tafhd.MainActivity$MyHandler extends android.os.Handler
+{
+    final com.kame.tafhd.MainActivity this$0;
+
+    void <init>(com.kame.tafhd.MainActivity)
+    {
+        com.kame.tafhd.MainActivity$MyHandler this;
+        com.kame.tafhd.MainActivity l1;
+
+        this := @this: com.kame.tafhd.MainActivity$MyHandler;
+
+        l1 := @parameter0: com.kame.tafhd.MainActivity;
+
+        this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0> = l1;
+
+        specialinvoke this.<android.os.Handler: void <init>()>();
+
+        return;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        com.kame.tafhd.MainActivity$MyHandler this;
+        android.os.Message msg;
+        com.kame.tafhd.Publisher pub, $r0, $r10, $r11, $r16, $r17;
+        com.kame.tafhd.MainActivity$ClassX x;
+        int $i0;
+        java.lang.Object $r1, $r7, $r8, $r14;
+        com.kame.tafhd.MainActivity$ClassY $r2;
+        java.lang.String $r3, $r5, $r12, $r13, $r18;
+        com.kame.tafhd.MainActivity $r4, $r9, $r15;
+        java.io.FileReader $r6, freader#1;
+        java.io.IOException $r19, $r20, freader#3, freader#4;
+        java.io.FileNotFoundException $r21, freader#2;
+
+        this := @this: com.kame.tafhd.MainActivity$MyHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $i0 = msg.<android.os.Message: int what>;
+
+        tableswitch($i0)
+        {
+            case 0: goto label01;
+            case 1: goto label02;
+            case 2: goto label03;
+            case 3: goto label04;
+            case 4: goto label05;
+            case 5: goto label10;
+            case 6: goto label06;
+            default: goto label13;
+        };
+
+     label01:
+        $r0 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r0.<com.kame.tafhd.Publisher: void <init>()>();
+
+        pub = $r0;
+
+        $r1 = msg.<android.os.Message: java.lang.Object obj>;
+
+        x = (com.kame.tafhd.MainActivity$ClassX) $r1;
+
+        $r2 = x.<com.kame.tafhd.MainActivity$ClassX: com.kame.tafhd.MainActivity$ClassY objY>;
+
+        $r3 = $r2.<com.kame.tafhd.MainActivity$ClassY: java.lang.String tainted>;
+
+        virtualinvoke pub.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r3);
+
+        goto label13;
+
+     label02:
+        $r17 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r17.<com.kame.tafhd.Publisher: void <init>()>();
+
+        virtualinvoke $r17.<com.kame.tafhd.Publisher: void publish(java.lang.String)>("I am in the unrelevent parts.");
+
+        goto label13;
+
+     label03:
+        $r16 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r16.<com.kame.tafhd.Publisher: void <init>()>();
+
+        $r15 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r18 = $r15.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r16.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r18);
+
+        goto label13;
+
+     label04:
+        $r11 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r11.<com.kame.tafhd.Publisher: void <init>()>();
+
+        $r14 = msg.<android.os.Message: java.lang.Object obj>;
+
+        $r13 = (java.lang.String) $r14;
+
+        virtualinvoke $r11.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r13);
+
+        goto label13;
+
+     label05:
+        $r10 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r10.<com.kame.tafhd.Publisher: void <init>()>();
+
+        $r9 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r12 = $r9.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r10.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r12);
+
+        goto label13;
+
+     label06:
+        $r4 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r5 = $r4.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>(":");
+
+        $r6 = new java.io.FileReader;
+
+        specialinvoke $r6.<java.io.FileReader: void <init>(java.lang.String)>("");
+
+        freader#1 = $r6;
+
+        virtualinvoke freader#1.<java.io.FileReader: int read()>();
+
+     label07:
+        goto label13;
+
+     label08:
+        $r21 := @caughtexception;
+
+        freader#2 = $r21;
+
+        virtualinvoke freader#2.<java.io.FileNotFoundException: void printStackTrace()>();
+
+        goto label13;
+
+     label09:
+        $r20 := @caughtexception;
+
+        freader#3 = $r20;
+
+        virtualinvoke freader#3.<java.io.IOException: void printStackTrace()>();
+
+        goto label13;
+
+     label10:
+        $r7 = msg.<android.os.Message: java.lang.Object obj>;
+
+        virtualinvoke $r7.<java.lang.Object: boolean equals(java.lang.Object)>("");
+
+        $r8 = msg.<android.os.Message: java.lang.Object obj>;
+
+        specialinvoke this.<com.kame.tafhd.MainActivity$MyHandler: void letsDoNP(java.lang.Object)>($r8);
+
+     label11:
+        goto label13;
+
+     label12:
+        $r19 := @caughtexception;
+
+        freader#4 = $r19;
+
+        virtualinvoke freader#4.<java.io.IOException: void printStackTrace()>();
+
+     label13:
+        return;
+
+        catch java.io.FileNotFoundException from label06 to label07 with label08;
+        catch java.io.IOException from label06 to label07 with label09;
+        catch java.io.IOException from label10 to label11 with label12;
+    }
+
+    private void letsDoNP(java.lang.Object) throws java.io.IOException
+    {
+        com.kame.tafhd.MainActivity$MyHandler this;
+        java.lang.Object orz;
+        java.io.File orzF, $r0;
+        java.lang.String $r1;
+        java.io.FileWriter $r2, orgFW#2;
+
+        this := @this: com.kame.tafhd.MainActivity$MyHandler;
+
+        orz := @parameter0: java.lang.Object;
+
+        $r0 = new java.io.File;
+
+        $r1 = virtualinvoke orz.<java.lang.Object: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>($r1);
+
+        orzF = $r0;
+
+        $r2 = new java.io.FileWriter;
+
+        specialinvoke $r2.<java.io.FileWriter: void <init>(java.io.File)>(orzF);
+
+        orgFW#2 = $r2;
+
+        virtualinvoke orgFW#2.<java.lang.Object: java.lang.String toString()>();
+
+        return;
+    }
+
+    public void doSinkDirectly()
+    {
+        com.kame.tafhd.MainActivity$MyHandler this;
+        com.kame.tafhd.Publisher pb, $r0;
+        com.kame.tafhd.MainActivity $r1, $r3;
+        java.lang.String $r2, $r4;
+
+        this := @this: com.kame.tafhd.MainActivity$MyHandler;
+
+        $r0 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r0.<com.kame.tafhd.Publisher: void <init>()>();
+
+        pb = $r0;
+
+        $r1 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r2 = $r1.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke pb.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r2);
+
+        $r3 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r4 = $r3.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        return;
+    }
+
+    void myHandler6(android.os.Message)
+    {
+        com.kame.tafhd.MainActivity$MyHandler this;
+        android.os.Message msg;
+        com.kame.tafhd.Publisher pub, $r0, $r10, $r11, $r16, $r17;
+        com.kame.tafhd.MainActivity$ClassX x;
+        int $i0;
+        java.lang.Object $r1, $r7, $r8, $r14;
+        com.kame.tafhd.MainActivity$ClassY $r2;
+        java.lang.String $r3, $r5, $r12, $r13, $r18;
+        com.kame.tafhd.MainActivity $r4, $r9, $r15;
+        java.io.FileReader $r6, freader#1;
+        java.io.IOException $r19, $r20, freader#3, freader#4;
+        java.io.FileNotFoundException $r21, freader#2;
+
+        this := @this: com.kame.tafhd.MainActivity$MyHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $i0 = msg.<android.os.Message: int what>;
+
+     label1:
+        $r4 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r5 = $r4.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>(":");
+
+        $r6 = new java.io.FileReader;
+
+        specialinvoke $r6.<java.io.FileReader: void <init>(java.lang.String)>("");
+
+        freader#1 = $r6;
+
+        virtualinvoke freader#1.<java.io.FileReader: int read()>();
+
+     label2:
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        $r21 := @caughtexception;
+
+        freader#2 = $r21;
+
+        virtualinvoke freader#2.<java.io.FileNotFoundException: void printStackTrace()>();
+
+        goto label3;
+
+     label5:
+        $r20 := @caughtexception;
+
+        freader#3 = $r20;
+
+        virtualinvoke freader#3.<java.io.IOException: void printStackTrace()>();
+
+        goto label3;
+
+        catch java.io.FileNotFoundException from label1 to label2 with label4;
+        catch java.io.IOException from label1 to label2 with label5;
+    }
+}

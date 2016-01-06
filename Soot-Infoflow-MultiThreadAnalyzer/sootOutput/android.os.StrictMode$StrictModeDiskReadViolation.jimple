@@ -1,0 +1,17 @@
+class android.os.StrictMode$StrictModeDiskReadViolation extends android.os.StrictMode$StrictModeViolation
+{
+
+    public void <init>(int)
+    {
+        android.os.StrictMode$StrictModeDiskReadViolation this;
+        int policyMask;
+
+        this := @this: android.os.StrictMode$StrictModeDiskReadViolation;
+
+        policyMask := @parameter0: int;
+
+        specialinvoke this.<android.os.StrictMode$StrictModeViolation: void <init>(int,int,java.lang.String)>(policyMask, 2, null);
+
+        return;
+    }
+}

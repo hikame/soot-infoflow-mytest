@@ -1,0 +1,89 @@
+class android.os.Binder$1 extends java.lang.Thread
+{
+    final java.io.FileDescriptor val$fd;
+    final java.io.PrintWriter val$pw;
+    final java.lang.String[] val$args;
+    final android.os.Binder this$0;
+
+    void <init>(android.os.Binder, java.lang.String, java.io.FileDescriptor, java.io.PrintWriter, java.lang.String[])
+    {
+        android.os.Binder$1 this;
+        android.os.Binder l1;
+        java.lang.String x0;
+        java.io.FileDescriptor l3;
+        java.io.PrintWriter l4;
+        java.lang.String[] l5;
+
+        this := @this: android.os.Binder$1;
+
+        l1 := @parameter0: android.os.Binder;
+
+        x0 := @parameter1: java.lang.String;
+
+        l3 := @parameter2: java.io.FileDescriptor;
+
+        l4 := @parameter3: java.io.PrintWriter;
+
+        l5 := @parameter4: java.lang.String[];
+
+        this.<android.os.Binder$1: android.os.Binder this$0> = l1;
+
+        this.<android.os.Binder$1: java.io.FileDescriptor val$fd> = l3;
+
+        this.<android.os.Binder$1: java.io.PrintWriter val$pw> = l4;
+
+        this.<android.os.Binder$1: java.lang.String[] val$args> = l5;
+
+        specialinvoke this.<java.lang.Thread: void <init>(java.lang.String)>(x0);
+
+        return;
+    }
+
+    public void run()
+    {
+        android.os.Binder$1 this;
+        java.lang.Throwable l1, $r5;
+        java.lang.String[] $r0;
+        java.io.PrintWriter $r1, $r4, $r6;
+        java.io.FileDescriptor $r2;
+        android.os.Binder $r3;
+
+        this := @this: android.os.Binder$1;
+
+     label1:
+        $r3 = this.<android.os.Binder$1: android.os.Binder this$0>;
+
+        $r2 = this.<android.os.Binder$1: java.io.FileDescriptor val$fd>;
+
+        $r1 = this.<android.os.Binder$1: java.io.PrintWriter val$pw>;
+
+        $r0 = this.<android.os.Binder$1: java.lang.String[] val$args>;
+
+        virtualinvoke $r3.<android.os.Binder: void dump(java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])>($r2, $r1, $r0);
+
+     label2:
+        $r4 = this.<android.os.Binder$1: java.io.PrintWriter val$pw>;
+
+        virtualinvoke $r4.<java.io.PrintWriter: void flush()>();
+
+        goto label5;
+
+     label3:
+        $r5 := @caughtexception;
+
+        l1 = $r5;
+
+     label4:
+        $r6 = this.<android.os.Binder$1: java.io.PrintWriter val$pw>;
+
+        virtualinvoke $r6.<java.io.PrintWriter: void flush()>();
+
+        throw l1;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

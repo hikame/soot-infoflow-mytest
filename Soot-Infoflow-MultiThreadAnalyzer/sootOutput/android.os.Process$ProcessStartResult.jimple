@@ -1,0 +1,16 @@
+public final class android.os.Process$ProcessStartResult extends java.lang.Object
+{
+    public int pid;
+    public boolean usingWrapper;
+
+    public void <init>()
+    {
+        android.os.Process$ProcessStartResult this;
+
+        this := @this: android.os.Process$ProcessStartResult;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}
