@@ -8,6 +8,7 @@ public class com.kame.tafhd.MainActivity extends android.app.Activity
     private static final int FIELD_Publish;
     private static final int OBJ_NP;
     private static final int FIELD_NP;
+    private static final int NEW_NULL;
     java.lang.String tainted;
     java.lang.String anOtherField;
     android.os.Handler mhandler;
@@ -68,13 +69,15 @@ public class com.kame.tafhd.MainActivity extends android.app.Activity
 
         $r0 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
 
-        msg = virtualinvoke $r0.<android.os.Handler: android.os.Message obtainMessage(int)>(6);
+        msg = virtualinvoke $r0.<android.os.Handler: android.os.Message obtainMessage(int)>(7);
 
-        this.<com.kame.tafhd.MainActivity: java.lang.String tainted> = s0;
+        msg.<android.os.Message: java.lang.Object obj> = s0;
+
+        this.<com.kame.tafhd.MainActivity: java.lang.String tainted> = null;
 
         $r1 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
 
-        virtualinvoke $r1.<com.kame.tafhd.MainActivity$MyHandler: void myHandler6(android.os.Message)>(msg);
+        virtualinvoke $r1.<com.kame.tafhd.MainActivity$MyHandler: void myHandler7(android.os.Message)>(msg);
 
         return;
     }
@@ -181,6 +184,8 @@ public class com.kame.tafhd.MainActivity extends android.app.Activity
 
     public static void <clinit>()
     {
+        <com.kame.tafhd.MainActivity: int NEW_NULL> = 7;
+
         <com.kame.tafhd.MainActivity: int FIELD_NP> = 6;
 
         <com.kame.tafhd.MainActivity: int OBJ_NP> = 5;

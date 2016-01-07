@@ -2,6 +2,7 @@ class com.kame.tafhd.MainActivity$ClassX extends java.lang.Object
 {
     public com.kame.tafhd.MainActivity$ClassY objY;
     public int fieldInt;
+    public java.lang.String fieldString;
     public com.kame.tafhd.MainActivity$ParamClass objPC;
     final com.kame.tafhd.MainActivity this$0;
 

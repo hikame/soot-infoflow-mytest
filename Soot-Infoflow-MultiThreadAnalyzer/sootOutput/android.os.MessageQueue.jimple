@@ -604,9 +604,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label09;
 
      label07:
-        $r10 := @caughtexception;
+        $r9 := @caughtexception;
 
-        l8#4 = $r10;
+        l8#4 = $r9;
 
         exitmonitor newWatchedEvents#2;
 
@@ -661,9 +661,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label16;
 
      label14:
-        $r9 := @caughtexception;
+        $r10 := @caughtexception;
 
-        l10 = $r9;
+        l10 = $r10;
 
         exitmonitor l8#6;
 
@@ -865,9 +865,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label23;
 
      label21:
-        $r18 := @caughtexception;
+        $r19 := @caughtexception;
 
-        l10 = $r18;
+        l10 = $r19;
 
         exitmonitor i#3;
 
@@ -897,9 +897,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label28;
 
      label27:
-        $r19 := @caughtexception;
+        $r17 := @caughtexception;
 
-        prevMsg#10 = $r19;
+        prevMsg#10 = $r17;
 
         staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String,java.lang.Throwable)>("MessageQueue", "IdleHandler threw exception", prevMsg#10);
 
@@ -921,9 +921,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label33;
 
      label31:
-        $r17 := @caughtexception;
+        $r18 := @caughtexception;
 
-        l11 = $r17;
+        l11 = $r18;
 
         exitmonitor prevMsg#11;
 

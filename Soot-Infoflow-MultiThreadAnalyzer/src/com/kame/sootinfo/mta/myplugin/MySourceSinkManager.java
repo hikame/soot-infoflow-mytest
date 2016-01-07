@@ -3,7 +3,7 @@ package com.kame.sootinfo.mta.myplugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kame.sootinfo.mta.tags.MySinkTag;
+import com.kame.sootinfo.mta.tags.MySourceSinkTag;
 
 import heros.InterproceduralCFG;
 import soot.Local;
@@ -17,6 +17,7 @@ import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
+import soot.jimple.NullConstant;
 import soot.jimple.ParameterRef;
 import soot.jimple.Stmt;
 import soot.jimple.infoflow.data.AccessPath;
@@ -33,12 +34,12 @@ public class MySourceSinkManager implements ISourceSinkManager {
 	List<String> targetMethods = null; 
 	List<String> sinks = null;
 	
-	public enum SinkType{
+	public enum SourceSinkType{
 		MyTestPublish("MyTestPublish"),
 		NullPointerException("java.lang.NullPointerException");
 		
 		private String name;
-		private SinkType(String s){
+		private SourceSinkType(String s){
 			name = s;
 		}
 		
@@ -55,33 +56,57 @@ public class MySourceSinkManager implements ISourceSinkManager {
 	 * @param sinksList
 	 * 给出的方法名是sink*/
 	public MySourceSinkManager(boolean taintSubFields, List<String> targetMethodsList, List<String> sinksList){
-		this.taintSubFields =  taintSubFields;
+//		this.taintSubFields =  taintSubFields;
 		this.targetMethods = targetMethodsList;
 		this.sinks = sinksList;
 	}
 	
 	@Override
-	public SourceInfo getSourceInfo(Stmt sCallSite,
-			InterproceduralCFG<Unit, SootMethod> cfg) {		
-//参照jimple的格式，方法的参数在方法的实现代码中是通过左操作数为临时操作变量，右操作数为实参的形式进行表示的，这种情况下，为左操作数创建TaintedPath信息。
-		String mth = cfg.getMethodOf(sCallSite).toString();
-		boolean isTarget = false;
-		for(String tm : targetMethods)
-			if(tm.equals(mth)){
-				isTarget = true;
-			}
-		if(isTarget == false)
+	public SourceInfo getSourceInfo(Stmt stmt,
+			InterproceduralCFG<Unit, SootMethod> cfg) {	
+		//对于产生source的语句进行了tag标注
+		SourceInfo result = isParameterOfTargetMethods(stmt, cfg);
+		if(result == null)
+			result = isNewNullParameter(stmt, cfg);;	//查看是否可能引入新的空指，是则返回sourceinfo
+		return result;
+	}
+
+	private SourceInfo isNewNullParameter(Stmt stmt, InterproceduralCFG<Unit, SootMethod> cfg) {
+		if(!(stmt instanceof DefinitionStmt))
 			return null;
-		if(!(sCallSite instanceof DefinitionStmt))
-			return null;
-		DefinitionStmt ds = (DefinitionStmt) sCallSite;
-		if(!(ds.getRightOp() instanceof ParameterRef))
-			return null;
-		Value leftOp = ((DefinitionStmt) sCallSite).getLeftOp();
-		AccessPath ap = AccessPathFactory.v().createAccessPath(
-				leftOp, taintSubFields);
-//System.out.println("[TSrc-" + id + "] [!] This is a source! AP: " + ap);
-		return new SourceInfo(ap);
+		DefinitionStmt ds = (DefinitionStmt) stmt;
+		
+		if(ds.getRightOp().equals(NullConstant.v())){
+//			需要给污点处添加标签！
+			MySourceSinkTag tag = new MySourceSinkTag(SourceSinkType.NullPointerException.getName());
+			stmt.addTag(tag);
+			Value leftOp = ((DefinitionStmt) stmt).getLeftOp();
+			AccessPath ap = AccessPathFactory.v().createAccessPath(leftOp, false);
+			return new SourceInfo(ap);
+		}
+		return null;
+	}
+
+	private SourceInfo isParameterOfTargetMethods(Stmt sCallSite, InterproceduralCFG<Unit, SootMethod> cfg) {
+		//参照jimple的格式，方法的参数在方法的实现代码中是通过左操作数为临时操作变量，右操作数为实参的形式进行表示的，这种情况下，为左操作数创建TaintedPath信息。
+				String mth = cfg.getMethodOf(sCallSite).toString();
+				boolean isTarget = false;
+				for(String tm : targetMethods)
+					if(tm.equals(mth)){
+						isTarget = true;
+					}
+				if(isTarget == false)
+					return null;
+				if(!(sCallSite instanceof DefinitionStmt))
+					return null;
+				DefinitionStmt ds = (DefinitionStmt) sCallSite;
+				if(!(ds.getRightOp() instanceof ParameterRef))
+					return null;
+				Value leftOp = ((DefinitionStmt) sCallSite).getLeftOp();
+				AccessPath ap = AccessPathFactory.v().createAccessPath(
+						leftOp, true);
+		//System.out.println("[TSrc-" + id + "] [!] This is a source! AP: " + ap);
+				return new SourceInfo(ap);
 	}
 
 	@Override
@@ -120,22 +145,22 @@ public class MySourceSinkManager implements ISourceSinkManager {
 		}
 		
 		if(result)
-			addTagIfNeccesary(stmt, SinkType.NullPointerException);
+			addTagIfNeccesary(stmt, SourceSinkType.NullPointerException);
 		
 		return result;
 	}
 
-	private Object addTagIfNeccesary(Stmt stmt, SinkType sinkType) {
-		MySinkTag msTag = (MySinkTag) stmt.getTag("MySinkTag");
+	private Object addTagIfNeccesary(Stmt stmt, SourceSinkType sinkType) {
+		MySourceSinkTag msTag = (MySourceSinkTag) stmt.getTag(MySourceSinkTag.class.getSimpleName());
 		String type = sinkType.getName();
 		if(msTag == null)
-			stmt.addTag(new MySinkTag(type));
+			stmt.addTag(new MySourceSinkTag(type + ";"));
 		else{
-			String tagStr = msTag.getSinkType();
+			String tagStr = msTag.getSourceSinkType();
 			boolean exist = tagStr.startsWith(sinkType + ";") || tagStr.contains(";" + type + ";");
 			if(!exist){
 				tagStr = tagStr + ";" + type;
-				msTag.setSinkType(tagStr);
+				msTag.setSourceSinkType(tagStr);
 			}
 		}
 		return null;
@@ -166,7 +191,7 @@ public class MySourceSinkManager implements ISourceSinkManager {
 				Value param = sCallSite.getInvokeExpr().getArg(0);	//这个0不应是写死的！
 				if(ap.getPlainValue().equals(param)){
 					isSink = true;
-					addTagIfNeccesary(stmt, SinkType.MyTestPublish);
+					addTagIfNeccesary(stmt, SourceSinkType.MyTestPublish);
 					break;
 				}
 			}

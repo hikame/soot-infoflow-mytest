@@ -20,9 +20,9 @@ import org.slf4j.LoggerFactory;
 
 import com.kame.sootinfo.mta.myplugin.MySourceSinkManager;
 import com.kame.sootinfo.mta.myplugin.MyTaintPropagationHandler;
-import com.kame.sootinfo.mta.myplugin.MySourceSinkManager.SinkType;
+import com.kame.sootinfo.mta.myplugin.MySourceSinkManager.SourceSinkType;
 import com.kame.sootinfo.mta.tags.MyMethodTag;
-import com.kame.sootinfo.mta.tags.MySinkTag;
+import com.kame.sootinfo.mta.tags.MySourceSinkTag;
 
 import soot.IdentityUnit;
 import soot.Local;
@@ -288,6 +288,8 @@ public class MyInfoFlowAnalyze {
 			interestingSources = new HashSet<ResultSourceInfo>(interestingSources);
 			if(interestingSources == null || interestingSources.isEmpty())
 				continue;
+			if(checkForSourceSinkTypeMatch(sink, interestingSources).isEmpty())
+				continue;
 			if(checkForMultiThread(sink, interestingSources).isEmpty())
 				continue;
 			Map<ResultSourceInfo, Set<SootClass>> scExMap = checkForExceptionHandler(sink, interestingSources);
@@ -314,6 +316,23 @@ public class MyInfoFlowAnalyze {
 		
 		maxMemoryConsumption = Math.max(maxMemoryConsumption, getUsedMemory());
 		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");
+	}
+
+	private Set<ResultSourceInfo> checkForSourceSinkTypeMatch(ResultSinkInfo sink, Set<ResultSourceInfo> interestingSources) {
+		MySourceSinkTag sinkTag = (MySourceSinkTag) sink.getSink().getTag(MySourceSinkTag.class.getSimpleName());
+		String sinkTypes = sinkTag.getSourceSinkType();
+		for(Object obj : interestingSources.toArray()){
+			ResultSourceInfo rsi = (ResultSourceInfo) obj;
+			Stmt sourceStmt = rsi.getSource();
+			MySourceSinkTag sourceTag = (MySourceSinkTag) sourceStmt.getTag(MySourceSinkTag.class.getSimpleName());
+			if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~
+				continue;
+			String sourceType = sourceTag.getSourceSinkType();
+			if(sinkTypes.contains(";" + sourceType + ";") || sinkTypes.startsWith(sourceType + ";"))
+				continue;
+			interestingSources.remove(rsi);
+		}
+		return interestingSources;
 	}
 
 	private void outputExceptionSinkResults(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) {
@@ -351,7 +370,7 @@ public class MyInfoFlowAnalyze {
 				SootClass exc = (SootClass) obj;
 				boolean checked = false;
 				String clsName = exc.getName();
-				switch(SinkType.valueOf(SinkType.class, clsName.substring(clsName.lastIndexOf(".") + 1))){
+				switch(SourceSinkType.valueOf(SourceSinkType.class, clsName.substring(clsName.lastIndexOf(".") + 1))){
 					case NullPointerException:	//TODO only nullpointer by now.
 						checked = checkNullPointerPrechecker(source, exc);
 						break;
@@ -370,7 +389,8 @@ public class MyInfoFlowAnalyze {
 
 
 	private boolean checkNullPointerPrechecker(ResultSourceInfo source, SootClass exc) {
-		boolean checked = true;
+		//TODO finish it!
+		boolean checked = false;
 		return checked;
 	}
 
@@ -379,9 +399,9 @@ public class MyInfoFlowAnalyze {
 		Map<ResultSourceInfo, Set<SootClass>> scExMap = new HashMap<ResultSourceInfo, Set<SootClass>>();
 		Stmt sinkStmt = sink.getSink();
 		
-		MySinkTag sinkTag = (MySinkTag) sinkStmt.getTag("MySinkTag");
-		String sinkTypeStr = sinkTag.getSinkType();
-		if(sinkTypeStr.equals(SinkType.MyTestPublish.getName() + ";"))	//我们不必处理此类
+		MySourceSinkTag sinkTag = (MySourceSinkTag) sinkStmt.getTag(MySourceSinkTag.class.getSimpleName());
+		String sinkTypeStr = sinkTag.getSourceSinkType();
+		if(sinkTypeStr.equals(SourceSinkType.MyTestPublish.getName() + ";"))	//我们不必处理此类
 			return null;
 		String sinkTypes[] = sinkTypeStr.split(";");
 		Set<SootClass> targetExceptions = new HashSet<SootClass>();
@@ -456,6 +476,8 @@ public class MyInfoFlowAnalyze {
 
 
 	private void outputPublishSinkResults(ResultSinkInfo sink, Set<ResultSourceInfo> interestingResults) {
+		//TODO output the MySourceSinkTag.sourceActiveInvokeTree if exist.
+		
 		for (ResultSourceInfo source : interestingResults) {
 			logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
 			if (source.getPath() == null) {
@@ -493,10 +515,46 @@ public class MyInfoFlowAnalyze {
 				}
 					
 			}
-			if(multiThreadCounter <= 0)
+			if(multiThreadCounter < 0)	
 				intSources.remove(rsi);
+			else if(multiThreadCounter == 0){
+				Stmt sourceStmt = rsi.getSource();
+				MySourceSinkTag sourceTag = (MySourceSinkTag)sourceStmt.getTag(MySourceSinkTag.class.getSimpleName());
+				if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~这种情况下是不会存在本身不在主线程的情况的
+					intSources.remove(rsi);
+				MyInvokeTree invokeTree = getMultiThreadInvokeTree(sourceStmt, true);
+				if(invokeTree.head == null)
+					intSources.remove(rsi);
+				sourceTag.setSourceActiveInvokeTree(invokeTree);
+			}
 		}
 		return intSources;
+	}
+	
+	private MyInvokeTree getMultiThreadInvokeTree(Stmt sourceStmt, boolean shouldFindMultThread) {
+		SootMethod sm = iCfg.getMethodOf(sourceStmt);
+		Collection<Unit> callerUnits = iCfg.getCallersOf(sm);	//对于最顶端来说，此处为空的
+		MyInvokeTree result = new MyInvokeTree();
+
+		if(checkStmtType(sourceStmt) == StmtType.StartMultiThread){
+			shouldFindMultThread = false;
+			result.head = sourceStmt;
+		}
+		
+		//如果findMultThread为false，则应将本身作为head，调用者作为chield进行记录
+		for(Object obj : callerUnits.toArray()){
+			Unit callerUnit = (Unit) obj;
+			MyInvokeTree childTree = getMultiThreadInvokeTree((Stmt)callerUnit, shouldFindMultThread);
+			if(!shouldFindMultThread)	//也就是已经找到了新线程启动点，要把所有的子树找到
+				result.chields.add(childTree);
+			else{	//也就是说要在childTree里希望能找到新线程启动点
+				if(childTree.head != null){
+					result.head = sourceStmt;
+					result.chields.add(childTree);
+				}
+			}
+		}
+		return result;
 	}
 
 	private StmtType checkStmtType(Stmt pt) {

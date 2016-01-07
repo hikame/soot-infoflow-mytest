@@ -1242,15 +1242,15 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
     {
         android.os.ParcelFileDescriptor this;
         int status, len, $i1, $i2, $i3, writePtr#3;
-        java.lang.String msg, $r13, $r19, $r23;
+        java.lang.String msg, $r13, $r19, $r25;
         byte[] rawMsg, $r2, buf#1;
-        java.lang.Throwable l7, $r17;
-        java.io.FileDescriptor $r0, $r1, $r6, $r7, $r8, $r9, $r21;
+        java.lang.Throwable l7, $r23;
+        java.io.FileDescriptor $r0, $r1, $r6, $r7, $r8, $r9, $r24;
         android.os.ParcelFileDescriptor$Status $r3, $r4;
         java.nio.ByteOrder $r5;
-        java.lang.StringBuilder $r10, $r11, $r12, $r14, $r16, $r18, $r20, $r24, $r25;
+        java.lang.StringBuilder $r10, $r11, $r12, $r14, $r16, $r18, $r20, $r21, $r22;
         java.io.InterruptedIOException $r15, buf#5;
-        android.system.ErrnoException $r22, buf#4;
+        android.system.ErrnoException $r17, buf#4;
         byte writePtr#2;
 
         this := @this: android.os.ParcelFileDescriptor;
@@ -1355,21 +1355,21 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         goto label12;
 
      label10:
-        $r22 := @caughtexception;
+        $r17 := @caughtexception;
 
-        buf#4 = $r22;
+        buf#4 = $r17;
 
-        $r20 = new java.lang.StringBuilder;
+        $r22 = new java.lang.StringBuilder;
 
-        specialinvoke $r20.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r22.<java.lang.StringBuilder: void <init>()>();
 
-        $r24 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
+        $r20 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
 
-        $r25 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#4);
+        $r21 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#4);
 
-        $r23 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r25 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r23);
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r25);
 
         goto label12;
 
@@ -1400,14 +1400,14 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         goto label15;
 
      label13:
-        $r17 := @caughtexception;
+        $r23 := @caughtexception;
 
-        l7 = $r17;
+        l7 = $r23;
 
      label14:
-        $r21 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+        $r24 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
 
-        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r21);
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r24);
 
         this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = null;
 

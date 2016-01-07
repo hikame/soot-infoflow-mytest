@@ -142,9 +142,9 @@ final class android.os.StrictMode$InstanceTracker extends java.lang.Object
         goto label08;
 
      label06:
-        $r10 := @caughtexception;
+        $r12 := @caughtexception;
 
-        l4 = $r10;
+        l4 = $r12;
 
         exitmonitor l1;
 
@@ -157,9 +157,9 @@ final class android.os.StrictMode$InstanceTracker extends java.lang.Object
         goto label11;
 
      label09:
-        $r12 := @caughtexception;
+        $r10 := @caughtexception;
 
-        l5 = $r12;
+        l5 = $r10;
 
      label10:
         specialinvoke this.<java.lang.Object: void finalize()>();

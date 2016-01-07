@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
 	class ClassX {
 		public ClassY objY;
 		public int fieldInt;
+		public String fieldString;
 		public ParamClass objPC;
 	}
 	
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
 //	    	 new Publisher().publish("I am in hanlderMessage()");
 //	    	 if(tainted.length() < 1)
 //	    		 return;
+	    	 
 	    	switch (msg.what) {
 			case TEST_MSG:
 				Publisher pub = new Publisher();
@@ -78,6 +80,21 @@ public class MainActivity extends Activity {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				break;
+			case NEW_NULL:
+				tainted.equals("");
+		    	 Publisher pb = new Publisher();
+		    	 pb.publish(tainted);
+				break;
+				
+				//------------------
+//				ClassX objx = new ClassX();
+//				objx.objY = null;
+//				objx.fieldString = (String) msg.obj;
+//				objx.equals("");
+//				objx.objY.equals("");
+//				objx.fieldString.equals("");
+//				break;
 				
 			default:
 				break;
@@ -116,6 +133,7 @@ public class MainActivity extends Activity {
 	private static final int FIELD_Publish = 4;
 	private static final int OBJ_NP = 5;
 	private static final int FIELD_NP = 6;
+	private static final int NEW_NULL = 7;
 	
 	String tainted;
 	String anOtherField;
@@ -132,13 +150,18 @@ public class MainActivity extends Activity {
 	
 //	private void testHandlerSendMSG(String s0, String s1) {
 	private void testHandlerSendMSG(String s0) {
-		Message msg = mhandler.obtainMessage(FIELD_NP);
-		tainted = s0;
-		
-//		Message msg = mhandler.obtainMessage(OBJ_NP);
-//		msg.obj = s0;
-		
+		Message msg = mhandler.obtainMessage(NEW_NULL);
+		msg.obj = s0;
+   	 	tainted = null;
 		mhandler.sendMessage(msg);
+		
+//		Message msg = mhandler.obtainMessage(FIELD_NP);
+//		tainted = s0;
+//		
+////		Message msg = mhandler.obtainMessage(OBJ_NP);
+////		msg.obj = s0;
+//		
+//		mhandler.sendMessage(msg);
 		
 		//		Message msg = mhandler.obtainMessage(OBJTEST);
 //		msg.obj = s0;

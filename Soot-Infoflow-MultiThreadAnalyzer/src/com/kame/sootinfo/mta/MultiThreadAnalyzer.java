@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.kame.sootinfo.mta.myplugin.MyTaintWrapper;
 
 import soot.Scene;
 import soot.SootMethod;
+import soot.Unit;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
 import soot.jimple.infoflow.ipc.IIPCManager;
@@ -160,6 +162,13 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 			//重新构造
 			myCFGPaerser.start();
 		}
+//		
+//SootMethod sm = Scene.v().getMethod("<dummyMainClass: void dummyMainMethod(java.lang.String[])>");
+//Collection<Unit> col = myCFGPaerser.getInfoflowCFG().getCallersOf(sm);
+//for(Object obj : col.toArray()){
+//	System.out.println(obj);
+//}
+//		
 		//Information
 		myInfoFlowAnalyze.start(myCFGPaerser.getInfoflowCFG());
 	}
