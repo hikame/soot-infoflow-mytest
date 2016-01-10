@@ -20,9 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import com.kame.sootinfo.mta.myplugin.MySourceSinkManager;
 import com.kame.sootinfo.mta.myplugin.MyTaintPropagationHandler;
-import com.kame.sootinfo.mta.myplugin.MySourceSinkManager.SourceSinkType;
 import com.kame.sootinfo.mta.tags.MyMethodTag;
-import com.kame.sootinfo.mta.tags.MySourceSinkTag;
+import com.kame.sootinfo.mta.tags.MyStmtTag;
 
 import soot.IdentityUnit;
 import soot.Local;
@@ -31,6 +30,7 @@ import soot.PackManager;
 import soot.PatchingChain;
 import soot.Scene;
 import soot.SootClass;
+import soot.SootField;
 import soot.SootMethod;
 import soot.Trap;
 import soot.Type;
@@ -40,10 +40,13 @@ import soot.Value;
 import soot.ValueBox;
 import soot.jimple.AssignStmt;
 import soot.jimple.IdentityStmt;
+import soot.jimple.IfStmt;
 import soot.jimple.InvokeStmt;
+import soot.jimple.NullConstant;
 import soot.jimple.Stmt;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowManager;
+import soot.jimple.infoflow.aliasing.Aliasing;
 import soot.jimple.infoflow.aliasing.FlowSensitiveAliasStrategy;
 import soot.jimple.infoflow.aliasing.IAliasingStrategy;
 import soot.jimple.infoflow.aliasing.PtsBasedAliasStrategy;
@@ -73,8 +76,10 @@ import soot.jimple.infoflow.solver.fastSolver.InfoflowSolver;
 import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.taintWrappers.ITaintPropagationWrapper;
 import soot.jimple.infoflow.util.SystemClassHandler;
+import soot.jimple.internal.JEqExpr;
 import soot.jimple.internal.JimpleLocalBox;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
+import soot.kame.SourceSinkType;
 import soot.options.Options;
 import soot.tagkit.StringTag;
 import soot.tagkit.Tag;
@@ -92,6 +97,8 @@ public class MyInfoFlowAnalyze {
 	private INativeCallHandler nativeCallHandler;
 	private IInfoflowCFG iCfg;
 	
+	IAliasingStrategy aliasingStrategy = null;
+	Aliasing aliasing = null;
 	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory(PathBuilder.ContextSensitive, true);
 //	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory();
 	private MyTaintPropagationHandler taintPropagationHandler;		//4.a Handler interface for callbacks during taint propagation，可以不做设置
@@ -106,10 +113,11 @@ public class MyInfoFlowAnalyze {
 			ssm = is;
 			taintWrapper = tw;
 			nativeCallHandler = nch;
-			taintPropagationHandler = null;//new MyTaintPropagationHandler(ssm);
+			//TODO 实现我们自己的propagation，实现对于MyStmtTag中的各个value的可能source类型的传递，及存在数据检查时的处理
+			taintPropagationHandler = new MyTaintPropagationHandler();
 	}
 	
-	private enum StmtType{
+	private enum StmtThreadType{
 		StartMultiThread,
 		ReturnMultiThread,
 		None
@@ -128,7 +136,6 @@ public class MyInfoFlowAnalyze {
 		BackwardsInfoflowProblem backProblem = null;
 		InfoflowManager backwardsManager = null;
 		InfoflowSolver backSolver = null;
-		final IAliasingStrategy aliasingStrategy;
 		switch (config.getAliasingAlgorithm()) {
 			case FlowSensitive:
 				backwardsManager = new InfoflowManager(config, null,
@@ -153,7 +160,7 @@ public class MyInfoFlowAnalyze {
 		InfoflowProblem forwardProblem  = new InfoflowProblem(manager,
 				aliasingStrategy, zeroValue);
 		
-//		taintPropagationHandler.setInfoflowProblem(forwardProblem);
+		taintPropagationHandler.generateAliasing(aliasingStrategy, iCfg);
 		
 		// Set the options
 		InfoflowSolver forwardSolver = new InfoflowSolver(forwardProblem, executor);
@@ -318,20 +325,22 @@ public class MyInfoFlowAnalyze {
 		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");
 	}
 
+	/**用来检查source和sink的type是否匹配，然而在引入了对于Abstraction的tag方案后，这种检查看似是不必要的了。
+	 * TODO remove this!*/
 	private Set<ResultSourceInfo> checkForSourceSinkTypeMatch(ResultSinkInfo sink, Set<ResultSourceInfo> interestingSources) {
-		MySourceSinkTag sinkTag = (MySourceSinkTag) sink.getSink().getTag(MySourceSinkTag.class.getSimpleName());
-		String sinkTypes = sinkTag.getSourceSinkType();
-		for(Object obj : interestingSources.toArray()){
-			ResultSourceInfo rsi = (ResultSourceInfo) obj;
-			Stmt sourceStmt = rsi.getSource();
-			MySourceSinkTag sourceTag = (MySourceSinkTag) sourceStmt.getTag(MySourceSinkTag.class.getSimpleName());
-			if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~
-				continue;
-			String sourceType = sourceTag.getSourceSinkType();
-			if(sinkTypes.contains(";" + sourceType + ";") || sinkTypes.startsWith(sourceType + ";"))
-				continue;
-			interestingSources.remove(rsi);
-		}
+//		MyAbstractionTag sinkTag = (MyAbstractionTag) sink.getSink().getTag(MyAbstractionTag.class.getSimpleName());
+//		String sinkTypes = sinkTag.getSourceSinkType();
+//		for(Object obj : interestingSources.toArray()){
+//			ResultSourceInfo rsi = (ResultSourceInfo) obj;
+//			Stmt sourceStmt = rsi.getSource();
+//			MyAbstractionTag sourceTag = (MyAbstractionTag) sourceStmt.getTag(MyAbstractionTag.class.getSimpleName());
+//			if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~
+//				continue;
+//			String sourceType = sourceTag.getSourceSinkType();
+//			if(sinkTypes.contains(";" + sourceType + ";") || sinkTypes.startsWith(sourceType + ";"))
+//				continue;
+//			interestingSources.remove(rsi);
+//		}
 		return interestingSources;
 	}
 
@@ -361,7 +370,11 @@ public class MyInfoFlowAnalyze {
 		}
 	}
 
-	/**check every source and its exceptions one by one to find some pre-check code which can prevent those exceptions.*/
+	/**check every source and its exceptions one by one to find some pre-check code which can prevent those exceptions.
+	 * TODO This part of work will be implemented by designing the IPathBuilderFactory of forward analysis.
+	 * Every source will be tagged for potential exception types. During the forward analysis.
+	 * If corresponding check for exceptions exits, corresponding source tag will be removed.
+	 * And when my sink manager is called for isSink check, the source types will be considers.*/
 	private Map<ResultSourceInfo, Set<SootClass>> checkForPreExceptionChecker(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) {
 		Set<ResultSourceInfo> sources = scExMap.keySet();
 		for(ResultSourceInfo source : sources){
@@ -372,7 +385,7 @@ public class MyInfoFlowAnalyze {
 				String clsName = exc.getName();
 				switch(SourceSinkType.valueOf(SourceSinkType.class, clsName.substring(clsName.lastIndexOf(".") + 1))){
 					case NullPointerException:	//TODO only nullpointer by now.
-						checked = checkNullPointerPrechecker(source, exc);
+//						checked = checkNullPointerPrechecker(source, sink);
 						break;
 					default:
 						break;
@@ -388,26 +401,93 @@ public class MyInfoFlowAnalyze {
 	}
 
 
-	private boolean checkNullPointerPrechecker(ResultSourceInfo source, SootClass exc) {
-		//TODO finish it!
-		boolean checked = false;
-		return checked;
-	}
+//	private boolean checkNullPointerPrechecker(ResultSourceInfo source, ResultSinkInfo sink) {
+//		if(aliasing == null)
+//			aliasing = new Aliasing(aliasingStrategy, iCfg);
+////			return false; 
+//		
+//		AccessPath apSource = source.getAccessPath();
+//		AccessPath apSink = sink.getAccessPath();
+//		if(apSource.isLocal()){
+//			boolean myAlias = aliasing.mayAlias(apSource.getPlainValue(), apSink.getPlainValue()); 
+//""			.toString();;
+//		}
+//		else if(apSource.getFieldCount() > 0){	//我们的source从一开始就是一个field的形式，这通常是由于obj.field = null引起的
+//			SootField sourceFiled = apSource.getFirstField();
+//			//apSink目前看来肯定是一个local类型的值，这是因为不能直接对于一个对象的域进行读写操作
+//			//如果需要，则需要$r0=obj.field进行中转。因此我们需要找到这个sink local对应的obj.field
+//			for(Stmt ap : source.getPath()){
+//				
+//			}
+//		}
+//		
+//		//找到当前方法及其之前的语句中，其所有的别名，以及针对别名的空指针检查
+//		boolean checked = false;
+//		AccessPath sinkedAP = sink.getAccessPath();
+//		Stmt sinkStmt = sink.getSink();
+//		//通过观察生成的jimple代码可以发现，使用obj.field的代码如operateOn(obj.field)，
+//		//都会利用一个临时中间变量来代替obj.field，如$r1 = obj.field.
+//		//因此，下一行中用sinkedAP.getPlainValue()可以有效的代表sink处的污点值，
+//		//而不用关心其内部域的差别情况。
+//		checked = isNullPointerCheckedInMethod(sinkStmt, sinkedAP.getPlainValue());
+//		return checked;
+//	}
+//
+//	private boolean isNullPointerCheckedInMethod(Stmt targetStmt, Local targetLocal) {
+//		List<Unit> preStmts = iCfg.getPredsOf(targetStmt);
+//		Set<Local> als = new HashSet<Local>();
+//		for(int i = 0; i < preStmts.size(); i++){
+//			Stmt preStmt = (Stmt)preStmts.get(i);
+//			if(isNullPointerCheckedInStmt(preStmt, targetLocal, als, targetStmt))
+//				return true;
+//		}
+//		return false;
+//	}
+//
+//	private boolean isNullPointerCheckedInStmt(Stmt stmt, Local targetValue, Set<Local> als, Stmt targetStmt) {
+//		List<ValueBox> valueBoxes = stmt.getUseAndDefBoxes();
+//		for(ValueBox vb : valueBoxes){
+//			Value value = vb.getValue();
+//			if(value instanceof Local)
+//				if(aliasing.mustAlias((Local) value, targetValue, targetStmt))
+//					als.add((Local) value);
+//		}
+//		
+//		if(stmt instanceof IfStmt){
+//			IfStmt ifstmt = (IfStmt) stmt;
+//			Value expr = ifstmt.getCondition();
+//			if(expr instanceof JEqExpr){
+//				Value v1 = ((JEqExpr) expr).getOp1();
+//				Value v2 = ((JEqExpr) expr).getOp2();
+//				NullConstant nc = NullConstant.v();
+//				if((v1.equals(nc) && als.contains(v2)) ||
+//						(v2.equals(nc) && als.contains(v1)))
+//					return true;
+//			}
+//			System.out.println();
+//		}
+//		
+//		for(Unit preStmt : iCfg.getPredsOf(stmt)){
+//			if( isNullPointerCheckedInStmt((Stmt) preStmt, targetValue, als, targetStmt))
+//				return true;
+//		}
+//		return false;
+//	}
 
 	private Map<ResultSourceInfo, Set<SootClass>> checkForExceptionHandler(ResultSinkInfo sink,
 			Set<ResultSourceInfo> intSources) {
 		Map<ResultSourceInfo, Set<SootClass>> scExMap = new HashMap<ResultSourceInfo, Set<SootClass>>();
 		Stmt sinkStmt = sink.getSink();
 		
-		MySourceSinkTag sinkTag = (MySourceSinkTag) sinkStmt.getTag(MySourceSinkTag.class.getSimpleName());
-		String sinkTypeStr = sinkTag.getSourceSinkType();
-		if(sinkTypeStr.equals(SourceSinkType.MyTestPublish.getName() + ";"))	//我们不必处理此类
+		MyStmtTag sinkTag = (MyStmtTag) sinkStmt.getTag(MyStmtTag.class.getSimpleName());
+		Set<SourceSinkType> sinkTypes = sinkTag.getSinkTypes();
+		sinkTypes.remove(SourceSinkType.MyTestPublish);	//我们不必处理此类
+		if(sinkTypes.size() == 1 && sinkTypes.contains(SourceSinkType.MyTestPublish))	
 			return null;
-		String sinkTypes[] = sinkTypeStr.split(";");
-		Set<SootClass> targetExceptions = new HashSet<SootClass>();
-		
-		for(String st : sinkTypes){
-			SootClass sc = Scene.v().getSootClass(st);
+
+		Set<SootClass> targetExceptions = new HashSet<SootClass>();		
+		for(SourceSinkType st : sinkTypes){
+			SootClass sc = Scene.v().getSootClass(st.getExceptionClassName());
 			if(sc != null)
 				targetExceptions.add(sc);
 		}
@@ -519,13 +599,13 @@ public class MyInfoFlowAnalyze {
 				intSources.remove(rsi);
 			else if(multiThreadCounter == 0){
 				Stmt sourceStmt = rsi.getSource();
-				MySourceSinkTag sourceTag = (MySourceSinkTag)sourceStmt.getTag(MySourceSinkTag.class.getSimpleName());
-				if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~这种情况下是不会存在本身不在主线程的情况的
-					intSources.remove(rsi);
+				MyStmtTag sourceStmtTag = (MyStmtTag)sourceStmt.getTag(MyStmtTag.class.getSimpleName());
+//				if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~这种情况下是不会存在本身不在主线程的情况的
+//					intSources.remove(rsi);
 				MyInvokeTree invokeTree = getMultiThreadInvokeTree(sourceStmt, true);
 				if(invokeTree.head == null)
 					intSources.remove(rsi);
-				sourceTag.setSourceActiveInvokeTree(invokeTree);
+				sourceStmtTag.setSourceActiveInvokeTree(invokeTree);
 			}
 		}
 		return intSources;
@@ -536,7 +616,7 @@ public class MyInfoFlowAnalyze {
 		Collection<Unit> callerUnits = iCfg.getCallersOf(sm);	//对于最顶端来说，此处为空的
 		MyInvokeTree result = new MyInvokeTree();
 
-		if(checkStmtType(sourceStmt) == StmtType.StartMultiThread){
+		if(checkStmtType(sourceStmt) == StmtThreadType.StartMultiThread){
 			shouldFindMultThread = false;
 			result.head = sourceStmt;
 		}
@@ -557,27 +637,28 @@ public class MyInfoFlowAnalyze {
 		return result;
 	}
 
-	private StmtType checkStmtType(Stmt pt) {
-		StmtType tmp = StmtType.None;
+	private StmtThreadType checkStmtType(Stmt pt) {
+		StmtThreadType tmp = StmtThreadType.None;
 		SootMethod sm = null;
 		if(pt instanceof InvokeStmt){
-			tmp = StmtType.StartMultiThread;
+			tmp = StmtThreadType.StartMultiThread;
 //			sm = iCfg.getCalleesOfCallAt(pt).iterator().next();
 			sm = ((InvokeStmt) pt).getInvokeExpr().getMethod();
 		}
 		else if(iCfg.isExitStmt(pt)){
-			tmp = StmtType.ReturnMultiThread;
+			tmp = StmtThreadType.ReturnMultiThread;
 			sm = iCfg.getMethodOf(pt);
 		}
 		else
-			return StmtType.None;
+			return StmtThreadType.None;
 		if(sm == null)
-			return StmtType.None;
+			return StmtThreadType.None;
 		
 		boolean multiMth = false;
 		SootClass rnSC = Scene.v().getSootClass("java.lang.Runnable");
 		SootClass thSC = Scene.v().getSootClass("java.lang.Thread");
-		if(sm.hasTag("MyMethodTag") && sm.getTag("MyMethodTag").getValue()[0] > 0)
+		String tagName = MyMethodTag.class.getSimpleName();
+		if(sm.hasTag(tagName) && ((MyMethodTag)sm.getTag(tagName)).isMultithread())
 			multiMth = true;
 		else if(sm.getSubSignature().equals("void run()")){
 			SootClass sc = sm.getDeclaringClass();
@@ -590,7 +671,7 @@ public class MyInfoFlowAnalyze {
 		if(multiMth)
 			return tmp;
 			
-		return StmtType.None;
+		return StmtThreadType.None;
 	}
 
 

@@ -297,9 +297,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $z0 == 0 goto label01;
 
-        $z6 = staticinvoke <android.os.StrictMode: boolean amTheSystemServerProcess()>();
+        $z7 = staticinvoke <android.os.StrictMode: boolean amTheSystemServerProcess()>();
 
-        if $z6 != 0 goto label01;
+        if $z7 != 0 goto label01;
 
         $z8 = 1;
 
@@ -315,9 +315,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if doFlashes#2 != 0 goto label04;
 
-        $z7 = <android.os.StrictMode: boolean IS_USER_BUILD>;
+        $z6 = <android.os.StrictMode: boolean IS_USER_BUILD>;
 
-        if $z7 != 0 goto label03;
+        if $z6 != 0 goto label03;
 
         if suppress == 0 goto label04;
 
@@ -692,13 +692,13 @@ public final class android.os.StrictMode extends java.lang.Object
 
         entry = (java.util.Map$Entry) $r3;
 
-        $r5 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getKey()>();
+        $r4 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getKey()>();
 
-        klass = (java.lang.Class) $r5;
+        klass = (java.lang.Class) $r4;
 
-        $r4 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getValue()>();
+        $r5 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getValue()>();
 
-        $r6 = (java.lang.Integer) $r4;
+        $r6 = (java.lang.Integer) $r5;
 
         limit = virtualinvoke $r6.<java.lang.Integer: int intValue()>();
 
@@ -735,8 +735,8 @@ public final class android.os.StrictMode extends java.lang.Object
         java.lang.Class l1;
         android.os.Looper looper;
         android.os.INetworkManagementService netd;
-        android.os.RemoteException l5, $r5;
-        java.lang.Throwable l6, $r4;
+        android.os.RemoteException l5, $r4;
+        java.lang.Throwable l6, $r5;
         int $i0, $i1, $i2, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11;
         boolean $z0, $z1;
         android.os.IBinder $r0;
@@ -774,11 +774,11 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $i9 == 0 goto label02;
 
-        $i11 = <android.os.StrictMode: int sVmPolicyMask>;
+        $i10 = <android.os.StrictMode: int sVmPolicyMask>;
 
-        $i10 = $i11 & 10813440;
+        $i11 = $i10 & 10813440;
 
-        if $i10 != 0 goto label03;
+        if $i11 != 0 goto label03;
 
      label02:
         $r2 = <android.os.StrictMode: android.os.MessageQueue$IdleHandler sProcessIdleHandler>;
@@ -809,15 +809,15 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $i2 == 0 goto label07;
 
-        $i4 = <android.os.StrictMode: int sVmPolicyMask>;
+        $i5 = <android.os.StrictMode: int sVmPolicyMask>;
 
-        $i7 = $i4 & 262144;
+        $i6 = $i5 & 262144;
 
-        if $i7 != 0 goto label05;
+        if $i6 != 0 goto label05;
 
-        $i6 = <android.os.StrictMode: int sVmPolicyMask>;
+        $i7 = <android.os.StrictMode: int sVmPolicyMask>;
 
-        $i8 = $i6 & 8388608;
+        $i8 = $i7 & 8388608;
 
         if $i8 == 0 goto label06;
 
@@ -837,17 +837,17 @@ public final class android.os.StrictMode extends java.lang.Object
         if netd == null goto label11;
 
      label08:
-        $i5 = staticinvoke <android.os.Process: int myUid()>();
+        $i4 = staticinvoke <android.os.Process: int myUid()>();
 
-        interfaceinvoke netd.<android.os.INetworkManagementService: void setUidCleartextNetworkPolicy(int,int)>($i5, mq#2);
+        interfaceinvoke netd.<android.os.INetworkManagementService: void setUidCleartextNetworkPolicy(int,int)>($i4, mq#2);
 
      label09:
         goto label12;
 
      label10:
-        $r5 := @caughtexception;
+        $r4 := @caughtexception;
 
-        l5 = $r5;
+        l5 = $r4;
 
         goto label12;
 
@@ -863,9 +863,9 @@ public final class android.os.StrictMode extends java.lang.Object
         goto label16;
 
      label14:
-        $r4 := @caughtexception;
+        $r5 := @caughtexception;
 
-        l6 = $r4;
+        l6 = $r5;
 
         exitmonitor l1;
 
@@ -1118,13 +1118,13 @@ public final class android.os.StrictMode extends java.lang.Object
     public static void onCleartextNetworkDetected(byte[])
     {
         byte[] firstPacket, rawAddr#1;
-        int uid, $i0, $i1, $i2, $i4;
-        java.lang.StringBuilder $r0, $r1, $r2, $r6, $r7, $r8, $r9, $r10;
+        int uid, $i0, $i1, $i2, $i3;
+        java.lang.StringBuilder $r0, $r1, $r2, $r6, $r7, $r8, $r9, $r11;
         java.lang.String $r3, $r4, msg#2;
         java.lang.Throwable $r5;
-        java.net.InetAddress $r11;
-        byte $b3, $b5;
-        short $s6, $s7;
+        java.net.InetAddress $r10;
+        byte $b4, $b6;
+        short $s5, $s7;
         java.net.UnknownHostException $r12, forceDeath#3;
         boolean $z0, forceDeath#5;
 
@@ -1138,9 +1138,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $i2 < 20 goto label1;
 
-        $b5 = firstPacket[0];
+        $b6 = firstPacket[0];
 
-        $s7 = $b5 & 240;
+        $s7 = $b6 & 240;
 
         if $s7 != 64 goto label1;
 
@@ -1151,15 +1151,15 @@ public final class android.os.StrictMode extends java.lang.Object
         goto label2;
 
      label1:
-        $i4 = lengthof firstPacket;
+        $i3 = lengthof firstPacket;
 
-        if $i4 < 40 goto label2;
+        if $i3 < 40 goto label2;
 
-        $b3 = firstPacket[0];
+        $b4 = firstPacket[0];
 
-        $s6 = $b3 & 240;
+        $s5 = $b4 & 240;
 
-        if $s6 != 96 goto label2;
+        if $s5 != 96 goto label2;
 
         rawAddr#1 = newarray (byte)[16];
 
@@ -1181,21 +1181,21 @@ public final class android.os.StrictMode extends java.lang.Object
         if rawAddr#1 == null goto label6;
 
      label3:
-        $r7 = new java.lang.StringBuilder;
+        $r6 = new java.lang.StringBuilder;
 
-        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
 
-        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Detected cleartext network traffic from UID ");
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Detected cleartext network traffic from UID ");
 
-        $r9 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
 
-        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to ");
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to ");
 
-        $r11 = staticinvoke <java.net.InetAddress: java.net.InetAddress getByAddress(byte[])>(rawAddr#1);
+        $r10 = staticinvoke <java.net.InetAddress: java.net.InetAddress getByAddress(byte[])>(rawAddr#1);
 
-        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r11);
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r10);
 
-        msg#2 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        msg#2 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
 
      label4:
         goto label6;
@@ -1254,20 +1254,20 @@ public final class android.os.StrictMode extends java.lang.Object
     public static void onVmPolicyViolation(java.lang.String, java.lang.Throwable, boolean)
     {
         java.lang.String message;
-        java.lang.Throwable originStack, l17, $r12, $r14, savedPolicyMask#7;
+        java.lang.Throwable originStack, l17, $r13, $r14, savedPolicyMask#7;
         boolean forceDeath, penaltyDropbox, penaltyDeath, penaltyLog, $z0, $z1, $z2, $z3;
         android.os.StrictMode$ViolationInfo info, $r0;
         java.lang.Integer fingerprint;
         long now, lastViolationTime#4, timeSinceLastViolationMillis#5;
-        android.os.RemoteException e, $r13;
-        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i12, violationMaskSubset#8, savedPolicyMask#9;
-        java.util.HashMap $r1, $r2, $r7, $r8, violationMaskSubset#6;
-        byte $b10, $b11, $b13;
+        android.os.RemoteException e, $r12;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i9, $i10, $i11, violationMaskSubset#8, savedPolicyMask#9;
+        java.util.HashMap $r1, $r2, $r6, $r9, violationMaskSubset#6;
+        byte $b8, $b12, $b13;
         java.io.PrintStream $r3;
         android.app.IActivityManager $r4;
         android.os.IBinder $r5;
-        java.lang.Long $r9, $r10;
-        java.lang.Object $r11;
+        java.lang.Long $r7, $r11;
+        java.lang.Object $r10;
 
         message := @parameter0: java.lang.String;
 
@@ -1275,11 +1275,11 @@ public final class android.os.StrictMode extends java.lang.Object
 
         forceDeath := @parameter2: boolean;
 
-        $i1 = <android.os.StrictMode: int sVmPolicyMask>;
+        $i0 = <android.os.StrictMode: int sVmPolicyMask>;
 
-        $i0 = $i1 & 2097152;
+        $i1 = $i0 & 2097152;
 
-        if $i0 == 0 goto label01;
+        if $i1 == 0 goto label01;
 
         $z1 = 1;
 
@@ -1291,11 +1291,11 @@ public final class android.os.StrictMode extends java.lang.Object
      label02:
         penaltyDropbox = $z1;
 
-        $i3 = <android.os.StrictMode: int sVmPolicyMask>;
+        $i2 = <android.os.StrictMode: int sVmPolicyMask>;
 
-        $i2 = $i3 & 262144;
+        $i3 = $i2 & 262144;
 
-        if $i2 != 0 goto label03;
+        if $i3 != 0 goto label03;
 
         if forceDeath == 0 goto label04;
 
@@ -1310,11 +1310,11 @@ public final class android.os.StrictMode extends java.lang.Object
      label05:
         penaltyDeath = $z2;
 
-        $i5 = <android.os.StrictMode: int sVmPolicyMask>;
+        $i4 = <android.os.StrictMode: int sVmPolicyMask>;
 
-        $i4 = $i5 & 65536;
+        $i5 = $i4 & 65536;
 
-        if $i4 == 0 goto label06;
+        if $i5 == 0 goto label06;
 
         $z3 = 1;
 
@@ -1363,26 +1363,26 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $z0 == 0 goto label09;
 
-        $r7 = <android.os.StrictMode: java.util.HashMap sLastVmViolationTime>;
+        $r9 = <android.os.StrictMode: java.util.HashMap sLastVmViolationTime>;
 
-        $r11 = virtualinvoke $r7.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(fingerprint);
+        $r10 = virtualinvoke $r9.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(fingerprint);
 
-        $r10 = (java.lang.Long) $r11;
+        $r11 = (java.lang.Long) $r10;
 
-        lastViolationTime#4 = virtualinvoke $r10.<java.lang.Long: long longValue()>();
+        lastViolationTime#4 = virtualinvoke $r11.<java.lang.Long: long longValue()>();
 
         timeSinceLastViolationMillis#5 = now - lastViolationTime#4;
 
      label09:
-        $b10 = timeSinceLastViolationMillis#5 cmp 1000L;
+        $b8 = timeSinceLastViolationMillis#5 cmp 1000L;
 
-        if $b10 <= 0 goto label10;
+        if $b8 <= 0 goto label10;
 
-        $r8 = <android.os.StrictMode: java.util.HashMap sLastVmViolationTime>;
+        $r6 = <android.os.StrictMode: java.util.HashMap sLastVmViolationTime>;
 
-        $r9 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(now);
+        $r7 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(now);
 
-        virtualinvoke $r8.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(fingerprint, $r9);
+        virtualinvoke $r6.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(fingerprint, $r7);
 
      label10:
         exitmonitor violationMaskSubset#6;
@@ -1391,9 +1391,9 @@ public final class android.os.StrictMode extends java.lang.Object
         goto label14;
 
      label12:
-        $r12 := @caughtexception;
+        $r13 := @caughtexception;
 
-        savedPolicyMask#7 = $r12;
+        savedPolicyMask#7 = $r13;
 
         exitmonitor violationMaskSubset#6;
 
@@ -1410,11 +1410,11 @@ public final class android.os.StrictMode extends java.lang.Object
         staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("StrictMode", message, originStack);
 
      label15:
-        $i8 = <android.os.StrictMode: int sVmPolicyMask>;
+        $i9 = <android.os.StrictMode: int sVmPolicyMask>;
 
-        $i9 = 32512 & $i8;
+        $i10 = 32512 & $i9;
 
-        violationMaskSubset#8 = 2097152 | $i9;
+        violationMaskSubset#8 = 2097152 | $i10;
 
         if penaltyDropbox == 0 goto label16;
 
@@ -1427,9 +1427,9 @@ public final class android.os.StrictMode extends java.lang.Object
      label16:
         if penaltyDropbox == 0 goto label23;
 
-        $b11 = lastViolationTime#4 cmp 0L;
+        $b12 = lastViolationTime#4 cmp 0L;
 
-        if $b11 != 0 goto label23;
+        if $b12 != 0 goto label23;
 
         savedPolicyMask#9 = staticinvoke <android.os.StrictMode: int getThreadPolicyMask()>();
 
@@ -1448,9 +1448,9 @@ public final class android.os.StrictMode extends java.lang.Object
         goto label23;
 
      label19:
-        $r13 := @caughtexception;
+        $r12 := @caughtexception;
 
-        e = $r13;
+        e = $r12;
 
         staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("StrictMode", "RemoteException trying to handle StrictMode violation", e);
 
@@ -1476,9 +1476,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("StrictMode VmPolicy violation with POLICY_DEATH; shutting down.");
 
-        $i12 = staticinvoke <android.os.Process: int myPid()>();
+        $i11 = staticinvoke <android.os.Process: int myPid()>();
 
-        staticinvoke <android.os.Process: void killProcess(int)>($i12);
+        staticinvoke <android.os.Process: void killProcess(int)>($i11);
 
         staticinvoke <java.lang.System: void exit(int)>(10);
 
@@ -1501,8 +1501,8 @@ public final class android.os.StrictMode extends java.lang.Object
         java.lang.ThreadLocal $r0, $r2;
         java.lang.Object $r1, $r7;
         boolean $z0;
-        java.lang.StringBuilder $r3, $r4, $r5, $r9, $r10, $r11, $r12, $r13, $r14, $r16, $r17;
-        java.lang.String $r6, $r15;
+        java.lang.StringBuilder $r3, $r4, $r5, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16;
+        java.lang.String $r6, $r17;
         android.os.StrictMode$ViolationInfo $r8;
 
         p := @parameter0: android.os.Parcel;
@@ -1549,29 +1549,29 @@ public final class android.os.StrictMode extends java.lang.Object
 
         specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
 
-        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Wrote violation #");
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Wrote violation #");
 
-        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i#1);
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i#1);
 
-        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" of ");
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" of ");
 
         $i5 = virtualinvoke violations.<java.util.ArrayList: int size()>();
 
-        $r14 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
 
-        $r13 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
 
-        $i7 = virtualinvoke p.<android.os.Parcel: int dataPosition()>();
+        $i6 = virtualinvoke p.<android.os.Parcel: int dataPosition()>();
 
-        $i6 = $i7 - start;
+        $i7 = $i6 - start;
 
-        $r16 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
 
-        $r17 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes");
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes");
 
-        $r15 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r17 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Slog: int d(java.lang.String,java.lang.String)>("StrictMode", $r15);
+        staticinvoke <android.util.Slog: int d(java.lang.String,java.lang.String)>("StrictMode", $r17);
 
      label3:
         i#1 = i#1 + 1;
@@ -1613,14 +1613,14 @@ public final class android.os.StrictMode extends java.lang.Object
         android.os.Parcel p;
         java.io.StringWriter sw, $r0;
         com.android.internal.util.FastPrintWriter pw, $r1;
-        java.lang.String ourStack, $r6, $r7, $r11, $r16, $r17, $r20, $r24, $r29, front#5;
+        java.lang.String ourStack, $r5, $r8, $r12, $r15, $r17, $r22, $r26, $r31, front#5;
         int policyMask, numViolations, $i0, $i1, i#2;
         boolean currentlyGathering, $z0, $z1, $z2, $z3, $z4;
         android.os.StrictMode$LogStackTrace $r2;
-        android.app.ApplicationErrorReport$CrashInfo $r3, $r8, $r13, $r15;
-        android.os.StrictMode$ViolationInfo $r4, $r28, info#4, info#7;
-        java.lang.StringBuilder $r5, $r9, $r10, $r12, $r18, $r19, $r21, $r22, $r23, $r25, $r26, $r27, $r30, $r31;
-        android.os.StrictMode$AndroidBlockGuardPolicy $r14;
+        android.os.StrictMode$ViolationInfo $r3, $r27, info#4, info#7;
+        android.app.ApplicationErrorReport$CrashInfo $r4, $r7, $r14, $r16;
+        java.lang.StringBuilder $r6, $r9, $r10, $r11, $r18, $r19, $r20, $r21, $r23, $r24, $r25, $r28, $r29, $r30;
+        android.os.StrictMode$AndroidBlockGuardPolicy $r13;
         dalvik.system.BlockGuard$Policy front#8;
 
         p := @parameter0: android.os.Parcel;
@@ -1674,20 +1674,20 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $z0 == 0 goto label04;
 
-        $r27 = new java.lang.StringBuilder;
+        $r28 = new java.lang.StringBuilder;
 
-        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r28.<java.lang.StringBuilder: void <init>()>();
 
-        $r31 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("strict mode violation stacks read from binder call.  i=");
+        $r29 = virtualinvoke $r28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("strict mode violation stacks read from binder call.  i=");
 
-        $r30 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i#2);
+        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i#2);
 
-        $r29 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r31 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", $r29);
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", $r31);
 
      label04:
-        $r4 = new android.os.StrictMode$ViolationInfo;
+        $r3 = new android.os.StrictMode$ViolationInfo;
 
         if currentlyGathering != 0 goto label05;
 
@@ -1699,34 +1699,34 @@ public final class android.os.StrictMode extends java.lang.Object
         $z3 = 0;
 
      label06:
-        specialinvoke $r4.<android.os.StrictMode$ViolationInfo: void <init>(android.os.Parcel,boolean)>(p, $z3);
+        specialinvoke $r3.<android.os.StrictMode$ViolationInfo: void <init>(android.os.Parcel,boolean)>(p, $z3);
 
-        info#4 = $r4;
+        info#4 = $r3;
 
-        $r3 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
+        $r4 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
 
-        $r6 = $r3.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
+        $r5 = $r4.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
 
-        if $r6 == null goto label11;
+        if $r5 == null goto label11;
 
-        $r13 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
+        $r14 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
 
-        $r17 = $r13.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
+        $r15 = $r14.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
 
-        $i1 = virtualinvoke $r17.<java.lang.String: int length()>();
+        $i1 = virtualinvoke $r15.<java.lang.String: int length()>();
 
         if $i1 <= 30000 goto label11;
 
-        $r15 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
+        $r16 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
 
-        $r16 = $r15.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
+        $r17 = $r16.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
 
-        front#5 = virtualinvoke $r16.<java.lang.String: java.lang.String substring(int)>(256);
+        front#5 = virtualinvoke $r17.<java.lang.String: java.lang.String substring(int)>(256);
 
      label07:
         if i#2 >= numViolations goto label10;
 
-        $r28 = new android.os.StrictMode$ViolationInfo;
+        $r27 = new android.os.StrictMode$ViolationInfo;
 
         if currentlyGathering != 0 goto label08;
 
@@ -1738,9 +1738,9 @@ public final class android.os.StrictMode extends java.lang.Object
         $z4 = 0;
 
      label09:
-        specialinvoke $r28.<android.os.StrictMode$ViolationInfo: void <init>(android.os.Parcel,boolean)>(p, $z4);
+        specialinvoke $r27.<android.os.StrictMode$ViolationInfo: void <init>(android.os.Parcel,boolean)>(p, $z4);
 
-        info#7 = $r28;
+        info#7 = $r27;
 
         i#2 = i#2 + 1;
 
@@ -1749,48 +1749,48 @@ public final class android.os.StrictMode extends java.lang.Object
      label10:
         staticinvoke <android.os.StrictMode: void clearGatheredViolations()>();
 
-        $r19 = new java.lang.StringBuilder;
+        $r18 = new java.lang.StringBuilder;
 
-        specialinvoke $r19.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>()>();
 
-        $r18 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Stack is too large: numViolations=");
+        $r19 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Stack is too large: numViolations=");
 
-        $r22 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(numViolations);
+        $r20 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(numViolations);
 
-        $r23 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" policy=#");
+        $r21 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" policy=#");
 
-        $r20 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>(policyMask);
+        $r22 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>(policyMask);
 
-        $r21 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r20);
+        $r23 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r22);
 
-        $r25 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" front=");
+        $r24 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" front=");
 
-        $r26 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(front#5);
+        $r25 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(front#5);
 
-        $r24 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r26 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Slog: int wtfStack(java.lang.String,java.lang.String)>("StrictMode", $r24);
+        staticinvoke <android.util.Slog: int wtfStack(java.lang.String,java.lang.String)>("StrictMode", $r26);
 
         return;
 
      label11:
-        $r5 = new java.lang.StringBuilder;
+        $r6 = new java.lang.StringBuilder;
 
-        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
 
-        $r8 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
+        $r7 = info#4.<android.os.StrictMode$ViolationInfo: android.app.ApplicationErrorReport$CrashInfo crashInfo>;
 
-        $r7 = $r8.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
+        $r8 = $r7.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace>;
 
-        $r10 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+        $r9 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
 
-        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("# via Binder call with stack:\n");
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("# via Binder call with stack:\n");
 
-        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ourStack);
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ourStack);
 
-        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        $r8.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace> = $r11;
+        $r7.<android.app.ApplicationErrorReport$CrashInfo: java.lang.String stackTrace> = $r12;
 
         front#8 = staticinvoke <dalvik.system.BlockGuard: dalvik.system.BlockGuard$Policy getThreadPolicy()>();
 
@@ -1798,9 +1798,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $z1 == 0 goto label12;
 
-        $r14 = (android.os.StrictMode$AndroidBlockGuardPolicy) front#8;
+        $r13 = (android.os.StrictMode$AndroidBlockGuardPolicy) front#8;
 
-        virtualinvoke $r14.<android.os.StrictMode$AndroidBlockGuardPolicy: void handleViolationWithTimingAttempt(android.os.StrictMode$ViolationInfo)>(info#4);
+        virtualinvoke $r13.<android.os.StrictMode$AndroidBlockGuardPolicy: void handleViolationWithTimingAttempt(android.os.StrictMode$ViolationInfo)>(info#4);
 
      label12:
         i#2 = i#2 + 1;
@@ -1824,7 +1824,7 @@ public final class android.os.StrictMode extends java.lang.Object
 
     public static android.os.StrictMode$Span enterCriticalSpan(java.lang.String)
     {
-        java.lang.String name, $r12;
+        java.lang.String name, $r13;
         android.os.StrictMode$ThreadSpanState state, l3;
         java.lang.Throwable l4, $r17;
         boolean $z0, $z1, $z2;
@@ -1834,7 +1834,7 @@ public final class android.os.StrictMode extends java.lang.Object
         android.os.StrictMode$Span $r4, $r5, $r6, $r7, $r14, $r15, $r16, span#2;
         long $l0;
         int $i1, $i2, $i3, $i4, $i5;
-        java.lang.StringBuilder $r8, $r9, $r10, $r11, $r13;
+        java.lang.StringBuilder $r8, $r9, $r10, $r11, $r12;
 
         name := @parameter0: java.lang.String;
 
@@ -1878,9 +1878,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         span#2 = state.<android.os.StrictMode$ThreadSpanState: android.os.StrictMode$Span mFreeListHead>;
 
-        $r14 = staticinvoke <android.os.StrictMode$Span: android.os.StrictMode$Span access$1800(android.os.StrictMode$Span)>(span#2);
+        $r15 = staticinvoke <android.os.StrictMode$Span: android.os.StrictMode$Span access$1800(android.os.StrictMode$Span)>(span#2);
 
-        state.<android.os.StrictMode$ThreadSpanState: android.os.StrictMode$Span mFreeListHead> = $r14;
+        state.<android.os.StrictMode$ThreadSpanState: android.os.StrictMode$Span mFreeListHead> = $r15;
 
         $i4 = state.<android.os.StrictMode$ThreadSpanState: int mFreeListSize>;
 
@@ -1922,9 +1922,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if $r7 == null goto label07;
 
-        $r15 = staticinvoke <android.os.StrictMode$Span: android.os.StrictMode$Span access$1800(android.os.StrictMode$Span)>(span#2);
+        $r14 = staticinvoke <android.os.StrictMode$Span: android.os.StrictMode$Span access$1800(android.os.StrictMode$Span)>(span#2);
 
-        staticinvoke <android.os.StrictMode$Span: android.os.StrictMode$Span access$2102(android.os.StrictMode$Span,android.os.StrictMode$Span)>($r15, span#2);
+        staticinvoke <android.os.StrictMode$Span: android.os.StrictMode$Span access$2102(android.os.StrictMode$Span,android.os.StrictMode$Span)>($r14, span#2);
 
      label07:
         $z2 = <android.os.StrictMode: boolean LOG_V>;
@@ -1935,19 +1935,19 @@ public final class android.os.StrictMode extends java.lang.Object
 
         specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
 
-        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Span enter=");
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Span enter=");
 
-        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; size=");
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; size=");
 
         $i3 = state.<android.os.StrictMode$ThreadSpanState: int mActiveSize>;
 
-        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
 
-        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", $r12);
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", $r13);
 
      label08:
         exitmonitor l3;
@@ -2168,13 +2168,13 @@ public final class android.os.StrictMode extends java.lang.Object
         java.lang.Class klass, actual#1;
         int limit, newExpected, $i0, $i1, $i4, $i5, $i6, actual#5;
         android.os.StrictMode$VmPolicy $r0;
-        java.util.HashMap $r1, $r3, $r7;
+        java.util.HashMap $r1, $r3, $r8;
         java.lang.Object $r2;
         java.lang.Integer $r4, expected#2;
         long $l2, expected#6;
-        android.os.StrictMode$InstanceCountViolation $r6, tr#7;
         byte $b3;
-        java.lang.String $r8;
+        android.os.StrictMode$InstanceCountViolation $r6, tr#7;
+        java.lang.String $r7;
         java.lang.Throwable $r10, tr#4;
 
         klass := @parameter0: java.lang.Class;
@@ -2230,9 +2230,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         if newExpected != 0 goto label08;
 
-        $r7 = <android.os.StrictMode: java.util.HashMap sExpectedActivityInstanceCount>;
+        $r8 = <android.os.StrictMode: java.util.HashMap sExpectedActivityInstanceCount>;
 
-        virtualinvoke $r7.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>(klass);
+        virtualinvoke $r8.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>(klass);
 
         goto label09;
 
@@ -2289,9 +2289,9 @@ public final class android.os.StrictMode extends java.lang.Object
 
         tr#7 = $r6;
 
-        $r8 = virtualinvoke tr#7.<java.lang.Throwable: java.lang.String getMessage()>();
+        $r7 = virtualinvoke tr#7.<java.lang.Throwable: java.lang.String getMessage()>();
 
-        staticinvoke <android.os.StrictMode: void onVmPolicyViolation(java.lang.String,java.lang.Throwable)>($r8, tr#7);
+        staticinvoke <android.os.StrictMode: void onVmPolicyViolation(java.lang.String,java.lang.Throwable)>($r7, tr#7);
 
      label15:
         return;
@@ -2454,7 +2454,7 @@ public final class android.os.StrictMode extends java.lang.Object
     {
         boolean $z0, $z1, $z2;
         java.lang.String $r0, $r1, $r2, $r3;
-        java.util.HashMap $r4, $r12, $r15;
+        java.util.HashMap $r4, $r12, $r16;
         android.os.StrictMode$VmPolicy $r5;
         java.util.concurrent.atomic.AtomicInteger $r6;
         android.os.StrictMode$1 $r7;
@@ -2462,9 +2462,9 @@ public final class android.os.StrictMode extends java.lang.Object
         android.os.StrictMode$3 $r9;
         android.os.StrictMode$4 $r10;
         android.os.StrictMode$6 $r11;
-        android.os.StrictMode$8 $r13;
-        android.os.StrictMode$7 $r14;
-        android.os.StrictMode$9 $r16;
+        android.os.StrictMode$7 $r13;
+        android.os.StrictMode$8 $r14;
+        android.os.StrictMode$9 $r15;
 
         <android.os.StrictMode: int NETWORK_POLICY_REJECT> = 2;
 
@@ -2614,29 +2614,29 @@ public final class android.os.StrictMode extends java.lang.Object
 
         <android.os.StrictMode: java.util.HashMap sLastVmViolationTime> = $r12;
 
-        $r14 = new android.os.StrictMode$7;
+        $r13 = new android.os.StrictMode$7;
 
-        specialinvoke $r14.<android.os.StrictMode$7: void <init>()>();
+        specialinvoke $r13.<android.os.StrictMode$7: void <init>()>();
 
-        <android.os.StrictMode: android.os.StrictMode$Span NO_OP_SPAN> = $r14;
+        <android.os.StrictMode: android.os.StrictMode$Span NO_OP_SPAN> = $r13;
 
-        $r13 = new android.os.StrictMode$8;
+        $r14 = new android.os.StrictMode$8;
 
-        specialinvoke $r13.<android.os.StrictMode$8: void <init>()>();
+        specialinvoke $r14.<android.os.StrictMode$8: void <init>()>();
 
-        <android.os.StrictMode: java.lang.ThreadLocal sThisThreadSpanState> = $r13;
+        <android.os.StrictMode: java.lang.ThreadLocal sThisThreadSpanState> = $r14;
 
-        $r16 = new android.os.StrictMode$9;
+        $r15 = new android.os.StrictMode$9;
 
-        specialinvoke $r16.<android.os.StrictMode$9: void <init>()>();
+        specialinvoke $r15.<android.os.StrictMode$9: void <init>()>();
 
-        <android.os.StrictMode: android.util.Singleton sWindowManager> = $r16;
+        <android.os.StrictMode: android.util.Singleton sWindowManager> = $r15;
 
-        $r15 = new java.util.HashMap;
+        $r16 = new java.util.HashMap;
 
-        specialinvoke $r15.<java.util.HashMap: void <init>()>();
+        specialinvoke $r16.<java.util.HashMap: void <init>()>();
 
-        <android.os.StrictMode: java.util.HashMap sExpectedActivityInstanceCount> = $r15;
+        <android.os.StrictMode: java.util.HashMap sExpectedActivityInstanceCount> = $r16;
 
         return;
     }

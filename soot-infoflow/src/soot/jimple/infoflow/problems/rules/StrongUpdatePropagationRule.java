@@ -3,6 +3,7 @@ package soot.jimple.infoflow.problems.rules;
 import java.util.Collection;
 
 import soot.Local;
+import soot.Scene;
 import soot.jimple.ArrayRef;
 import soot.jimple.AssignStmt;
 import soot.jimple.InstanceFieldRef;
@@ -61,9 +62,10 @@ public class StrongUpdatePropagationRule extends AbstractTaintPropagationRule {
 			if (assignStmt.getLeftOp() instanceof InstanceFieldRef) {
 				InstanceFieldRef leftRef = (InstanceFieldRef) assignStmt.getLeftOp();
 				boolean baseAliases;
-				if (source.isAbstractionActive())
+				if (source.isAbstractionActive()){
 					baseAliases = getAliasing().mustAlias((Local) leftRef.getBase(),
 						source.getAccessPath().getPlainValue(), assignStmt);
+				}
 				else
 					baseAliases = leftRef.getBase() == source.getAccessPath().getPlainValue();
 				if (baseAliases) {

@@ -74,17 +74,24 @@ public class MainActivity extends Activity {
 				}
 				break;
 			case OBJ_NP:
-				try {
-					msg.obj.equals("");
-					letsDoNP(msg.obj);
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(msg.obj != null)
+					msg.obj.equals("if");
+				else{
+					tainted.charAt(0);
 				}
+					
+				msg.obj.equals("2");
 				break;
 			case NEW_NULL:
-				tainted.equals("");
-		    	 Publisher pb = new Publisher();
-		    	 pb.publish(tainted);
+//				if(tainted != null)
+//					tainted.equals("");
+//		    	 Publisher pb = new Publisher();
+//		    	 pb.publish(tainted);
+				if(tainted != null){
+					Publisher pb = new Publisher();
+			    	 pb.publish(tainted);
+				}
+					tainted.equals("");
 				break;
 				
 				//------------------
@@ -150,7 +157,7 @@ public class MainActivity extends Activity {
 	
 //	private void testHandlerSendMSG(String s0, String s1) {
 	private void testHandlerSendMSG(String s0) {
-		Message msg = mhandler.obtainMessage(NEW_NULL);
+		Message msg = mhandler.obtainMessage(OBJ_NP);
 		msg.obj = s0;
    	 	tainted = null;
 		mhandler.sendMessage(msg);

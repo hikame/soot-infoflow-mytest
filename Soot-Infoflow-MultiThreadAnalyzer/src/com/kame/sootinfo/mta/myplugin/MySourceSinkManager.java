@@ -1,9 +1,10 @@
 package com.kame.sootinfo.mta.myplugin;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
-import com.kame.sootinfo.mta.tags.MySourceSinkTag;
+import com.kame.sootinfo.mta.tags.MyStmtTag;
 
 import heros.InterproceduralCFG;
 import soot.Local;
@@ -11,11 +12,9 @@ import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-import soot.dexpler.DalvikThrowAnalysis;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
-import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.NullConstant;
 import soot.jimple.ParameterRef;
@@ -24,30 +23,13 @@ import soot.jimple.infoflow.data.AccessPath;
 import soot.jimple.infoflow.data.AccessPathFactory;
 import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.source.SourceInfo;
-import soot.tagkit.StringTag;
-import soot.tagkit.Tag;
-import soot.toolkits.exceptions.ThrowableSet;
-import sun.security.x509.IssuingDistributionPointExtension;
+import soot.kame.SourceSinkType;
 
 public class MySourceSinkManager implements ISourceSinkManager {
 	boolean taintSubFields = true;
 	List<String> targetMethods = null; 
 	List<String> sinks = null;
-	
-	public enum SourceSinkType{
-		MyTestPublish("MyTestPublish"),
-		NullPointerException("java.lang.NullPointerException");
 		
-		private String name;
-		private SourceSinkType(String s){
-			name = s;
-		}
-		
-		public String getName(){
-			return name;
-		}
-	}
-	
 	/**
 	 * @param taintSubFields
 	 * 用于设定TaintAccess中taintSubFields的值。
@@ -66,22 +48,29 @@ public class MySourceSinkManager implements ISourceSinkManager {
 			InterproceduralCFG<Unit, SootMethod> cfg) {	
 		//对于产生source的语句进行了tag标注
 		SourceInfo result = isParameterOfTargetMethods(stmt, cfg);
+		
 		if(result == null)
-			result = isNewNullParameter(stmt, cfg);;	//查看是否可能引入新的空指，是则返回sourceinfo
+			result = isNewNullValue(stmt, cfg);;	//查看是否可能引入新的空指，是则返回sourceinfo
 		return result;
 	}
 
-	private SourceInfo isNewNullParameter(Stmt stmt, InterproceduralCFG<Unit, SootMethod> cfg) {
+	private SourceInfo isNewNullValue(Stmt stmt, InterproceduralCFG<Unit, SootMethod> cfg) {
+		//TODO 还有一种情况没有考虑进去，就是当一个stmt是一个方法调用，而且可能会返回null的情况。
+		//要求返回null的过程是可控的，那么从这个角度来说，只要能深入到方法源码中的话，还是可以直接分析出来的
+		//麻烦的是对于我们设定为phtantom的类以及来自native方法，这种情况下也许需要我们手动配一些规则来实现。
+		
 		if(!(stmt instanceof DefinitionStmt))
 			return null;
 		DefinitionStmt ds = (DefinitionStmt) stmt;
 		
 		if(ds.getRightOp().equals(NullConstant.v())){
 //			需要给污点处添加标签！
-			MySourceSinkTag tag = new MySourceSinkTag(SourceSinkType.NullPointerException.getName());
-			stmt.addTag(tag);
+//			MyStmtTag sourceTag = MyStmtTag.getTagFrom(stmt);
+//			sourceTag.getSourceTypes(ds.getLeftOp()).add(SourceSinkType.NullPointerException);
 			Value leftOp = ((DefinitionStmt) stmt).getLeftOp();
 			AccessPath ap = AccessPathFactory.v().createAccessPath(leftOp, false);
+			Set<SourceSinkType> sourceTypes = ap.getSourceTypes();
+			sourceTypes.add(SourceSinkType.NullPointerException);
 			return new SourceInfo(ap);
 		}
 		return null;
@@ -105,20 +94,28 @@ public class MySourceSinkManager implements ISourceSinkManager {
 				Value leftOp = ((DefinitionStmt) sCallSite).getLeftOp();
 				AccessPath ap = AccessPathFactory.v().createAccessPath(
 						leftOp, true);
+				Set<SourceSinkType> sourceTypes = ap.getSourceTypes();
+				sourceTypes.addAll(Arrays.asList(SourceSinkType.values()));
+				
+//				MyStmtTag sourceTag = MyStmtTag.getTagFrom(sCallSite);
+//				sourceTag.getSourceTypes(leftOp).addAll(Arrays.asList(SourceSinkType.values()));
 		//System.out.println("[TSrc-" + id + "] [!] This is a source! AP: " + ap);
 				return new SourceInfo(ap);
 	}
 
 	@Override
-	public boolean isSink(Stmt sCallSite, InterproceduralCFG<Unit, SootMethod> cfg,
+	public boolean isSink(Stmt sinkStmt, InterproceduralCFG<Unit, SootMethod> cfg,
 			AccessPath ap) {
+		//TODO sink是要根据sinkStmt中的MyStmtTag进行重新判定的
 		boolean result = false;
-		result = isPublishSink(sCallSite, cfg, ap);
-		result = result || isNullPointExceptionSink(sCallSite, cfg, ap);
+		result = isPublishSink(sinkStmt, cfg, ap);
+		result = result || isNullPointExceptionSink(sinkStmt, cfg, ap);
 		return result;
 	}
 
 	public boolean isNullPointExceptionSink(Stmt stmt, InterproceduralCFG<Unit, SootMethod> cfg, AccessPath ap) {
+		if(ap != null && !ap.getSourceTypes().contains(SourceSinkType.NullPointerException))
+			return false;		
 		boolean result = false;
 		List<ValueBox> boxes = stmt.getUseBoxes();
 		for(ValueBox box : boxes){
@@ -151,18 +148,14 @@ public class MySourceSinkManager implements ISourceSinkManager {
 	}
 
 	private Object addTagIfNeccesary(Stmt stmt, SourceSinkType sinkType) {
-		MySourceSinkTag msTag = (MySourceSinkTag) stmt.getTag(MySourceSinkTag.class.getSimpleName());
-		String type = sinkType.getName();
-		if(msTag == null)
-			stmt.addTag(new MySourceSinkTag(type + ";"));
-		else{
-			String tagStr = msTag.getSourceSinkType();
-			boolean exist = tagStr.startsWith(sinkType + ";") || tagStr.contains(";" + type + ";");
-			if(!exist){
-				tagStr = tagStr + ";" + type;
-				msTag.setSourceSinkType(tagStr);
-			}
+		MyStmtTag msTag = (MyStmtTag) stmt.getTag(MyStmtTag.class.getSimpleName());
+		if(msTag == null){
+			MyStmtTag mst = new MyStmtTag();
+			mst.getSinkTypes().add(sinkType);
+			stmt.addTag(mst);
 		}
+		else
+			msTag.getSinkTypes().add(sinkType);
 		return null;
 	}
 
@@ -177,6 +170,8 @@ public class MySourceSinkManager implements ISourceSinkManager {
 
 	private boolean isPublishSink(Stmt stmt, InterproceduralCFG<Unit, SootMethod> cfg, AccessPath ap) {
 		if(!(stmt instanceof InvokeStmt))
+			return false;
+		if(ap != null && !ap.getSourceTypes().contains(SourceSinkType.MyTestPublish))
 			return false;
 		InvokeStmt sCallSite = (InvokeStmt)stmt;
 		String targetMth = sCallSite.getInvokeExpr().getMethod().getSignature();

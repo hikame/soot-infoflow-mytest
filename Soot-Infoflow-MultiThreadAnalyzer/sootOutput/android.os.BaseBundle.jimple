@@ -335,18 +335,18 @@ public class android.os.BaseBundle extends java.lang.Object
 
         if $r12 != null goto label2;
 
-        $r13 = new android.util.ArrayMap;
+        $r14 = new android.util.ArrayMap;
 
-        specialinvoke $r13.<android.util.ArrayMap: void <init>(int)>(1);
+        specialinvoke $r14.<android.util.ArrayMap: void <init>(int)>(1);
 
-        this.<android.os.BaseBundle: android.util.ArrayMap mMap> = $r13;
+        this.<android.os.BaseBundle: android.util.ArrayMap mMap> = $r14;
 
         goto label3;
 
      label2:
-        $r14 = this.<android.os.BaseBundle: android.util.ArrayMap mMap>;
+        $r13 = this.<android.os.BaseBundle: android.util.ArrayMap mMap>;
 
-        virtualinvoke $r14.<android.util.ArrayMap: void erase()>();
+        virtualinvoke $r13.<android.util.ArrayMap: void erase()>();
 
      label3:
         this.<android.os.BaseBundle: android.os.Parcel mParcelledData> = null;
@@ -2485,20 +2485,20 @@ public class android.os.BaseBundle extends java.lang.Object
 
         if $r0 == null goto label2;
 
-        $r6 = this.<android.os.BaseBundle: android.os.Parcel mParcelledData>;
+        $r5 = this.<android.os.BaseBundle: android.os.Parcel mParcelledData>;
 
         $r4 = <android.os.BaseBundle: android.os.Parcel EMPTY_PARCEL>;
 
-        if $r6 != $r4 goto label1;
+        if $r5 != $r4 goto label1;
 
         virtualinvoke parcel.<android.os.Parcel: void writeInt(int)>(0);
 
         goto label5;
 
      label1:
-        $r5 = this.<android.os.BaseBundle: android.os.Parcel mParcelledData>;
+        $r6 = this.<android.os.BaseBundle: android.os.Parcel mParcelledData>;
 
-        length#1 = virtualinvoke $r5.<android.os.Parcel: int dataSize()>();
+        length#1 = virtualinvoke $r6.<android.os.Parcel: int dataSize()>();
 
         virtualinvoke parcel.<android.os.Parcel: void writeInt(int)>(length#1);
 

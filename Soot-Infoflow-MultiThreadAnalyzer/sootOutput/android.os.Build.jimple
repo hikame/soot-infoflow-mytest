@@ -41,8 +41,8 @@ public class android.os.Build extends java.lang.Object
     private static java.lang.String deriveFingerprint()
     {
         boolean $z0;
-        java.lang.StringBuilder $r0, $r2, $r3, $r5, $r6, $r8, $r9, $r11, $r12, $r13, $r16, $r17, $r18, $r19, $r22, $r23;
-        java.lang.String $r1, $r4, $r7, $r10, $r14, $r15, $r20, $r21, finger#1;
+        java.lang.StringBuilder $r0, $r2, $r3, $r5, $r6, $r8, $r9, $r11, $r12, $r14, $r15, $r17, $r18, $r20, $r21, $r23;
+        java.lang.String $r1, $r4, $r7, $r10, $r13, $r16, $r19, $r22, finger#1;
 
         finger#1 = staticinvoke <android.os.SystemProperties: java.lang.String get(java.lang.String)>("ro.build.fingerprint");
 
@@ -78,27 +78,27 @@ public class android.os.Build extends java.lang.Object
 
         $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
 
-        $r14 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.id");
+        $r13 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.id");
 
-        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+        $r14 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
 
-        $r16 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
 
-        $r15 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.version.incremental");
+        $r16 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.version.incremental");
 
-        $r18 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r17 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r16);
 
-        $r17 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
 
-        $r20 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.type");
+        $r19 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.type");
 
-        $r19 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r20);
+        $r20 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r19);
 
-        $r22 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+        $r21 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
 
-        $r21 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.tags");
+        $r22 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.tags");
 
-        $r23 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r21);
+        $r23 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r22);
 
         finger#1 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.String toString()>();
 
@@ -141,9 +141,9 @@ public class android.os.Build extends java.lang.Object
 
     public static boolean isBuildConsistent()
     {
-        java.lang.String system, vendor, $r4;
+        java.lang.String system, vendor, $r5;
         boolean $z0, $z1, $z2;
-        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r5;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4;
 
         system = staticinvoke <android.os.SystemProperties: java.lang.String get(java.lang.String)>("ro.build.fingerprint");
 
@@ -182,15 +182,15 @@ public class android.os.Build extends java.lang.Object
 
         $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Mismatched fingerprints; system reported ");
 
-        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(system);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(system);
 
-        $r2 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" but vendor reported ");
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" but vendor reported ");
 
-        $r5 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(vendor);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(vendor);
 
-        $r4 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Build", $r4);
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Build", $r5);
 
         return 0;
 
@@ -299,8 +299,8 @@ public class android.os.Build extends java.lang.Object
     {
         java.lang.String $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r16, $r17, $r18, $r19, $r20, $r21, $r22;
         java.lang.String[] $r12, $r13, $r14, abiList#1;
-        boolean $z0, $z1;
         dalvik.system.VMRuntime $r15;
+        boolean $z0, $z1;
         int $i0, $i3;
         long $l1, $l2;
 
@@ -400,13 +400,13 @@ public class android.os.Build extends java.lang.Object
         <android.os.Build: java.lang.String CPU_ABI2> = "";
 
      label4:
-        $r18 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.type");
+        $r17 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.type");
 
-        <android.os.Build: java.lang.String TYPE> = $r18;
+        <android.os.Build: java.lang.String TYPE> = $r17;
 
-        $r17 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.tags");
+        $r18 = staticinvoke <android.os.Build: java.lang.String getString(java.lang.String)>("ro.build.tags");
 
-        <android.os.Build: java.lang.String TAGS> = $r17;
+        <android.os.Build: java.lang.String TAGS> = $r18;
 
         $r19 = staticinvoke <android.os.Build: java.lang.String deriveFingerprint()>();
 

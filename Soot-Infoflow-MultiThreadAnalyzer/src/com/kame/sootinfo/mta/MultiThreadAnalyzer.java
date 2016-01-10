@@ -77,7 +77,7 @@ public class MultiThreadAnalyzer {
 		InfoflowConfiguration.setUseRecursiveAccessPaths(false);
 		
 //		config.setCodeEliminationMode(CodeEliminationMode.RemoveSideEffectFreeCode);
-//		config.setEnableImplicitFlows(false);
+//		config.setEnableImplicitFlows(true);
 
 		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
 //		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(com.kame.tafhd.MainActivity$ParamClass)>");

@@ -367,11 +367,11 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
 
         $r7 = (android.os.Parcelable) obj;
 
-        $i9 = interfaceinvoke $r7.<android.os.Parcelable: int describeContents()>();
+        $i10 = interfaceinvoke $r7.<android.os.Parcelable: int describeContents()>();
 
-        $i10 = $i9 & 1;
+        $i11 = $i10 & 1;
 
-        if $i10 == 0 goto label14;
+        if $i11 == 0 goto label14;
 
         fdFound#1 = 1;
 
@@ -386,9 +386,9 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
 
         array#3 = (android.os.Parcelable[]) $r6;
 
-        $i8 = lengthof array#3;
+        $i7 = lengthof array#3;
 
-        n#4 = $i8 - 1;
+        n#4 = $i7 - 1;
 
      label04:
         if n#4 < 0 goto label06;
@@ -397,11 +397,11 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
 
         if p#5 == null goto label05;
 
-        $i7 = interfaceinvoke p#5.<android.os.Parcelable: int describeContents()>();
+        $i8 = interfaceinvoke p#5.<android.os.Parcelable: int describeContents()>();
 
-        $i11 = $i7 & 1;
+        $i9 = $i8 & 1;
 
-        if $i11 == 0 goto label05;
+        if $i9 == 0 goto label05;
 
         fdFound#1 = 1;
 
@@ -416,15 +416,15 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
         goto label14;
 
      label07:
-        $z5 = obj instanceof android.util.SparseArray;
+        $z4 = obj instanceof android.util.SparseArray;
 
-        if $z5 == 0 goto label11;
+        if $z4 == 0 goto label11;
 
         array#6 = (android.util.SparseArray) obj;
 
-        $i3 = virtualinvoke array#6.<android.util.SparseArray: int size()>();
+        $i4 = virtualinvoke array#6.<android.util.SparseArray: int size()>();
 
-        n#7 = $i3 - 1;
+        n#7 = $i4 - 1;
 
      label08:
         if n#7 < 0 goto label10;
@@ -454,9 +454,9 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
         goto label14;
 
      label11:
-        $z4 = obj instanceof java.util.ArrayList;
+        $z5 = obj instanceof java.util.ArrayList;
 
-        if $z4 == 0 goto label14;
+        if $z5 == 0 goto label14;
 
         array#9 = (java.util.ArrayList) obj;
 
@@ -485,9 +485,9 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
 
         $i2 = interfaceinvoke p#11.<android.os.Parcelable: int describeContents()>();
 
-        $i4 = $i2 & 1;
+        $i3 = $i2 & 1;
 
-        if $i4 == 0 goto label13;
+        if $i3 == 0 goto label13;
 
         fdFound#1 = 1;
 
@@ -1800,9 +1800,9 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
     {
         android.os.Bundle this;
         android.os.Parcel $r0, $r8, $r9, $r12;
-        java.lang.StringBuilder $r1, $r2, $r5, $r6, $r10, $r11, $r13, $r15;
+        java.lang.StringBuilder $r1, $r2, $r5, $r6, $r10, $r11, $r13, $r14;
         android.util.ArrayMap $r3;
-        java.lang.String $r4, $r7, $r14;
+        java.lang.String $r4, $r7, $r15;
         int $i0;
 
         this := @this: android.os.Bundle;
@@ -1832,11 +1832,11 @@ public final class android.os.Bundle extends android.os.BaseBundle implements ja
 
         $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
 
-        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
 
-        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        return $r14;
+        return $r15;
 
      label2:
         $r1 = new java.lang.StringBuilder;

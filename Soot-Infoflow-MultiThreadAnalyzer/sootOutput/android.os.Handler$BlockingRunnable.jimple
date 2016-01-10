@@ -22,7 +22,7 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
     public void run()
     {
         android.os.Handler$BlockingRunnable this, l1, l4;
-        java.lang.Throwable l2, l3, l5, $r2, $r3, $r5;
+        java.lang.Throwable l2, l3, l5, $r2, $r3, $r4;
         java.lang.Runnable $r0;
 
         this := @this: android.os.Handler$BlockingRunnable;
@@ -61,9 +61,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label15;
 
      label08:
-        $r3 := @caughtexception;
+        $r4 := @caughtexception;
 
-        l3 = $r3;
+        l3 = $r4;
 
      label09:
         l4 = this;
@@ -81,9 +81,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label14;
 
      label12:
-        $r5 := @caughtexception;
+        $r3 := @caughtexception;
 
-        l5 = $r5;
+        l5 = $r3;
 
         exitmonitor l4;
 
@@ -108,11 +108,11 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
     {
         android.os.Handler$BlockingRunnable this, l4;
         android.os.Handler handler;
-        long timeout, delay, $l1, $l3, expirationTime#1;
-        java.lang.InterruptedException l9, $r1, $r3, expirationTime#2;
-        java.lang.Throwable l10, $r2;
+        long timeout, delay, $l1, $l2, expirationTime#1;
+        java.lang.InterruptedException l9, $r2, $r3, expirationTime#2;
+        java.lang.Throwable l10, $r1;
         boolean $z0, $z1, $z2;
-        byte $b0, $b2;
+        byte $b0, $b3;
 
         this := @this: android.os.Handler$BlockingRunnable;
 
@@ -145,13 +145,13 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
 
         if $z2 != 0 goto label09;
 
-        $l3 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+        $l2 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
 
-        delay = expirationTime#1 - $l3;
+        delay = expirationTime#1 - $l2;
 
-        $b2 = delay cmp 0L;
+        $b3 = delay cmp 0L;
 
-        if $b2 > 0 goto label05;
+        if $b3 > 0 goto label05;
 
         exitmonitor l4;
 
@@ -165,9 +165,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label08;
 
      label07:
-        $r1 := @caughtexception;
+        $r3 := @caughtexception;
 
-        l9 = $r1;
+        l9 = $r3;
 
      label08:
         goto label03;
@@ -187,9 +187,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label10;
 
      label13:
-        $r3 := @caughtexception;
+        $r2 := @caughtexception;
 
-        expirationTime#2 = $r3;
+        expirationTime#2 = $r2;
 
         goto label10;
 
@@ -200,9 +200,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label18;
 
      label16:
-        $r2 := @caughtexception;
+        $r1 := @caughtexception;
 
-        l10 = $r2;
+        l10 = $r1;
 
         exitmonitor l4;
 

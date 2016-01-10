@@ -745,10 +745,10 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
 
     public static int parseMode(java.lang.String)
     {
-        java.lang.String mode, $r0, $r1, $r2, $r3, $r4, $r5, $r10;
+        java.lang.String mode, $r0, $r1, $r2, $r3, $r4, $r5, $r11;
         boolean $z0, $z1, $z2, $z3, $z4, $z5;
         java.lang.IllegalArgumentException $r6;
-        java.lang.StringBuilder $r7, $r8, $r9, $r11;
+        java.lang.StringBuilder $r7, $r8, $r9, $r10;
         int modeBits#1;
 
         mode := @parameter0: java.lang.String;
@@ -821,15 +821,15 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
 
         specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
 
-        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bad mode \'");
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bad mode \'");
 
-        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(mode);
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(mode);
 
-        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
 
-        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r10);
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r11);
 
         throw $r6;
 
@@ -868,8 +868,8 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         boolean $z0, $z1;
         long $l1, $l3;
         android.system.ErrnoException $r3, st#2;
-        java.lang.StringBuilder $r4, $r5, $r7;
-        java.lang.String $r6;
+        java.lang.StringBuilder $r4, $r5, $r6;
+        java.lang.String $r7;
         android.system.StructStat st#1;
 
         this := @this: android.os.ParcelFileDescriptor;
@@ -921,11 +921,11 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
 
         $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("fstat() failed: ");
 
-        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(st#2);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(st#2);
 
-        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r6);
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r7);
 
         return -1L;
 
@@ -1242,15 +1242,15 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
     {
         android.os.ParcelFileDescriptor this;
         int status, len, $i1, $i2, $i3, writePtr#3;
-        java.lang.String msg, $r13, $r19, $r25;
+        java.lang.String msg, $r13, $r18, $r25;
         byte[] rawMsg, $r2, buf#1;
-        java.lang.Throwable l7, $r23;
-        java.io.FileDescriptor $r0, $r1, $r6, $r7, $r8, $r9, $r24;
+        java.lang.Throwable l7, $r19;
+        java.io.FileDescriptor $r0, $r1, $r6, $r7, $r8, $r9, $r20;
         android.os.ParcelFileDescriptor$Status $r3, $r4;
         java.nio.ByteOrder $r5;
-        java.lang.StringBuilder $r10, $r11, $r12, $r14, $r16, $r18, $r20, $r21, $r22;
-        java.io.InterruptedIOException $r15, buf#5;
-        android.system.ErrnoException $r17, buf#4;
+        java.lang.StringBuilder $r10, $r11, $r12, $r15, $r16, $r17, $r22, $r23, $r24;
+        java.io.InterruptedIOException $r14, buf#5;
+        android.system.ErrnoException $r21, buf#4;
         byte writePtr#2;
 
         this := @this: android.os.ParcelFileDescriptor;
@@ -1269,11 +1269,11 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
 
         specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
 
-        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to inform peer: ");
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to inform peer: ");
 
-        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
 
-        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
 
         staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r13);
 
@@ -1334,13 +1334,13 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
 
         rawMsg = virtualinvoke msg.<java.lang.String: byte[] getBytes()>();
 
-        $i2 = lengthof rawMsg;
+        $i3 = lengthof rawMsg;
 
         $i1 = lengthof buf#1;
 
-        $i3 = $i1 - writePtr#3;
+        $i2 = $i1 - writePtr#3;
 
-        len = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i3);
+        len = staticinvoke <java.lang.Math: int min(int,int)>($i3, $i2);
 
         staticinvoke <java.lang.System: void arraycopy(byte[],int,byte[],int,int)>(rawMsg, 0, buf#1, writePtr#3, len);
 
@@ -1355,40 +1355,40 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         goto label12;
 
      label10:
-        $r17 := @caughtexception;
+        $r21 := @caughtexception;
 
-        buf#4 = $r17;
+        buf#4 = $r21;
 
         $r22 = new java.lang.StringBuilder;
 
         specialinvoke $r22.<java.lang.StringBuilder: void <init>()>();
 
-        $r20 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
+        $r23 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
 
-        $r21 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#4);
+        $r24 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#4);
 
-        $r25 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r25 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.String toString()>();
 
         staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r25);
 
         goto label12;
 
      label11:
-        $r15 := @caughtexception;
+        $r14 := @caughtexception;
 
-        buf#5 = $r15;
+        buf#5 = $r14;
 
-        $r16 = new java.lang.StringBuilder;
+        $r15 = new java.lang.StringBuilder;
 
-        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
 
-        $r14 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to report status: ");
 
-        $r18 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#5);
+        $r17 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(buf#5);
 
-        $r19 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r19);
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r18);
 
      label12:
         $r7 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
@@ -1400,14 +1400,14 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         goto label15;
 
      label13:
-        $r23 := @caughtexception;
+        $r19 := @caughtexception;
 
-        l7 = $r23;
+        l7 = $r19;
 
      label14:
-        $r24 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
+        $r20 = this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd>;
 
-        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r24);
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.io.FileDescriptor)>($r20);
 
         this.<android.os.ParcelFileDescriptor: java.io.FileDescriptor mCommFd> = null;
 
@@ -1429,11 +1429,11 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         java.io.FileDescriptor comm;
         byte[] buf;
         int status, $i0, $i1, $i3, $i4, n#1;
-        java.lang.String msg, $r2, $r8, $r14;
+        java.lang.String msg, $r2, $r9, $r15;
         java.nio.ByteOrder $r0;
         android.os.ParcelFileDescriptor$Status $r1, $r3, $r4, $r10, $r16;
         java.io.InterruptedIOException $r5, n#3;
-        java.lang.StringBuilder $r6, $r7, $r9, $r12, $r13, $r15;
+        java.lang.StringBuilder $r6, $r7, $r8, $r12, $r13, $r14;
         android.system.ErrnoException $r11, n#2;
 
         comm := @parameter0: java.io.FileDescriptor;
@@ -1504,11 +1504,11 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
 
         $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
 
-        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#2);
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#2);
 
-        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r14);
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r15);
 
         $r16 = new android.os.ParcelFileDescriptor$Status;
 
@@ -1527,11 +1527,11 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
 
         $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
 
-        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#3);
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#3);
 
-        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r8);
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r9);
 
         $r10 = new android.os.ParcelFileDescriptor$Status;
 

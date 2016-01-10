@@ -276,7 +276,7 @@ public class android.os.Handler extends java.lang.Object
 
         specialinvoke result.<android.os.Message: void <init>()>();
 
-        result.<android.os.Message: int what> = 7;
+        result.<android.os.Message: int what> = 5;
 
         result.<android.os.Message: android.os.Handler target> = this;
     }
@@ -875,8 +875,8 @@ public class android.os.Handler extends java.lang.Object
     {
         android.os.Handler this;
         android.util.Printer pw;
-        java.lang.String prefix, $r5, $r11, $r14;
-        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r15;
+        java.lang.String prefix, $r5, $r11, $r15;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r14;
         long $l0;
         android.os.Looper $r6, $r8;
 
@@ -908,17 +908,17 @@ public class android.os.Handler extends java.lang.Object
 
         if $r6 != null goto label1;
 
-        $r13 = new java.lang.StringBuilder;
+        $r12 = new java.lang.StringBuilder;
 
-        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
 
-        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
 
-        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
 
-        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r14);
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r15);
 
         goto label2;
 

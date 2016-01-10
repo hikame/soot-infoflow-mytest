@@ -465,9 +465,9 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         if $r0 == null goto label1;
 
-        $r5 = this.<android.os.MessageQueue: android.util.SparseArray mFileDescriptorRecords>;
+        $r6 = this.<android.os.MessageQueue: android.util.SparseArray mFileDescriptorRecords>;
 
-        index#2 = virtualinvoke $r5.<android.util.SparseArray: int indexOfKey(int)>(fdNum);
+        index#2 = virtualinvoke $r6.<android.util.SparseArray: int indexOfKey(int)>(fdNum);
 
         if index#2 < 0 goto label1;
 
@@ -496,11 +496,11 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         if $r2 != null goto label2;
 
-        $r6 = new android.util.SparseArray;
+        $r5 = new android.util.SparseArray;
 
-        specialinvoke $r6.<android.util.SparseArray: void <init>()>();
+        specialinvoke $r5.<android.util.SparseArray: void <init>()>();
 
-        this.<android.os.MessageQueue: android.util.SparseArray mFileDescriptorRecords> = $r6;
+        this.<android.os.MessageQueue: android.util.SparseArray mFileDescriptorRecords> = $r5;
 
      label2:
         $r3 = new android.os.MessageQueue$FileDescriptorRecord;
@@ -684,15 +684,15 @@ public final class android.os.MessageQueue extends java.lang.Object
     android.os.Message next()
     {
         android.os.MessageQueue this, i#3, prevMsg#11;
-        long ptr, $l2, $l3, $l6, $l7, $l8, now#4;
+        long ptr, $l2, $l4, $l6, $l7, $l8, now#4;
         java.lang.Throwable l10, l11, $r17, $r18, $r19, prevMsg#10;
-        byte $b0, $b4, $b5;
+        byte $b0, $b3, $b5;
         boolean $z0, $z2, keep#9;
         android.os.MessageQueue$IdleHandler[] $r1, $r2, $r5, $r6, $r7, $r10;
-        java.lang.Object[] $r3;
-        java.util.ArrayList $r4, $r9, $r13;
+        java.util.ArrayList $r3, $r9, $r12;
+        java.lang.Object[] $r4;
         int $i1, pendingIdleHandlerCount#1, nextPollTimeoutMillis#2, i#7;
-        android.os.Message $r11, $r12, $r14, $r15, prevMsg#5, msg#6;
+        android.os.Message $r11, $r13, $r14, $r15, prevMsg#5, msg#6;
         android.os.Handler $r16;
         android.os.MessageQueue$IdleHandler now#8;
 
@@ -750,19 +750,19 @@ public final class android.os.MessageQueue extends java.lang.Object
      label06:
         if msg#6 == null goto label11;
 
-        $l2 = msg#6.<android.os.Message: long when>;
+        $l4 = msg#6.<android.os.Message: long when>;
 
-        $b5 = now#4 cmp $l2;
+        $b5 = now#4 cmp $l4;
 
         if $b5 >= 0 goto label07;
 
-        $l7 = msg#6.<android.os.Message: long when>;
+        $l6 = msg#6.<android.os.Message: long when>;
 
-        $l8 = $l7 - now#4;
+        $l7 = $l6 - now#4;
 
-        $l6 = staticinvoke <java.lang.Math: long min(long,long)>($l8, 2147483647L);
+        $l8 = staticinvoke <java.lang.Math: long min(long,long)>($l7, 2147483647L);
 
-        nextPollTimeoutMillis#2 = (int) $l6;
+        nextPollTimeoutMillis#2 = (int) $l8;
 
         goto label12;
 
@@ -771,16 +771,16 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         if prevMsg#5 == null goto label08;
 
-        $r14 = msg#6.<android.os.Message: android.os.Message next>;
+        $r15 = msg#6.<android.os.Message: android.os.Message next>;
 
-        prevMsg#5.<android.os.Message: android.os.Message next> = $r14;
+        prevMsg#5.<android.os.Message: android.os.Message next> = $r15;
 
         goto label09;
 
      label08:
-        $r15 = msg#6.<android.os.Message: android.os.Message next>;
+        $r14 = msg#6.<android.os.Message: android.os.Message next>;
 
-        this.<android.os.MessageQueue: android.os.Message mMessages> = $r15;
+        this.<android.os.MessageQueue: android.os.Message mMessages> = $r14;
 
      label09:
         msg#6.<android.os.Message: android.os.Message next> = null;
@@ -810,22 +810,22 @@ public final class android.os.MessageQueue extends java.lang.Object
      label14:
         if pendingIdleHandlerCount#1 >= 0 goto label16;
 
-        $r12 = this.<android.os.MessageQueue: android.os.Message mMessages>;
-
-        if $r12 == null goto label15;
-
         $r11 = this.<android.os.MessageQueue: android.os.Message mMessages>;
 
-        $l3 = $r11.<android.os.Message: long when>;
+        if $r11 == null goto label15;
 
-        $b4 = now#4 cmp $l3;
+        $r13 = this.<android.os.MessageQueue: android.os.Message mMessages>;
 
-        if $b4 >= 0 goto label16;
+        $l2 = $r13.<android.os.Message: long when>;
+
+        $b3 = now#4 cmp $l2;
+
+        if $b3 >= 0 goto label16;
 
      label15:
-        $r13 = this.<android.os.MessageQueue: java.util.ArrayList mIdleHandlers>;
+        $r12 = this.<android.os.MessageQueue: java.util.ArrayList mIdleHandlers>;
 
-        pendingIdleHandlerCount#1 = virtualinvoke $r13.<java.util.ArrayList: int size()>();
+        pendingIdleHandlerCount#1 = virtualinvoke $r12.<java.util.ArrayList: int size()>();
 
      label16:
         if pendingIdleHandlerCount#1 > 0 goto label18;
@@ -838,9 +838,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label02;
 
      label18:
-        $r2 = this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers>;
+        $r1 = this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers>;
 
-        if $r2 != null goto label19;
+        if $r1 != null goto label19;
 
         $i1 = staticinvoke <java.lang.Math: int max(int,int)>(pendingIdleHandlerCount#1, 4);
 
@@ -849,13 +849,13 @@ public final class android.os.MessageQueue extends java.lang.Object
         this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers> = $r10;
 
      label19:
-        $r4 = this.<android.os.MessageQueue: java.util.ArrayList mIdleHandlers>;
+        $r3 = this.<android.os.MessageQueue: java.util.ArrayList mIdleHandlers>;
 
-        $r1 = this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers>;
+        $r2 = this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers>;
 
-        $r3 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object[] toArray(java.lang.Object[])>($r1);
+        $r4 = virtualinvoke $r3.<java.util.ArrayList: java.lang.Object[] toArray(java.lang.Object[])>($r2);
 
-        $r5 = (android.os.MessageQueue$IdleHandler[]) $r3;
+        $r5 = (android.os.MessageQueue$IdleHandler[]) $r4;
 
         this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers> = $r5;
 
@@ -865,9 +865,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label23;
 
      label21:
-        $r19 := @caughtexception;
+        $r18 := @caughtexception;
 
-        l10 = $r19;
+        l10 = $r18;
 
         exitmonitor i#3;
 
@@ -880,13 +880,13 @@ public final class android.os.MessageQueue extends java.lang.Object
      label24:
         if i#7 >= pendingIdleHandlerCount#1 goto label34;
 
-        $r7 = this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers>;
-
-        now#8 = $r7[i#7];
-
         $r6 = this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers>;
 
-        $r6[i#7] = null;
+        now#8 = $r6[i#7];
+
+        $r7 = this.<android.os.MessageQueue: android.os.MessageQueue$IdleHandler[] mPendingIdleHandlers>;
+
+        $r7[i#7] = null;
 
         keep#9 = 0;
 
@@ -897,9 +897,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label28;
 
      label27:
-        $r17 := @caughtexception;
+        $r19 := @caughtexception;
 
-        prevMsg#10 = $r17;
+        prevMsg#10 = $r19;
 
         staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String,java.lang.Throwable)>("MessageQueue", "IdleHandler threw exception", prevMsg#10);
 
@@ -921,9 +921,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label33;
 
      label31:
-        $r18 := @caughtexception;
+        $r17 := @caughtexception;
 
-        l11 = $r18;
+        l11 = $r17;
 
         exitmonitor prevMsg#11;
 
@@ -1140,11 +1140,11 @@ public final class android.os.MessageQueue extends java.lang.Object
         android.os.MessageQueue this, l2;
         int token, $i1;
         java.lang.Throwable l6, $r8;
-        android.os.Message $r1, $r2, $r3, $r6, prev#1, p#2;
+        android.os.Message $r1, $r2, $r3, $r5, prev#1, p#2;
         boolean $z0, needWake#3, $z1;
         long $l0;
         android.os.Handler $r4, $r7;
-        java.lang.IllegalStateException $r5;
+        java.lang.IllegalStateException $r6;
 
         this := @this: android.os.MessageQueue;
 
@@ -1180,18 +1180,18 @@ public final class android.os.MessageQueue extends java.lang.Object
      label04:
         if p#2 != null goto label05;
 
-        $r5 = new java.lang.IllegalStateException;
+        $r6 = new java.lang.IllegalStateException;
 
-        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>("The specified message queue synchronization  barrier token has not been posted or has already been removed.");
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>("The specified message queue synchronization  barrier token has not been posted or has already been removed.");
 
-        throw $r5;
+        throw $r6;
 
      label05:
         if prev#1 == null goto label06;
 
-        $r6 = p#2.<android.os.Message: android.os.Message next>;
+        $r5 = p#2.<android.os.Message: android.os.Message next>;
 
-        prev#1.<android.os.Message: android.os.Message next> = $r6;
+        prev#1.<android.os.Message: android.os.Message next> = $r5;
 
         needWake#3 = 0;
 
@@ -1263,14 +1263,14 @@ public final class android.os.MessageQueue extends java.lang.Object
     {
         android.os.MessageQueue this, l4;
         android.os.Message msg, prev, e#2;
-        long when, $l0, $l3, $l4;
+        long when, $l0, $l2, $l4;
         java.lang.Throwable l8, $r16;
-        android.os.Handler $r0, $r2, $r4;
+        android.os.Handler $r0, $r2, $r5;
         boolean $z0, $z1, $z2, $z3, $z4, needWake#3, $z5;
-        byte $b1, $b2, $b5;
-        java.lang.IllegalStateException $r3, $r9, e#1;
-        java.lang.StringBuilder $r5, $r6, $r7, $r11, $r13, $r14;
-        java.lang.String $r8, $r10, $r12;
+        byte $b1, $b3, $b5;
+        java.lang.IllegalStateException $r3, $r10, e#1;
+        java.lang.StringBuilder $r4, $r6, $r7, $r11, $r12, $r13;
+        java.lang.String $r8, $r9, $r14;
         java.lang.IllegalArgumentException $r15;
 
         this := @this: android.os.MessageQueue;
@@ -1294,21 +1294,21 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         if $z0 == 0 goto label02;
 
-        $r9 = new java.lang.IllegalStateException;
+        $r10 = new java.lang.IllegalStateException;
 
-        $r13 = new java.lang.StringBuilder;
+        $r11 = new java.lang.StringBuilder;
 
-        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
 
-        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(msg);
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(msg);
 
-        $r11 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" This message is already in use.");
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" This message is already in use.");
 
-        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r9.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r12);
+        specialinvoke $r10.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r14);
 
-        throw $r9;
+        throw $r10;
 
      label02:
         l4 = this;
@@ -1322,25 +1322,25 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         $r3 = new java.lang.IllegalStateException;
 
-        $r5 = new java.lang.StringBuilder;
+        $r4 = new java.lang.StringBuilder;
 
-        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
 
-        $r4 = msg.<android.os.Message: android.os.Handler target>;
+        $r5 = msg.<android.os.Message: android.os.Handler target>;
 
-        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r5);
 
-        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" sending message to a Handler on a dead thread");
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" sending message to a Handler on a dead thread");
 
-        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
 
         specialinvoke $r3.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r8);
 
         e#1 = $r3;
 
-        $r10 = virtualinvoke e#1.<java.lang.IllegalStateException: java.lang.String getMessage()>();
+        $r9 = virtualinvoke e#1.<java.lang.IllegalStateException: java.lang.String getMessage()>();
 
-        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("MessageQueue", $r10, e#1);
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("MessageQueue", $r9, e#1);
 
         virtualinvoke msg.<android.os.Message: void recycle()>();
 
@@ -1362,11 +1362,11 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         if $b1 == 0 goto label06;
 
-        $l3 = e#2.<android.os.Message: long when>;
+        $l2 = e#2.<android.os.Message: long when>;
 
-        $b2 = when cmp $l3;
+        $b3 = when cmp $l2;
 
-        if $b2 >= 0 goto label07;
+        if $b3 >= 0 goto label07;
 
      label06:
         msg.<android.os.Message: android.os.Message next> = e#2;
@@ -1589,9 +1589,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         android.os.MessageQueue this, l4;
         android.os.Handler h, $r1, $r3;
         int what, $i0, $i1;
-        java.lang.Object object, $r2, $r5;
+        java.lang.Object object, $r2, $r4;
         android.os.Message nn, p#1, n#2, n#3;
-        java.lang.Throwable l8, $r4;
+        java.lang.Throwable l8, $r5;
 
         this := @this: android.os.MessageQueue;
 
@@ -1626,9 +1626,9 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         if object == null goto label04;
 
-        $r5 = p#1.<android.os.Message: java.lang.Object obj>;
+        $r4 = p#1.<android.os.Message: java.lang.Object obj>;
 
-        if $r5 != object goto label05;
+        if $r4 != object goto label05;
 
      label04:
         n#2 = p#1.<android.os.Message: android.os.Message next>;
@@ -1683,9 +1683,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label12;
 
      label10:
-        $r4 := @caughtexception;
+        $r5 := @caughtexception;
 
-        l8 = $r4;
+        l8 = $r5;
 
         exitmonitor l4;
 
@@ -1704,9 +1704,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         android.os.MessageQueue this, l4;
         android.os.Handler h, $r1, $r4;
         java.lang.Runnable r, $r2, $r5;
-        java.lang.Object object, $r3, $r7;
+        java.lang.Object object, $r3, $r6;
         android.os.Message nn, p#1, n#2, n#3;
-        java.lang.Throwable l8, $r6;
+        java.lang.Throwable l8, $r7;
 
         this := @this: android.os.MessageQueue;
 
@@ -1744,9 +1744,9 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         if object == null goto label05;
 
-        $r7 = p#1.<android.os.Message: java.lang.Object obj>;
+        $r6 = p#1.<android.os.Message: java.lang.Object obj>;
 
-        if $r7 != object goto label06;
+        if $r6 != object goto label06;
 
      label05:
         n#2 = p#1.<android.os.Message: android.os.Message next>;
@@ -1801,9 +1801,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label13;
 
      label11:
-        $r6 := @caughtexception;
+        $r7 := @caughtexception;
 
-        l8 = $r6;
+        l8 = $r7;
 
         exitmonitor l4;
 
@@ -2013,10 +2013,10 @@ public final class android.os.MessageQueue extends java.lang.Object
     {
         android.os.MessageQueue this, l3;
         android.util.Printer pw;
-        java.lang.String prefix, $r10, $r15, $r17;
+        java.lang.String prefix, $r10, $r16, $r18;
         long now;
         java.lang.Throwable l8, $r19;
-        java.lang.StringBuilder $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r11, $r12, $r13, $r14, $r16, $r18;
+        java.lang.StringBuilder $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r11, $r12, $r13, $r14, $r15, $r17;
         boolean $z0, $z1;
         int n#1;
         android.os.Message msg#2;
@@ -2041,25 +2041,25 @@ public final class android.os.MessageQueue extends java.lang.Object
      label2:
         if msg#2 == null goto label3;
 
-        $r12 = new java.lang.StringBuilder;
+        $r11 = new java.lang.StringBuilder;
 
-        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
 
-        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
 
-        $r14 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Message ");
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Message ");
 
-        $r13 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n#1);
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n#1);
 
-        $r16 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
 
-        $r15 = virtualinvoke msg#2.<android.os.Message: java.lang.String toString(long)>(now);
+        $r16 = virtualinvoke msg#2.<android.os.Message: java.lang.String toString(long)>(now);
 
-        $r18 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r17 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r16);
 
-        $r17 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r17);
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r18);
 
         n#1 = n#1 + 1;
 
@@ -2088,11 +2088,11 @@ public final class android.os.MessageQueue extends java.lang.Object
 
         $z1 = this.<android.os.MessageQueue: boolean mQuitting>;
 
-        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z1);
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z1);
 
-        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
 
-        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
 
         interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r10);
 

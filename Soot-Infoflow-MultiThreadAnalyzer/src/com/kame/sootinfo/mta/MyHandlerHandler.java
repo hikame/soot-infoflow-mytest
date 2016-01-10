@@ -275,22 +275,43 @@ public class MyHandlerHandler {
 	 * the the return value is the new unit in the created method.
 	 * @param searchForSwitchTable */
 	private Unit addUnitsStartFromTarget(Unit startUnit, boolean searchForSwitchTable) {
-		if(existingTargets.containsKey(startUnit))	
+		if(existingTargets.containsKey(startUnit) && existingTargets.get(startUnit) != null)	
 			return (Unit) existingTargets.get(startUnit);
+		
+		//在后续节点的添加过程中，可能会将本代码段终点的goto语句的跳转目标添加进去，因此我们要先进行一次记录
+		//毕竟，我们的goto目标可能也是其他代码段的中间代码
+		//如以下代码的最后一句：
+		//if(msg.obj != null)
+		//	msg.obj.equals("");
+		//else
+		//	msg.obj.equals("1");
+		//msg.obj.equals("2");
+		GotoStmt gotoStmt = null;
+		for(Unit u = startUnit; u != null; u = hdMsgUnits.getSuccOf(u)){
+			if(u instanceof GotoStmt){
+				gotoStmt = (GotoStmt) u;
+				existingTargets.put(gotoStmt.getTarget(), null);
+				break;
+			}
+			if(u instanceof ReturnVoidStmt)
+				break;
+		}
 		
 		Unit result = null;
 		Unit preUnit = null;
 		if(switchTableUnit != null && switchTableUnit.getTargets().contains(startUnit))
 			preUnit = switchTablePreUnit;
 		for(Unit u = startUnit; u != null; u = hdMsgUnits.getSuccOf(u)){
-			if(existingTargets.containsKey(u)){	//exception处理代码并不会有return语句，而其后面的代码有可能已经被加入进去过了~
-				break;
+			if(existingTargets.containsKey(u) && existingTargets.get(u) != null){	//exception处理代码并不会有return语句，而其后面的代码有可能已经被加入进去过了~
+				break;	//此处不必担心是代码段的第一句，因为这种情况在本方法开头处已经处理了。
 			}
 			preUnit = addOneUnit(u, searchForSwitchTable, preUnit);
 			if(u.equals(startUnit)){
 				result = preUnit;
 				existingTargets.put(startUnit, result);
 			}
+			if(existingTargets.containsKey(u) && existingTargets.get(u) == null)
+				existingTargets.put(u, preUnit);
 			if(searchForSwitchTable && switchTableUnit != null && u.equals(switchTableUnit))	//当u就是我们的目标SwitchTable时
 				break;
 			if((u instanceof GotoStmt) || (u instanceof ReturnVoidStmt))

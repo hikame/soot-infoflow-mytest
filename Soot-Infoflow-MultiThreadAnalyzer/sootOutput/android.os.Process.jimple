@@ -178,9 +178,9 @@ public class android.os.Process extends java.lang.Object
         java.lang.String arg, $r0;
         android.os.Process$ProcessStartResult $r1, i#3;
         boolean $z0;
-        android.os.ZygoteStartFailedEx $r2, $r4, $r5;
+        android.os.ZygoteStartFailedEx $r2, $r4, $r6;
         java.lang.Object $r3;
-        java.io.IOException $r6, writer#4;
+        java.io.IOException $r5, writer#4;
         java.io.BufferedWriter writer#1;
 
         zygoteState := @parameter0: android.os.Process$ZygoteState;
@@ -262,33 +262,33 @@ public class android.os.Process extends java.lang.Object
         return i#3;
 
      label7:
-        $r6 := @caughtexception;
+        $r5 := @caughtexception;
 
-        writer#4 = $r6;
+        writer#4 = $r5;
 
         virtualinvoke zygoteState.<android.os.Process$ZygoteState: void close()>();
 
-        $r5 = new android.os.ZygoteStartFailedEx;
+        $r6 = new android.os.ZygoteStartFailedEx;
 
-        specialinvoke $r5.<android.os.ZygoteStartFailedEx: void <init>(java.lang.Throwable)>(writer#4);
+        specialinvoke $r6.<android.os.ZygoteStartFailedEx: void <init>(java.lang.Throwable)>(writer#4);
 
-        throw $r5;
+        throw $r6;
 
         catch java.io.IOException from label1 to label6 with label7;
     }
 
     private static android.os.Process$ProcessStartResult startViaZygote(java.lang.String, java.lang.String, int, int, int[], int, int, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String[]) throws android.os.ZygoteStartFailedEx
     {
-        java.lang.String processClass, niceName, seInfo, abi, instructionSet, appDataDir, arg, $r3, $r8, $r10, $r20, $r22, $r24, $r32, $r34;
+        java.lang.String processClass, niceName, seInfo, abi, instructionSet, appDataDir, arg, $r4, $r8, $r12, $r18, $r22, $r26, $r30, $r33;
         int uid, gid, debugFlags, mountExternal, targetSdkVersion, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, sz#2, i#3, sz#5, i#6;
         int[] gids;
         java.lang.String[] extraArgs, sb#4;
         java.lang.Class l13;
         java.util.ArrayList argsForZygote, $r0;
         java.lang.Throwable l19, $r36;
-        java.lang.StringBuilder $r1, $r2, $r4, $r5, $r6, $r7, $r9, $r11, $r12, $r15, $r16, $r17, $r18, $r19, $r21, $r23, $r25, $r26, $r27, $r29, $r30, $r31, sb#1;
-        android.os.Process$ProcessStartResult $r13;
-        android.os.Process$ZygoteState $r14;
+        java.lang.StringBuilder $r1, $r2, $r3, $r5, $r6, $r7, $r9, $r10, $r11, $r15, $r16, $r17, $r19, $r20, $r21, $r23, $r24, $r25, $r27, $r28, $r29, $r31, sb#1;
+        android.os.Process$ZygoteState $r13;
+        android.os.Process$ProcessStartResult $r14;
 
         processClass := @parameter0: java.lang.String;
 
@@ -329,75 +329,75 @@ public class android.os.Process extends java.lang.Object
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--runtime-args");
 
-        $r2 = new java.lang.StringBuilder;
+        $r1 = new java.lang.StringBuilder;
 
-        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
 
-        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setuid=");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setuid=");
 
-        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
 
-        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r3);
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r4);
 
         $r5 = new java.lang.StringBuilder;
 
         specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
 
-        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setgid=");
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setgid=");
 
-        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(gid);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(gid);
 
-        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r8);
 
-        $i2 = debugFlags & 16;
+        $i0 = debugFlags & 16;
 
-        if $i2 == 0 goto label02;
+        if $i0 == 0 goto label02;
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-jni-logging");
 
      label02:
-        $i3 = debugFlags & 8;
+        $i1 = debugFlags & 8;
 
-        if $i3 == 0 goto label03;
+        if $i1 == 0 goto label03;
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-safemode");
 
      label03:
-        $i0 = debugFlags & 1;
+        $i2 = debugFlags & 1;
 
-        if $i0 == 0 goto label04;
+        if $i2 == 0 goto label04;
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-debugger");
 
      label04:
-        $i1 = debugFlags & 2;
+        $i3 = debugFlags & 2;
 
-        if $i1 == 0 goto label05;
+        if $i3 == 0 goto label05;
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-checkjni");
 
      label05:
-        $i5 = debugFlags & 32;
+        $i4 = debugFlags & 32;
 
-        if $i5 == 0 goto label06;
+        if $i4 == 0 goto label06;
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-jit");
 
      label06:
-        $i6 = debugFlags & 64;
+        $i5 = debugFlags & 64;
 
-        if $i6 == 0 goto label07;
+        if $i5 == 0 goto label07;
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--generate-debug-info");
 
      label07:
-        $i4 = debugFlags & 4;
+        $i6 = debugFlags & 4;
 
-        if $i4 == 0 goto label08;
+        if $i6 == 0 goto label08;
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>("--enable-assert");
 
@@ -425,13 +425,13 @@ public class android.os.Process extends java.lang.Object
 
         specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
 
-        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--target-sdk-version=");
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--target-sdk-version=");
 
-        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(targetSdkVersion);
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(targetSdkVersion);
 
-        $r10 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r10);
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r12);
 
         if gids == null goto label15;
 
@@ -439,11 +439,11 @@ public class android.os.Process extends java.lang.Object
 
         if $i7 <= 0 goto label15;
 
-        $r27 = new java.lang.StringBuilder;
+        $r31 = new java.lang.StringBuilder;
 
-        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r31.<java.lang.StringBuilder: void <init>()>();
 
-        sb#1 = $r27;
+        sb#1 = $r31;
 
         virtualinvoke sb#1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--setgroups=");
 
@@ -468,39 +468,39 @@ public class android.os.Process extends java.lang.Object
         goto label12;
 
      label14:
-        $r34 = virtualinvoke sb#1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r33 = virtualinvoke sb#1.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r34);
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r33);
 
      label15:
         if niceName == null goto label16;
 
-        $r29 = new java.lang.StringBuilder;
+        $r27 = new java.lang.StringBuilder;
 
-        specialinvoke $r29.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
 
-        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--nice-name=");
+        $r28 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--nice-name=");
 
-        $r31 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(niceName);
+        $r29 = virtualinvoke $r28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(niceName);
 
-        $r32 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r32);
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r30);
 
      label16:
         if seInfo == null goto label17;
 
-        $r21 = new java.lang.StringBuilder;
+        $r23 = new java.lang.StringBuilder;
 
-        specialinvoke $r21.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r23.<java.lang.StringBuilder: void <init>()>();
 
-        $r26 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--seinfo=");
+        $r24 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--seinfo=");
 
-        $r25 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(seInfo);
+        $r25 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(seInfo);
 
-        $r24 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r26 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r24);
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r26);
 
      label17:
         if instructionSet == null goto label18;
@@ -509,28 +509,28 @@ public class android.os.Process extends java.lang.Object
 
         specialinvoke $r19.<java.lang.StringBuilder: void <init>()>();
 
-        $r18 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--instruction-set=");
+        $r20 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--instruction-set=");
 
-        $r23 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+        $r21 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
 
-        $r22 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r22 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.String toString()>();
 
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r22);
 
      label18:
         if appDataDir == null goto label19;
 
-        $r17 = new java.lang.StringBuilder;
+        $r15 = new java.lang.StringBuilder;
 
-        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
 
-        $r16 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--app-data-dir=");
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--app-data-dir=");
 
-        $r15 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(appDataDir);
+        $r17 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(appDataDir);
 
-        $r20 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r20);
+        virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>($r18);
 
      label19:
         virtualinvoke argsForZygote.<java.util.ArrayList: boolean add(java.lang.Object)>(processClass);
@@ -555,14 +555,14 @@ public class android.os.Process extends java.lang.Object
         goto label20;
 
      label21:
-        $r14 = staticinvoke <android.os.Process: android.os.Process$ZygoteState openZygoteSocketIfNeeded(java.lang.String)>(abi);
+        $r13 = staticinvoke <android.os.Process: android.os.Process$ZygoteState openZygoteSocketIfNeeded(java.lang.String)>(abi);
 
-        $r13 = staticinvoke <android.os.Process: android.os.Process$ProcessStartResult zygoteSendArgsAndGetResult(android.os.Process$ZygoteState,java.util.ArrayList)>($r14, argsForZygote);
+        $r14 = staticinvoke <android.os.Process: android.os.Process$ProcessStartResult zygoteSendArgsAndGetResult(android.os.Process$ZygoteState,java.util.ArrayList)>($r13, argsForZygote);
 
         exitmonitor l13;
 
      label22:
-        return $r13;
+        return $r14;
 
      label23:
         $r36 := @caughtexception;
@@ -625,9 +625,9 @@ public class android.os.Process extends java.lang.Object
         java.lang.String abi, $r10;
         android.os.Process$ZygoteState $r0, $r1, $r2, $r3, $r4, $r5, $r11, $r12, $r13, $r14;
         boolean $z0, $z1, $z2, $z3;
-        android.os.ZygoteStartFailedEx $r6, $r17, $r18;
+        android.os.ZygoteStartFailedEx $r6, $r16, $r18;
         java.lang.StringBuilder $r7, $r8, $r9;
-        java.io.IOException $r15, $r16, ioe#1, ioe#2;
+        java.io.IOException $r15, $r17, ioe#1, ioe#2;
 
         abi := @parameter0: java.lang.String;
 
@@ -635,9 +635,9 @@ public class android.os.Process extends java.lang.Object
 
         if $r0 == null goto label01;
 
-        $r13 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
+        $r14 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
 
-        $z3 = virtualinvoke $r13.<android.os.Process$ZygoteState: boolean isClosed()>();
+        $z3 = virtualinvoke $r14.<android.os.Process$ZygoteState: boolean isClosed()>();
 
         if $z3 == 0 goto label04;
 
@@ -650,15 +650,15 @@ public class android.os.Process extends java.lang.Object
         goto label04;
 
      label03:
-        $r15 := @caughtexception;
+        $r17 := @caughtexception;
 
-        ioe#1 = $r15;
+        ioe#1 = $r17;
 
-        $r17 = new android.os.ZygoteStartFailedEx;
+        $r18 = new android.os.ZygoteStartFailedEx;
 
-        specialinvoke $r17.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to primary zygote", ioe#1);
+        specialinvoke $r18.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to primary zygote", ioe#1);
 
-        throw $r17;
+        throw $r18;
 
      label04:
         $r2 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
@@ -667,9 +667,9 @@ public class android.os.Process extends java.lang.Object
 
         if $z0 == 0 goto label05;
 
-        $r14 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
+        $r13 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
 
-        return $r14;
+        return $r13;
 
      label05:
         $r3 = <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState>;
@@ -691,15 +691,15 @@ public class android.os.Process extends java.lang.Object
         goto label09;
 
      label08:
-        $r16 := @caughtexception;
+        $r15 := @caughtexception;
 
-        ioe#2 = $r16;
+        ioe#2 = $r15;
 
-        $r18 = new android.os.ZygoteStartFailedEx;
+        $r16 = new android.os.ZygoteStartFailedEx;
 
-        specialinvoke $r18.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to secondary zygote", ioe#2);
+        specialinvoke $r16.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to secondary zygote", ioe#2);
 
-        throw $r18;
+        throw $r16;
 
      label09:
         $r5 = <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState>;

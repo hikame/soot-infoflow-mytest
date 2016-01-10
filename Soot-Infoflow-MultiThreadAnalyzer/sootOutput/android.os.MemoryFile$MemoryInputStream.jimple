@@ -221,11 +221,11 @@ class android.os.MemoryFile$MemoryInputStream extends java.io.InputStream
 
         $i10 = staticinvoke <android.os.MemoryFile: int access$200(android.os.MemoryFile)>($r1);
 
-        $i12 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
+        $i11 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;
 
-        $i11 = $i10 - $i12;
+        $i12 = $i10 - $i11;
 
-        n#1 = (long) $i11;
+        n#1 = (long) $i12;
 
      label1:
         $i6 = this.<android.os.MemoryFile$MemoryInputStream: int mOffset>;

@@ -11,6 +11,8 @@
 package soot.jimple.infoflow.data;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import soot.Local;
 import soot.SootField;
@@ -19,12 +21,26 @@ import soot.Value;
 import soot.jimple.ArrayRef;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.StaticFieldRef;
+import soot.kame.SourceSinkType;
+import soot.util.ArraySet;
 
 /**
  * This class represents the taint, containing a base value and a list of fields
  * (length is bounded by Infoflow.ACCESSPATHLENGTH)
  */
-public class AccessPath implements Cloneable {
+public class AccessPath implements Cloneable {	
+	//**********************This is added by Kame Wang, 20160110*****************************
+	Set<SourceSinkType> sourceTypes = new ArraySet<SourceSinkType>();
+	
+	public Set<SourceSinkType> getSourceTypes(){
+		return sourceTypes;
+	}
+	
+	public void setSourceTypes(Set<SourceSinkType> newSet){
+		sourceTypes = newSet;
+	}
+	
+	//**********************The added part is finished.*****************************
 	
 	public enum ArrayTaintType {
 		Contents,
@@ -281,10 +297,12 @@ public class AccessPath implements Cloneable {
 				&& this.baseType.equals(newType)
 				&& this.arrayTaintType == arrayTaintType)
 			return this;
-		
-		return AccessPathFactory.v().createAccessPath(val, fields, newType,
+		//Changed by Kame Wang, to progated the SourceTypes, too.
+		AccessPath result = AccessPathFactory.v().createAccessPath(val, fields, newType,
 				fieldTypes, this.taintSubFields,
 				cutFirstField, reduceBases, arrayTaintType);
+		result.getSourceTypes().addAll(this.sourceTypes);
+		return result;
 	}
 	
 	@Override

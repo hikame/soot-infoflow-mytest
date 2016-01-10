@@ -2491,42 +2491,42 @@ public final class android.os.Parcel extends java.lang.Object
     {
         android.os.Parcel this;
         java.lang.Object v;
-        java.lang.Class clazz, $r8;
+        java.lang.Class clazz, $r6;
         boolean $z0, $z1, $z2, $z3, $z4, $z5, $z6, $z7, $z8, $z9, $z10, $z11, $z12, $z13, $z14, $z15, $z16, $z17, $z18, $z19, $z20, $z21, $z22, $z23, $z24, $z25, $z26, $z27;
         java.lang.RuntimeException $r0;
-        java.lang.StringBuilder $r1, $r3, $r4;
-        java.lang.String $r2, $r37;
-        java.lang.Object[] $r5, $r6;
-        java.io.Serializable $r7;
-        android.os.PersistableBundle $r9;
-        java.lang.Byte $r10;
-        android.util.SizeF $r11;
-        android.util.Size $r12;
-        long[] $r13, $r15;
-        int[] $r14, $r19;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        java.lang.String $r4, $r40;
+        java.io.Serializable $r5;
+        java.lang.Object[] $r7, $r8;
+        android.util.SizeF $r9;
+        android.util.Size $r10;
+        android.os.PersistableBundle $r11;
+        java.lang.Byte $r12;
         byte $b0, $b4;
-        android.os.IBinder $r16;
+        long[] $r13, $r14;
+        int[] $r15, $r16;
         android.os.Parcelable[] $r17, $r18;
-        java.lang.String[] $r20, $r21;
-        java.lang.CharSequence[] $r22, $r23;
-        boolean[] $r24, $r25;
-        byte[] $r26, $r27;
-        java.lang.Boolean $r28;
-        java.lang.CharSequence $r29;
-        java.util.List $r30;
-        android.util.SparseArray $r31;
-        java.lang.Float $r32;
-        float $f0;
-        java.lang.Long $r33;
-        long $l1;
-        java.lang.Double $r34;
+        android.os.IBinder $r19;
+        java.lang.CharSequence[] $r20, $r21;
+        java.lang.String[] $r22, $r23;
+        byte[] $r24, $r25;
+        boolean[] $r26, $r27;
+        android.util.SparseArray $r28;
+        java.util.List $r29;
+        java.lang.CharSequence $r30;
+        java.lang.Boolean $r31;
+        java.lang.Double $r32;
         double $d0;
-        java.util.Map $r35;
-        java.lang.Integer $r36;
+        java.lang.Float $r33;
+        float $f0;
+        java.lang.Long $r34;
+        long $l1;
+        java.lang.Short $r35;
         int $i2, $i3;
-        java.lang.Short $r38;
-        android.os.Parcelable $r39;
-        android.os.Bundle $r40;
+        android.os.Parcelable $r36;
+        android.os.Bundle $r37;
+        java.util.Map $r38;
+        java.lang.Integer $r39;
 
         this := @this: android.os.Parcel;
 
@@ -2545,9 +2545,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(0);
 
-        $r37 = (java.lang.String) v;
+        $r40 = (java.lang.String) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeString(java.lang.String)>($r37);
+        virtualinvoke this.<android.os.Parcel: void writeString(java.lang.String)>($r40);
 
         goto label31;
 
@@ -2558,11 +2558,11 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(1);
 
-        $r36 = (java.lang.Integer) v;
+        $r39 = (java.lang.Integer) v;
 
-        $i2 = virtualinvoke $r36.<java.lang.Integer: int intValue()>();
+        $i3 = virtualinvoke $r39.<java.lang.Integer: int intValue()>();
 
-        virtualinvoke this.<android.os.Parcel: void writeInt(int)>($i2);
+        virtualinvoke this.<android.os.Parcel: void writeInt(int)>($i3);
 
         goto label31;
 
@@ -2573,9 +2573,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(2);
 
-        $r35 = (java.util.Map) v;
+        $r38 = (java.util.Map) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeMap(java.util.Map)>($r35);
+        virtualinvoke this.<android.os.Parcel: void writeMap(java.util.Map)>($r38);
 
         goto label31;
 
@@ -2586,9 +2586,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(3);
 
-        $r40 = (android.os.Bundle) v;
+        $r37 = (android.os.Bundle) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeBundle(android.os.Bundle)>($r40);
+        virtualinvoke this.<android.os.Parcel: void writeBundle(android.os.Bundle)>($r37);
 
         goto label31;
 
@@ -2599,9 +2599,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(4);
 
-        $r39 = (android.os.Parcelable) v;
+        $r36 = (android.os.Parcelable) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeParcelable(android.os.Parcelable,int)>($r39, 0);
+        virtualinvoke this.<android.os.Parcel: void writeParcelable(android.os.Parcelable,int)>($r36, 0);
 
         goto label31;
 
@@ -2612,11 +2612,11 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(5);
 
-        $r38 = (java.lang.Short) v;
+        $r35 = (java.lang.Short) v;
 
-        $i3 = virtualinvoke $r38.<java.lang.Short: int intValue()>();
+        $i2 = virtualinvoke $r35.<java.lang.Short: int intValue()>();
 
-        virtualinvoke this.<android.os.Parcel: void writeInt(int)>($i3);
+        virtualinvoke this.<android.os.Parcel: void writeInt(int)>($i2);
 
         goto label31;
 
@@ -2627,9 +2627,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(6);
 
-        $r33 = (java.lang.Long) v;
+        $r34 = (java.lang.Long) v;
 
-        $l1 = virtualinvoke $r33.<java.lang.Long: long longValue()>();
+        $l1 = virtualinvoke $r34.<java.lang.Long: long longValue()>();
 
         virtualinvoke this.<android.os.Parcel: void writeLong(long)>($l1);
 
@@ -2642,9 +2642,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(7);
 
-        $r32 = (java.lang.Float) v;
+        $r33 = (java.lang.Float) v;
 
-        $f0 = virtualinvoke $r32.<java.lang.Float: float floatValue()>();
+        $f0 = virtualinvoke $r33.<java.lang.Float: float floatValue()>();
 
         virtualinvoke this.<android.os.Parcel: void writeFloat(float)>($f0);
 
@@ -2657,9 +2657,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(8);
 
-        $r34 = (java.lang.Double) v;
+        $r32 = (java.lang.Double) v;
 
-        $d0 = virtualinvoke $r34.<java.lang.Double: double doubleValue()>();
+        $d0 = virtualinvoke $r32.<java.lang.Double: double doubleValue()>();
 
         virtualinvoke this.<android.os.Parcel: void writeDouble(double)>($d0);
 
@@ -2672,9 +2672,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(9);
 
-        $r28 = (java.lang.Boolean) v;
+        $r31 = (java.lang.Boolean) v;
 
-        $z27 = virtualinvoke $r28.<java.lang.Boolean: boolean booleanValue()>();
+        $z27 = virtualinvoke $r31.<java.lang.Boolean: boolean booleanValue()>();
 
         if $z27 == 0 goto label11;
 
@@ -2697,9 +2697,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(10);
 
-        $r29 = (java.lang.CharSequence) v;
+        $r30 = (java.lang.CharSequence) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeCharSequence(java.lang.CharSequence)>($r29);
+        virtualinvoke this.<android.os.Parcel: void writeCharSequence(java.lang.CharSequence)>($r30);
 
         goto label31;
 
@@ -2710,9 +2710,9 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(11);
 
-        $r30 = (java.util.List) v;
+        $r29 = (java.util.List) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeList(java.util.List)>($r30);
+        virtualinvoke this.<android.os.Parcel: void writeList(java.util.List)>($r29);
 
         goto label31;
 
@@ -2723,181 +2723,181 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(12);
 
-        $r31 = (android.util.SparseArray) v;
+        $r28 = (android.util.SparseArray) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeSparseArray(android.util.SparseArray)>($r31);
+        virtualinvoke this.<android.os.Parcel: void writeSparseArray(android.util.SparseArray)>($r28);
 
         goto label31;
 
      label16:
-        $z14 = v instanceof boolean[];
+        $z13 = v instanceof boolean[];
 
-        if $z14 == 0 goto label17;
+        if $z13 == 0 goto label17;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(23);
 
-        $r25 = (boolean[]) v;
+        $r26 = (boolean[]) v;
 
-        $r24 = (boolean[]) $r25;
+        $r27 = (boolean[]) $r26;
 
-        virtualinvoke this.<android.os.Parcel: void writeBooleanArray(boolean[])>($r24);
+        virtualinvoke this.<android.os.Parcel: void writeBooleanArray(boolean[])>($r27);
 
         goto label31;
 
      label17:
-        $z13 = v instanceof byte[];
+        $z14 = v instanceof byte[];
 
-        if $z13 == 0 goto label18;
+        if $z14 == 0 goto label18;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(13);
 
-        $r27 = (byte[]) v;
+        $r24 = (byte[]) v;
 
-        $r26 = (byte[]) $r27;
+        $r25 = (byte[]) $r24;
 
-        virtualinvoke this.<android.os.Parcel: void writeByteArray(byte[])>($r26);
+        virtualinvoke this.<android.os.Parcel: void writeByteArray(byte[])>($r25);
 
         goto label31;
 
      label18:
-        $z16 = v instanceof java.lang.String[];
+        $z15 = v instanceof java.lang.String[];
 
-        if $z16 == 0 goto label19;
+        if $z15 == 0 goto label19;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(14);
 
-        $r21 = (java.lang.String[]) v;
+        $r22 = (java.lang.String[]) v;
 
-        $r20 = (java.lang.String[]) $r21;
+        $r23 = (java.lang.String[]) $r22;
 
-        virtualinvoke this.<android.os.Parcel: void writeStringArray(java.lang.String[])>($r20);
+        virtualinvoke this.<android.os.Parcel: void writeStringArray(java.lang.String[])>($r23);
 
         goto label31;
 
      label19:
-        $z15 = v instanceof java.lang.CharSequence[];
+        $z16 = v instanceof java.lang.CharSequence[];
 
-        if $z15 == 0 goto label20;
+        if $z16 == 0 goto label20;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(24);
 
-        $r23 = (java.lang.CharSequence[]) v;
+        $r20 = (java.lang.CharSequence[]) v;
 
-        $r22 = (java.lang.CharSequence[]) $r23;
+        $r21 = (java.lang.CharSequence[]) $r20;
 
-        virtualinvoke this.<android.os.Parcel: void writeCharSequenceArray(java.lang.CharSequence[])>($r22);
+        virtualinvoke this.<android.os.Parcel: void writeCharSequenceArray(java.lang.CharSequence[])>($r21);
 
         goto label31;
 
      label20:
-        $z18 = v instanceof android.os.IBinder;
+        $z17 = v instanceof android.os.IBinder;
 
-        if $z18 == 0 goto label21;
+        if $z17 == 0 goto label21;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(15);
 
-        $r16 = (android.os.IBinder) v;
+        $r19 = (android.os.IBinder) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>($r16);
+        virtualinvoke this.<android.os.Parcel: void writeStrongBinder(android.os.IBinder)>($r19);
 
         goto label31;
 
      label21:
-        $z17 = v instanceof android.os.Parcelable[];
+        $z18 = v instanceof android.os.Parcelable[];
 
-        if $z17 == 0 goto label22;
+        if $z18 == 0 goto label22;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(16);
 
-        $r18 = (android.os.Parcelable[]) v;
+        $r17 = (android.os.Parcelable[]) v;
 
-        $r17 = (android.os.Parcelable[]) $r18;
+        $r18 = (android.os.Parcelable[]) $r17;
 
-        virtualinvoke this.<android.os.Parcel: void writeParcelableArray(android.os.Parcelable[],int)>($r17, 0);
+        virtualinvoke this.<android.os.Parcel: void writeParcelableArray(android.os.Parcelable[],int)>($r18, 0);
 
         goto label31;
 
      label22:
-        $z20 = v instanceof int[];
+        $z19 = v instanceof int[];
 
-        if $z20 == 0 goto label23;
+        if $z19 == 0 goto label23;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(18);
 
-        $r14 = (int[]) v;
+        $r15 = (int[]) v;
 
-        $r19 = (int[]) $r14;
+        $r16 = (int[]) $r15;
 
-        virtualinvoke this.<android.os.Parcel: void writeIntArray(int[])>($r19);
+        virtualinvoke this.<android.os.Parcel: void writeIntArray(int[])>($r16);
 
         goto label31;
 
      label23:
-        $z19 = v instanceof long[];
+        $z20 = v instanceof long[];
 
-        if $z19 == 0 goto label24;
+        if $z20 == 0 goto label24;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(19);
 
-        $r15 = (long[]) v;
+        $r13 = (long[]) v;
 
-        $r13 = (long[]) $r15;
+        $r14 = (long[]) $r13;
 
-        virtualinvoke this.<android.os.Parcel: void writeLongArray(long[])>($r13);
+        virtualinvoke this.<android.os.Parcel: void writeLongArray(long[])>($r14);
 
         goto label31;
 
      label24:
-        $z22 = v instanceof java.lang.Byte;
+        $z21 = v instanceof java.lang.Byte;
 
-        if $z22 == 0 goto label25;
+        if $z21 == 0 goto label25;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(20);
 
-        $r10 = (java.lang.Byte) v;
+        $r12 = (java.lang.Byte) v;
 
-        $b0 = virtualinvoke $r10.<java.lang.Byte: byte byteValue()>();
+        $b0 = virtualinvoke $r12.<java.lang.Byte: byte byteValue()>();
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>($b0);
 
         goto label31;
 
      label25:
-        $z21 = v instanceof android.os.PersistableBundle;
+        $z22 = v instanceof android.os.PersistableBundle;
 
-        if $z21 == 0 goto label26;
+        if $z22 == 0 goto label26;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(25);
 
-        $r9 = (android.os.PersistableBundle) v;
+        $r11 = (android.os.PersistableBundle) v;
 
-        virtualinvoke this.<android.os.Parcel: void writePersistableBundle(android.os.PersistableBundle)>($r9);
+        virtualinvoke this.<android.os.Parcel: void writePersistableBundle(android.os.PersistableBundle)>($r11);
 
         goto label31;
 
      label26:
-        $z24 = v instanceof android.util.Size;
+        $z23 = v instanceof android.util.Size;
 
-        if $z24 == 0 goto label27;
+        if $z23 == 0 goto label27;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(26);
 
-        $r12 = (android.util.Size) v;
+        $r10 = (android.util.Size) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeSize(android.util.Size)>($r12);
+        virtualinvoke this.<android.os.Parcel: void writeSize(android.util.Size)>($r10);
 
         goto label31;
 
      label27:
-        $z23 = v instanceof android.util.SizeF;
+        $z24 = v instanceof android.util.SizeF;
 
-        if $z23 == 0 goto label28;
+        if $z24 == 0 goto label28;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(27);
 
-        $r11 = (android.util.SizeF) v;
+        $r9 = (android.util.SizeF) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeSizeF(android.util.SizeF)>($r11);
+        virtualinvoke this.<android.os.Parcel: void writeSizeF(android.util.SizeF)>($r9);
 
         goto label31;
 
@@ -2908,17 +2908,17 @@ public final class android.os.Parcel extends java.lang.Object
 
         if $z25 == 0 goto label29;
 
-        $r8 = virtualinvoke clazz.<java.lang.Class: java.lang.Class getComponentType()>();
+        $r6 = virtualinvoke clazz.<java.lang.Class: java.lang.Class getComponentType()>();
 
-        if $r8 != class "java/lang/Object" goto label29;
+        if $r6 != class "java/lang/Object" goto label29;
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(17);
 
-        $r5 = (java.lang.Object[]) v;
+        $r7 = (java.lang.Object[]) v;
 
-        $r6 = (java.lang.Object[]) $r5;
+        $r8 = (java.lang.Object[]) $r7;
 
-        virtualinvoke this.<android.os.Parcel: void writeArray(java.lang.Object[])>($r6);
+        virtualinvoke this.<android.os.Parcel: void writeArray(java.lang.Object[])>($r8);
 
         goto label31;
 
@@ -2929,26 +2929,26 @@ public final class android.os.Parcel extends java.lang.Object
 
         virtualinvoke this.<android.os.Parcel: void writeInt(int)>(21);
 
-        $r7 = (java.io.Serializable) v;
+        $r5 = (java.io.Serializable) v;
 
-        virtualinvoke this.<android.os.Parcel: void writeSerializable(java.io.Serializable)>($r7);
+        virtualinvoke this.<android.os.Parcel: void writeSerializable(java.io.Serializable)>($r5);
 
         goto label31;
 
      label30:
         $r0 = new java.lang.RuntimeException;
 
-        $r3 = new java.lang.StringBuilder;
+        $r1 = new java.lang.StringBuilder;
 
-        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
 
-        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcel: unable to marshal value ");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcel: unable to marshal value ");
 
-        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(v);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(v);
 
-        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.String)>($r2);
+        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.String)>($r4);
 
         throw $r0;
 
@@ -4527,7 +4527,7 @@ public final class android.os.Parcel extends java.lang.Object
     {
         android.os.Parcel this;
         java.lang.ClassLoader loader;
-        int type, off, $i1, $i4, $i5, $i6;
+        int type, off, $i1, $i3, $i5, $i6;
         android.util.SizeF $r0;
         android.util.Size $r1;
         android.os.PersistableBundle $r2;
@@ -4539,30 +4539,30 @@ public final class android.os.Parcel extends java.lang.Object
         java.lang.Byte $r7;
         long[] $r8;
         int[] $r9;
-        android.os.Parcelable[] $r10;
-        java.lang.Object[] $r11;
-        java.lang.String[] $r12;
-        android.os.IBinder $r13;
-        android.util.SparseArray $r14;
-        byte[] $r15;
-        java.lang.CharSequence $r16;
-        java.util.ArrayList $r17;
+        java.lang.Object[] $r10;
+        android.os.Parcelable[] $r11;
+        android.os.IBinder $r12;
+        java.lang.String[] $r13;
+        byte[] $r14;
+        android.util.SparseArray $r15;
+        java.util.ArrayList $r16;
+        java.lang.CharSequence $r17;
         java.lang.Boolean $r18;
         double $d0;
-        float $f0;
         java.lang.Double $r19;
-        long $l2;
+        float $f0;
         java.lang.Float $r20;
-        short $s3;
-        java.lang.Short $r21;
-        java.lang.Long $r22;
-        java.util.HashMap $r23;
-        android.os.Parcelable $r24;
-        android.os.Bundle $r25;
-        java.lang.RuntimeException $r26;
-        java.lang.Integer $r27;
-        java.lang.String $r28, $r33;
-        java.lang.StringBuilder $r29, $r30, $r31, $r32, $r34, $r35, $r36;
+        long $l2;
+        java.lang.Long $r21;
+        short $s4;
+        java.lang.Short $r22;
+        android.os.Parcelable $r23;
+        android.os.Bundle $r24;
+        java.util.HashMap $r25;
+        java.lang.Integer $r26;
+        java.lang.String $r27, $r36;
+        java.lang.RuntimeException $r28;
+        java.lang.StringBuilder $r29, $r30, $r31, $r32, $r33, $r34, $r35;
         boolean $z0;
 
         this := @this: android.os.Parcel;
@@ -4609,42 +4609,42 @@ public final class android.os.Parcel extends java.lang.Object
         return null;
 
      label02:
-        $r28 = virtualinvoke this.<android.os.Parcel: java.lang.String readString()>();
+        $r27 = virtualinvoke this.<android.os.Parcel: java.lang.String readString()>();
 
-        return $r28;
+        return $r27;
 
      label03:
         $i5 = virtualinvoke this.<android.os.Parcel: int readInt()>();
 
-        $r27 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i5);
+        $r26 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i5);
 
-        return $r27;
+        return $r26;
 
      label04:
-        $r23 = virtualinvoke this.<android.os.Parcel: java.util.HashMap readHashMap(java.lang.ClassLoader)>(loader);
+        $r25 = virtualinvoke this.<android.os.Parcel: java.util.HashMap readHashMap(java.lang.ClassLoader)>(loader);
+
+        return $r25;
+
+     label05:
+        $r23 = virtualinvoke this.<android.os.Parcel: android.os.Parcelable readParcelable(java.lang.ClassLoader)>(loader);
 
         return $r23;
 
-     label05:
-        $r24 = virtualinvoke this.<android.os.Parcel: android.os.Parcelable readParcelable(java.lang.ClassLoader)>(loader);
-
-        return $r24;
-
      label06:
-        $i4 = virtualinvoke this.<android.os.Parcel: int readInt()>();
+        $i3 = virtualinvoke this.<android.os.Parcel: int readInt()>();
 
-        $s3 = (short) $i4;
+        $s4 = (short) $i3;
 
-        $r21 = staticinvoke <java.lang.Short: java.lang.Short valueOf(short)>($s3);
+        $r22 = staticinvoke <java.lang.Short: java.lang.Short valueOf(short)>($s4);
 
-        return $r21;
+        return $r22;
 
      label07:
         $l2 = virtualinvoke this.<android.os.Parcel: long readLong()>();
 
-        $r22 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l2);
+        $r21 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l2);
 
-        return $r22;
+        return $r21;
 
      label08:
         $f0 = virtualinvoke this.<android.os.Parcel: float readFloat()>();
@@ -4678,14 +4678,14 @@ public final class android.os.Parcel extends java.lang.Object
         return $r18;
 
      label13:
-        $r16 = virtualinvoke this.<android.os.Parcel: java.lang.CharSequence readCharSequence()>();
-
-        return $r16;
-
-     label14:
-        $r17 = virtualinvoke this.<android.os.Parcel: java.util.ArrayList readArrayList(java.lang.ClassLoader)>(loader);
+        $r17 = virtualinvoke this.<android.os.Parcel: java.lang.CharSequence readCharSequence()>();
 
         return $r17;
+
+     label14:
+        $r16 = virtualinvoke this.<android.os.Parcel: java.util.ArrayList readArrayList(java.lang.ClassLoader)>(loader);
+
+        return $r16;
 
      label15:
         $r4 = virtualinvoke this.<android.os.Parcel: boolean[] createBooleanArray()>();
@@ -4693,14 +4693,14 @@ public final class android.os.Parcel extends java.lang.Object
         return $r4;
 
      label16:
-        $r15 = virtualinvoke this.<android.os.Parcel: byte[] createByteArray()>();
+        $r14 = virtualinvoke this.<android.os.Parcel: byte[] createByteArray()>();
 
-        return $r15;
+        return $r14;
 
      label17:
-        $r12 = virtualinvoke this.<android.os.Parcel: java.lang.String[] readStringArray()>();
+        $r13 = virtualinvoke this.<android.os.Parcel: java.lang.String[] readStringArray()>();
 
-        return $r12;
+        return $r13;
 
      label18:
         $r3 = virtualinvoke this.<android.os.Parcel: java.lang.CharSequence[] readCharSequenceArray()>();
@@ -4708,14 +4708,14 @@ public final class android.os.Parcel extends java.lang.Object
         return $r3;
 
      label19:
-        $r13 = virtualinvoke this.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
+        $r12 = virtualinvoke this.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
 
-        return $r13;
+        return $r12;
 
      label20:
-        $r11 = virtualinvoke this.<android.os.Parcel: java.lang.Object[] readArray(java.lang.ClassLoader)>(loader);
+        $r10 = virtualinvoke this.<android.os.Parcel: java.lang.Object[] readArray(java.lang.ClassLoader)>(loader);
 
-        return $r11;
+        return $r10;
 
      label21:
         $r9 = virtualinvoke this.<android.os.Parcel: int[] createIntArray()>();
@@ -4740,14 +4740,14 @@ public final class android.os.Parcel extends java.lang.Object
         return $r6;
 
      label25:
-        $r10 = virtualinvoke this.<android.os.Parcel: android.os.Parcelable[] readParcelableArray(java.lang.ClassLoader)>(loader);
+        $r11 = virtualinvoke this.<android.os.Parcel: android.os.Parcelable[] readParcelableArray(java.lang.ClassLoader)>(loader);
 
-        return $r10;
+        return $r11;
 
      label26:
-        $r14 = virtualinvoke this.<android.os.Parcel: android.util.SparseArray readSparseArray(java.lang.ClassLoader)>(loader);
+        $r15 = virtualinvoke this.<android.os.Parcel: android.util.SparseArray readSparseArray(java.lang.ClassLoader)>(loader);
 
-        return $r14;
+        return $r15;
 
      label27:
         $r5 = virtualinvoke this.<android.os.Parcel: android.util.SparseBooleanArray readSparseBooleanArray()>();
@@ -4755,9 +4755,9 @@ public final class android.os.Parcel extends java.lang.Object
         return $r5;
 
      label28:
-        $r25 = virtualinvoke this.<android.os.Parcel: android.os.Bundle readBundle(java.lang.ClassLoader)>(loader);
+        $r24 = virtualinvoke this.<android.os.Parcel: android.os.Bundle readBundle(java.lang.ClassLoader)>(loader);
 
-        return $r25;
+        return $r24;
 
      label29:
         $r2 = virtualinvoke this.<android.os.Parcel: android.os.PersistableBundle readPersistableBundle(java.lang.ClassLoader)>(loader);
@@ -4779,29 +4779,29 @@ public final class android.os.Parcel extends java.lang.Object
 
         off = $i6 - 4;
 
-        $r26 = new java.lang.RuntimeException;
+        $r28 = new java.lang.RuntimeException;
 
-        $r31 = new java.lang.StringBuilder;
+        $r29 = new java.lang.StringBuilder;
 
-        specialinvoke $r31.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r29.<java.lang.StringBuilder: void <init>()>();
 
-        $r32 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcel ");
+        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcel ");
 
-        $r29 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
+        $r31 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
 
-        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Unmarshalling unknown type code ");
+        $r32 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Unmarshalling unknown type code ");
 
-        $r36 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(type);
+        $r33 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(type);
 
-        $r35 = virtualinvoke $r36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at offset ");
+        $r34 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at offset ");
 
-        $r34 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(off);
+        $r35 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(off);
 
-        $r33 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r36 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r26.<java.lang.RuntimeException: void <init>(java.lang.String)>($r33);
+        specialinvoke $r28.<java.lang.RuntimeException: void <init>(java.lang.String)>($r36);
 
-        throw $r26;
+        throw $r28;
     }
 
     public final android.os.Parcelable readParcelable(java.lang.ClassLoader)
@@ -4885,19 +4885,19 @@ public final class android.os.Parcel extends java.lang.Object
     {
         android.os.Parcel this;
         java.lang.ClassLoader loader, $r55, parcelableClassLoader#4;
-        java.lang.String name, $r14, $r19, $r20, $r32, $r40, $r45, $r53, $r54;
-        java.util.HashMap l4, $r0, $r1, $r24, $r25, map#1;
-        java.lang.Class parcelableClass, creatorType, $r4, $r5, $r26;
+        java.lang.String name, $r12, $r17, $r22, $r32, $r37, $r42, $r47, $r54;
+        java.util.HashMap l4, $r0, $r1, $r25, $r26, map#1;
+        java.lang.Class parcelableClass, creatorType, $r4, $r5, $r24;
         java.lang.reflect.Field f;
-        java.lang.Throwable l10, $r46;
-        java.lang.Object $r2, $r3, $r7;
+        java.lang.Throwable l10, $r48;
+        java.lang.Object $r2, $r3, $r6;
         boolean $z0, $z1;
         int $i0, $i1;
-        java.lang.StringBuilder $r8, $r10, $r11, $r12, $r13, $r17, $r18, $r22, $r23, $r27, $r33, $r34, $r35, $r36, $r37, $r38, $r42, $r43, $r44, $r48, $r49, $r50, $r51, $r52;
-        android.os.BadParcelableException $r9, $r15, $r16, $r21, $r28, $r39, $r47;
-        java.lang.NoSuchFieldException $r29, parcelableClassLoader#7;
-        java.lang.IllegalAccessException $r31, parcelableClassLoader#5;
-        java.lang.ClassNotFoundException $r41, parcelableClassLoader#6;
+        android.os.BadParcelableException $r8, $r13, $r18, $r23, $r33, $r43, $r50;
+        java.lang.StringBuilder $r9, $r10, $r11, $r14, $r15, $r16, $r19, $r20, $r21, $r29, $r30, $r31, $r34, $r35, $r36, $r39, $r40, $r41, $r44, $r45, $r46, $r51, $r52, $r53;
+        java.lang.ClassNotFoundException $r28, parcelableClassLoader#6;
+        java.lang.IllegalAccessException $r38, parcelableClassLoader#5;
+        java.lang.NoSuchFieldException $r49, parcelableClassLoader#7;
         android.os.Parcelable$Creator creator#2;
 
         this := @this: android.os.Parcel;
@@ -4926,15 +4926,15 @@ public final class android.os.Parcel extends java.lang.Object
 
         if map#1 != null goto label03;
 
-        $r24 = new java.util.HashMap;
+        $r25 = new java.util.HashMap;
 
-        specialinvoke $r24.<java.util.HashMap: void <init>()>();
+        specialinvoke $r25.<java.util.HashMap: void <init>()>();
 
-        map#1 = $r24;
+        map#1 = $r25;
 
-        $r25 = <android.os.Parcel: java.util.HashMap mCreators>;
+        $r26 = <android.os.Parcel: java.util.HashMap mCreators>;
 
-        virtualinvoke $r25.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(loader, map#1);
+        virtualinvoke $r26.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(loader, map#1);
 
      label03:
         $r3 = virtualinvoke map#1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
@@ -4946,9 +4946,9 @@ public final class android.os.Parcel extends java.lang.Object
      label04:
         if loader != null goto label05;
 
-        $r26 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+        $r24 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
 
-        $r55 = virtualinvoke $r26.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+        $r55 = virtualinvoke $r24.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
 
         goto label06;
 
@@ -4966,11 +4966,11 @@ public final class android.os.Parcel extends java.lang.Object
 
         if $z0 != 0 goto label07;
 
-        $r21 = new android.os.BadParcelableException;
+        $r23 = new android.os.BadParcelableException;
 
-        specialinvoke $r21.<android.os.BadParcelableException: void <init>(java.lang.String)>("Parcelable protocol requires that the class implements Parcelable");
+        specialinvoke $r23.<android.os.BadParcelableException: void <init>(java.lang.String)>("Parcelable protocol requires that the class implements Parcelable");
 
-        throw $r21;
+        throw $r23;
 
      label07:
         f = virtualinvoke parcelableClass.<java.lang.Class: java.lang.reflect.Field getField(java.lang.String)>("CREATOR");
@@ -4981,21 +4981,21 @@ public final class android.os.Parcel extends java.lang.Object
 
         if $i1 != 0 goto label08;
 
-        $r16 = new android.os.BadParcelableException;
+        $r18 = new android.os.BadParcelableException;
 
-        $r17 = new java.lang.StringBuilder;
+        $r19 = new java.lang.StringBuilder;
 
-        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r19.<java.lang.StringBuilder: void <init>()>();
 
-        $r22 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires the CREATOR object to be static on class ");
+        $r20 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires the CREATOR object to be static on class ");
 
-        $r23 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r21 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r20 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r22 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r16.<android.os.BadParcelableException: void <init>(java.lang.String)>($r20);
+        specialinvoke $r18.<android.os.BadParcelableException: void <init>(java.lang.String)>($r22);
 
-        throw $r16;
+        throw $r18;
 
      label08:
         creatorType = virtualinvoke f.<java.lang.reflect.Field: java.lang.Class getType()>();
@@ -5006,135 +5006,135 @@ public final class android.os.Parcel extends java.lang.Object
 
         if $z1 != 0 goto label09;
 
-        $r15 = new android.os.BadParcelableException;
+        $r13 = new android.os.BadParcelableException;
 
-        $r12 = new java.lang.StringBuilder;
+        $r14 = new java.lang.StringBuilder;
 
-        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r14.<java.lang.StringBuilder: void <init>()>();
 
-        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a Parcelable.Creator object called CREATOR on class ");
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a Parcelable.Creator object called CREATOR on class ");
 
-        $r18 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r19 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r17 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r15.<android.os.BadParcelableException: void <init>(java.lang.String)>($r19);
+        specialinvoke $r13.<android.os.BadParcelableException: void <init>(java.lang.String)>($r17);
 
-        throw $r15;
+        throw $r13;
 
      label09:
-        $r7 = virtualinvoke f.<java.lang.reflect.Field: java.lang.Object get(java.lang.Object)>(null);
+        $r6 = virtualinvoke f.<java.lang.reflect.Field: java.lang.Object get(java.lang.Object)>(null);
 
-        creator#2 = (android.os.Parcelable$Creator) $r7;
+        creator#2 = (android.os.Parcelable$Creator) $r6;
 
      label10:
         goto label14;
 
      label11:
-        $r31 := @caughtexception;
+        $r38 := @caughtexception;
 
-        parcelableClassLoader#5 = $r31;
+        parcelableClassLoader#5 = $r38;
 
-        $r37 = new java.lang.StringBuilder;
+        $r39 = new java.lang.StringBuilder;
 
-        specialinvoke $r37.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r39.<java.lang.StringBuilder: void <init>()>();
 
-        $r36 = virtualinvoke $r37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal access when unmarshalling: ");
+        $r40 = virtualinvoke $r39.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal access when unmarshalling: ");
 
-        $r35 = virtualinvoke $r36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r41 = virtualinvoke $r40.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r40 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r42 = virtualinvoke $r41.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r40, parcelableClassLoader#5);
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r42, parcelableClassLoader#5);
 
-        $r39 = new android.os.BadParcelableException;
+        $r43 = new android.os.BadParcelableException;
 
-        $r38 = new java.lang.StringBuilder;
+        $r44 = new java.lang.StringBuilder;
 
-        specialinvoke $r38.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r44.<java.lang.StringBuilder: void <init>()>();
 
-        $r43 = virtualinvoke $r38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IllegalAccessException when unmarshalling: ");
+        $r45 = virtualinvoke $r44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IllegalAccessException when unmarshalling: ");
 
-        $r44 = virtualinvoke $r43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r46 = virtualinvoke $r45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r45 = virtualinvoke $r44.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r47 = virtualinvoke $r46.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r39.<android.os.BadParcelableException: void <init>(java.lang.String)>($r45);
+        specialinvoke $r43.<android.os.BadParcelableException: void <init>(java.lang.String)>($r47);
 
-        throw $r39;
+        throw $r43;
 
      label12:
-        $r41 := @caughtexception;
+        $r28 := @caughtexception;
 
-        parcelableClassLoader#6 = $r41;
+        parcelableClassLoader#6 = $r28;
 
-        $r42 = new java.lang.StringBuilder;
+        $r29 = new java.lang.StringBuilder;
 
-        specialinvoke $r42.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r29.<java.lang.StringBuilder: void <init>()>();
 
-        $r51 = virtualinvoke $r42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Class not found when unmarshalling: ");
+        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Class not found when unmarshalling: ");
 
-        $r52 = virtualinvoke $r51.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r31 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r53 = virtualinvoke $r52.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r32 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r53, parcelableClassLoader#6);
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r32, parcelableClassLoader#6);
 
-        $r47 = new android.os.BadParcelableException;
+        $r33 = new android.os.BadParcelableException;
 
-        $r48 = new java.lang.StringBuilder;
+        $r34 = new java.lang.StringBuilder;
 
-        specialinvoke $r48.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r34.<java.lang.StringBuilder: void <init>()>();
 
-        $r49 = virtualinvoke $r48.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ClassNotFoundException when unmarshalling: ");
+        $r35 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ClassNotFoundException when unmarshalling: ");
 
-        $r50 = virtualinvoke $r49.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r36 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r54 = virtualinvoke $r50.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r37 = virtualinvoke $r36.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r47.<android.os.BadParcelableException: void <init>(java.lang.String)>($r54);
+        specialinvoke $r33.<android.os.BadParcelableException: void <init>(java.lang.String)>($r37);
 
-        throw $r47;
+        throw $r33;
 
      label13:
-        $r29 := @caughtexception;
+        $r49 := @caughtexception;
 
-        parcelableClassLoader#7 = $r29;
+        parcelableClassLoader#7 = $r49;
 
-        $r28 = new android.os.BadParcelableException;
+        $r50 = new android.os.BadParcelableException;
 
-        $r27 = new java.lang.StringBuilder;
+        $r51 = new java.lang.StringBuilder;
 
-        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r51.<java.lang.StringBuilder: void <init>()>();
 
-        $r34 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a Parcelable.Creator object called CREATOR on class ");
+        $r52 = virtualinvoke $r51.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a Parcelable.Creator object called CREATOR on class ");
 
-        $r33 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r53 = virtualinvoke $r52.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r32 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r54 = virtualinvoke $r53.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r28.<android.os.BadParcelableException: void <init>(java.lang.String)>($r32);
+        specialinvoke $r50.<android.os.BadParcelableException: void <init>(java.lang.String)>($r54);
 
-        throw $r28;
+        throw $r50;
 
      label14:
         if creator#2 != null goto label15;
 
-        $r9 = new android.os.BadParcelableException;
+        $r8 = new android.os.BadParcelableException;
 
-        $r8 = new java.lang.StringBuilder;
+        $r9 = new java.lang.StringBuilder;
 
-        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
 
-        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a non-null Parcelable.Creator object called CREATOR on class ");
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a non-null Parcelable.Creator object called CREATOR on class ");
 
-        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r14 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r9.<android.os.BadParcelableException: void <init>(java.lang.String)>($r14);
+        specialinvoke $r8.<android.os.BadParcelableException: void <init>(java.lang.String)>($r12);
 
-        throw $r9;
+        throw $r8;
 
      label15:
         virtualinvoke map#1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(name, creator#2);
@@ -5146,9 +5146,9 @@ public final class android.os.Parcel extends java.lang.Object
         goto label20;
 
      label18:
-        $r46 := @caughtexception;
+        $r48 := @caughtexception;
 
-        l10 = $r46;
+        l10 = $r48;
 
         exitmonitor l4;
 
@@ -5219,16 +5219,16 @@ public final class android.os.Parcel extends java.lang.Object
     {
         android.os.Parcel this;
         java.lang.ClassLoader loader;
-        java.lang.String name, $r11, $r16;
+        java.lang.String name, $r10, $r17;
         byte[] serializedData;
         java.io.ByteArrayInputStream bais, $r0;
         android.os.Parcel$2 $r1, ois#1;
         java.lang.Object $r2;
         java.io.Serializable $r3;
-        java.lang.ClassNotFoundException $r4, ois#3;
-        java.lang.RuntimeException $r5, $r13;
-        java.lang.StringBuilder $r6, $r7, $r8, $r9, $r12, $r14, $r15, $r17;
-        java.io.IOException $r10, ois#2;
+        java.io.IOException $r4, ois#2;
+        java.lang.RuntimeException $r5, $r12;
+        java.lang.StringBuilder $r6, $r7, $r8, $r9, $r13, $r14, $r15, $r16;
+        java.lang.ClassNotFoundException $r11, ois#3;
 
         this := @this: android.os.Parcel;
 
@@ -5264,32 +5264,9 @@ public final class android.os.Parcel extends java.lang.Object
         return $r3;
 
      label4:
-        $r10 := @caughtexception;
-
-        ois#2 = $r10;
-
-        $r13 = new java.lang.RuntimeException;
-
-        $r12 = new java.lang.StringBuilder;
-
-        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
-
-        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered IOException reading a Serializable object (name = ");
-
-        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
-
-        $r17 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
-
-        $r16 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $r13.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r16, ois#2);
-
-        throw $r13;
-
-     label5:
         $r4 := @caughtexception;
 
-        ois#3 = $r4;
+        ois#2 = $r4;
 
         $r5 = new java.lang.RuntimeException;
 
@@ -5297,17 +5274,40 @@ public final class android.os.Parcel extends java.lang.Object
 
         specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
 
-        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered ClassNotFoundException reading a Serializable object (name = ");
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered IOException reading a Serializable object (name = ");
 
-        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
 
-        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r11, ois#3);
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r10, ois#2);
 
         throw $r5;
+
+     label5:
+        $r11 := @caughtexception;
+
+        ois#3 = $r11;
+
+        $r12 = new java.lang.RuntimeException;
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered ClassNotFoundException reading a Serializable object (name = ");
+
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r17 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r12.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r17, ois#3);
+
+        throw $r12;
 
         catch java.io.IOException from label2 to label3 with label4;
         catch java.lang.ClassNotFoundException from label2 to label3 with label5;

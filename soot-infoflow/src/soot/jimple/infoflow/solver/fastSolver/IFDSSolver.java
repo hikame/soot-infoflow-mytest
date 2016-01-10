@@ -468,10 +468,6 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		final N n = edge.getTarget(); 
 		final D d2 = edge.factAtTarget();
 		List<N> nlist = icfg.getSuccsOf(n);
-//if(n.toString().equals("str = $r2.<com.kame.tafhd.MainActivity$ParamClass: java.lang.String fieldString>") &&
-//		d2.toString().equals("$r2(com.kame.tafhd.MainActivity$ParamClass) * <+length> | >>"))
-////if(n.toString().equals("str = $r2.<com.kame.tafhd.MainActivity$ParamClass: java.lang.String fieldString>"))
-//	n.toString();
 		for (N m : nlist) {
 			FlowFunction<D> flowFunction = flowFunctions.getNormalFlowFunction(n,m);
 			Set<D> res = computeNormalFlowFunction(flowFunction, d1, d2);
