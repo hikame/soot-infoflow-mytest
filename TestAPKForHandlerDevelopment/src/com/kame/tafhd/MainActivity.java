@@ -74,13 +74,11 @@ public class MainActivity extends Activity {
 				}
 				break;
 			case OBJ_NP:
-				if(msg.obj != null)
-					msg.obj.equals("if");
-				else{
-					tainted.charAt(0);
-				}
-					
-				msg.obj.equals("2");
+				Object loc = msg.obj;
+				if(loc != null){
+					loc.equals("if");
+	    		}	
+	    		loc.equals("2");
 				break;
 			case NEW_NULL:
 //				if(tainted != null)

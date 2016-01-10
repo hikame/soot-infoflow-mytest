@@ -3854,7 +3854,7 @@ class android.os.INetworkManagementService$Stub$Proxy extends java.lang.Object i
         android.os.Parcel _data, _reply;
         java.lang.Throwable l5, $r1;
         android.os.IBinder $r0;
-        android.os.Parcelable[] tmp$1709583080;
+        android.os.Parcelable[] tmp$986374275;
 
         this := @this: android.os.INetworkManagementService$Stub$Proxy;
 
@@ -3871,9 +3871,9 @@ class android.os.INetworkManagementService$Stub$Proxy extends java.lang.Object i
 
         virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
 
-        tmp$1709583080 = (android.os.Parcelable[]) ranges;
+        tmp$986374275 = (android.os.Parcelable[]) ranges;
 
-        virtualinvoke _data.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$1709583080, 0);
+        virtualinvoke _data.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$986374275, 0);
 
         $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
 
@@ -3915,7 +3915,7 @@ class android.os.INetworkManagementService$Stub$Proxy extends java.lang.Object i
         android.os.Parcel _data, _reply;
         java.lang.Throwable l5, $r1;
         android.os.IBinder $r0;
-        android.os.Parcelable[] tmp$566474748;
+        android.os.Parcelable[] tmp$1357967595;
 
         this := @this: android.os.INetworkManagementService$Stub$Proxy;
 
@@ -3932,9 +3932,9 @@ class android.os.INetworkManagementService$Stub$Proxy extends java.lang.Object i
 
         virtualinvoke _data.<android.os.Parcel: void writeInt(int)>(netId);
 
-        tmp$566474748 = (android.os.Parcelable[]) ranges;
+        tmp$1357967595 = (android.os.Parcelable[]) ranges;
 
-        virtualinvoke _data.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$566474748, 0);
+        virtualinvoke _data.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$1357967595, 0);
 
         $r0 = this.<android.os.INetworkManagementService$Stub$Proxy: android.os.IBinder mRemote>;
 

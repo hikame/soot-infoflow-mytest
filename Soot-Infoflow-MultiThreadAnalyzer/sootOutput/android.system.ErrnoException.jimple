@@ -51,10 +51,10 @@ public final class android.system.ErrnoException extends java.lang.Exception
     public java.lang.String getMessage()
     {
         android.system.ErrnoException this;
-        java.lang.String description, $r2, $r9, errnoName#1;
+        java.lang.String description, $r2, $r10, errnoName#1;
         int $i0, $i1, $i2;
         libcore.io.Os $r0;
-        java.lang.StringBuilder $r1, $r3, $r4, $r5, $r6, $r7, $r8, $r10, $r11, $r12;
+        java.lang.StringBuilder $r1, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r11, $r12;
 
         this := @this: android.system.ErrnoException;
 
@@ -64,11 +64,11 @@ public final class android.system.ErrnoException extends java.lang.Exception
 
         if errnoName#1 != null goto label1;
 
-        $r10 = new java.lang.StringBuilder;
+        $r9 = new java.lang.StringBuilder;
 
-        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
 
-        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("errno ");
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("errno ");
 
         $i2 = this.<android.system.ErrnoException: int errno>;
 
@@ -101,9 +101,9 @@ public final class android.system.ErrnoException extends java.lang.Exception
 
         $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
 
-        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        return $r9;
+        return $r10;
     }
 
     public java.io.IOException rethrowAsIOException() throws java.io.IOException

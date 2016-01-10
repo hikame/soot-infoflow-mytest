@@ -35,11 +35,11 @@ class android.os.StrictMode$AndroidBlockGuardPolicy$1 extends java.lang.Object i
         android.os.StrictMode$AndroidBlockGuardPolicy$1 this;
         long loopFinishTime, $l2, $l3;
         android.os.StrictMode$ViolationInfo v;
-        android.view.IWindowManager $r0, $r6;
+        android.view.IWindowManager $r0, $r5;
         java.util.ArrayList $r1, $r2, $r3;
         int $i0, $i1, $i4, n#2;
         java.lang.Object $r4;
-        android.os.StrictMode$AndroidBlockGuardPolicy $r5;
+        android.os.StrictMode$AndroidBlockGuardPolicy $r6;
         android.os.RemoteException $r7, n#1;
 
         this := @this: android.os.StrictMode$AndroidBlockGuardPolicy$1;
@@ -51,9 +51,9 @@ class android.os.StrictMode$AndroidBlockGuardPolicy$1 extends java.lang.Object i
         if $r0 == null goto label4;
 
      label1:
-        $r6 = this.<android.os.StrictMode$AndroidBlockGuardPolicy$1: android.view.IWindowManager val$windowManager>;
+        $r5 = this.<android.os.StrictMode$AndroidBlockGuardPolicy$1: android.view.IWindowManager val$windowManager>;
 
-        interfaceinvoke $r6.<android.view.IWindowManager: void showStrictModeViolation(boolean)>(0);
+        interfaceinvoke $r5.<android.view.IWindowManager: void showStrictModeViolation(boolean)>(0);
 
      label2:
         goto label4;
@@ -91,9 +91,9 @@ class android.os.StrictMode$AndroidBlockGuardPolicy$1 extends java.lang.Object i
 
         v.<android.os.StrictMode$ViolationInfo: int durationMillis> = $i4;
 
-        $r5 = this.<android.os.StrictMode$AndroidBlockGuardPolicy$1: android.os.StrictMode$AndroidBlockGuardPolicy this$0>;
+        $r6 = this.<android.os.StrictMode$AndroidBlockGuardPolicy$1: android.os.StrictMode$AndroidBlockGuardPolicy this$0>;
 
-        virtualinvoke $r5.<android.os.StrictMode$AndroidBlockGuardPolicy: void handleViolation(android.os.StrictMode$ViolationInfo)>(v);
+        virtualinvoke $r6.<android.os.StrictMode$AndroidBlockGuardPolicy: void handleViolation(android.os.StrictMode$ViolationInfo)>(v);
 
         n#2 = n#2 + 1;
 

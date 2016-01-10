@@ -151,10 +151,10 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
         int code, flags, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, $i13, $i14, $i15, $i16, $i17, _arg0#21, _arg0#23, _result#26, _arg0#63, _arg0#73, _arg0#76, _result#77, _result#81, _arg2#82, _arg0#84, _arg0#87, _result#99, _arg0#102, _result#103, _arg2#104, _arg0#105, _arg0#108, _arg0#111, _arg0#113, _arg0#124, _arg0#126, _arg0#131, _result#133, _result#135, _arg0#136, _arg2#138, _arg0#139, _arg0#140, _arg0#145, _arg0#146;
         android.os.Parcel data, reply;
         java.lang.String _arg3, _arg4, _arg0#4, _arg0#6, _arg0#8, _arg0#9, _arg0#10, _arg0#11, _arg0#14, _arg0#15, _arg0#16, _arg0#19, _arg0#25, _arg0#34, _arg0#35, _arg0#40, _result#41, _arg0#42, _result#43, _arg0#44, _result#45, _arg0#46, _result#47, _arg0#49, _result#50, _arg2#51, _arg0#52, _arg0#53, _result#54, _result#56, _arg0#57, _result#59, _arg0#66, _arg0#68, _arg0#69, _arg0#71, _arg0#80, _arg0#83, _arg2#86, _arg0#92, _arg0#95, _arg0#98, _arg0#115, _arg0#116, _arg0#117, _result#125, _arg0#132, _arg0#134, _result#141, _arg0#142, _arg0#147, _arg0#149;
-        android.os.Parcelable$Creator $r0, $r1, $r5, $r7, $r9, $r11, $r13, $r15, $r17, $r19;
-        java.lang.Object $r2, $r10, $r12, $r14, $r16, $r18, $r20;
-        android.os.IBinder $r3, $r4, $r21, $r22;
-        java.lang.Object[] $r6, $r8;
+        android.os.Parcelable$Creator $r0, $r2, $r6, $r8, $r9, $r11, $r13, $r15, $r18, $r19;
+        java.lang.Object $r1, $r10, $r12, $r14, $r16, $r17, $r22;
+        android.os.IBinder $r3, $r4, $r20, $r21;
+        java.lang.Object[] $r5, $r7;
         boolean $z0, $z1, _result#13, $z2, _result#18, _arg0#27, $z3, _arg0#30, _arg0#32, $z4, _result#75, _arg0#78, $z5, _arg0#89, _arg0#90, $z6, _result#94, $z7, _result#97, $z8, _arg2#101, $z9, _result#110, _result#118, _arg0#122, $z10, _result#128, $z11, _arg2#130;
         android.net.INetworkManagementEventObserver _arg0#1, _arg0#2;
         java.lang.String[] _arg0#3, _arg0#31, _arg0#36, _result#38, _arg0#39, _arg0#48, _result#85;
@@ -170,7 +170,7 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
         android.net.UidRange[] _result#112, _result#114;
         android.os.INetworkActivityListener _arg0#120, _arg0#121;
         java.util.ArrayList _result#148;
-        android.os.Parcelable[] tmp$123797276;
+        android.os.Parcelable[] tmp$1287248848;
 
         this := @this: android.os.INetworkManagementService$Stub;
 
@@ -282,9 +282,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
      label002:
         virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkManagementService");
 
-        $r22 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
+        $r21 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
 
-        _arg0#1 = staticinvoke <android.net.INetworkManagementEventObserver$Stub: android.net.INetworkManagementEventObserver asInterface(android.os.IBinder)>($r22);
+        _arg0#1 = staticinvoke <android.net.INetworkManagementEventObserver$Stub: android.net.INetworkManagementEventObserver asInterface(android.os.IBinder)>($r21);
 
         virtualinvoke this.<android.os.INetworkManagementService$Stub: void registerObserver(android.net.INetworkManagementEventObserver)>(_arg0#1);
 
@@ -295,9 +295,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
      label003:
         virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkManagementService");
 
-        $r21 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
+        $r20 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
 
-        _arg0#2 = staticinvoke <android.net.INetworkManagementEventObserver$Stub: android.net.INetworkManagementEventObserver asInterface(android.os.IBinder)>($r21);
+        _arg0#2 = staticinvoke <android.net.INetworkManagementEventObserver$Stub: android.net.INetworkManagementEventObserver asInterface(android.os.IBinder)>($r20);
 
         virtualinvoke this.<android.os.INetworkManagementService$Stub: void unregisterObserver(android.net.INetworkManagementEventObserver)>(_arg0#2);
 
@@ -344,15 +344,15 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#6 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
 
-        $i17 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i15 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i17 goto label009;
+        if 0 == $i15 goto label009;
 
         $r19 = <android.net.InterfaceConfiguration: android.os.Parcelable$Creator CREATOR>;
 
-        $r20 = interfaceinvoke $r19.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+        $r22 = interfaceinvoke $r19.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
 
-        _result#7 = (android.net.InterfaceConfiguration) $r20;
+        _result#7 = (android.net.InterfaceConfiguration) $r22;
 
         goto label010;
 
@@ -404,9 +404,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#11 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
 
-        $i16 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i17 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i16 goto label015;
+        if 0 == $i17 goto label015;
 
         $z1 = 1;
 
@@ -451,9 +451,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#16 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
 
-        $i15 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i16 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i15 goto label020;
+        if 0 == $i16 goto label020;
 
         $z2 = 1;
 
@@ -480,9 +480,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
 
-        tmp$123797276 = (android.os.Parcelable[]) _result#20;
+        tmp$1287248848 = (android.os.Parcelable[]) _result#20;
 
-        virtualinvoke reply.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$123797276, 1);
+        virtualinvoke reply.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$1287248848, 1);
 
         return 1;
 
@@ -491,15 +491,15 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#21 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        $i14 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i13 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i14 goto label024;
+        if 0 == $i13 goto label024;
 
-        $r17 = <android.net.RouteInfo: android.os.Parcelable$Creator CREATOR>;
+        $r15 = <android.net.RouteInfo: android.os.Parcelable$Creator CREATOR>;
 
-        $r18 = interfaceinvoke $r17.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+        $r16 = interfaceinvoke $r15.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
 
-        _result#22 = (android.net.RouteInfo) $r18;
+        _result#22 = (android.net.RouteInfo) $r16;
 
         goto label025;
 
@@ -518,15 +518,15 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#23 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        $i13 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i14 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i13 goto label027;
+        if 0 == $i14 goto label027;
 
-        $r15 = <android.net.RouteInfo: android.os.Parcelable$Creator CREATOR>;
+        $r18 = <android.net.RouteInfo: android.os.Parcelable$Creator CREATOR>;
 
-        $r16 = interfaceinvoke $r15.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+        $r17 = interfaceinvoke $r18.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
 
-        _result#24 = (android.net.RouteInfo) $r16;
+        _result#24 = (android.net.RouteInfo) $r17;
 
         goto label028;
 
@@ -586,9 +586,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
      label034:
         virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkManagementService");
 
-        $i12 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i11 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i12 goto label035;
+        if 0 == $i11 goto label035;
 
         $z3 = 1;
 
@@ -683,9 +683,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
      label045:
         virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkManagementService");
 
-        $i11 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i12 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i11 goto label046;
+        if 0 == $i12 goto label046;
 
         $r13 = <android.net.Network: android.os.Parcelable$Creator CREATOR>;
 
@@ -833,9 +833,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         $r11 = <android.net.wifi.WifiConfiguration: android.os.Parcelable$Creator CREATOR>;
 
-        $r12 = interfaceinvoke $r11.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+        $r10 = interfaceinvoke $r11.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
 
-        _arg0#55 = (android.net.wifi.WifiConfiguration) $r12;
+        _arg0#55 = (android.net.wifi.WifiConfiguration) $r10;
 
         goto label059;
 
@@ -871,9 +871,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         $r9 = <android.net.wifi.WifiConfiguration: android.os.Parcelable$Creator CREATOR>;
 
-        $r10 = interfaceinvoke $r9.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+        $r12 = interfaceinvoke $r9.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
 
-        _arg0#58 = (android.net.wifi.WifiConfiguration) $r10;
+        _arg0#58 = (android.net.wifi.WifiConfiguration) $r12;
 
         goto label063;
 
@@ -1169,9 +1169,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
      label095:
         virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkManagementService");
 
-        $i7 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i6 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i7 goto label096;
+        if 0 == $i6 goto label096;
 
         $z5 = 1;
 
@@ -1215,9 +1215,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#92 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
 
-        $i6 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i7 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i6 goto label102;
+        if 0 == $i7 goto label102;
 
         $z6 = 1;
 
@@ -1240,9 +1240,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#95 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
 
-        $i5 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i4 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i5 goto label105;
+        if 0 == $i4 goto label105;
 
         $z7 = 1;
 
@@ -1267,9 +1267,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _result#99 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        $i4 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+        $i5 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        if 0 == $i4 goto label108;
+        if 0 == $i5 goto label108;
 
         $z8 = 1;
 
@@ -1347,11 +1347,11 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#111 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        $r7 = <android.net.UidRange: android.os.Parcelable$Creator CREATOR>;
+        $r8 = <android.net.UidRange: android.os.Parcelable$Creator CREATOR>;
 
-        $r8 = virtualinvoke data.<android.os.Parcel: java.lang.Object[] createTypedArray(android.os.Parcelable$Creator)>($r7);
+        $r7 = virtualinvoke data.<android.os.Parcel: java.lang.Object[] createTypedArray(android.os.Parcelable$Creator)>($r8);
 
-        _result#112 = (android.net.UidRange[]) $r8;
+        _result#112 = (android.net.UidRange[]) $r7;
 
         virtualinvoke this.<android.os.INetworkManagementService$Stub: void addVpnUidRanges(int,android.net.UidRange[])>(_arg0#111, _result#112);
 
@@ -1364,11 +1364,11 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         _arg0#113 = virtualinvoke data.<android.os.Parcel: int readInt()>();
 
-        $r5 = <android.net.UidRange: android.os.Parcelable$Creator CREATOR>;
+        $r6 = <android.net.UidRange: android.os.Parcelable$Creator CREATOR>;
 
-        $r6 = virtualinvoke data.<android.os.Parcel: java.lang.Object[] createTypedArray(android.os.Parcelable$Creator)>($r5);
+        $r5 = virtualinvoke data.<android.os.Parcel: java.lang.Object[] createTypedArray(android.os.Parcelable$Creator)>($r6);
 
-        _result#114 = (android.net.UidRange[]) $r6;
+        _result#114 = (android.net.UidRange[]) $r5;
 
         virtualinvoke this.<android.os.INetworkManagementService$Stub: void removeVpnUidRanges(int,android.net.UidRange[])>(_arg0#113, _result#114);
 
@@ -1424,9 +1424,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
      label122:
         virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkManagementService");
 
-        $r4 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
+        $r3 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
 
-        _arg0#120 = staticinvoke <android.os.INetworkActivityListener$Stub: android.os.INetworkActivityListener asInterface(android.os.IBinder)>($r4);
+        _arg0#120 = staticinvoke <android.os.INetworkActivityListener$Stub: android.os.INetworkActivityListener asInterface(android.os.IBinder)>($r3);
 
         virtualinvoke this.<android.os.INetworkManagementService$Stub: void registerNetworkActivityListener(android.os.INetworkActivityListener)>(_arg0#120);
 
@@ -1437,9 +1437,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
      label123:
         virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("android.os.INetworkManagementService");
 
-        $r3 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
+        $r4 = virtualinvoke data.<android.os.Parcel: android.os.IBinder readStrongBinder()>();
 
-        _arg0#121 = staticinvoke <android.os.INetworkActivityListener$Stub: android.os.INetworkActivityListener asInterface(android.os.IBinder)>($r3);
+        _arg0#121 = staticinvoke <android.os.INetworkActivityListener$Stub: android.os.INetworkActivityListener asInterface(android.os.IBinder)>($r4);
 
         virtualinvoke this.<android.os.INetworkManagementService$Stub: void unregisterNetworkActivityListener(android.os.INetworkActivityListener)>(_arg0#121);
 
@@ -1566,11 +1566,11 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         if 0 == $i0 goto label137;
 
-        $r1 = <android.net.RouteInfo: android.os.Parcelable$Creator CREATOR>;
+        $r2 = <android.net.RouteInfo: android.os.Parcelable$Creator CREATOR>;
 
-        $r2 = interfaceinvoke $r1.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+        $r1 = interfaceinvoke $r2.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
 
-        _result#137 = (android.net.RouteInfo) $r2;
+        _result#137 = (android.net.RouteInfo) $r1;
 
         goto label138;
 

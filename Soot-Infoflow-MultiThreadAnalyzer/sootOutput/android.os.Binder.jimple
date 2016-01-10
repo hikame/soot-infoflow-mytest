@@ -181,8 +181,8 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
         android.os.Parcel data, reply;
         android.os.ParcelFileDescriptor fd;
         java.lang.String[] args;
-        java.io.IOException l7, l9, $r2, $r3;
-        java.lang.Throwable l8, $r4;
+        java.io.IOException l7, l9, $r2, $r4;
+        java.lang.Throwable l8, $r3;
         java.io.FileDescriptor $r0;
         java.lang.String $r1;
 
@@ -225,16 +225,16 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
         goto label11;
 
      label05:
-        $r3 := @caughtexception;
+        $r4 := @caughtexception;
 
-        l7 = $r3;
+        l7 = $r4;
 
         goto label11;
 
      label06:
-        $r4 := @caughtexception;
+        $r3 := @caughtexception;
 
-        l8 = $r4;
+        l8 = $r3;
 
      label07:
         virtualinvoke fd.<android.os.ParcelFileDescriptor: void close()>();
@@ -279,11 +279,11 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
         java.lang.String[] args;
         java.io.FileOutputStream fout, $r0;
         com.android.internal.util.FastPrintWriter pw, $r1;
-        java.lang.String disabled, $r2, $r9, $r11;
+        java.lang.String disabled, $r2, $r7, $r9;
         bottom_type e;
-        java.lang.Throwable l7, l8, $r3, $r4, $r5, e#3;
+        java.lang.Throwable l7, l8, $r3, $r4, $r11, e#3;
+        java.lang.StringBuilder $r5, $r8, $r10;
         java.lang.SecurityException $r6, e#2;
-        java.lang.StringBuilder $r7, $r8, $r10;
         java.lang.Class e#1;
 
         this := @this: android.os.Binder;
@@ -329,26 +329,26 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
 
         e#2 = $r6;
 
-        $r7 = new java.lang.StringBuilder;
+        $r5 = new java.lang.StringBuilder;
 
-        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
 
-        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Security exception: ");
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Security exception: ");
 
-        $r9 = virtualinvoke e#2.<java.lang.SecurityException: java.lang.String getMessage()>();
+        $r7 = virtualinvoke e#2.<java.lang.SecurityException: java.lang.String getMessage()>();
 
-        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
 
-        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>($r11);
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>($r9);
 
         throw e#2;
 
      label06:
-        $r5 := @caughtexception;
+        $r3 := @caughtexception;
 
-        e#3 = $r5;
+        e#3 = $r3;
 
         virtualinvoke pw.<java.io.PrintWriter: void println()>();
 
@@ -369,9 +369,9 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
         goto label11;
 
      label09:
-        $r4 := @caughtexception;
+        $r11 := @caughtexception;
 
-        l8 = $r4;
+        l8 = $r11;
 
      label10:
         virtualinvoke pw.<java.io.PrintWriter: void flush()>();
@@ -562,12 +562,12 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
     private boolean execTransact(int, long, long, int)
     {
         android.os.Binder this;
-        int code, flags, $i0, $i2;
+        int code, flags, $i1, $i4;
         long dataObj, replyObj;
         android.os.Parcel data, reply;
-        java.lang.RuntimeException re, $r0, $r3, e#3;
-        android.os.RemoteException $r1, e#2;
-        java.lang.OutOfMemoryError $r2, e#4;
+        java.lang.RuntimeException re, $r1, $r3, e#3;
+        java.lang.OutOfMemoryError $r0, e#4;
+        android.os.RemoteException $r2, e#2;
         boolean res#1;
 
         this := @this: android.os.Binder;
@@ -591,13 +591,13 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
         goto label10;
 
      label03:
-        $r1 := @caughtexception;
+        $r2 := @caughtexception;
 
-        e#2 = $r1;
+        e#2 = $r2;
 
-        $i2 = flags & 1;
+        $i1 = flags & 1;
 
-        if $i2 == 0 goto label04;
+        if $i1 == 0 goto label04;
 
         staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("Binder", "Binder call failed.", e#2);
 
@@ -614,13 +614,13 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
         goto label10;
 
      label06:
-        $r0 := @caughtexception;
+        $r3 := @caughtexception;
 
-        e#3 = $r0;
+        e#3 = $r3;
 
-        $i0 = flags & 1;
+        $i4 = flags & 1;
 
-        if $i0 == 0 goto label07;
+        if $i4 == 0 goto label07;
 
         staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("Binder", "Caught a RuntimeException from the binder stub implementation.", e#3);
 
@@ -637,17 +637,17 @@ public class android.os.Binder extends java.lang.Object implements android.os.IB
         goto label10;
 
      label09:
-        $r2 := @caughtexception;
+        $r0 := @caughtexception;
 
-        e#4 = $r2;
+        e#4 = $r0;
 
         staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Binder", "Caught an OutOfMemoryError from the binder stub implementation.", e#4);
 
-        $r3 = new java.lang.RuntimeException;
+        $r1 = new java.lang.RuntimeException;
 
-        specialinvoke $r3.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Out of memory", e#4);
+        specialinvoke $r1.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Out of memory", e#4);
 
-        re = $r3;
+        re = $r1;
 
         virtualinvoke reply.<android.os.Parcel: void setDataPosition(int)>(0);
 

@@ -39,7 +39,7 @@ public class android.os.Process$ZygoteState extends java.lang.Object
 
     public static android.os.Process$ZygoteState connect(java.lang.String) throws java.io.IOException
     {
-        java.lang.String socketAddress, $r11, ex#6;
+        java.lang.String socketAddress, $r10, ex#6;
         android.net.LocalSocket zygoteSocket, $r0;
         android.net.LocalSocketAddress $r1;
         android.net.LocalSocketAddress$Namespace $r2;
@@ -48,10 +48,10 @@ public class android.os.Process$ZygoteState extends java.lang.Object
         java.io.BufferedWriter $r5, zygoteWriter#4;
         java.io.OutputStreamWriter $r6;
         java.io.OutputStream $r7;
-        java.lang.StringBuilder $r8, $r9, $r10;
+        java.lang.StringBuilder $r8, $r9, $r11;
         android.os.Process$ZygoteState $r12;
-        java.lang.String[] $r13;
-        java.util.List $r14;
+        java.util.List $r13;
+        java.lang.String[] $r14;
         java.io.IOException $r15, $r16, ex#5;
 
         socketAddress := @parameter0: java.lang.String;
@@ -95,9 +95,9 @@ public class android.os.Process$ZygoteState extends java.lang.Object
         goto label8;
 
      label3:
-        $r16 := @caughtexception;
+        $r15 := @caughtexception;
 
-        ex#5 = $r16;
+        ex#5 = $r15;
 
      label4:
         virtualinvoke zygoteSocket.<android.net.LocalSocket: void close()>();
@@ -106,7 +106,7 @@ public class android.os.Process$ZygoteState extends java.lang.Object
         goto label7;
 
      label6:
-        $r15 := @caughtexception;
+        $r16 := @caughtexception;
 
      label7:
         throw ex#5;
@@ -120,19 +120,19 @@ public class android.os.Process$ZygoteState extends java.lang.Object
 
         $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Process: zygote socket opened, supported ABIS: ");
 
-        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ex#6);
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ex#6);
 
-        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("Zygote", $r11);
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("Zygote", $r10);
 
         $r12 = new android.os.Process$ZygoteState;
 
-        $r13 = virtualinvoke ex#6.<java.lang.String: java.lang.String[] split(java.lang.String)>(",");
+        $r14 = virtualinvoke ex#6.<java.lang.String: java.lang.String[] split(java.lang.String)>(",");
 
-        $r14 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r13);
+        $r13 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r14);
 
-        specialinvoke $r12.<android.os.Process$ZygoteState: void <init>(android.net.LocalSocket,java.io.DataInputStream,java.io.BufferedWriter,java.util.List)>(zygoteSocket, zygoteInputStream#3, zygoteWriter#4, $r14);
+        specialinvoke $r12.<android.os.Process$ZygoteState: void <init>(android.net.LocalSocket,java.io.DataInputStream,java.io.BufferedWriter,java.util.List)>(zygoteSocket, zygoteInputStream#3, zygoteWriter#4, $r13);
 
         return $r12;
 

@@ -71,8 +71,8 @@ public final class android.os.SystemClock extends java.lang.Object
         android.os.IBinder b;
         android.app.IAlarmManager mgr;
         boolean $z0;
-        java.lang.SecurityException $r0, e#2;
-        android.os.RemoteException $r1, e#1;
+        android.os.RemoteException $r0, e#1;
+        java.lang.SecurityException $r1, e#2;
 
         millis := @parameter0: long;
 
@@ -91,18 +91,18 @@ public final class android.os.SystemClock extends java.lang.Object
         return $z0;
 
      label3:
-        $r1 := @caughtexception;
+        $r0 := @caughtexception;
 
-        e#1 = $r1;
+        e#1 = $r0;
 
         staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("SystemClock", "Unable to set RTC", e#1);
 
         goto label5;
 
      label4:
-        $r0 := @caughtexception;
+        $r1 := @caughtexception;
 
-        e#2 = $r0;
+        e#2 = $r1;
 
         staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("SystemClock", "Unable to set RTC", e#2);
 

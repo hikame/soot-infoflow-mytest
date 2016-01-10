@@ -114,7 +114,7 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 												
 					// Notify the handler if we have one
 					if (taintPropagationHandler != null)
-						taintPropagationHandler.notifyFlowIn(stmt, source, interproceduralCFG(),
+						source = taintPropagationHandler.notifyFlowIn(stmt, source, interproceduralCFG(),
 								FlowFunctionType.NormalFlowFunction);
 					
 					// Compute the new abstractions
@@ -476,7 +476,7 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 						
 						// Notify the handler if we have one
 						if (taintPropagationHandler != null)
-							taintPropagationHandler.notifyFlowIn(stmt, source, interproceduralCFG(),
+							source = taintPropagationHandler.notifyFlowIn(stmt, source, interproceduralCFG(),
 									FlowFunctionType.CallFlowFunction);
 						
 						ByReferenceBoolean killAll = new ByReferenceBoolean();
@@ -552,7 +552,7 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 						
 						// Notify the handler if we have one
 						if (taintPropagationHandler != null)
-								taintPropagationHandler.notifyFlowIn(exitStmt, source, interproceduralCFG(),
+							source = taintPropagationHandler.notifyFlowIn(exitStmt, source, interproceduralCFG(),
 										FlowFunctionType.ReturnFlowFunction);
 						
 						boolean callerD1sConditional = false;
@@ -766,7 +766,7 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 						
 						// Notify the handler if we have one
 						if (taintPropagationHandler != null)
-							taintPropagationHandler.notifyFlowIn(call, source, interproceduralCFG(),
+							source = taintPropagationHandler.notifyFlowIn(call, source, interproceduralCFG(),
 									FlowFunctionType.CallToReturnFlowFunction);
 						
 						// Static field tracking can be disabled

@@ -25,7 +25,7 @@ public interface TaintPropagationHandler {
 		ReturnFlowFunction
 	}
 
-	/**
+	/** Changed by Kame Wang
 	 * Handler function that is invoked when a taint is proagated in the data
 	 * flow engine
 	 * 并且不论是正向还是反向都会调用。
@@ -35,7 +35,7 @@ public interface TaintPropagationHandler {
 	 * method
 	 * @param type The type of data flow edge being processed
 	 */
-	public void notifyFlowIn
+	public Abstraction notifyFlowIn
 			(Unit stmt,
 			Abstraction taint,
 			IInfoflowCFG cfg,

@@ -123,24 +123,24 @@ public final class android.os.Looper extends java.lang.Object
         long ident, newIdent;
         android.os.Message msg;
         android.util.Printer logging;
-        android.os.Handler $r0, $r9, $r21, $r29;
+        android.os.Handler $r0, $r10, $r19, $r27;
         byte $b1;
-        java.lang.StringBuilder $r1, $r2, $r4, $r5, $r7, $r8, $r12, $r13, $r15, $r16, $r17, $r19, $r20, $r22, $r23, $r25, $r27, $r28, $r30, $r31, $r33, $r34, $r35;
-        java.lang.String $r3, $r6, $r11, $r18, $r26, $r36;
-        java.lang.Class $r10;
-        java.lang.Runnable $r14, $r24, $r32;
-        int $i2, $i4;
-        java.lang.RuntimeException $r37;
+        java.lang.StringBuilder $r1, $r2, $r3, $r6, $r7, $r8, $r11, $r14, $r15, $r16, $r18, $r20, $r21, $r22, $r23, $r25, $r28, $r29, $r30, $r31, $r32, $r34, $r37;
+        java.lang.String $r4, $r5, $r12, $r17, $r24, $r36;
+        java.lang.Class $r9;
+        java.lang.Runnable $r13, $r26, $r33;
+        int $i3, $i4;
+        java.lang.RuntimeException $r35;
 
         me = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
 
         if me != null goto label1;
 
-        $r37 = new java.lang.RuntimeException;
+        $r35 = new java.lang.RuntimeException;
 
-        specialinvoke $r37.<java.lang.RuntimeException: void <init>(java.lang.String)>("No Looper; Looper.prepare() wasn\'t called on this thread.");
+        specialinvoke $r35.<java.lang.RuntimeException: void <init>(java.lang.String)>("No Looper; Looper.prepare() wasn\'t called on this thread.");
 
-        throw $r37;
+        throw $r35;
 
      label1:
         queue = me.<android.os.Looper: android.os.MessageQueue mQueue>;
@@ -161,29 +161,29 @@ public final class android.os.Looper extends java.lang.Object
 
         if logging == null goto label4;
 
-        $r27 = new java.lang.StringBuilder;
+        $r29 = new java.lang.StringBuilder;
 
-        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r29.<java.lang.StringBuilder: void <init>()>();
 
-        $r28 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">>>>> Dispatching to ");
+        $r30 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">>>>> Dispatching to ");
 
-        $r29 = msg.<android.os.Message: android.os.Handler target>;
+        $r27 = msg.<android.os.Message: android.os.Handler target>;
 
-        $r30 = virtualinvoke $r28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r29);
+        $r28 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r27);
 
-        $r31 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+        $r34 = virtualinvoke $r28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
 
-        $r32 = msg.<android.os.Message: java.lang.Runnable callback>;
+        $r33 = msg.<android.os.Message: java.lang.Runnable callback>;
 
-        $r33 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r32);
+        $r32 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r33);
 
-        $r34 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+        $r31 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
 
         $i4 = msg.<android.os.Message: int what>;
 
-        $r35 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i4);
+        $r37 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i4);
 
-        $r36 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r36 = virtualinvoke $r37.<java.lang.StringBuilder: java.lang.String toString()>();
 
         interfaceinvoke logging.<android.util.Printer: void println(java.lang.String)>($r36);
 
@@ -194,25 +194,25 @@ public final class android.os.Looper extends java.lang.Object
 
         if logging == null goto label5;
 
-        $r19 = new java.lang.StringBuilder;
+        $r21 = new java.lang.StringBuilder;
 
-        specialinvoke $r19.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r21.<java.lang.StringBuilder: void <init>()>();
 
-        $r20 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("<<<<< Finished to ");
+        $r22 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("<<<<< Finished to ");
 
-        $r21 = msg.<android.os.Message: android.os.Handler target>;
+        $r19 = msg.<android.os.Message: android.os.Handler target>;
 
-        $r22 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r21);
+        $r20 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r19);
 
-        $r23 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+        $r25 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
 
-        $r24 = msg.<android.os.Message: java.lang.Runnable callback>;
+        $r26 = msg.<android.os.Message: java.lang.Runnable callback>;
 
-        $r25 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r24);
+        $r23 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r26);
 
-        $r26 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r24 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        interfaceinvoke logging.<android.util.Printer: void println(java.lang.String)>($r26);
+        interfaceinvoke logging.<android.util.Printer: void println(java.lang.String)>($r24);
 
      label5:
         newIdent = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
@@ -227,41 +227,41 @@ public final class android.os.Looper extends java.lang.Object
 
         $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Thread identity changed from 0x");
 
-        $r3 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>(ident);
+        $r4 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>(ident);
 
-        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
 
-        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to 0x");
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to 0x");
 
-        $r6 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>(newIdent);
+        $r5 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>(newIdent);
 
-        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
 
-        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" while dispatching to ");
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" while dispatching to ");
 
-        $r9 = msg.<android.os.Message: android.os.Handler target>;
+        $r10 = msg.<android.os.Message: android.os.Handler target>;
 
-        $r10 = virtualinvoke $r9.<java.lang.Object: java.lang.Class getClass()>();
+        $r9 = virtualinvoke $r10.<java.lang.Object: java.lang.Class getClass()>();
 
-        $r11 = virtualinvoke $r10.<java.lang.Class: java.lang.String getName()>();
+        $r12 = virtualinvoke $r9.<java.lang.Class: java.lang.String getName()>();
 
-        $r12 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r11);
+        $r11 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r12);
 
-        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+        $r14 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
 
-        $r14 = msg.<android.os.Message: java.lang.Runnable callback>;
+        $r13 = msg.<android.os.Message: java.lang.Runnable callback>;
 
-        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r14);
+        $r16 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r13);
 
-        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" what=");
+        $r15 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" what=");
 
-        $i2 = msg.<android.os.Message: int what>;
+        $i3 = msg.<android.os.Message: int what>;
 
-        $r17 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r18 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
 
-        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r17 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String)>("Looper", $r18);
+        staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String)>("Looper", $r17);
 
      label6:
         virtualinvoke msg.<android.os.Message: void recycleUnchecked()>();

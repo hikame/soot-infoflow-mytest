@@ -161,7 +161,7 @@ public class MyInfoFlowAnalyze {
 				aliasingStrategy, zeroValue);
 		
 		taintPropagationHandler.generateAliasing(aliasingStrategy, iCfg);
-		
+		taintPropagationHandler.setMemoryManager(memoryManager);
 		// Set the options
 		InfoflowSolver forwardSolver = new InfoflowSolver(forwardProblem, executor);
 		aliasingStrategy.setForwardSolver(forwardSolver);

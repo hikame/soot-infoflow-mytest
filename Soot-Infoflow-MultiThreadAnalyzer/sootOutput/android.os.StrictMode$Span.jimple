@@ -40,10 +40,10 @@ public class android.os.StrictMode$Span extends java.lang.Object
         android.os.StrictMode$Span this, $r2, $r3, $r4, $r5, $r13, $r14, $r15, $r16, $r17;
         android.os.StrictMode$ThreadSpanState state, l2;
         java.lang.Throwable l3, $r18;
-        java.lang.String $r1, $r8, $r12;
+        java.lang.String $r1, $r9, $r11;
         int $i0, $i1, $i2, $i3, $i4, $i5;
         boolean $z0;
-        java.lang.StringBuilder $r6, $r7, $r9, $r10, $r11;
+        java.lang.StringBuilder $r6, $r7, $r8, $r10, $r12;
 
         this := @this: android.os.StrictMode$Span;
 
@@ -68,22 +68,22 @@ public class android.os.StrictMode$Span extends java.lang.Object
 
         if $r2 == null goto label04;
 
-        $r17 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mPrev>;
+        $r16 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mPrev>;
 
-        $r16 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mNext>;
+        $r17 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mNext>;
 
-        $r17.<android.os.StrictMode$Span: android.os.StrictMode$Span mNext> = $r16;
+        $r16.<android.os.StrictMode$Span: android.os.StrictMode$Span mNext> = $r17;
 
      label04:
         $r3 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mNext>;
 
         if $r3 == null goto label05;
 
-        $r15 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mNext>;
+        $r14 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mNext>;
 
-        $r14 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mPrev>;
+        $r15 = this.<android.os.StrictMode$Span: android.os.StrictMode$Span mPrev>;
 
-        $r15.<android.os.StrictMode$Span: android.os.StrictMode$Span mPrev> = $r14;
+        $r14.<android.os.StrictMode$Span: android.os.StrictMode$Span mPrev> = $r15;
 
      label05:
         $r4 = state.<android.os.StrictMode$ThreadSpanState: android.os.StrictMode$Span mActiveHead>;
@@ -111,19 +111,19 @@ public class android.os.StrictMode$Span extends java.lang.Object
 
         $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Span finished=");
 
-        $r8 = this.<android.os.StrictMode$Span: java.lang.String mName>;
+        $r9 = this.<android.os.StrictMode$Span: java.lang.String mName>;
 
-        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
 
-        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; size=");
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; size=");
 
         $i5 = state.<android.os.StrictMode$ThreadSpanState: int mActiveSize>;
 
-        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
 
-        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", $r12);
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("StrictMode", $r11);
 
      label07:
         this.<android.os.StrictMode$Span: long mCreateMillis> = -1L;

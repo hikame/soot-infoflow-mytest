@@ -11,7 +11,9 @@
 package soot.jimple.infoflow.data;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import soot.Local;
@@ -21,6 +23,7 @@ import soot.Value;
 import soot.jimple.ArrayRef;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.StaticFieldRef;
+import soot.jimple.Stmt;
 import soot.kame.SourceSinkType;
 import soot.util.ArraySet;
 
@@ -31,6 +34,7 @@ import soot.util.ArraySet;
 public class AccessPath implements Cloneable {	
 	//**********************This is added by Kame Wang, 20160110*****************************
 	Set<SourceSinkType> sourceTypes = new ArraySet<SourceSinkType>();
+	Map<Stmt, Set<SourceSinkType>> sourceTypeReduceMap;
 	
 	public Set<SourceSinkType> getSourceTypes(){
 		return sourceTypes;
@@ -39,7 +43,17 @@ public class AccessPath implements Cloneable {
 	public void setSourceTypes(Set<SourceSinkType> newSet){
 		sourceTypes = newSet;
 	}
-	
+	/**Will never return null.*/
+	public Map<Stmt, Set<SourceSinkType>> getSourceTypeReduceMap(){
+		if(sourceTypeReduceMap == null){
+			sourceTypeReduceMap = new HashMap<Stmt, Set<SourceSinkType>>();
+		}
+		return sourceTypeReduceMap;
+	}
+	/**This may return null.*/
+	public Map<Stmt, Set<SourceSinkType>> getSourceTypeReduceMapDirectly(){
+		return sourceTypeReduceMap;
+	}
 	//**********************The added part is finished.*****************************
 	
 	public enum ArrayTaintType {
@@ -313,6 +327,10 @@ public class AccessPath implements Cloneable {
 		
 		AccessPath a = new AccessPath(value, fields, baseType, fieldTypes,
 				taintSubFields, cutOffApproximation, arrayTaintType);
+		
+		//Added by Kame Wang
+		a.getSourceTypes().addAll(sourceTypes);
+		
 		assert a.equals(this);
 		return a;
 	}
