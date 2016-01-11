@@ -16,6 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity {
+	static String staticTaint;
+	String tainted;
+	String anOtherField;
+	Handler mhandler = new MyHandler();
+	
 	ClassX taintedXField;
 	
 	class ParamClass {
@@ -61,24 +66,30 @@ public class MainActivity extends Activity {
 				new Publisher().publish(tainted);
 				break;
 			case FIELD_NP:
-				try {
-					tainted.equals(":");
-					FileReader freader = new FileReader("");
-					freader.read();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-//				} catch (RuntimeException e) {
+//				try {
+//				if(tainted != null)
+//				String l1 = getTainted();
+//				l1.equals(":");
+//				
+				doNull(tainted);
+//					FileReader freader = new FileReader("");
+//					freader.read();
+//				} catch (FileNotFoundException e) {
 //					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+////				} catch (RuntimeException e) {
+////					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
 				break;
 			case OBJ_NP:
 				Object loc = msg.obj;
-				if(loc != null){
-					loc.equals("if");
-	    		}	
-	    		loc.equals("2");
+//				if(loc != null){
+//					loc.equals("if");
+//	    		}	
+//	    		loc.equals("2");
+//				if(loc != null)
+					doNull(loc);
 				break;
 			case NEW_NULL:
 //				if(tainted != null)
@@ -92,6 +103,8 @@ public class MainActivity extends Activity {
 					tainted.equals("");
 				break;
 				
+			case STATIC_FIELD_NULL:
+				staticTaint.equals("");
 				//------------------
 //				ClassX objx = new ClassX();
 //				objx.objY = null;
@@ -106,7 +119,20 @@ public class MainActivity extends Activity {
 			}
 	     }
 	     
-	     private void letsDoNP(Object orz) throws IOException  {
+	     private String getTainted() {
+	    	 if(tainted != null)
+	    		 return tainted;
+	    	 else
+	    		 return "";
+		}
+
+		private void doNull(Object myobj) {
+//			if(myobj != null)
+				tainted.equals("");
+				
+		}
+
+		private void letsDoNP(Object orz) throws IOException  {
 
 		    	 File orzF = new File(orz.toString());
 		    	 FileWriter orgFW = null;
@@ -139,10 +165,9 @@ public class MainActivity extends Activity {
 	private static final int OBJ_NP = 5;
 	private static final int FIELD_NP = 6;
 	private static final int NEW_NULL = 7;
+	private static final int STATIC_FIELD_NULL = 8;
 	
-	String tainted;
-	String anOtherField;
-	Handler mhandler = new MyHandler();
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -155,40 +180,19 @@ public class MainActivity extends Activity {
 	
 //	private void testHandlerSendMSG(String s0, String s1) {
 	private void testHandlerSendMSG(String s0) {
-		Message msg = mhandler.obtainMessage(OBJ_NP);
-		msg.obj = s0;
-   	 	tainted = null;
-		mhandler.sendMessage(msg);
-		
-//		Message msg = mhandler.obtainMessage(FIELD_NP);
-//		tainted = s0;
-//		
-////		Message msg = mhandler.obtainMessage(OBJ_NP);
-////		msg.obj = s0;
-//		
-//		mhandler.sendMessage(msg);
-		
-		//		Message msg = mhandler.obtainMessage(OBJTEST);
+//		Message msg = mhandler.obtainMessage(STATIC_FIELD_NULL);
 //		msg.obj = s0;
+//		if(msg.obj != null)
+//			staticTaint = s0;
 //		mhandler.sendMessage(msg);
+		
 
-//		Message msg = mhandler.obtainMessage(FIELD_NP);
-//		tainted = s0;
-////		msg.obj = s1;
-//		mhandler.sendMessage(msg);
-		
-//		Message msg = mhandler.obtainMessage(TEST_MSG);
-//		ClassX objX = new ClassX();
-//		ClassY objY_Local = new ClassY();
-//		objX.objY = objY_Local;
-//		objY_Local.tainted = s0;
-//		msg.obj = objX;
-//		mhandler.sendMessage(msg);
-		
-		
-//		Message msg = mhandler.obtainMessage(ANOTHER);
-//		tainted = s1;
-//		mhandler.sendMessage(msg);
+		Message msg = mhandler.obtainMessage(FIELD_NP);
+//		msg.obj = s0;
+//		if(msg.obj != null)
+			
+		mhandler.sendMessage(msg);
+		tainted = s0;
 	}
 
 	private void doSink() {

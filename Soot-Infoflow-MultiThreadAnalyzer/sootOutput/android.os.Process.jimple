@@ -650,15 +650,15 @@ public class android.os.Process extends java.lang.Object
         goto label04;
 
      label03:
-        $r15 := @caughtexception;
+        $r16 := @caughtexception;
 
-        ioe#1 = $r15;
+        ioe#1 = $r16;
 
-        $r17 = new android.os.ZygoteStartFailedEx;
+        $r18 = new android.os.ZygoteStartFailedEx;
 
-        specialinvoke $r17.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to primary zygote", ioe#1);
+        specialinvoke $r18.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to primary zygote", ioe#1);
 
-        throw $r17;
+        throw $r18;
 
      label04:
         $r2 = <android.os.Process: android.os.Process$ZygoteState primaryZygoteState>;
@@ -691,15 +691,15 @@ public class android.os.Process extends java.lang.Object
         goto label09;
 
      label08:
-        $r16 := @caughtexception;
+        $r15 := @caughtexception;
 
-        ioe#2 = $r16;
+        ioe#2 = $r15;
 
-        $r18 = new android.os.ZygoteStartFailedEx;
+        $r17 = new android.os.ZygoteStartFailedEx;
 
-        specialinvoke $r18.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to secondary zygote", ioe#2);
+        specialinvoke $r17.<android.os.ZygoteStartFailedEx: void <init>(java.lang.String,java.lang.Throwable)>("Error connecting to secondary zygote", ioe#2);
 
-        throw $r18;
+        throw $r17;
 
      label09:
         $r5 = <android.os.Process: android.os.Process$ZygoteState secondaryZygoteState>;

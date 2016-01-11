@@ -95,9 +95,9 @@ public class android.os.Process$ZygoteState extends java.lang.Object
         goto label8;
 
      label3:
-        $r15 := @caughtexception;
+        $r16 := @caughtexception;
 
-        ex#5 = $r15;
+        ex#5 = $r16;
 
      label4:
         virtualinvoke zygoteSocket.<android.net.LocalSocket: void close()>();
@@ -106,7 +106,7 @@ public class android.os.Process$ZygoteState extends java.lang.Object
         goto label7;
 
      label6:
-        $r16 := @caughtexception;
+        $r15 := @caughtexception;
 
      label7:
         throw ex#5;

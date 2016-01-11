@@ -1254,12 +1254,12 @@ public final class android.os.StrictMode extends java.lang.Object
     public static void onVmPolicyViolation(java.lang.String, java.lang.Throwable, boolean)
     {
         java.lang.String message;
-        java.lang.Throwable originStack, l17, $r12, $r14, savedPolicyMask#7;
+        java.lang.Throwable originStack, l17, $r12, $r13, savedPolicyMask#7;
         boolean forceDeath, penaltyDropbox, penaltyDeath, penaltyLog, $z0, $z1, $z2, $z3;
         android.os.StrictMode$ViolationInfo info, $r0;
         java.lang.Integer fingerprint;
         long now, lastViolationTime#4, timeSinceLastViolationMillis#5;
-        android.os.RemoteException e, $r13;
+        android.os.RemoteException e, $r14;
         int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i12, violationMaskSubset#8, savedPolicyMask#9;
         java.util.HashMap $r1, $r2, $r7, $r8, violationMaskSubset#6;
         byte $b10, $b11, $b13;
@@ -1448,9 +1448,9 @@ public final class android.os.StrictMode extends java.lang.Object
         goto label23;
 
      label19:
-        $r13 := @caughtexception;
+        $r14 := @caughtexception;
 
-        e = $r13;
+        e = $r14;
 
         staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("StrictMode", "RemoteException trying to handle StrictMode violation", e);
 
@@ -1460,9 +1460,9 @@ public final class android.os.StrictMode extends java.lang.Object
         goto label23;
 
      label21:
-        $r14 := @caughtexception;
+        $r13 := @caughtexception;
 
-        l17 = $r14;
+        l17 = $r13;
 
      label22:
         staticinvoke <android.os.StrictMode: void setThreadPolicyMask(int)>(savedPolicyMask#9);

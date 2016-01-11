@@ -256,7 +256,6 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		final D d2 = edge.factAtTarget();
 		assert d2 != null;
 		Collection<N> returnSiteNs = icfg.getReturnSitesOfCallAt(n);
-		
 		//for each possible callee
 		Collection<M> callees = icfg.getCalleesOfCallAt(n);
 		for(M sCalledProcN: callees) { //still line 14
@@ -468,10 +467,18 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		final N n = edge.getTarget(); 
 		final D d2 = edge.factAtTarget();
 		List<N> nlist = icfg.getSuccsOf(n);
+//if(edge.getTarget().toString().equals("$r13 = $r10.<com.kame.tafhd.MainActivity: java.lang.String tainted>") &&
+//		d2.toString().equals("this(com.kame.tafhd.MainActivity$MyHandler) <com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0> <com.kame.tafhd.MainActivity: android.os.Handler mhandler> <com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0> <com.kame.tafhd.MainActivity: java.lang.String tainted> <+length> | >>"))
+if(edge.getTarget().toString().equals("$r13 = $r10.<com.kame.tafhd.MainActivity: java.lang.String tainted>") &&
+		d2.toString().equals("$r10(com.kame.tafhd.MainActivity) <com.kame.tafhd.MainActivity: java.lang.String tainted> <+length> | >>") &&
+		d1.toString().equals("this(com.kame.tafhd.MainActivity$MyHandler) <com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0> <com.kame.tafhd.MainActivity: java.lang.String tainted> <+length> | >>"))
+		edge.toString();
 		for (N m : nlist) {
 			FlowFunction<D> flowFunction = flowFunctions.getNormalFlowFunction(n,m);
 			Set<D> res = computeNormalFlowFunction(flowFunction, d1, d2);
 			for (D d3 : res) {
+//if(d3.toString().startsWith("$r13"))
+//	d3.toString();
 				if (memoryManager != null)
 					d3 = memoryManager.handleGeneratedMemoryObject(d2, d3);
 				if (d3 != null)

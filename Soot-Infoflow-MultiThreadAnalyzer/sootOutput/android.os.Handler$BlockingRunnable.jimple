@@ -22,7 +22,7 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
     public void run()
     {
         android.os.Handler$BlockingRunnable this, l1, l4;
-        java.lang.Throwable l2, l3, l5, $r2, $r3, $r4;
+        java.lang.Throwable l2, l3, l5, $r2, $r3, $r5;
         java.lang.Runnable $r0;
 
         this := @this: android.os.Handler$BlockingRunnable;
@@ -48,9 +48,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label07;
 
      label05:
-        $r3 := @caughtexception;
+        $r2 := @caughtexception;
 
-        l2 = $r3;
+        l2 = $r2;
 
         exitmonitor l1;
 
@@ -61,9 +61,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label15;
 
      label08:
-        $r4 := @caughtexception;
+        $r3 := @caughtexception;
 
-        l3 = $r4;
+        l3 = $r3;
 
      label09:
         l4 = this;
@@ -81,9 +81,9 @@ final class android.os.Handler$BlockingRunnable extends java.lang.Object impleme
         goto label14;
 
      label12:
-        $r2 := @caughtexception;
+        $r5 := @caughtexception;
 
-        l5 = $r2;
+        l5 = $r5;
 
         exitmonitor l4;
 

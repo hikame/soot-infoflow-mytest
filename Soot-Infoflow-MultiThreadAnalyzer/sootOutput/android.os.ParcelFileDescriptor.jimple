@@ -1428,13 +1428,13 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
     {
         java.io.FileDescriptor comm;
         byte[] buf;
-        int status, $i0, $i1, $i2, $i3, n#1;
+        int status, $i0, $i1, $i3, $i4, n#1;
         java.lang.String msg, $r2, $r8, $r14;
         java.nio.ByteOrder $r0;
         android.os.ParcelFileDescriptor$Status $r1, $r3, $r4, $r10, $r16;
-        android.system.ErrnoException $r5, n#2;
-        java.lang.StringBuilder $r6, $r7, $r9, $r11, $r13, $r15;
-        java.io.InterruptedIOException $r12, n#3;
+        java.io.InterruptedIOException $r5, n#3;
+        java.lang.StringBuilder $r6, $r7, $r9, $r12, $r13, $r15;
+        android.system.ErrnoException $r11, n#2;
 
         comm := @parameter0: java.io.FileDescriptor;
 
@@ -1485,49 +1485,26 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         return $r1;
 
      label7:
-        $r5 := @caughtexception;
+        $r11 := @caughtexception;
 
-        n#2 = $r5;
+        n#2 = $r11;
 
-        $i3 = n#2.<android.system.ErrnoException: int errno>;
+        $i4 = n#2.<android.system.ErrnoException: int errno>;
 
-        $i2 = <android.system.OsConstants: int EAGAIN>;
+        $i3 = <android.system.OsConstants: int EAGAIN>;
 
-        if $i3 != $i2 goto label8;
+        if $i4 != $i3 goto label8;
 
         return null;
 
      label8:
-        $r6 = new java.lang.StringBuilder;
+        $r12 = new java.lang.StringBuilder;
 
-        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
 
-        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
 
-        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#2);
-
-        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r8);
-
-        $r10 = new android.os.ParcelFileDescriptor$Status;
-
-        specialinvoke $r10.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(-2);
-
-        return $r10;
-
-     label9:
-        $r12 := @caughtexception;
-
-        n#3 = $r12;
-
-        $r11 = new java.lang.StringBuilder;
-
-        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
-
-        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
-
-        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#3);
+        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#2);
 
         $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
 
@@ -1538,6 +1515,29 @@ public class android.os.ParcelFileDescriptor extends java.lang.Object implements
         specialinvoke $r16.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(-2);
 
         return $r16;
+
+     label9:
+        $r5 := @caughtexception;
+
+        n#3 = $r5;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read status; assuming dead: ");
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(n#3);
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ParcelFileDescriptor", $r8);
+
+        $r10 = new android.os.ParcelFileDescriptor$Status;
+
+        specialinvoke $r10.<android.os.ParcelFileDescriptor$Status: void <init>(int)>(-2);
+
+        return $r10;
 
         catch android.system.ErrnoException from label1 to label2 with label7;
         catch android.system.ErrnoException from label3 to label4 with label7;

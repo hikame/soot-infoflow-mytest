@@ -244,6 +244,8 @@ public class MyHandlerHandler {
 	}
 	
 	private void addTraps() {
+		if(orgTraps == null || orgTraps.isEmpty())
+			return;
 		Chain<Trap> newTrapChain = new HashChain<Trap>();
 		int count = 0;
 		for(Trap orgTrap = orgTraps.getFirst(); orgTrap != null; orgTrap = orgTraps.getSuccOf(orgTrap)){
@@ -326,10 +328,16 @@ public class MyHandlerHandler {
 		PatchingChain<Unit> unitsChain = myHandler.getActiveBody().getUnits(); 	
 		if(u instanceof InvokeStmt){	//当时方法调用语句时，对call graph进行处理
 			InvokeExpr invokeExpr = ((InvokeStmt) u).getInvokeExpr();
-			SootMethod tgt = invokeExpr.getMethod();
-			Kind kind = Edge.ieToKind(invokeExpr);
-			Edge newEdge = new Edge(myHandler, newUnit, tgt, kind);
-			cg.addEdge(newEdge);
+			modifyCallGraph(invokeExpr, newUnit);
+		}
+		else if(u instanceof AssignStmt){
+			Value rightValue = ((AssignStmt) u).getRightOp();
+			if(rightValue.toString().equals(jifr.toString()))
+				whats.add(((AssignStmt)u).getLeftOp());
+			if(rightValue instanceof InvokeExpr){
+				InvokeExpr invokeExpr = (InvokeExpr) rightValue;
+				modifyCallGraph(invokeExpr, newUnit);
+			}
 		}
 		else if(u instanceof GotoStmt){		
 			Unit target = ((GotoStmt) u).getTarget();
@@ -354,8 +362,6 @@ public class MyHandlerHandler {
 				((TableSwitchStmt) newUnit).setTarget(i, newTarget);
 			}
 		}	
-		else if((u instanceof AssignStmt) && ((AssignStmt) u).getRightOp().toString().equals(jifr.toString()))
-			whats.add(((AssignStmt)u).getLeftOp());
 		if(preUnit == null)
 			unitsChain.add(newUnit);
 		else
@@ -363,6 +369,13 @@ public class MyHandlerHandler {
 		
 		checkForTraps(u, newUnit);
 		return newUnit;
+	}
+
+	private void modifyCallGraph(InvokeExpr invokeExpr, Unit newUnit) {
+		SootMethod tgt = invokeExpr.getMethod();
+		Kind kind = Edge.ieToKind(invokeExpr);
+		Edge newEdge = new Edge(myHandler, newUnit, tgt, kind);
+		cg.addEdge(newEdge);
 	}
 
 	private void checkForTraps(Unit u, Unit newUnit) {

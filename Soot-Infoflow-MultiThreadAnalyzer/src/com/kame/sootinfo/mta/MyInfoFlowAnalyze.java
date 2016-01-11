@@ -113,7 +113,6 @@ public class MyInfoFlowAnalyze {
 			ssm = is;
 			taintWrapper = tw;
 			nativeCallHandler = nch;
-			//TODO 实现我们自己的propagation，实现对于MyStmtTag中的各个value的可能source类型的传递，及存在数据检查时的处理
 			taintPropagationHandler = new MyTaintPropagationHandler();
 	}
 	
@@ -295,8 +294,6 @@ public class MyInfoFlowAnalyze {
 			interestingSources = new HashSet<ResultSourceInfo>(interestingSources);
 			if(interestingSources == null || interestingSources.isEmpty())
 				continue;
-			if(checkForSourceSinkTypeMatch(sink, interestingSources).isEmpty())
-				continue;
 			if(checkForMultiThread(sink, interestingSources).isEmpty())
 				continue;
 			Map<ResultSourceInfo, Set<SootClass>> scExMap = checkForExceptionHandler(sink, interestingSources);
@@ -305,8 +302,6 @@ public class MyInfoFlowAnalyze {
 				continue;
 			}
 			if(scExMap.isEmpty())
-				continue;
-			if(checkForPreExceptionChecker(sink, scExMap).isEmpty())	//结果会直接反应到scExMap中	
 				continue;
 			
 			logger.info("[KM-Results] The sink {} in method {} was called with values from the following sources:",
@@ -323,25 +318,6 @@ public class MyInfoFlowAnalyze {
 		
 		maxMemoryConsumption = Math.max(maxMemoryConsumption, getUsedMemory());
 		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");
-	}
-
-	/**用来检查source和sink的type是否匹配，然而在引入了对于Abstraction的tag方案后，这种检查看似是不必要的了。
-	 * TODO remove this!*/
-	private Set<ResultSourceInfo> checkForSourceSinkTypeMatch(ResultSinkInfo sink, Set<ResultSourceInfo> interestingSources) {
-//		MyAbstractionTag sinkTag = (MyAbstractionTag) sink.getSink().getTag(MyAbstractionTag.class.getSimpleName());
-//		String sinkTypes = sinkTag.getSourceSinkType();
-//		for(Object obj : interestingSources.toArray()){
-//			ResultSourceInfo rsi = (ResultSourceInfo) obj;
-//			Stmt sourceStmt = rsi.getSource();
-//			MyAbstractionTag sourceTag = (MyAbstractionTag) sourceStmt.getTag(MyAbstractionTag.class.getSimpleName());
-//			if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~
-//				continue;
-//			String sourceType = sourceTag.getSourceSinkType();
-//			if(sinkTypes.contains(";" + sourceType + ";") || sinkTypes.startsWith(sourceType + ";"))
-//				continue;
-//			interestingSources.remove(rsi);
-//		}
-		return interestingSources;
 	}
 
 	private void outputExceptionSinkResults(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) {
@@ -369,110 +345,6 @@ public class MyInfoFlowAnalyze {
 			}
 		}
 	}
-
-	/**check every source and its exceptions one by one to find some pre-check code which can prevent those exceptions.
-	 * TODO This part of work will be implemented by designing the IPathBuilderFactory of forward analysis.
-	 * Every source will be tagged for potential exception types. During the forward analysis.
-	 * If corresponding check for exceptions exits, corresponding source tag will be removed.
-	 * And when my sink manager is called for isSink check, the source types will be considers.*/
-	private Map<ResultSourceInfo, Set<SootClass>> checkForPreExceptionChecker(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) {
-		Set<ResultSourceInfo> sources = scExMap.keySet();
-		for(ResultSourceInfo source : sources){
-			Set<SootClass> exceptions = scExMap.get(source);
-			for(Object obj : exceptions.toArray()){
-				SootClass exc = (SootClass) obj;
-				boolean checked = false;
-				String clsName = exc.getName();
-				switch(SourceSinkType.valueOf(SourceSinkType.class, clsName.substring(clsName.lastIndexOf(".") + 1))){
-					case NullPointerException:	//TODO only nullpointer by now.
-//						checked = checkNullPointerPrechecker(source, sink);
-						break;
-					default:
-						break;
-				}
-				if(checked){
-					exceptions.remove(exc);
-					if(exceptions.isEmpty())
-						scExMap.remove(source);
-				}	
-			}
-		}
-		return scExMap;
-	}
-
-
-//	private boolean checkNullPointerPrechecker(ResultSourceInfo source, ResultSinkInfo sink) {
-//		if(aliasing == null)
-//			aliasing = new Aliasing(aliasingStrategy, iCfg);
-////			return false; 
-//		
-//		AccessPath apSource = source.getAccessPath();
-//		AccessPath apSink = sink.getAccessPath();
-//		if(apSource.isLocal()){
-//			boolean myAlias = aliasing.mayAlias(apSource.getPlainValue(), apSink.getPlainValue()); 
-//""			.toString();;
-//		}
-//		else if(apSource.getFieldCount() > 0){	//我们的source从一开始就是一个field的形式，这通常是由于obj.field = null引起的
-//			SootField sourceFiled = apSource.getFirstField();
-//			//apSink目前看来肯定是一个local类型的值，这是因为不能直接对于一个对象的域进行读写操作
-//			//如果需要，则需要$r0=obj.field进行中转。因此我们需要找到这个sink local对应的obj.field
-//			for(Stmt ap : source.getPath()){
-//				
-//			}
-//		}
-//		
-//		//找到当前方法及其之前的语句中，其所有的别名，以及针对别名的空指针检查
-//		boolean checked = false;
-//		AccessPath sinkedAP = sink.getAccessPath();
-//		Stmt sinkStmt = sink.getSink();
-//		//通过观察生成的jimple代码可以发现，使用obj.field的代码如operateOn(obj.field)，
-//		//都会利用一个临时中间变量来代替obj.field，如$r1 = obj.field.
-//		//因此，下一行中用sinkedAP.getPlainValue()可以有效的代表sink处的污点值，
-//		//而不用关心其内部域的差别情况。
-//		checked = isNullPointerCheckedInMethod(sinkStmt, sinkedAP.getPlainValue());
-//		return checked;
-//	}
-//
-//	private boolean isNullPointerCheckedInMethod(Stmt targetStmt, Local targetLocal) {
-//		List<Unit> preStmts = iCfg.getPredsOf(targetStmt);
-//		Set<Local> als = new HashSet<Local>();
-//		for(int i = 0; i < preStmts.size(); i++){
-//			Stmt preStmt = (Stmt)preStmts.get(i);
-//			if(isNullPointerCheckedInStmt(preStmt, targetLocal, als, targetStmt))
-//				return true;
-//		}
-//		return false;
-//	}
-//
-//	private boolean isNullPointerCheckedInStmt(Stmt stmt, Local targetValue, Set<Local> als, Stmt targetStmt) {
-//		List<ValueBox> valueBoxes = stmt.getUseAndDefBoxes();
-//		for(ValueBox vb : valueBoxes){
-//			Value value = vb.getValue();
-//			if(value instanceof Local)
-//				if(aliasing.mustAlias((Local) value, targetValue, targetStmt))
-//					als.add((Local) value);
-//		}
-//		
-//		if(stmt instanceof IfStmt){
-//			IfStmt ifstmt = (IfStmt) stmt;
-//			Value expr = ifstmt.getCondition();
-//			if(expr instanceof JEqExpr){
-//				Value v1 = ((JEqExpr) expr).getOp1();
-//				Value v2 = ((JEqExpr) expr).getOp2();
-//				NullConstant nc = NullConstant.v();
-//				if((v1.equals(nc) && als.contains(v2)) ||
-//						(v2.equals(nc) && als.contains(v1)))
-//					return true;
-//			}
-//			System.out.println();
-//		}
-//		
-//		for(Unit preStmt : iCfg.getPredsOf(stmt)){
-//			if( isNullPointerCheckedInStmt((Stmt) preStmt, targetValue, als, targetStmt))
-//				return true;
-//		}
-//		return false;
-//	}
 
 	private Map<ResultSourceInfo, Set<SootClass>> checkForExceptionHandler(ResultSinkInfo sink,
 			Set<ResultSourceInfo> intSources) {
@@ -600,8 +472,6 @@ public class MyInfoFlowAnalyze {
 			else if(multiThreadCounter == 0){
 				Stmt sourceStmt = rsi.getSource();
 				MyStmtTag sourceStmtTag = (MyStmtTag)sourceStmt.getTag(MyStmtTag.class.getSimpleName());
-//				if(sourceTag == null)	//代表是来自目标方法的参数作为的source，也就是全局型的~这种情况下是不会存在本身不在主线程的情况的
-//					intSources.remove(rsi);
 				MyInvokeTree invokeTree = getMultiThreadInvokeTree(sourceStmt, true);
 				if(invokeTree.head == null)
 					intSources.remove(rsi);
@@ -642,7 +512,6 @@ public class MyInfoFlowAnalyze {
 		SootMethod sm = null;
 		if(pt instanceof InvokeStmt){
 			tmp = StmtThreadType.StartMultiThread;
-//			sm = iCfg.getCalleesOfCallAt(pt).iterator().next();
 			sm = ((InvokeStmt) pt).getInvokeExpr().getMethod();
 		}
 		else if(iCfg.isExitStmt(pt)){

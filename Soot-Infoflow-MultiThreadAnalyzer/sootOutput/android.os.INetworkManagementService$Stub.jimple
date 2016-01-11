@@ -170,7 +170,7 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
         android.net.UidRange[] _result#112, _result#114;
         android.os.INetworkActivityListener _arg0#120, _arg0#121;
         java.util.ArrayList _result#148;
-        android.os.Parcelable[] tmp$1287248848;
+        android.os.Parcelable[] tmp$627502580;
 
         this := @this: android.os.INetworkManagementService$Stub;
 
@@ -480,9 +480,9 @@ public abstract class android.os.INetworkManagementService$Stub extends android.
 
         virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
 
-        tmp$1287248848 = (android.os.Parcelable[]) _result#20;
+        tmp$627502580 = (android.os.Parcelable[]) _result#20;
 
-        virtualinvoke reply.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$1287248848, 1);
+        virtualinvoke reply.<android.os.Parcel: void writeTypedArray(android.os.Parcelable[],int)>(tmp$627502580, 1);
 
         return 1;
 

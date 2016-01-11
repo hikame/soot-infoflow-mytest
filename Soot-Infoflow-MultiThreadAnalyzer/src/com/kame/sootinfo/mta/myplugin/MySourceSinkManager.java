@@ -64,9 +64,6 @@ public class MySourceSinkManager implements ISourceSinkManager {
 		DefinitionStmt ds = (DefinitionStmt) stmt;
 		
 		if(ds.getRightOp().equals(NullConstant.v())){
-//			需要给污点处添加标签！
-//			MyStmtTag sourceTag = MyStmtTag.getTagFrom(stmt);
-//			sourceTag.getSourceTypes(ds.getLeftOp()).add(SourceSinkType.NullPointerException);
 			Value leftOp = ((DefinitionStmt) stmt).getLeftOp();
 			AccessPath ap = AccessPathFactory.v().createAccessPath(leftOp, false);
 			Set<SourceSinkType> sourceTypes = ap.getSourceTypes();
@@ -96,10 +93,6 @@ public class MySourceSinkManager implements ISourceSinkManager {
 						leftOp, true);
 				Set<SourceSinkType> sourceTypes = ap.getSourceTypes();
 				sourceTypes.addAll(Arrays.asList(SourceSinkType.values()));
-				
-//				MyStmtTag sourceTag = MyStmtTag.getTagFrom(sCallSite);
-//				sourceTag.getSourceTypes(leftOp).addAll(Arrays.asList(SourceSinkType.values()));
-		//System.out.println("[TSrc-" + id + "] [!] This is a source! AP: " + ap);
 				return new SourceInfo(ap);
 	}
 
@@ -119,7 +112,6 @@ public class MySourceSinkManager implements ISourceSinkManager {
 		boolean result = false;
 		List<ValueBox> boxes = stmt.getUseBoxes();
 		for(ValueBox box : boxes){
-//System.out.println(box.toString());
 			Value val = box.getValue();
 			if(val instanceof InstanceInvokeExpr){
 				if(ap == null)

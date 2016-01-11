@@ -4885,19 +4885,19 @@ public final class android.os.Parcel extends java.lang.Object
     {
         android.os.Parcel this;
         java.lang.ClassLoader loader, $r55, parcelableClassLoader#4;
-        java.lang.String name, $r14, $r19, $r20, $r36, $r37, $r40, $r53, $r54;
+        java.lang.String name, $r14, $r19, $r20, $r30, $r39, $r46, $r49, $r51;
         java.util.HashMap l4, $r0, $r1, $r24, $r25, map#1;
         java.lang.Class parcelableClass, creatorType, $r4, $r5, $r26;
         java.lang.reflect.Field f;
-        java.lang.Throwable l10, $r28;
+        java.lang.Throwable l10, $r50;
         java.lang.Object $r2, $r3, $r7;
         boolean $z0, $z1;
         int $i0, $i1;
-        java.lang.StringBuilder $r8, $r10, $r11, $r12, $r13, $r17, $r18, $r22, $r23, $r30, $r31, $r32, $r34, $r38, $r39, $r42, $r44, $r45, $r46, $r48, $r49, $r50, $r51, $r52;
-        android.os.BadParcelableException $r9, $r15, $r16, $r21, $r33, $r43, $r47;
-        java.lang.NoSuchFieldException $r27, parcelableClassLoader#7;
-        java.lang.ClassNotFoundException $r35, parcelableClassLoader#6;
-        java.lang.IllegalAccessException $r41, parcelableClassLoader#5;
+        java.lang.StringBuilder $r8, $r10, $r11, $r12, $r13, $r17, $r18, $r22, $r23, $r27, $r31, $r32, $r33, $r34, $r35, $r37, $r41, $r42, $r43, $r44, $r45, $r47, $r48, $r54;
+        android.os.BadParcelableException $r9, $r15, $r16, $r21, $r36, $r40, $r53;
+        java.lang.IllegalAccessException $r28, parcelableClassLoader#5;
+        java.lang.ClassNotFoundException $r38, parcelableClassLoader#6;
+        java.lang.NoSuchFieldException $r52, parcelableClassLoader#7;
         android.os.Parcelable$Creator creator#2;
 
         this := @this: android.os.Parcel;
@@ -5031,91 +5031,91 @@ public final class android.os.Parcel extends java.lang.Object
         goto label14;
 
      label11:
-        $r41 := @caughtexception;
+        $r28 := @caughtexception;
 
-        parcelableClassLoader#5 = $r41;
+        parcelableClassLoader#5 = $r28;
 
-        $r42 = new java.lang.StringBuilder;
+        $r27 = new java.lang.StringBuilder;
 
-        specialinvoke $r42.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
 
-        $r51 = virtualinvoke $r42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal access when unmarshalling: ");
+        $r32 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal access when unmarshalling: ");
 
-        $r52 = virtualinvoke $r51.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r31 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r53 = virtualinvoke $r52.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r30 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r53, parcelableClassLoader#5);
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r30, parcelableClassLoader#5);
 
-        $r47 = new android.os.BadParcelableException;
+        $r36 = new android.os.BadParcelableException;
 
-        $r48 = new java.lang.StringBuilder;
+        $r35 = new java.lang.StringBuilder;
 
-        specialinvoke $r48.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r35.<java.lang.StringBuilder: void <init>()>();
 
-        $r49 = virtualinvoke $r48.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IllegalAccessException when unmarshalling: ");
+        $r34 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IllegalAccessException when unmarshalling: ");
 
-        $r50 = virtualinvoke $r49.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r33 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r54 = virtualinvoke $r50.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r39 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r47.<android.os.BadParcelableException: void <init>(java.lang.String)>($r54);
+        specialinvoke $r36.<android.os.BadParcelableException: void <init>(java.lang.String)>($r39);
 
-        throw $r47;
+        throw $r36;
 
      label12:
-        $r35 := @caughtexception;
+        $r38 := @caughtexception;
 
-        parcelableClassLoader#6 = $r35;
+        parcelableClassLoader#6 = $r38;
 
-        $r34 = new java.lang.StringBuilder;
+        $r37 = new java.lang.StringBuilder;
 
-        specialinvoke $r34.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r37.<java.lang.StringBuilder: void <init>()>();
 
-        $r39 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Class not found when unmarshalling: ");
+        $r44 = virtualinvoke $r37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Class not found when unmarshalling: ");
 
-        $r38 = virtualinvoke $r39.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r45 = virtualinvoke $r44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r37 = virtualinvoke $r38.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r46 = virtualinvoke $r45.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r37, parcelableClassLoader#6);
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("Parcel", $r46, parcelableClassLoader#6);
 
-        $r43 = new android.os.BadParcelableException;
+        $r40 = new android.os.BadParcelableException;
 
-        $r44 = new java.lang.StringBuilder;
+        $r41 = new java.lang.StringBuilder;
 
-        specialinvoke $r44.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r41.<java.lang.StringBuilder: void <init>()>();
 
-        $r45 = virtualinvoke $r44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ClassNotFoundException when unmarshalling: ");
+        $r42 = virtualinvoke $r41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ClassNotFoundException when unmarshalling: ");
 
-        $r46 = virtualinvoke $r45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r43 = virtualinvoke $r42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r40 = virtualinvoke $r46.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r51 = virtualinvoke $r43.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r43.<android.os.BadParcelableException: void <init>(java.lang.String)>($r40);
+        specialinvoke $r40.<android.os.BadParcelableException: void <init>(java.lang.String)>($r51);
 
-        throw $r43;
+        throw $r40;
 
      label13:
-        $r27 := @caughtexception;
+        $r52 := @caughtexception;
 
-        parcelableClassLoader#7 = $r27;
+        parcelableClassLoader#7 = $r52;
 
-        $r33 = new android.os.BadParcelableException;
+        $r53 = new android.os.BadParcelableException;
 
-        $r32 = new java.lang.StringBuilder;
+        $r54 = new java.lang.StringBuilder;
 
-        specialinvoke $r32.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r54.<java.lang.StringBuilder: void <init>()>();
 
-        $r31 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a Parcelable.Creator object called CREATOR on class ");
+        $r47 = virtualinvoke $r54.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable protocol requires a Parcelable.Creator object called CREATOR on class ");
 
-        $r30 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r48 = virtualinvoke $r47.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
-        $r36 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r49 = virtualinvoke $r48.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r33.<android.os.BadParcelableException: void <init>(java.lang.String)>($r36);
+        specialinvoke $r53.<android.os.BadParcelableException: void <init>(java.lang.String)>($r49);
 
-        throw $r33;
+        throw $r53;
 
      label14:
         if creator#2 != null goto label15;
@@ -5146,9 +5146,9 @@ public final class android.os.Parcel extends java.lang.Object
         goto label20;
 
      label18:
-        $r28 := @caughtexception;
+        $r50 := @caughtexception;
 
-        l10 = $r28;
+        l10 = $r50;
 
         exitmonitor l4;
 
@@ -5225,10 +5225,10 @@ public final class android.os.Parcel extends java.lang.Object
         android.os.Parcel$2 $r1, ois#1;
         java.lang.Object $r2;
         java.io.Serializable $r3;
-        java.io.IOException $r4, ois#2;
+        java.lang.ClassNotFoundException $r4, ois#3;
         java.lang.RuntimeException $r5, $r13;
         java.lang.StringBuilder $r6, $r7, $r8, $r9, $r12, $r14, $r15, $r17;
-        java.lang.ClassNotFoundException $r10, ois#3;
+        java.io.IOException $r10, ois#2;
 
         this := @this: android.os.Parcel;
 
@@ -5264,32 +5264,9 @@ public final class android.os.Parcel extends java.lang.Object
         return $r3;
 
      label4:
-        $r4 := @caughtexception;
-
-        ois#2 = $r4;
-
-        $r5 = new java.lang.RuntimeException;
-
-        $r6 = new java.lang.StringBuilder;
-
-        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
-
-        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered IOException reading a Serializable object (name = ");
-
-        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
-
-        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
-
-        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r11, ois#2);
-
-        throw $r5;
-
-     label5:
         $r10 := @caughtexception;
 
-        ois#3 = $r10;
+        ois#2 = $r10;
 
         $r13 = new java.lang.RuntimeException;
 
@@ -5297,7 +5274,7 @@ public final class android.os.Parcel extends java.lang.Object
 
         specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
 
-        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered ClassNotFoundException reading a Serializable object (name = ");
+        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered IOException reading a Serializable object (name = ");
 
         $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
 
@@ -5305,9 +5282,32 @@ public final class android.os.Parcel extends java.lang.Object
 
         $r16 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        specialinvoke $r13.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r16, ois#3);
+        specialinvoke $r13.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r16, ois#2);
 
         throw $r13;
+
+     label5:
+        $r4 := @caughtexception;
+
+        ois#3 = $r4;
+
+        $r5 = new java.lang.RuntimeException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parcelable encountered ClassNotFoundException reading a Serializable object (name = ");
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r11, ois#3);
+
+        throw $r5;
 
         catch java.io.IOException from label2 to label3 with label4;
         catch java.lang.ClassNotFoundException from label2 to label3 with label5;

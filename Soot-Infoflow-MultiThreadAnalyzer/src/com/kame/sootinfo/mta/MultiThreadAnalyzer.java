@@ -162,14 +162,6 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 			//重新构造
 			myCFGPaerser.start();
 		}
-//		
-//SootMethod sm = Scene.v().getMethod("<dummyMainClass: void dummyMainMethod(java.lang.String[])>");
-//Collection<Unit> col = myCFGPaerser.getInfoflowCFG().getCallersOf(sm);
-//for(Object obj : col.toArray()){
-//	System.out.println(obj);
-//}
-//		
-		//Information
 		myInfoFlowAnalyze.start(myCFGPaerser.getInfoflowCFG());
 	}
 
