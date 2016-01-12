@@ -8,6 +8,7 @@ import com.kame.sootinfo.mta.tags.MyStmtTag;
 
 import heros.InterproceduralCFG;
 import soot.Local;
+import soot.PrimType;
 import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
@@ -93,6 +94,8 @@ public class MySourceSinkManager implements ISourceSinkManager {
 						leftOp, true);
 				Set<SourceSinkType> sourceTypes = ap.getSourceTypes();
 				sourceTypes.addAll(Arrays.asList(SourceSinkType.values()));
+				if(leftOp.getType() instanceof PrimType)
+					sourceTypes.remove(SourceSinkType.NullPointerException);
 				return new SourceInfo(ap);
 	}
 

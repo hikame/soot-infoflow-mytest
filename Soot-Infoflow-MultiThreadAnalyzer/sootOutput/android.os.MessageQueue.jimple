@@ -604,9 +604,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label09;
 
      label07:
-        $r10 := @caughtexception;
+        $r9 := @caughtexception;
 
-        l8#4 = $r10;
+        l8#4 = $r9;
 
         exitmonitor newWatchedEvents#2;
 
@@ -661,9 +661,9 @@ public final class android.os.MessageQueue extends java.lang.Object
         goto label16;
 
      label14:
-        $r9 := @caughtexception;
+        $r10 := @caughtexception;
 
-        l10 = $r9;
+        l10 = $r10;
 
         exitmonitor l8#6;
 

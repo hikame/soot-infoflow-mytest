@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.kame.sootinfo.mta.StrangeException;
+
 import soot.Local;
 import soot.SootField;
 import soot.SootFieldRef;
@@ -54,29 +56,26 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		if(set == null || set.isEmpty())
 			return taint;
 		AccessPath ap = taint.getAccessPath();
-//		ap.getSourceTypes().removeAll(set);
-		
-//		try {
-//			Field field = Abstraction.class.getDeclaredField("accessPath");
-//			boolean org = field.isAccessible();
-//			field.setAccessible(true);
-//			field.set(taint, newAP);
-//			field.setAccessible(org);
-//			taint = memoryManager.handleMemoryObject(taint);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		AccessPath newAP = ap.clone();
 		newAP.getSourceTypes().removeAll(set);
 		Abstraction result = taint.deriveNewAbstraction(newAP, (Stmt) stmt);
 		result = memoryManager.handleGeneratedMemoryObject(taint, result);
-//		taint = memoryManager.handleMemoryObject(tmp);
 		return result;
 	}
 
 	@Override
 	public Set<Abstraction> notifyFlowOut(Unit stmt, Abstraction d1, Abstraction incoming, Set<Abstraction> outgoing,
 			IInfoflowCFG cfg, FlowFunctionType type) {
+		if(outgoing != null){
+			for(Object obj : outgoing.toArray()){
+				Abstraction abs = (Abstraction) obj;
+				if(abs.getAccessPath().getSourceTypes().isEmpty())
+					outgoing.remove(abs);
+			}
+			if(outgoing.isEmpty())
+				return outgoing;
+		}
+		
 		if(type.equals(FlowFunctionType.NormalFlowFunction) && stmt instanceof IfStmt){
 			//我们需要查看if语句是否有关于ap值的检测，如有则在其检测成立后续语句中删除ap中的sourceType
 			if(incoming.getAccessPath().getSourceTypes().contains(SourceSinkType.NullPointerException))
@@ -112,8 +111,10 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 			}
 		}
 		else if(type.equals(FlowFunctionType.CallFlowFunction)){
-			putIntoChildrenMap(incoming, outgoing.iterator().next());
-			if(incoming.getAccessPath().isFieldRef() && incoming.getAccessPath().getPlainValue() != null && outgoing.size() == 1){
+			if(incoming.getAccessPath().isLocal())
+				putIntoChildrenMap(incoming, outgoing.iterator().next());
+			else if(incoming.getAccessPath().isFieldRef() && incoming.getAccessPath().getPlainValue() != null && outgoing.size() == 1){
+				putIntoChildrenMap(incoming, outgoing.iterator().next());
 				Abstraction out = outgoing.iterator().next();
 				synchronized(childrenMap){					
 					Set<Abstraction> children = childrenMap.get(incoming);
@@ -131,6 +132,8 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 	}
 
 	private void putIntoChildrenMap(Abstraction parent, Abstraction newChild) {
+		if(parent.equals(newChild))
+			return;
 		synchronized(childrenMap){
 			Set<Abstraction> children = getMapValueSafely(parent);
 			children.add(newChild);
@@ -152,8 +155,19 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		Stmt targetStmt = null;
 		if(condition instanceof EqExpr){
 			List<Unit> succsUnits = cfg.getSuccsOf(ifstmt);
-			int iftPos = succsUnits.indexOf(ifstmt.getTarget());
-			targetStmt = (Stmt) succsUnits.get(1 - iftPos);
+			if(succsUnits.size() == 1)
+				targetStmt = (Stmt) succsUnits.get(0);
+			else{
+				if(succsUnits.size() == 2){
+					int iftPos = succsUnits.indexOf(ifstmt.getTarget());
+					targetStmt = (Stmt) succsUnits.get(1 - iftPos);
+				}
+				else{
+					Stmt nextUnit = (Stmt) cfg.getMethodOf(ifstmt).getActiveBody().getUnits().getSuccOf(ifstmt);
+					assert succsUnits.contains(nextUnit);
+					targetStmt = nextUnit;
+				}
+			}
 		}
 		else if(condition instanceof NeExpr){
 			targetStmt = ifstmt.getTarget();
@@ -198,14 +212,14 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		if(isAmongChildren(incoming, checkedValue)){
+		if(isAmongChildren(incoming, checkedValue, 0)){
 			extendAPReduceMap(incoming, targetStmt, SourceSinkType.NullPointerException);
 			return true;
 		}
 		return false;
 	}
 
-	private boolean isAmongChildren(Abstraction incoming, Value checkedValue) {
+	private boolean isAmongChildren(Abstraction incoming, Value checkedValue, int depth) {
 		Object[] children = null;
 		synchronized(childrenMap){
 			Set<Abstraction> set = childrenMap.get(incoming);
@@ -221,10 +235,11 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 				return true;
 		}
 		
+		if(depth > 10)	//TODO This is incase of circel of invocation.
+			return false;
 		for(Object obj : children){
 			Abstraction child = (Abstraction) obj;
-System.out.println(String.format("Child-%s, CheckedValue- %s", child.toString(), checkedValue.toString()));
-			if(isAmongChildren(child, checkedValue))
+			if(isAmongChildren(child, checkedValue, depth + 1))
 				return true;
 		}
 		return false;

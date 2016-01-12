@@ -22,13 +22,57 @@ class com.kame.tafhd.MainActivity$MyHandler extends android.os.Handler
     {
         com.kame.tafhd.MainActivity$MyHandler this;
         android.os.Message msg;
-        com.kame.tafhd.Publisher pub, pb, $r0, $r10, $r13, $r18, $r19, $r23;
+        int $i0;
+
+        this := @this: com.kame.tafhd.MainActivity$MyHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $i0 = msg.<android.os.Message: int what>;
+
+        specialinvoke this.<com.kame.tafhd.MainActivity$MyHandler: void myHandler8(int)>($i0);
+
+        return;
+    }
+
+    private void doHandlerMessageBasedOnWhat(int)
+    {
+        com.kame.tafhd.MainActivity$MyHandler this;
+        int wt;
+        java.lang.String $r0;
+
+        this := @this: com.kame.tafhd.MainActivity$MyHandler;
+
+        wt := @parameter0: int;
+
+        tableswitch(wt)
+        {
+            case 8: goto label1;
+            default: goto label2;
+        };
+
+     label1:
+        $r0 = <com.kame.tafhd.MainActivity: java.lang.String staticTaint>;
+
+        virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        goto label2;
+
+     label2:
+        return;
+    }
+
+    private void doHandlerMessage(android.os.Message)
+    {
+        com.kame.tafhd.MainActivity$MyHandler this;
+        android.os.Message msg;
+        com.kame.tafhd.Publisher pub, pb, $r0, $r10, $r15, $r16, $r21, $r23;
         com.kame.tafhd.MainActivity$ClassX x;
-        java.lang.Object loc, $r1, $r17;
+        java.lang.Object loc, $r1, $r19;
         int $i0;
         com.kame.tafhd.MainActivity$ClassY $r2;
-        java.lang.String $r3, $r4, $r6, $r8, $r12, $r14, $r15, $r20, $r21;
-        com.kame.tafhd.MainActivity $r5, $r7, $r9, $r11, $r16, $r22;
+        java.lang.String $r3, $r4, $r6, $r8, $r12, $r13, $r17, $r18, $r22;
+        com.kame.tafhd.MainActivity $r5, $r7, $r9, $r11, $r14, $r20;
 
         this := @this: com.kame.tafhd.MainActivity$MyHandler;
 
@@ -79,50 +123,50 @@ class com.kame.tafhd.MainActivity$MyHandler extends android.os.Handler
         goto label11;
 
      label03:
-        $r19 = new com.kame.tafhd.Publisher;
+        $r21 = new com.kame.tafhd.Publisher;
 
-        specialinvoke $r19.<com.kame.tafhd.Publisher: void <init>()>();
+        specialinvoke $r21.<com.kame.tafhd.Publisher: void <init>()>();
 
-        $r22 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+        $r20 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
 
-        $r21 = $r22.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+        $r22 = $r20.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
 
-        virtualinvoke $r19.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r21);
+        virtualinvoke $r21.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r22);
 
         goto label11;
 
      label04:
-        $r18 = new com.kame.tafhd.Publisher;
+        $r16 = new com.kame.tafhd.Publisher;
 
-        specialinvoke $r18.<com.kame.tafhd.Publisher: void <init>()>();
+        specialinvoke $r16.<com.kame.tafhd.Publisher: void <init>()>();
 
-        $r17 = msg.<android.os.Message: java.lang.Object obj>;
+        $r19 = msg.<android.os.Message: java.lang.Object obj>;
 
-        $r20 = (java.lang.String) $r17;
+        $r18 = (java.lang.String) $r19;
 
-        virtualinvoke $r18.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r20);
+        virtualinvoke $r16.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r18);
 
         goto label11;
 
      label05:
-        $r13 = new com.kame.tafhd.Publisher;
+        $r15 = new com.kame.tafhd.Publisher;
 
-        specialinvoke $r13.<com.kame.tafhd.Publisher: void <init>()>();
+        specialinvoke $r15.<com.kame.tafhd.Publisher: void <init>()>();
 
-        $r16 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
+        $r14 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
 
-        $r15 = $r16.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+        $r17 = $r14.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
 
-        virtualinvoke $r13.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r15);
+        virtualinvoke $r15.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r17);
 
         goto label11;
 
      label06:
         $r11 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
 
-        $r14 = $r11.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+        $r13 = $r11.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
 
-        specialinvoke this.<com.kame.tafhd.MainActivity$MyHandler: void doNull(java.lang.Object)>($r14);
+        virtualinvoke $r13.<java.lang.String: boolean equals(java.lang.Object)>("");
 
         goto label11;
 
@@ -275,29 +319,19 @@ class com.kame.tafhd.MainActivity$MyHandler extends android.os.Handler
         return;
     }
 
-    void myHandler6(android.os.Message)
+    void myHandler8(int)
     {
         com.kame.tafhd.MainActivity$MyHandler this;
-        android.os.Message msg;
-        com.kame.tafhd.Publisher pub, pb, $r0, $r10, $r13, $r18, $r19, $r23;
-        com.kame.tafhd.MainActivity$ClassX x;
-        java.lang.Object loc, $r1, $r17;
-        int $i0;
-        com.kame.tafhd.MainActivity$ClassY $r2;
-        java.lang.String $r3, $r4, $r6, $r8, $r12, $r14, $r15, $r20, $r21;
-        com.kame.tafhd.MainActivity $r5, $r7, $r9, $r11, $r16, $r22;
+        int wt;
+        java.lang.String $r0;
 
         this := @this: com.kame.tafhd.MainActivity$MyHandler;
 
-        msg := @parameter0: android.os.Message;
+        wt := @parameter0: int;
 
-        $i0 = msg.<android.os.Message: int what>;
+        $r0 = <com.kame.tafhd.MainActivity: java.lang.String staticTaint>;
 
-        $r11 = this.<com.kame.tafhd.MainActivity$MyHandler: com.kame.tafhd.MainActivity this$0>;
-
-        $r14 = $r11.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
-
-        specialinvoke this.<com.kame.tafhd.MainActivity$MyHandler: void doNull(java.lang.Object)>($r14);
+        virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>("");
 
         goto label1;
 

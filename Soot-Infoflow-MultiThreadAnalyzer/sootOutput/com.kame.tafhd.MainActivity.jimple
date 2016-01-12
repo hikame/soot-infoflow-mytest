@@ -33,6 +33,8 @@ public class com.kame.tafhd.MainActivity extends android.app.Activity
         return;
     }
 
+    private native void nativeMethod(java.lang.String);
+
     protected void onCreate(android.os.Bundle)
     {
         com.kame.tafhd.MainActivity this;
@@ -71,13 +73,15 @@ public class com.kame.tafhd.MainActivity extends android.app.Activity
 
         $r0 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
 
-        msg = virtualinvoke $r0.<android.os.Handler: android.os.Message obtainMessage(int)>(6);
+        msg = virtualinvoke $r0.<android.os.Handler: android.os.Message obtainMessage(int)>(8);
+
+        msg.<android.os.Message: java.lang.Object obj> = s0;
+
+        <com.kame.tafhd.MainActivity: java.lang.String staticTaint> = s0;
 
         $r1 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
 
-        virtualinvoke $r1.<com.kame.tafhd.MainActivity$MyHandler: void myHandler6(android.os.Message)>(msg);
-
-        this.<com.kame.tafhd.MainActivity: java.lang.String tainted> = s0;
+        virtualinvoke $r1.<android.os.Handler: boolean sendMessage(android.os.Message)>(msg);
 
         return;
     }

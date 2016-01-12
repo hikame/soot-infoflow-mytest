@@ -276,7 +276,7 @@ public class android.os.Handler extends java.lang.Object
 
         specialinvoke result.<android.os.Message: void <init>()>();
 
-        result.<android.os.Message: int what> = 6;
+        result.<android.os.Message: int what> = 8;
 
         result.<android.os.Message: android.os.Handler target> = this;
     }

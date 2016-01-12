@@ -216,8 +216,6 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 					final Value[] rightVals,
 					Abstraction d1,
 					final Abstraction newSource) {
-//if(assignStmt.toString().equals("$r13 = $r10.<com.kame.tafhd.MainActivity: java.lang.String tainted>"))
-//	assignStmt.toString();
 				final Value leftValue = assignStmt.getLeftOp();
 				final Value rightValue = assignStmt.getRightOp();
 				boolean addLeftValue = false;

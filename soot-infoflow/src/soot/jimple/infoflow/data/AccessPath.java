@@ -315,7 +315,8 @@ public class AccessPath implements Cloneable {
 		AccessPath result = AccessPathFactory.v().createAccessPath(val, fields, newType,
 				fieldTypes, this.taintSubFields,
 				cutFirstField, reduceBases, arrayTaintType);
-		result.getSourceTypes().addAll(this.sourceTypes);
+		if(result != null)
+			result.getSourceTypes().addAll(this.sourceTypes);
 		return result;
 	}
 	

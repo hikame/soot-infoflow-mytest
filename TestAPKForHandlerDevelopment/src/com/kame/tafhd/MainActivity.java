@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity {
+	private native void nativeMethod(String param);
+	
 	static String staticTaint;
 	String tainted;
 	String anOtherField;
@@ -46,80 +48,82 @@ public class MainActivity extends Activity {
 //	    	 new Publisher().publish("I am in hanlderMessage()");
 //	    	 if(tainted.length() < 1)
 //	    		 return;
-	    	 
-	    	switch (msg.what) {
-			case TEST_MSG:
-				Publisher pub = new Publisher();
-				ClassX x = (ClassX) msg.obj;
-				pub.publish(x.objY.tainted);
-				break;
-			case UNRELEVANT_MSG:
-				new Publisher().publish("I am in the unrelevent parts.");
-				break;
-			case ANOTHER:
-				new Publisher().publish((String)tainted);
-				break;
-			case OBJ_Publish:
-				new Publisher().publish((String)msg.obj);
-				break;
-			case FIELD_Publish:
-				new Publisher().publish(tainted);
-				break;
-			case FIELD_NP:
-//				try {
-//				if(tainted != null)
-//				String l1 = getTainted();
-//				l1.equals(":");
-//				
-				doNull(tainted);
-//					FileReader freader = new FileReader("");
-//					freader.read();
-//				} catch (FileNotFoundException e) {
-//					e.printStackTrace();
-////				} catch (RuntimeException e) {
-////					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-				break;
-			case OBJ_NP:
-				Object loc = msg.obj;
-//				if(loc != null){
-//					loc.equals("if");
-//	    		}	
-//	    		loc.equals("2");
-//				if(loc != null)
-					doNull(loc);
-				break;
-			case NEW_NULL:
-//				if(tainted != null)
-//					tainted.equals("");
-//		    	 Publisher pb = new Publisher();
-//		    	 pb.publish(tainted);
-				if(tainted != null){
-					Publisher pb = new Publisher();
-			    	 pb.publish(tainted);
-				}
-					tainted.equals("");
-				break;
-				
-			case STATIC_FIELD_NULL:
-				staticTaint.equals("");
-				//------------------
-//				ClassX objx = new ClassX();
-//				objx.objY = null;
-//				objx.fieldString = (String) msg.obj;
-//				objx.equals("");
-//				objx.objY.equals("");
-//				objx.fieldString.equals("");
-//				break;
-				
-			default:
-				break;
-			}
+//	    	 doHandlerMessage(msg.what);
+	    	 doHandlerMessageBasedOnWhat(msg.what);
 	     }
 	     
-	     private String getTainted() {
+	     private void doHandlerMessageBasedOnWhat(int wt) {
+	    	switch (wt) {
+			case STATIC_FIELD_NULL:
+				staticTaint.equals("");
+				break;
+			default:
+				break;
+	    	}
+				
+		}
+
+		private void doHandlerMessage(Message msg) {
+		    	switch (msg.what) {
+				case TEST_MSG:
+					Publisher pub = new Publisher();
+					ClassX x = (ClassX) msg.obj;
+					pub.publish(x.objY.tainted);
+					break;
+				case UNRELEVANT_MSG:
+					new Publisher().publish("I am in the unrelevent parts.");
+					break;
+				case ANOTHER:
+					new Publisher().publish((String)tainted);
+					break;
+				case OBJ_Publish:
+					new Publisher().publish((String)msg.obj);
+					break;
+				case FIELD_Publish:
+					new Publisher().publish(tainted);
+					break;
+				case FIELD_NP:
+					tainted.equals("");
+//					doNull(tainted);
+					break;
+				case OBJ_NP:
+					Object loc = msg.obj;
+//					if(loc != null){
+//						loc.equals("if");
+//		    		}	
+//		    		loc.equals("2");
+//					if(loc != null)
+						doNull(loc);
+					break;
+				case NEW_NULL:
+//					if(tainted != null)
+//						tainted.equals("");
+//			    	 Publisher pb = new Publisher();
+//			    	 pb.publish(tainted);
+					if(tainted != null){
+						Publisher pb = new Publisher();
+				    	 pb.publish(tainted);
+					}
+						tainted.equals("");
+					break;
+					
+				case STATIC_FIELD_NULL:
+					staticTaint.equals("");
+					//------------------
+//					ClassX objx = new ClassX();
+//					objx.objY = null;
+//					objx.fieldString = (String) msg.obj;
+//					objx.equals("");
+//					objx.objY.equals("");
+//					objx.fieldString.equals("");
+//					break;
+					
+				default:
+					break;
+				}
+		}
+
+		private String getTainted() {
 	    	 if(tainted != null)
 	    		 return tainted;
 	    	 else
@@ -167,8 +171,6 @@ public class MainActivity extends Activity {
 	private static final int NEW_NULL = 7;
 	private static final int STATIC_FIELD_NULL = 8;
 	
-
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -180,19 +182,24 @@ public class MainActivity extends Activity {
 	
 //	private void testHandlerSendMSG(String s0, String s1) {
 	private void testHandlerSendMSG(String s0) {
-//		Message msg = mhandler.obtainMessage(STATIC_FIELD_NULL);
-//		msg.obj = s0;
+		Message msg = mhandler.obtainMessage(STATIC_FIELD_NULL);
+//		Message msg = mhandler.obtainMessage(FIELD_NP);
+		msg.obj = s0;
 //		if(msg.obj != null)
-//			staticTaint = s0;
-//		mhandler.sendMessage(msg);
+//		if(s0 != null)
+			staticTaint = s0;
+//			tainted = s0;
+		mhandler.sendMessage(msg);
 		
 
-		Message msg = mhandler.obtainMessage(FIELD_NP);
-//		msg.obj = s0;
-//		if(msg.obj != null)
-			
-		mhandler.sendMessage(msg);
-		tainted = s0;
+//		Message msg = mhandler.obtainMessage(FIELD_NP);
+////		msg.obj = s0;
+////		if(msg.obj != null)
+//		nativeMethod(s0);
+//		mhandler.sendMessage(msg);
+//		tainted = s0;
+//		if(s1 != null)
+//			staticTaint = s1;
 	}
 
 	private void doSink() {

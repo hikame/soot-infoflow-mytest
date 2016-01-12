@@ -44,6 +44,7 @@ public class Main {
 	}
 	
 	public void simpleTest(String s){
+		
 		System.out.println(this.getClass().getName());
 		System.out.println(this.getClass().getSimpleName());
 		

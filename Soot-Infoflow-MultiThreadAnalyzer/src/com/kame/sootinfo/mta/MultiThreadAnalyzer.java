@@ -43,7 +43,8 @@ public class MultiThreadAnalyzer {
 	private ISourceSinkManager ssm = new MySourceSinkManager(true, targetMethodsList, sinksList);		//1. 配置Source、Sink管理器
 	private IIPCManager ipcManager = new MyIPCManager();			//2. 配置IPC管理器
 	private ITaintPropagationWrapper taintWrapper;
-	private INativeCallHandler nativeCallHandler = new DefaultNativeCallHandler();  //5.  The NativeCallHandler defines the taint propagation behavior for native code
+	private INativeCallHandler nativeCallHandler = new DefaultNativeCallHandler();  // TODO I have not added any handling codes.
+																					 // The NativeCallHandler defines the taint propagation behavior for native code
 
 	//一些参数设置
 	private final int accessPathLength = 5;	//InfoFlowConfig.accessPathLength
@@ -80,11 +81,8 @@ public class MultiThreadAnalyzer {
 //		config.setEnableImplicitFlows(true);
 
 		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>");
-//		targetMethodsList.add("<com.kame.tafhd.MainActivity: void testHandlerPost(com.kame.tafhd.MainActivity$ParamClass)>");
-
+//		targetMethodsList.add("<com.android.server.pm.PackageManagerService: android.content.pm.PackageCleanItem nextPackageToClean(android.content.pm.PackageCleanItem)>");
 		sinksList.add("<com.kame.tafhd.Publisher: void publish(java.lang.String)>");
-		
-		
 	}
 	
 	private String constructClasspath() {		
@@ -131,6 +129,7 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 		npList.add("android.os.*");
 		npList.add("com.kame.*");
 		npList.add("android.os.Message");
+		npList.add("android.content.pm.PackageCleanItem");
 	}
 	
 	
