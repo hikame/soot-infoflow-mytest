@@ -443,7 +443,6 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 				final Stmt stmt = (Stmt) src;
 				final InvokeExpr ie = (stmt != null && stmt.containsInvokeExpr())
 						? stmt.getInvokeExpr() : null;
-				
 				final Local[] paramLocals = dest.getActiveBody().getParameterLocals().toArray(
 						new Local[0]);
 				

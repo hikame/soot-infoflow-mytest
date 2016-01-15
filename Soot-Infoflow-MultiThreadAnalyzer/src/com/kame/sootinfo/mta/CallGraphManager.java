@@ -3,6 +3,7 @@ package com.kame.sootinfo.mta;
 import java.util.Collection;
 import java.util.Collections;
 
+import soot.Body;
 import soot.Pack;
 import soot.PackManager;
 import soot.Scene;
@@ -14,24 +15,30 @@ import soot.jimple.infoflow.data.AccessPathFactory;
 import soot.jimple.infoflow.handlers.PreAnalysisHandler;
 import soot.jimple.infoflow.ipc.IIPCManager;
 
-public class MyCGConstructor {
-	private InfoflowConfiguration config;
-	private IIPCManager ipcManager;
+public class CallGraphManager {
+	private CallGraphManager(){}
+	private static CallGraphManager thisOnly;
+
+	static public CallGraphManager v(){
+		if(thisOnly == null){
+			thisOnly = new CallGraphManager();
+		}
+		return thisOnly;
+	}
+	
+	static public CallGraphManager reInit(){
+		thisOnly = new CallGraphManager();
+		return thisOnly;
+	}
+	
+	private InfoflowConfiguration config = MTAScene.v().getInfoflowConfig();
+	private IIPCManager ipcManager = MTAScene.v().getIPCManager();	
 	private Collection<? extends PreAnalysisHandler> preProcessors = Collections.emptyList();	//配置预处理器，扩展onBeforeCallgraphConstruction和onAfterCallgraphConstruction方法实现处理前和处理后的控制
-	
-	public MyCGConstructor(InfoflowConfiguration cf, IIPCManager ipcm){
-		config = cf;
-		ipcManager = ipcm;
-	}
-	
-	public void start(){
-		constructCallgraph();
-	}
 	
 	/**
 	 * Constructs the callgraph
 	 */
-	protected void constructCallgraph() {
+	public void constructCallgraph(Body target) {
 		// Some configuration options do not really make sense in combination
 		if (config.getEnableStaticFieldTracking()
 				&& InfoflowConfiguration.getAccessPathLength() == 0)
@@ -67,13 +74,21 @@ public class MyCGConstructor {
         // application already provides us with a CG.
 		if (config.getCallgraphAlgorithm() != CallgraphAlgorithm.OnDemand
 				&& !Scene.v().hasCallGraph()) {
-	        PackManager.v().getPack("wjpp").apply();
-	        Pack tmp = PackManager.v().getPack("cg");
-	        tmp.apply();
+			PackManager.v().getPack("wjpp").apply();
+	        if(target == null){
+		        PackManager.v().getPack("cg").apply();
+	        }
+	        else{
+		        PackManager.v().getPack("cg").apply(target);
+	        }
 		}
 		
 		// Run the preprocessors
         for (PreAnalysisHandler tr : preProcessors)
             tr.onAfterCallgraphConstruction();
+	}
+
+	public void constructCallgraph() {
+		constructCallgraph(null);
 	}
 }

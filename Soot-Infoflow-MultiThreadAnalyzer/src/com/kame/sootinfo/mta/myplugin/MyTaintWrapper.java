@@ -145,9 +145,10 @@ public class MyTaintWrapper extends AbstractTaintWrapper implements Cloneable {
 		this.killList = killList;
 		this.includeList = includeList;
 	}
-	/**@param f 表示给出wrapper定义文档的文件路径*/
+	/**@param f 表示给出wrapper定义文档的文件路径
+	 * @throws IOException */
 	public MyTaintWrapper(String f) throws IOException{
-        this(new File(f));
+		this(new File(f));
     }
 
 	/**@param f 表示给出wrapper定义文档的文件*/

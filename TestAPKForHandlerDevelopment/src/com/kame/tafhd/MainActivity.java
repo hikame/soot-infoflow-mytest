@@ -54,6 +54,10 @@ public class MainActivity extends Activity {
 	     
 	     private void doHandlerMessageBasedOnWhat(int wt) {
 	    	switch (wt) {
+			case TEST_MSG:
+				Publisher pub = new Publisher();
+				pub.publish(tainted);
+				break;
 			case STATIC_FIELD_NULL:
 				staticTaint.equals("");
 				break;
@@ -182,14 +186,15 @@ public class MainActivity extends Activity {
 	
 //	private void testHandlerSendMSG(String s0, String s1) {
 	private void testHandlerSendMSG(String s0) {
-		Message msg = mhandler.obtainMessage(STATIC_FIELD_NULL);
-//		Message msg = mhandler.obtainMessage(FIELD_NP);
-		msg.obj = s0;
+//		Message msg = mhandler.obtainMessage(STATIC_FIELD_NULL);
+		Message msg = mhandler.obtainMessage(FIELD_NP);
+//		msg.wh
+//		msg.obj = s0;
 //		if(msg.obj != null)
 //		if(s0 != null)
 			staticTaint = s0;
 //			tainted = s0;
-		mhandler.sendMessage(msg);
+		mhandler.sendEmptyMessage(STATIC_FIELD_NULL);
 		
 
 //		Message msg = mhandler.obtainMessage(FIELD_NP);

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import com.kame.sootinfo.mta.MTAScene;
 import com.kame.sootinfo.mta.tags.MyStmtTag;
 
 import heros.InterproceduralCFG;
@@ -27,22 +28,27 @@ import soot.jimple.infoflow.source.SourceInfo;
 import soot.kame.SourceSinkType;
 
 public class MySourceSinkManager implements ISourceSinkManager {
-	boolean taintSubFields = true;
-	List<String> targetMethods = null; 
-	List<String> sinks = null;
-		
-	/**
-	 * @param taintSubFields
-	 * 用于设定TaintAccess中taintSubFields的值。
-	 * @param targetMethodsList
-	 * 给出的方法名的参数是污点值
-	 * @param sinksList
-	 * 给出的方法名是sink*/
-	public MySourceSinkManager(boolean taintSubFields, List<String> targetMethodsList, List<String> sinksList){
-//		this.taintSubFields =  taintSubFields;
-		this.targetMethods = targetMethodsList;
-		this.sinks = sinksList;
-	}
+	public MySourceSinkManager(){}
+//	private MySourceSinkManager onlyThis = null;
+//	public MySourceSinkManager v(){
+//		if(onlyThis == null)
+//			onlyThis = new MySourceSinkManager();
+//		return onlyThis;
+//	}
+	List<String> targetMethods = MTAScene.v().getTargetList(); 
+	List<String> sinks = MTAScene.v().getSinkMethodList();
+//	/**
+//	 * @param taintSubFields
+//	 * 用于设定TaintAccess中taintSubFields的值。
+//	 * @param targetMethodsList
+//	 * 给出的方法名的参数是污点值
+//	 * @param sinksList
+//	 * 给出的方法名是sink*/
+//	public MySourceSinkManager(boolean taintSubFields, List<String> targetMethodsList, List<String> sinksList){
+////		this.taintSubFields =  taintSubFields;
+//		this.targetMethods = targetMethodsList;
+//		this.sinks = sinksList;
+//	}
 	
 	@Override
 	public SourceInfo getSourceInfo(Stmt stmt,

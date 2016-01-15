@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.kame.sootinfo.mta.StrangeException;
+import com.kame.sootinfo.mta.ControlFlowGraphManager;
+import com.kame.sootinfo.mta.InfoflowAnalyzer;
 
 import soot.Local;
-import soot.SootField;
-import soot.SootFieldRef;
-import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.ConditionExpr;
@@ -23,28 +21,25 @@ import soot.jimple.NullConstant;
 import soot.jimple.ReturnStmt;
 import soot.jimple.Stmt;
 import soot.jimple.infoflow.aliasing.Aliasing;
-import soot.jimple.infoflow.aliasing.IAliasingStrategy;
 import soot.jimple.infoflow.data.Abstraction;
 import soot.jimple.infoflow.data.AccessPath;
 import soot.jimple.infoflow.handlers.TaintPropagationHandler;
 import soot.jimple.infoflow.solver.IMemoryManager;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
-import soot.jimple.internal.JInstanceFieldRef;
 import soot.kame.SourceSinkType;
 
 public class MyTaintPropagationHandler implements TaintPropagationHandler {
 	Map<Abstraction, Set<Abstraction>> childrenMap = new HashMap<Abstraction, Set<Abstraction>>();
 	
 	Aliasing aliasing = null;
+	private Aliasing getAliasing(){
+		if(aliasing == null)
+			aliasing = new Aliasing(
+					InfoflowAnalyzer.v().getAliasing(), 
+					ControlFlowGraphManager.v().getInfoflowCFG());
+		return aliasing;
+	}
 	private IMemoryManager<Abstraction> memoryManager;
-	
-	public MyTaintPropagationHandler(Aliasing al) {
-		aliasing = al;
-	}
-
-	public MyTaintPropagationHandler() {
-	}
-
 	@Override
 	public Abstraction notifyFlowIn(Unit stmt, Abstraction taint, IInfoflowCFG cfg, FlowFunctionType type) {
 //		Map<Stmt, Set<SourceSinkType>> taint.getAccessPath().getSourceTypeReduceMap()
@@ -85,11 +80,11 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		else if(type.equals(FlowFunctionType.NormalFlowFunction) && stmt instanceof DefinitionStmt){	//普通的复制语句，进行child与parent的传递
 			Value left = ((DefinitionStmt)stmt).getLeftOp();
 			Value right = ((DefinitionStmt)stmt).getRightOp();
-			AccessPath rightAliasing = aliasing.mayAlias(incoming.getAccessPath(), right);
+			AccessPath rightAliasing = getAliasing().mayAlias(incoming.getAccessPath(), right);
 			if(rightAliasing != null){
 				Abstraction outAbs = null;
 				for(Abstraction out : outgoing){
-					if(aliasing.mayAlias(out.getAccessPath(), left) != null){
+					if(getAliasing().mayAlias(out.getAccessPath(), left) != null){
 						outAbs = out;
 						break;
 					}
@@ -103,7 +98,7 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		else if(type.equals(FlowFunctionType.ReturnFlowFunction)){	//从形参到实参的传递
 			if(stmt instanceof ReturnStmt){
 				Value retValue = ((ReturnStmt) stmt).getOpBox().getValue();
-				if(aliasing.mayAlias(incoming.getAccessPath(), retValue) != null){
+				if(getAliasing().mayAlias(incoming.getAccessPath(), retValue) != null){
 					if((retValue instanceof Local) && outgoing.size() == 1){
 						putIntoChildrenMap(incoming, outgoing.iterator().next());
 					}
@@ -231,7 +226,7 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		
 		for(Object obj : children){
 			Abstraction child = (Abstraction) obj;
-			if(aliasing.mayAlias(child.getAccessPath(), checkedValue) != null)
+			if(getAliasing().mayAlias(child.getAccessPath(), checkedValue) != null)
 				return true;
 		}
 		
@@ -276,12 +271,7 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		return false;
 	}
 
-	public void generateAliasing(IAliasingStrategy aliasingStrategy, IInfoflowCFG cfg) {
-		aliasing = new Aliasing(aliasingStrategy, cfg);
-		
-	}
-
-	public void setMemoryManager(IMemoryManager<Abstraction> memoryManager) {
-		this.memoryManager = memoryManager;
+	public void setMemoryManager(IMemoryManager<Abstraction> mm) {
+		this.memoryManager = mm;
 	}
 }

@@ -88,33 +88,42 @@ import soot.toolkits.graph.ExceptionalUnitGraph.ExceptionDest;
 import soot.util.Chain;
 import soot.util.MultiMap;
 
-public class MyInfoFlowAnalyze {
+public class InfoflowAnalyzer {
+	private static InfoflowAnalyzer thisOnly;
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	private final InfoflowConfiguration config;
-	private final ISourceSinkManager ssm;
-	private final ITaintPropagationWrapper taintWrapper;
-	private INativeCallHandler nativeCallHandler;
-	private IInfoflowCFG iCfg;
+	static public InfoflowAnalyzer v(){
+		if(thisOnly == null){
+			thisOnly = new InfoflowAnalyzer();
+		}
+		return thisOnly;
+	}
+	
+	static public InfoflowAnalyzer reInit(){
+		thisOnly = new InfoflowAnalyzer();
+		return thisOnly;
+	}
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private final InfoflowConfiguration config = MTAScene.v().getInfoflowConfig();
+	private final ISourceSinkManager ssm = MTAScene.v().getSourceSinkManager();
+	private final ITaintPropagationWrapper taintWrapper = MTAScene.v().getTaintWrapper();
+	
+	private INativeCallHandler nativeCallHandler = MTAScene.v().getNativeCallHandler();
+	private IInfoflowCFG iCfg = ControlFlowGraphManager.v().getInfoflowCFG();
 	
 	IAliasingStrategy aliasingStrategy = null;
 	Aliasing aliasing = null;
 	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory(PathBuilder.ContextSensitive, true);
 //	protected IPathBuilderFactory pathBuilderFactory = new DefaultPathBuilderFactory();
-	private MyTaintPropagationHandler taintPropagationHandler;		//4.a Handler interface for callbacks during taint propagation，可以不做设置
+	private TaintPropagationHandler taintPropagationHandler = MTAScene.v().getTaintPropagationHandler();		//4.a Handler interface for callbacks during taint propagation，可以不做设置
 	private TaintPropagationHandler backwardsPropagationHandler = null;  //4.b Handler interface for callbacks during taint propagation，可以不做设置
 	private Set<ResultsAvailableHandler> onResultsAvailable = new HashSet<ResultsAvailableHandler>();
 	
     private long maxMemoryConsumption = -1;
 	private InfoflowResults results = null;
 	
-	public MyInfoFlowAnalyze(InfoflowConfiguration cf, ISourceSinkManager is, ITaintPropagationWrapper tw, INativeCallHandler nch){
-			config = cf;
-			ssm = is;
-			taintWrapper = tw;
-			nativeCallHandler = nch;
-			taintPropagationHandler = new MyTaintPropagationHandler();
-	}
+	private InfoflowAnalyzer(){}
 	
 	private enum StmtThreadType{
 		StartMultiThread,
@@ -122,8 +131,7 @@ public class MyInfoFlowAnalyze {
 		None
 	}
 	
-	public void start(IInfoflowCFG iInfoflowCFG) {
-		iCfg = iInfoflowCFG;
+	public void start() {
         int numThreads = Runtime.getRuntime().availableProcessors();
 		CountingThreadPoolExecutor executor = createExecutor(numThreads);
 		// Initialize the memory manager
@@ -159,8 +167,7 @@ public class MyInfoFlowAnalyze {
 		InfoflowProblem forwardProblem  = new InfoflowProblem(manager,
 				aliasingStrategy, zeroValue);
 		
-		taintPropagationHandler.generateAliasing(aliasingStrategy, iCfg);
-		taintPropagationHandler.setMemoryManager(memoryManager);
+		MTAScene.v().getTaintPropagationHandler().setMemoryManager(memoryManager);
 		// Set the options
 		InfoflowSolver forwardSolver = new InfoflowSolver(forwardProblem, executor);
 		aliasingStrategy.setForwardSolver(forwardSolver);
@@ -215,6 +222,7 @@ public class MyInfoFlowAnalyze {
         
 		logger.info("Preliminary source lookup done, found {} sources and {} sinks.", forwardProblem.getInitialSeeds().size(),
 				sinkCount);
+		//TODO do preliminary multi-thread check and check for field operate situation which are in "this" class.
 		
 		// Initialize the taint wrapper if we have one
 		if (taintWrapper != null)
@@ -658,5 +666,8 @@ public class MyInfoFlowAnalyze {
    			this.results.addAll(builder.getResults());
     	builder.shutdown();
 	}
-
+	
+	public IAliasingStrategy getAliasing() {
+		return aliasingStrategy;
+	}
 }

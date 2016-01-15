@@ -51,7 +51,7 @@ public class Options extends OptionsBase {
 	private List<String> nonPhantomList;
 	
 	/** 自动将defaltPhantom和allow_phantom_refs设置为true*/
-	public void setNonPhantomList(List<String> list){
+	public void set_nonPhantom(List<String> list){
 		defaltPhantom = true;
 		allow_phantom_refs = true;
 		nonPhantomList = list;

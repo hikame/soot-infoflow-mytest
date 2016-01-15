@@ -48,6 +48,8 @@ public class DeadCodeEliminator implements ICodeOptimizer {
 		for (QueueReader<MethodOrMethodContext> rdr =
 				Scene.v().getReachableMethods().listener(); rdr.hasNext(); ) {
 			MethodOrMethodContext sm = rdr.next();
+if(sm.toString().equals("<com.kame.tafhd.MainActivity$MyHandler: void doHandlerMessageBasedOnWhat(int)>"))
+	sm.toString();
 			if (sm.method() == null || !sm.method().hasActiveBody())
 				continue;
 			

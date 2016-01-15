@@ -319,7 +319,7 @@ class com.kame.tafhd.MainActivity$MyHandler extends android.os.Handler
         return;
     }
 
-    void myHandler8(int)
+    private void myHandler8(int)
     {
         com.kame.tafhd.MainActivity$MyHandler this;
         int wt;
@@ -328,6 +328,8 @@ class com.kame.tafhd.MainActivity$MyHandler extends android.os.Handler
         this := @this: com.kame.tafhd.MainActivity$MyHandler;
 
         wt := @parameter0: int;
+
+        nop;
 
         $r0 = <com.kame.tafhd.MainActivity: java.lang.String staticTaint>;
 
