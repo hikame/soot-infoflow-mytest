@@ -3,10 +3,13 @@ package com.kame.sootinfo.mta;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
 import soot.Body;
 import soot.Local;
 import soot.PatchingChain;
@@ -36,7 +39,9 @@ import soot.jimple.infoflow.entryPointCreators.DefaultEntryPointCreator;
 import soot.jimple.infoflow.entryPointCreators.IEntryPointCreator;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
 import soot.jimple.internal.JInstanceFieldRef;
+import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
+import soot.util.Chain;
 
 public class ClassResolveManager {
 	private ClassResolveManager(){}
@@ -81,7 +86,24 @@ public class ClassResolveManager {
 		"boolean sendMessageAtTime(android.os.Message,long)",
 		"boolean sendMessageDelayed(android.os.Message,long)"	
 	};
+	private SootClass handlerClass = null;
 
+//void myTest(){
+//	SootMethod disMsg = Scene.v().getMethod("<android.os.Handler: void dispatchMessage(android.os.Message)>");
+//	Collection<Unit> calls = ControlFlowGraphManager.v().getInfoflowCFG().getCallsFromWithin(disMsg);
+//	for(Unit u : calls){
+//		if(u.toString().equals("virtualinvoke this.<android.os.Handler: void handleMessage(android.os.Message)>(msg)")){
+////			Collection<SootMethod> inter = ControlFlowGraphManager.v().getInfoflowCFG().getCalleesOfCallAt(u);
+////			System.out.println(inter.toString().replace("),", ")\n"));
+////			System.out.println("$$$");
+//			Iterator<Edge> edges = Scene.v().getCallGraph().edgesOutOf(u);
+//			while(edges.hasNext()){
+//				System.out.println(edges.next());
+//			}
+//			System.out.println("$$$");
+//		}
+//	}
+//}
 	/**It should be able to dynamically extend the include&nonPhantom lists.
 	 * And at the same time, generate&extend the control flow graph*/
 	public void start(){
@@ -102,10 +124,20 @@ public class ClassResolveManager {
 		
 		Scene.v().loadBasicClasses();
 		patchMultiThreadClasses();
-		//¶ÔÓÚ¸Õ¸ÕÌí¼ÓµÄ·½·¨½øÐÐÒ»´Î³õÊ¼µÄCGºÍCFG¹¹½¨
+		
+		handlerClass = Scene.v().getSootClass("android.os.Handler");
+		Chain<SootClass> resolvedClasses = Scene.v().getClasses();
+		for(SootClass sc = resolvedClasses.getFirst(); resolvedClasses.getSuccOf(sc) != null; sc = resolvedClasses.getSuccOf(sc)){
+			if(sc.isPhantom())
+				continue;
+			if(sc.hasSuperclass() && sc.getSuperclass().equals(handlerClass)){	//add all unimplemented bodys from Handler to SubHander;
+				modifyChildOfHandler(sc);
+			}
+		}
+		
+		//ï¿½ï¿½ï¿½Ú¸Õ¸ï¿½ï¿½ï¿½ÓµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î³ï¿½Ê¼ï¿½ï¿½CGï¿½ï¿½CFGï¿½ï¿½ï¿½ï¿½
 		CallGraphManager.v().constructCallgraph();
 		ControlFlowGraphManager.v().generateCFG();
-		
 		List<SootMethod> startPoints = Scene.v().getEntryPoints();
 		assert startPoints.size() == 1;
 		String startMethd = startPoints.get(0).getSignature();
@@ -114,6 +146,27 @@ public class ClassResolveManager {
 		doResolve(list);
 		
 		ControlFlowGraphManager.v().eliminateDeadCode(MTAScene.v().getSourceSinkManager());
+	}
+
+	private void modifyChildOfHandler(SootClass childClass) {
+		List<SootMethod> childMethods = childClass.getMethods();
+		for(SootMethod hm : handlerClass.getMethods()){
+			boolean exist = false;
+			for(SootMethod sm : childMethods)
+				if(sm.getSubSignature().equals(hm.getSubSignature())){
+					exist = true;
+					break;
+				}
+			if(exist)	//the method is extended by child.
+				continue;
+//			if(childMethods.contains(hm))	//the method is extended by child.
+//				continue;
+			SootMethod newcm = new SootMethod(hm.getName(), hm.getParameterTypes(), hm.getReturnType());
+			childClass.addMethod(newcm);
+			Body hmBody = hm.retrieveActiveBody();
+			Body cmBody = (Body) hmBody.clone();
+			newcm.setActiveBody(cmBody);
+		}
 	}
 
 	private void patchMultiThreadClasses() {
@@ -289,7 +342,7 @@ public class ClassResolveManager {
 //		android.os.Handler: sendMessageAtFrontOfQueue(android.os.Message)
 //		android.os.Handler: sendMessageAtTime(android.os.Message, long)
 //		android.os.Handler: sendMessageDelayed(android.os.Message, long)
-		//½«ÆäÄÚÈÝ¸ÄÎªÖ±½ÓinvokeHandler
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½ÎªÖ±ï¿½ï¿½invokeHandler
 		for(String str : sendMessageMethods){
 			SootMethod smsendMSG = sc.getMethodUnsafe(str);
 			if(smsendMSG != null && !smsendMSG.hasActiveBody())
@@ -353,7 +406,7 @@ public class ClassResolveManager {
 		b.getUnits().add(Jimple.v().newIdentityStmt(thisLocal,
 				Jimple.v().newThisRef(sc.getType())));
 		
-		Local firstPrmLocal = Jimple.v().newLocal("msg", method.getParameterType(0));	//µÚÒ»¸ö²ÎÊý
+		Local firstPrmLocal = Jimple.v().newLocal("msg", method.getParameterType(0));	//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		b.getLocals().add(firstPrmLocal);
 		b.getUnits().add(Jimple.v().newIdentityStmt(firstPrmLocal, Jimple.v().newParameterRef(method.getParameterType(0), 0)));
 		
@@ -445,7 +498,7 @@ public class ClassResolveManager {
 				MTAScene.v().getTargetList().get(0).startsWith("<" + pkgName))
 			includeList.add(clsName);
 		SootClass targetSC = Scene.v().getSootClass(clsName);
-		if(targetSC.isPhantom()){	//Ö®Ç°½âÎöµ½Ò»´Îphantom°æµÄ~
+		if(targetSC.isPhantom()){	//Ö®Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½phantomï¿½ï¿½ï¿½~
 			Scene.v().removeClass(targetSC);
 			targetSC = Scene.v().forceResolve(clsName, SootClass.SIGNATURES);
 		}
@@ -461,12 +514,14 @@ public class ClassResolveManager {
 		if(MTAScene.v().getTargetList().get(0).startsWith("<" + pkgName))
 			targetSC.setApplicationClass();
 		
+		if(targetSC.hasSuperclass() && targetSC.getSuperclass().equals(handlerClass))
+			modifyChildOfHandler(targetSC);
 		return targetSC;
 	}
 	
 	private void resolveMethod(String mthSig, int mthDepth) {
 		if(mthDepth > MAX_METHOD_RESOLVE_DEPTH){
-			invokedMths.add(mthSig);	//ÎÒÃÇÖ»ÊÇ²»¶ÔÆäÄÚÈÝ½øÐÐÏà¹ØÀàµÄ¼ÓÔØºÍCFGµÄÀ©Õ¹ÁË
+			invokedMths.add(mthSig);	//ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Øºï¿½CFGï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½
 			return;
 		}
 			
@@ -502,9 +557,7 @@ public class ClassResolveManager {
 //		updata CFG
 		IInfoflowCFG cfg = ControlFlowGraphManager.v().getInfoflowCFG();
 		cfg.notifyMethodChanged(sm);
-//		cgConstructor.constructCallgraph(sm.getActiveBody());
-		
-		//°ÑÓÃµ½µÄvalueÖÐËùÓÐµÄÒýÓÃµÄJavaÀà½øÐÐÔØÈë
+		//ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½valueï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ãµï¿½Javaï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		List<ValueBox> boxes = sm.getActiveBody().getUseAndDefBoxes();
 		for(ValueBox box : boxes){
 			Value value = box.getValue();
@@ -512,14 +565,10 @@ public class ClassResolveManager {
 			addTypeToLists(type);
 		}
 		
-		//°ÑÓï¾äÖÐËùÓÐµ÷ÓÃµÄ·½·¨½øÐÐÏà¹ØÔØÈë
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ÃµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for(Unit u : cfg.getCallsFromWithin(sm)){
 			Collection<SootMethod> callees = cfg.getCalleesOfCallAt(u);
 			for(SootMethod cle : callees){
-for(int i = 0; i < mthDepth; i++)
-	System.out.print("-");
-System.out.print(">");
-System.out.println(cle.getSignature());
 				resolveMethod(cle.getSignature(), mthDepth + 1);
 			}
 		}

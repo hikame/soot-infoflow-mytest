@@ -41,6 +41,49 @@ public class MainActivity extends Activity {
 		public String tainted;
 	}
 	
+	class AnotherHandler extends Handler{
+		public void handleMessage(Message msg) {
+	    	switch (msg.what) {
+			case TEST_MSG:
+				Publisher pub = new Publisher();
+				ClassX x = (ClassX) msg.obj;
+				pub.publish(x.objY.tainted);
+				break;
+			case UNRELEVANT_MSG:
+				new Publisher().publish("I am in the unrelevent parts.");
+				break;
+			case ANOTHER:
+				new Publisher().publish((String)tainted);
+				break;
+			case OBJ_Publish:
+				new Publisher().publish((String)msg.obj);
+				break;
+			case FIELD_Publish:
+				new Publisher().publish(tainted);
+				break;
+			case FIELD_NP:
+				tainted.equals("");
+//				doNull(tainted);
+				break;
+			case OBJ_NP:
+				Object loc = msg.obj;
+				loc.equals("");
+				break;
+			case NEW_NULL:
+				if(tainted != null){
+					Publisher pb = new Publisher();
+			    	 pb.publish(tainted);
+				}
+					tainted.equals("");
+				break;
+				
+			case STATIC_FIELD_NULL:
+				staticTaint.equals("");
+			default:
+				break;
+			}
+		}
+	}
 	
 	class MyHandler extends Handler{
 	     @Override
@@ -186,23 +229,14 @@ public class MainActivity extends Activity {
 	
 //	private void testHandlerSendMSG(String s0, String s1) {
 	private void testHandlerSendMSG(String s0) {
-//		Message msg = mhandler.obtainMessage(STATIC_FIELD_NULL);
-		Message msg = mhandler.obtainMessage(FIELD_NP);
-//		msg.wh
-//		msg.obj = s0;
-//		if(msg.obj != null)
-//		if(s0 != null)
 			staticTaint = s0;
 //			tainted = s0;
 		mhandler.sendEmptyMessage(STATIC_FIELD_NULL);
 		
-
-//		Message msg = mhandler.obtainMessage(FIELD_NP);
-////		msg.obj = s0;
-////		if(msg.obj != null)
-//		nativeMethod(s0);
-//		mhandler.sendMessage(msg);
-//		tainted = s0;
+		AnotherHandler ah = new AnotherHandler();
+		Message msg = ah.obtainMessage(FIELD_NP);
+		ah.sendMessage(msg);
+////		tainted = s0;
 //		if(s1 != null)
 //			staticTaint = s1;
 	}

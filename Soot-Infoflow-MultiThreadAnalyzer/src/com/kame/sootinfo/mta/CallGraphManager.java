@@ -14,6 +14,7 @@ import soot.jimple.infoflow.cfg.LibraryClassPatcher;
 import soot.jimple.infoflow.data.AccessPathFactory;
 import soot.jimple.infoflow.handlers.PreAnalysisHandler;
 import soot.jimple.infoflow.ipc.IIPCManager;
+import soot.options.Options;
 
 public class CallGraphManager {
 	private CallGraphManager(){}
@@ -22,6 +23,7 @@ public class CallGraphManager {
 	static public CallGraphManager v(){
 		if(thisOnly == null){
 			thisOnly = new CallGraphManager();
+			configCallGraphAlgorithm(null);
 		}
 		return thisOnly;
 	}
@@ -33,7 +35,7 @@ public class CallGraphManager {
 	
 	private InfoflowConfiguration config = MTAScene.v().getInfoflowConfig();
 	private IIPCManager ipcManager = MTAScene.v().getIPCManager();	
-	private Collection<? extends PreAnalysisHandler> preProcessors = Collections.emptyList();	//ÅäÖÃÔ¤´¦ÀíÆ÷£¬À©Õ¹onBeforeCallgraphConstructionºÍonAfterCallgraphConstruction·½·¨ÊµÏÖ´¦ÀíÇ°ºÍ´¦ÀíºóµÄ¿ØÖÆ
+	private Collection<? extends PreAnalysisHandler> preProcessors = Collections.emptyList();	//ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹onBeforeCallgraphConstructionï¿½ï¿½onAfterCallgraphConstructionï¿½ï¿½ï¿½ï¿½Êµï¿½Ö´ï¿½ï¿½ï¿½Ç°ï¿½Í´ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½
 	
 	/**
 	 * Constructs the callgraph
@@ -56,13 +58,13 @@ public class CallGraphManager {
         for (PreAnalysisHandler tr : preProcessors)
             tr.onBeforeCallgraphConstruction();
         
-//        // Patch the system libraries we need for callgraph construction£¬°üÀ¨ÁË"java.lang.Thread"ºÍ"android.os.Handler"	//!!!!!!Handler»úÖÆÑ½£¡
+//        // Patch the system libraries we need for callgraph constructionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"java.lang.Thread"ï¿½ï¿½"android.os.Handler"	//!!!!!!Handlerï¿½ï¿½ï¿½ï¿½Ñ½ï¿½ï¿½
 //        MyMultiThreadPatcher mmtp = new MyMultiThreadPatcher();
 //        mmtp.patchLibraries();
 		
         // To cope with broken APK files, we convert all classes that are still
         // dangling after resolution into phantoms
-        // ËùÒÔËµËùÓÐµÄDANGLING¶¼Òª×ª»»ÎªBODIES¼¶±ðµÄPhantomÀà
+        // ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ðµï¿½DANGLINGï¿½ï¿½Òª×ªï¿½ï¿½ÎªBODIESï¿½ï¿½ï¿½ï¿½ï¿½Phantomï¿½ï¿½
         for (SootClass sc : Scene.v().getClasses())
         	if (sc.resolvingLevel() == SootClass.DANGLING) {
         		sc.setResolvingLevel(SootClass.BODIES);
@@ -90,5 +92,50 @@ public class CallGraphManager {
 
 	public void constructCallgraph() {
 		constructCallgraph(null);
+	}
+	
+
+	static private void configCallGraphAlgorithm(String extraSeed) {
+		// Configure the callgraph algorithm
+		switch (MTAScene.v().getInfoflowConfig().getCallgraphAlgorithm()) {
+			case AutomaticSelection:
+				// If we analyze a distinct entry point which is not static,
+				// SPARK fails due to the missing allocation site and we fall
+				// back to CHA.
+				if (extraSeed == null || extraSeed.isEmpty()) {
+					Options.v().setPhaseOption("cg.spark", "on");
+					Options.v().setPhaseOption("cg.spark", "string-constants:true");
+				}
+				else
+					Options.v().setPhaseOption("cg.cha", "on");
+				break;
+			case CHA:
+				Options.v().setPhaseOption("cg.cha", "on");
+				break;
+			case RTA:
+				Options.v().setPhaseOption("cg.spark", "on");
+				Options.v().setPhaseOption("cg.spark", "rta:true");
+				Options.v().setPhaseOption("cg.spark", "string-constants:true");
+				break;
+			case VTA:
+				Options.v().setPhaseOption("cg.spark", "on");
+				Options.v().setPhaseOption("cg.spark", "vta:true");
+				Options.v().setPhaseOption("cg.spark", "string-constants:true");
+				break;
+			case SPARK:
+				Options.v().setPhaseOption("cg.spark", "on");
+				Options.v().setPhaseOption("cg.spark", "string-constants:true");
+				break;
+			case OnDemand:
+				// nothing to set here
+				break;
+			default:
+				throw new RuntimeException("Invalid callgraph algorithm");
+		}
+		// Specify additional options required for the callgraph
+		if (MTAScene.v().getInfoflowConfig().getCallgraphAlgorithm() != CallgraphAlgorithm.OnDemand) {
+			Options.v().set_whole_program(true);
+			Options.v().setPhaseOption("cg", "trim-clinit:false");
+		}
 	}
 }

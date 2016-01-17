@@ -28,6 +28,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="guava-18.0.jar" sourcepath="A:/android-m-preview/prebuilts/tools/common/m2/repository/com/google/guava/guava/18.0/guava-18.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="guava-18.0.jar" sourcepath="E:/GitHub_Projects/soot-infoflow-mytest/guava-18.0-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

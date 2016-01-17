@@ -2,9 +2,11 @@ package com.kame.sootinfo.mta;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +17,9 @@ import soot.Body;
 import soot.IdentityUnit;
 import soot.Kind;
 import soot.Local;
+import soot.MethodOrMethodContext;
 import soot.PatchingChain;
+import soot.PointsToSet;
 import soot.PrimType;
 import soot.RefType;
 import soot.Scene;
@@ -24,7 +28,9 @@ import soot.SootMethod;
 import soot.Trap;
 import soot.Type;
 import soot.Unit;
+import soot.UnitBox;
 import soot.Value;
+import soot.ValueBox;
 import soot.jimple.AssignStmt;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.GotoStmt;
@@ -44,6 +50,7 @@ import soot.jimple.Stmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
+import soot.jimple.infoflow.solver.cfg.IInfoflowCFG.UnitContainer;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
@@ -56,6 +63,7 @@ import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
+import soot.toolkits.graph.DirectedGraph;
 import soot.util.Chain;
 import soot.util.HashChain;
 
@@ -88,9 +96,21 @@ public class AndroidHandlerProcessor {
 	SootMethod myHandler = null;
 	PatchingChain<Unit> targetMethodUnits = null;
 	Unit substituteForSwitch = null;
-	Stmt switchContainerInvoker = null;
-
-
+	Stmt switchMethodCaller = null;
+	
+	List<String> sendMsgSet;
+	{
+		String[] sendMsgMethods = {
+			"boolean sendMessage(android.os.Message)",
+			"boolean sendMessageAtFrontOfQueue(android.os.Message)",
+			"boolean sendMessageAtTime(android.os.Message,long)",
+			"boolean sendMessageDelayed(android.os.Message,long)",
+			"boolean sendEmptyMessage(int)",
+			"boolean sendEmptyMessageAtTime(int,long)",
+			"boolean sendEmptyMessageDelayed(int,long)"
+		};
+		sendMsgSet = Arrays.asList(sendMsgMethods);
+	}
 
 	private void reInitFields() {
 		existingUnits = new HashMap<Unit, Unit>(); 	
@@ -99,10 +119,35 @@ public class AndroidHandlerProcessor {
 		myHandler = null;
 		targetMethodUnits = null;
 		substituteForSwitch = null;
-		switchContainerInvoker = null;
+		switchMethodCaller = null;
 	}
 	
+CallGraph cg = Scene.v().getCallGraph();
+void myTest(Map<Stmt, Integer> maps){
+	for(Stmt smCaller : maps.keySet()){
+//		cg.
+		InstanceInvokeExpr iie = (InstanceInvokeExpr)smCaller.getInvokeExpr();
+		Value base = iie.getBase();
+		 PointsToSet pt = Scene.v().getPointsToAnalysis().reachingObjects((Local) base);
+		System.out.println(base.toString());
+	}
+}
+
 	public void handleDispatchMsg() {
+		Map<Stmt, Integer> maps = findSendMSGCallerWithCaseCode();
+myTest(maps);
+		for(Stmt smCaller : maps.keySet()){
+			reInitFields();	//对于每一个sendmessage的调用，都需要将一些域重置以支持对于新到达任务的支持
+			int codecase = maps.get(smCaller);
+			//TODO 学习soot-infoflow中的对象类型判定方法，或者放弃对于多个handler对象的判断。
+			
+			JTableSwitchStmt switchUnit = (JTableSwitchStmt) searchSwitchStmtInCallee(smCaller, 0, new ArrayList<SootMethod>());
+			switchUnit.toString();
+		}
+		
+		
+		//------------------------------------------------------------------
+		
 		Collection<Unit> invokers = iCfg.getCallersOf(dispatchMsgMth);
 		for(Unit dispatchMsgInvoker : invokers){
 			reInitFields();
@@ -117,7 +162,8 @@ public class AndroidHandlerProcessor {
 			assert caseCodes != null && !caseCodes.isEmpty();
 			assert caseCodes.size() == 1;
 			
-			JTableSwitchStmt switchUnit = (JTableSwitchStmt) searchForSwitchCode(dispatchMsgMth, dispatchMsgMth.getActiveBody().getParameterLocal(0), 0);	//handleMsgMethod的参数只有一个撒~
+			JTableSwitchStmt switchUnit = (JTableSwitchStmt) searchSwitchStmt(dispatchMsgMth, dispatchMsgMth.getActiveBody().getParameterLocal(0), new ArrayList<SootMethod>());	//handleMsgMethod的参数只有一个撒~
+//			JTableSwitchStmt switchUnit = null;
 			if(switchUnit == null)
 				//TODO record:switchUnit == null
 				continue;
@@ -126,35 +172,60 @@ public class AndroidHandlerProcessor {
 			assert myHandler != null;
 			myHandler.setModifiers(Modifier.PRIVATE);
 			Stmt replaceStmt = generateReplaceStmt();
-			SootMethod sm = iCfg.getMethodOf(switchContainerInvoker);
-			sm.getActiveBody().getUnits().swapWith(switchContainerInvoker, replaceStmt);
+			SootMethod sm = iCfg.getMethodOf(switchMethodCaller);
+			sm.getActiveBody().getUnits().swapWith(switchMethodCaller, replaceStmt);
 			if(invokers.size() > 1){	//TODO CHECK IT OUT
-				modifyInvokers(switchContainerInvoker, (Stmt) dispatchMsgInvoker);
+				modifyInvokers(switchMethodCaller, (Stmt) dispatchMsgInvoker);
 			}else{
 				CallGraph cg = Scene.v().getCallGraph();
-				cg.removeAllEdgesOutOf(switchContainerInvoker);
+				cg.removeAllEdgesOutOf(switchMethodCaller);
 				cg.addEdge(new Edge(sm, replaceStmt, myHandler));
 				iCfg.notifyMethodChanged(sm);
 				iCfg.notifyMethodChanged(myHandler);
 			}
-
-			
-//			return;
-//			CallGraph cg = Scene.v().getCallGraph();
-//			boolean b = cg.removeAllEdgesOutOf(switchContainerInvoker);
-//			cg.addEdge(new Edge(sm, replaceStmt, myHandler));
 		}
 		ControlFlowGraphManager.v().eliminateDeadCode(MTAScene.v().getSourceSinkManager());//TODO right position???
 		Scene.v().getOrMakeFastHierarchy();
 	}
 
+
+
+	private Map<Stmt, Integer> findSendMSGCallerWithCaseCode() {
+		Map<Stmt, Integer> result = new HashMap<Stmt, Integer>();
+		Set<Stmt> realCallers = findRealCaller(dispatchMsgMth);
+		for(Stmt rc : realCallers){
+			Value prm = rc.getInvokeExpr().getArg(0);
+			if(prm instanceof IntConstant){
+				result.put(rc, ((IntConstant) prm).value);
+				continue;
+			}
+			List<Integer> codes = parseCaseCodes(rc, rc.getInvokeExpr().getArg(0), new ArrayList<SootMethod>());
+			assert codes != null && codes.size() == 1;
+			result.put(rc, codes.get(0));
+		}
+		return result;
+	}
+
+	private Set<Stmt> findRealCaller(SootMethod method) {
+		Set<Stmt> result = new HashSet<Stmt>();
+		for(Unit caller : iCfg.getCallersOf(method)){
+			SootMethod callerMethod = iCfg.getMethodOf(caller);
+			String subSignature = callerMethod.getSubSignature();
+			if(sendMsgSet.contains(subSignature))
+				result.addAll(findRealCaller(callerMethod));
+			else
+				result.add((Stmt) caller);
+		}
+		return result;
+	}
+
 	private void modifyInvokers(Stmt currentStmt, Stmt topStmt) {
 		// TODO Auto-generated method stub
-		
+		return;
 	}
 
 	private Stmt generateReplaceStmt() {
-		InvokeExpr invExpr = switchContainerInvoker.getInvokeExpr();
+		InvokeExpr invExpr = switchMethodCaller.getInvokeExpr();
 		List<Value> actualArgs = invExpr.getArgs();
 		
 		InvokeExpr newInvExpr = null;
@@ -174,10 +245,10 @@ public class AndroidHandlerProcessor {
 			throw new RuntimeException("switchContainerInvoker is neighter instance invoke or static invoke.");
 		}
 		Stmt replacementStmt = null;
-		if(switchContainerInvoker instanceof AssignStmt){
-			Value left = ((AssignStmt)switchContainerInvoker).getLeftOp();
+		if(switchMethodCaller instanceof AssignStmt){
+			Value left = ((AssignStmt)switchMethodCaller).getLeftOp();
 			replacementStmt = new JAssignStmt(left, newInvExpr);
-		}else if(switchContainerInvoker instanceof InvokeStmt){
+		}else if(switchMethodCaller instanceof InvokeStmt){
 			replacementStmt = new JInvokeStmt(newInvExpr);
 		}else{
 			throw new RuntimeException("switchContainerInvoker is neighter InvokeStmt or AssignStmt.");
@@ -249,94 +320,6 @@ public class AndroidHandlerProcessor {
 		return result;
 	}
 
-
-	
-//	private List<Integer> parseWhatValue(Unit u, Value val) {
-//		List<Integer> result = new ArrayList<Integer>();
-//		if((u instanceof IdentityUnit) 
-//				&& ((IdentityUnit) u).getLeftOp().equals(val)){	//找到了，但有可能是传进来的参数
-//			Value right = ((IdentityUnit) u).getRightOp();
-//			if(right instanceof IntConstant)	//表示顺利找到
-//				result.add(((IntConstant) right).value);
-//			else if(right instanceof ParameterRef){	//表示传自上层方法
-//				SootMethod callerMethod = iCfg.getMethodOf(u);
-//				if(!callerMethod.equals(Scene.v().getEntryPoints())){	//当分析抵达了最上层的dummyMainMethod，则直接返回现有结果了~
-//					for(Unit callUnit : iCfg.getCallersOf(callerMethod)){
-//						int index = ((ParameterRef)right).getIndex();
-//						Value actualPrm = ((Stmt)callUnit).getInvokeExpr().getArg(index);
-//						result.addAll(parseWhatValue(callUnit, actualPrm));
-//					}
-//				}
-//			}//上述两种情况之外的表示是一个动态变量，无法解析，需要记录 TODO
-//			return result;
-//		}
-//		
-//		List<Unit> preUnits = iCfg.getPredsOf(u);
-//		if(preUnits == null || preUnits.isEmpty())		//该方法内的节点分析完毕，并且没有来自上级参数的what值的传递
-//			return result;
-//		else for(Unit pu : preUnits)	//对于同一方法内的前节点进行分析
-//			result.addAll(parseWhatValue(pu, val));
-//		return result;
-//	}
-
-//
-//	private Set<Integer> parseCaseCodes(SootMethod thisSootMethod,  Unit invokeUnit, Value msgValue, int index, int depth) {
-//		Body callerBody = thisSootMethod.getActiveBody();
-//        PatchingChain<Unit> unitsChain = callerBody.getUnits();
-//        Set<Integer> caseCodes = new HashSet<Integer>();
-//        for(Unit u = invokeUnit; u != null; u = unitsChain.getPredOf(u)){	//TODO 思路不是很对应该用icfg
-//        	if(!(u instanceof AssignStmt)){
-//        		continue;
-//        	}
-//        	Value left = ((AssignStmt) u).getLeftOp();
-//    		Value right = ((AssignStmt) u).getRightOp();
-//        	if(left.equals(msgValue) && 
-//        			(right instanceof VirtualInvokeExpr) &&
-//        			((VirtualInvokeExpr) right).getMethod().equals(
-//	        				Scene.v().getMethod(
-//	        						"<android.os.Handler: "
-//	        						+ "android.os.Message obtainMessage(int)>"))){
-//        		Value whatValue = ((VirtualInvokeExpr) right).getArgs().get(0);
-//    			if(!(whatValue instanceof IntConstant)){
-//    				System.out.println("[E] Message is not get by a constant value: " + u);
-//    				break;
-//    			}
-//    			caseCodes.add(((IntConstant) whatValue).value);
-//    			break;
-//        	}
-//        	if(left instanceof InstanceFieldRef){
-//        		InstanceFieldRef ifr = (InstanceFieldRef) left;
-//        		Value base = ifr.getBase();
-//        		if(base.equals(msgValue) && ifr.getField().getName().equals("what")){
-//        			if(right instanceof IntConstant){	//当调用sendEmptyMessage时传入的是constant，赋值语句也会相应的是IntConstant
-//        				caseCodes.add(((IntConstant) right).value);
-//        				break;
-//        			}
-//        			else	//TODO do record about unresolved msg.what.
-//        				break;
-//        		}
-//        	}
-//        }
-//        if(!MTAScene.v().getTargetList().contains(thisSootMethod.getSignature())){	//search for case code in its caller
-//        	for(Unit u : iCfg.getCallersOf(thisSootMethod)){
-//        		List<Value> actualParams = ((Stmt)u).getInvokeExpr().getArgs();
-//        		SootMethod sm = iCfg.getMethodOf(u);
-//        		int count = 0;
-//        		Value ap = null;
-//        		for(Value value : actualParams){
-//        			Type type = value.getType();
-//        			if(type instanceof RefType && ((RefType)type).getSootClass().equals(messageClass)){
-//        				ap = value;
-//        				break;
-//        			}
-//        			count++;
-//        		}
-//        		if(ap != null && depth < MAX_CASECODE_SEARCH_DEPTH)
-//        			caseCodes.addAll(parseCaseCodes(sm, u, ap, count, depth + 1));
-//        	}
-//        }
-//		return caseCodes;
-//	}
 	private SootMethod creatMSGHandler(JTableSwitchStmt switchUnit, Integer caseCode){
 		SootMethod targetMethod = iCfg.getMethodOf(switchUnit); 
 		targetMethodUnits = targetMethod.getActiveBody().getUnits();
@@ -373,9 +356,9 @@ public class AndroidHandlerProcessor {
 
 		return myHandler;
 	}
-	/**@param param 可以是int（即msg.what），也可以是Message，最先handleMessage传进来的肯定是msg*/
-	private Unit searchForSwitchCode(SootMethod mth, Local param, int depth) {
-		if(depth > 10)
+	/**@param param 可以是int（即msg.what），也可以是Message*/
+	private Unit searchSwitchStmt(SootMethod mth, Local param, List<SootMethod> checkedList) {
+		if(checkedList.contains(mth))
 			return null;
 		Set<Local> whatSet = new HashSet<Local>();
 		Local msg = null;
@@ -385,7 +368,7 @@ public class AndroidHandlerProcessor {
 			msg = param;
 		//在本方法中寻找
 		for(Unit u : mth.getActiveBody().getUnits()){
-			if(u instanceof TableSwitchStmt){
+			if(u instanceof TableSwitchStmt){//找到了
 				Value key = ((TableSwitchStmt) u).getKey();
 				if(whatSet.contains(key)){
 					return u;
@@ -397,25 +380,26 @@ public class AndroidHandlerProcessor {
 					if(rightOp instanceof InstanceFieldRef){
 						InstanceFieldRef ifr = (InstanceFieldRef) rightOp;
 						Value base = ifr.getBase();
-						if(base.equals(msg) && ifr.getField().getName().equals("what"))
+						if(base.equals(msg) && ifr.getField().getName().equals("what"))	//是关于msg.what值的获取
 							whatSet.add((Local) ((DefinitionStmt)u).getLeftOp());
 					}
 				}
 			}
 		}
 		//在被调用者中寻找
+		Set<Unit> tmp = iCfg.getCallsFromWithin(mth);
 		for(Unit u : iCfg.getCallsFromWithin(mth)){
 			List<Value> args = ((Stmt)u).getInvokeExpr().getArgs();
 			int index = -1;
 			if((index = args.indexOf(msg)) >= 0){
-				Unit result = searchInCallee(u, index, depth);
+				Unit result = searchSwitchStmtInCallee(u, index, checkedList);
 				if(result != null)
 					return result;
 			}
 			
 			for(Local what : whatSet){
 				if((index = args.indexOf(what)) >= 0){
-					Unit result = searchInCallee(u, index, depth);
+					Unit result = searchSwitchStmtInCallee(u, index, checkedList);
 					if(result != null)
 						return result;
 				}
@@ -425,15 +409,36 @@ public class AndroidHandlerProcessor {
 		return null;
 	}
 
-	private Unit searchInCallee(Unit u, int index, int depth) {
-		Collection<SootMethod> cles = iCfg.getCalleesOfCallAt(u);
-		assert cles.size() <= 1;
-		if(cles.size() == 0)
+	private Unit searchSwitchStmtInCallee(Unit callStmt, int index, List<SootMethod> checkedList) {
+		Collection<SootMethod> callees = iCfg.getCalleesOfCallAt(callStmt);
+		
+		if(callees.size() == 0)
 			return null;
-		SootMethod callee = iCfg.getCalleesOfCallAt(u).iterator().next();
-		Local prm = callee.getActiveBody().getParameterLocal(index);
-		switchContainerInvoker = (Stmt) u;
-		return searchForSwitchCode(callee, prm, depth + 1);
+		SootMethod realCallee = null;
+		if(callees.size() == 1)
+			realCallee = callees.iterator().next();
+		else for(SootMethod cle : callees){	//invoke handler.handlerMessage() 可能会调用方法的当handler有多个继承class时的时候就会有多个。
+//			iCfg.getStartPointsOf(cle);
+//			TODO
+			CallGraph cg = Scene.v().getCallGraph();
+			Iterator<Edge> edges = cg.edgesInto(cle);
+//			while(edges.hasNext()){
+//				Edge e = edges.next();
+//				System.out.println(e.toString());
+//				SootMethod sm = cg.g
+//			}
+			Local thisInCallee = cle.getActiveBody().getThisLocal();
+			List<UnitBox> tmp = ((Stmt)callStmt).getBoxesPointingToThis();//!!!向前回溯到senmessagexxx即可！
+			InvokeExpr ie = ((Stmt)callStmt).getInvokeExpr();
+			Value thisInCallerStmt= ((InstanceInvokeExpr) ie).getBase();
+			Value thisInCaller = iCfg.getMethodOf(callStmt).getActiveBody().getThisLocal();
+			boolean stmtb = thisInCallee.equals(thisInCallerStmt);
+			boolean callerb = thisInCaller.equals(thisInCaller);
+			thisInCallee.toString();
+		}
+		Local prm = realCallee.getActiveBody().getParameterLocal(index);
+		switchMethodCaller = (Stmt) callStmt;
+		return searchSwitchStmt(realCallee, prm, checkedList);
 	}
 
 	private void addTraps() {
