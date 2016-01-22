@@ -1,9 +1,0 @@
-public interface  android.os.IPermissionController extends java.lang.Object implements android.os.IInterface
-{
-
-    public abstract boolean checkPermission(java.lang.String, int, int) throws android.os.RemoteException;
-
-    public abstract java.lang.String[] getPackagesForUid(int) throws android.os.RemoteException;
-
-    public abstract boolean isRuntimePermission(java.lang.String) throws android.os.RemoteException;
-}

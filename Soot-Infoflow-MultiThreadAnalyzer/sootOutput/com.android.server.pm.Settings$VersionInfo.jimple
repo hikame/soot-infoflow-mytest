@@ -1,0 +1,38 @@
+public class com.android.server.pm.Settings$VersionInfo extends java.lang.Object
+{
+    int sdkVersion;
+    int databaseVersion;
+    java.lang.String fingerprint;
+
+    public void <init>()
+    {
+        com.android.server.pm.Settings$VersionInfo this;
+
+        this := @this: com.android.server.pm.Settings$VersionInfo;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void forceCurrent()
+    {
+        com.android.server.pm.Settings$VersionInfo this;
+        int $i0;
+        java.lang.String $r0;
+
+        this := @this: com.android.server.pm.Settings$VersionInfo;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        this.<com.android.server.pm.Settings$VersionInfo: int sdkVersion> = $i0;
+
+        this.<com.android.server.pm.Settings$VersionInfo: int databaseVersion> = 3;
+
+        $r0 = <android.os.Build: java.lang.String FINGERPRINT>;
+
+        this.<com.android.server.pm.Settings$VersionInfo: java.lang.String fingerprint> = $r0;
+
+        return;
+    }
+}

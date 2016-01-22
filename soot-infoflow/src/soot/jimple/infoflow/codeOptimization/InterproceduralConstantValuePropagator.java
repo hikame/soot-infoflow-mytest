@@ -732,7 +732,6 @@ public class InterproceduralConstantValuePropagator extends SceneTransformer {
 		Constant[] values = new Constant[sm.getParameterCount()];
 		for (int i = 0; i < isConstant.length; i++)
 			isConstant[i] = true;
-		
 		// Do all of our callees agree on one constant value?
 		boolean hasCallSites = false;
 		for (Unit callSite : callSites) {

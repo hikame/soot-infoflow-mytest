@@ -180,7 +180,6 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 				else
 					// For implicit taints, we have no type information
 					assert targetType == null;
-				
 				// also taint the target of the assignment
 				if (newAbs == null)
 					if (source.getAccessPath().isEmpty())

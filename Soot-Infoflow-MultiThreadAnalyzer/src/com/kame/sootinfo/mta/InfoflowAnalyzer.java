@@ -321,9 +321,6 @@ public class InfoflowAnalyzer {
 		for (ResultsAvailableHandler handler : onResultsAvailable)
 			handler.onResultsAvailable(iCfg, results);
 		
-		if (config.getWriteOutputFiles())
-			PackManager.v().writeOutput();
-		
 		maxMemoryConsumption = Math.max(maxMemoryConsumption, getUsedMemory());
 		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");
 	}
@@ -396,7 +393,7 @@ public class InfoflowAnalyzer {
 		Stmt stmt = rsi.getPath()[pos];
 		if(caughtInsideMethod(targetExceptions, stmt))
 			return true;
-		if(pos == 0)	//代表已经遍历到最后一个path了	
+		if(pos == 0)	//it is the last of the path
 			return false;
 		else
 			return caughtOutsideMethod(targetExceptions, pos - 1, rsi);
@@ -544,6 +541,7 @@ public class InfoflowAnalyzer {
 						sc.getSuperclass().equals(thSC) || 
 						sc.getInterfaces().contains(rnSC));
 		}
+		
 		
 		if(multiMth)
 			return tmp;

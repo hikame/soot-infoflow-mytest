@@ -92,6 +92,7 @@ public class FastHierarchy
         }
     }
     protected int dfsVisit( int start, SootClass c ) {
+
         Interval r = new Interval();
         r.lower = start++;
         Collection<SootClass> col = classToSubclasses.get(c);
@@ -99,7 +100,7 @@ public class FastHierarchy
             for (SootClass sc : col) {
                 // For some awful reason, Soot thinks interface are subclasses
                 // of java.lang.Object
-                if( sc.isInterface() ) continue;
+            	if( sc.isInterface() ) continue;
                 start = dfsVisit( start, sc );
             }
         }

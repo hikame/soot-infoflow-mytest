@@ -77,7 +77,7 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 				checkNullChecker(d1, (IfStmt) stmt, incoming, outgoing, cfg);
 		}
 		
-		else if(type.equals(FlowFunctionType.NormalFlowFunction) && stmt instanceof DefinitionStmt){	//普通的复制语句，进行child与parent的传递
+		else if(type.equals(FlowFunctionType.NormalFlowFunction) && stmt instanceof DefinitionStmt){	//passing between child and parent
 			Value left = ((DefinitionStmt)stmt).getLeftOp();
 			Value right = ((DefinitionStmt)stmt).getRightOp();
 			AccessPath rightAliasing = getAliasing().mayAlias(incoming.getAccessPath(), right);
@@ -95,7 +95,7 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 			}
 		}
 		
-		else if(type.equals(FlowFunctionType.ReturnFlowFunction)){	//从形参到实参的传递
+		else if(type.equals(FlowFunctionType.ReturnFlowFunction)){	//从形参到实参的传递passing from formal parameter to actual parameter
 			if(stmt instanceof ReturnStmt){
 				Value retValue = ((ReturnStmt) stmt).getOpBox().getValue();
 				if(getAliasing().mayAlias(incoming.getAccessPath(), retValue) != null){

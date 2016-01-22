@@ -1,0 +1,139 @@
+class com.android.server.pm.PackageManagerService$OriginInfo extends java.lang.Object
+{
+    final java.io.File file;
+    final java.lang.String cid;
+    final boolean staged;
+    final boolean existing;
+    final java.lang.String resolvedPath;
+    final java.io.File resolvedFile;
+
+    static com.android.server.pm.PackageManagerService$OriginInfo fromNothing()
+    {
+        com.android.server.pm.PackageManagerService$OriginInfo $r0;
+
+        $r0 = new com.android.server.pm.PackageManagerService$OriginInfo;
+
+        specialinvoke $r0.<com.android.server.pm.PackageManagerService$OriginInfo: void <init>(java.io.File,java.lang.String,boolean,boolean)>(null, null, 0, 0);
+
+        return $r0;
+    }
+
+    static com.android.server.pm.PackageManagerService$OriginInfo fromUntrustedFile(java.io.File)
+    {
+        java.io.File file;
+        com.android.server.pm.PackageManagerService$OriginInfo $r0;
+
+        file := @parameter0: java.io.File;
+
+        $r0 = new com.android.server.pm.PackageManagerService$OriginInfo;
+
+        specialinvoke $r0.<com.android.server.pm.PackageManagerService$OriginInfo: void <init>(java.io.File,java.lang.String,boolean,boolean)>(file, null, 0, 0);
+
+        return $r0;
+    }
+
+    static com.android.server.pm.PackageManagerService$OriginInfo fromExistingFile(java.io.File)
+    {
+        java.io.File file;
+        com.android.server.pm.PackageManagerService$OriginInfo $r0;
+
+        file := @parameter0: java.io.File;
+
+        $r0 = new com.android.server.pm.PackageManagerService$OriginInfo;
+
+        specialinvoke $r0.<com.android.server.pm.PackageManagerService$OriginInfo: void <init>(java.io.File,java.lang.String,boolean,boolean)>(file, null, 0, 1);
+
+        return $r0;
+    }
+
+    static com.android.server.pm.PackageManagerService$OriginInfo fromStagedFile(java.io.File)
+    {
+        java.io.File file;
+        com.android.server.pm.PackageManagerService$OriginInfo $r0;
+
+        file := @parameter0: java.io.File;
+
+        $r0 = new com.android.server.pm.PackageManagerService$OriginInfo;
+
+        specialinvoke $r0.<com.android.server.pm.PackageManagerService$OriginInfo: void <init>(java.io.File,java.lang.String,boolean,boolean)>(file, null, 1, 0);
+
+        return $r0;
+    }
+
+    static com.android.server.pm.PackageManagerService$OriginInfo fromStagedContainer(java.lang.String)
+    {
+        java.lang.String cid;
+        com.android.server.pm.PackageManagerService$OriginInfo $r0;
+
+        cid := @parameter0: java.lang.String;
+
+        $r0 = new com.android.server.pm.PackageManagerService$OriginInfo;
+
+        specialinvoke $r0.<com.android.server.pm.PackageManagerService$OriginInfo: void <init>(java.io.File,java.lang.String,boolean,boolean)>(null, cid, 1, 0);
+
+        return $r0;
+    }
+
+    private void <init>(java.io.File, java.lang.String, boolean, boolean)
+    {
+        com.android.server.pm.PackageManagerService$OriginInfo this;
+        java.io.File file, $r2;
+        java.lang.String cid, $r0, $r1, $r3;
+        boolean staged, existing;
+
+        this := @this: com.android.server.pm.PackageManagerService$OriginInfo;
+
+        file := @parameter0: java.io.File;
+
+        cid := @parameter1: java.lang.String;
+
+        staged := @parameter2: boolean;
+
+        existing := @parameter3: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.io.File file> = file;
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String cid> = cid;
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: boolean staged> = staged;
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: boolean existing> = existing;
+
+        if cid == null goto label1;
+
+        $r1 = staticinvoke <com.android.internal.content.PackageHelper: java.lang.String getSdDir(java.lang.String)>(cid);
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath> = $r1;
+
+        $r2 = new java.io.File;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath>;
+
+        specialinvoke $r2.<java.io.File: void <init>(java.lang.String)>($r3);
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.io.File resolvedFile> = $r2;
+
+        goto label3;
+
+     label1:
+        if file == null goto label2;
+
+        $r0 = virtualinvoke file.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath> = $r0;
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.io.File resolvedFile> = file;
+
+        goto label3;
+
+     label2:
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath> = null;
+
+        this.<com.android.server.pm.PackageManagerService$OriginInfo: java.io.File resolvedFile> = null;
+
+     label3:
+        return;
+    }
+}

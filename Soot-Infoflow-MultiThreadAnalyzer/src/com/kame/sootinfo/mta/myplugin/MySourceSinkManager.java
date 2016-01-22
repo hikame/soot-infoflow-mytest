@@ -28,13 +28,6 @@ import soot.jimple.infoflow.source.SourceInfo;
 import soot.kame.SourceSinkType;
 
 public class MySourceSinkManager implements ISourceSinkManager {
-	public MySourceSinkManager(){}
-//	private MySourceSinkManager onlyThis = null;
-//	public MySourceSinkManager v(){
-//		if(onlyThis == null)
-//			onlyThis = new MySourceSinkManager();
-//		return onlyThis;
-//	}
 	List<String> targetMethods = MTAScene.v().getTargetList(); 
 	List<String> sinks = MTAScene.v().getSinkMethodList();
 //	/**
@@ -44,11 +37,6 @@ public class MySourceSinkManager implements ISourceSinkManager {
 //	 * 给出的方法名的参数是污点值
 //	 * @param sinksList
 //	 * 给出的方法名是sink*/
-//	public MySourceSinkManager(boolean taintSubFields, List<String> targetMethodsList, List<String> sinksList){
-////		this.taintSubFields =  taintSubFields;
-//		this.targetMethods = targetMethodsList;
-//		this.sinks = sinksList;
-//	}
 	
 	@Override
 	public SourceInfo getSourceInfo(Stmt stmt,
@@ -82,27 +70,27 @@ public class MySourceSinkManager implements ISourceSinkManager {
 
 	private SourceInfo isParameterOfTargetMethods(Stmt sCallSite, InterproceduralCFG<Unit, SootMethod> cfg) {
 		//参照jimple的格式，方法的参数在方法的实现代码中是通过左操作数为临时操作变量，右操作数为实参的形式进行表示的，这种情况下，为左操作数创建TaintedPath信息。
-				String mth = cfg.getMethodOf(sCallSite).toString();
-				boolean isTarget = false;
-				for(String tm : targetMethods)
-					if(tm.equals(mth)){
-						isTarget = true;
-					}
-				if(isTarget == false)
-					return null;
-				if(!(sCallSite instanceof DefinitionStmt))
-					return null;
-				DefinitionStmt ds = (DefinitionStmt) sCallSite;
-				if(!(ds.getRightOp() instanceof ParameterRef))
-					return null;
-				Value leftOp = ((DefinitionStmt) sCallSite).getLeftOp();
-				AccessPath ap = AccessPathFactory.v().createAccessPath(
-						leftOp, true);
-				Set<SourceSinkType> sourceTypes = ap.getSourceTypes();
-				sourceTypes.addAll(Arrays.asList(SourceSinkType.values()));
-				if(leftOp.getType() instanceof PrimType)
-					sourceTypes.remove(SourceSinkType.NullPointerException);
-				return new SourceInfo(ap);
+		String mth = cfg.getMethodOf(sCallSite).toString();
+		boolean isTarget = false;
+		for(String tm : targetMethods)
+			if(tm.equals(mth)){
+				isTarget = true;
+			}
+		if(isTarget == false)
+			return null;
+		if(!(sCallSite instanceof DefinitionStmt))
+			return null;
+		DefinitionStmt ds = (DefinitionStmt) sCallSite;
+		if(!(ds.getRightOp() instanceof ParameterRef))
+			return null;
+		Value leftOp = ((DefinitionStmt) sCallSite).getLeftOp();
+		AccessPath ap = AccessPathFactory.v().createAccessPath(
+				leftOp, true);
+		Set<SourceSinkType> sourceTypes = ap.getSourceTypes();
+		sourceTypes.addAll(Arrays.asList(SourceSinkType.values()));
+		if(leftOp.getType() instanceof PrimType)
+			sourceTypes.remove(SourceSinkType.NullPointerException);
+		return new SourceInfo(ap);
 	}
 
 	@Override

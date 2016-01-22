@@ -69,6 +69,8 @@ public class UnusedLocalEliminator extends BodyTransformer {
 				Value v = vb.getValue();
 				if (v instanceof Local) {
 					Local l = (Local) v;
+if(l.getNumber() > usedLocals.length)
+	l.toString();
 					usedLocals[l.getNumber()] = true;
 				}
 			}

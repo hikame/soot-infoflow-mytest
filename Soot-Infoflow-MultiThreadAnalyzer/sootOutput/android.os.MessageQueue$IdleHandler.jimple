@@ -1,5 +1,0 @@
-public interface  android.os.MessageQueue$IdleHandler extends java.lang.Object
-{
-
-    public abstract boolean queueIdle();
-}

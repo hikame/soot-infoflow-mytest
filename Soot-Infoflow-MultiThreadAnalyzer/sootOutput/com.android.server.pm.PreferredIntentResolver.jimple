@@ -1,0 +1,137 @@
+public class com.android.server.pm.PreferredIntentResolver extends com.android.server.IntentResolver
+{
+
+    public void <init>()
+    {
+        com.android.server.pm.PreferredIntentResolver this;
+
+        this := @this: com.android.server.pm.PreferredIntentResolver;
+
+        specialinvoke this.<com.android.server.IntentResolver: void <init>()>();
+
+        return;
+    }
+
+    protected com.android.server.pm.PreferredActivity[] newArray(int)
+    {
+        com.android.server.pm.PreferredIntentResolver this;
+        int size;
+        com.android.server.pm.PreferredActivity[] $r0;
+
+        this := @this: com.android.server.pm.PreferredIntentResolver;
+
+        size := @parameter0: int;
+
+        $r0 = newarray (com.android.server.pm.PreferredActivity)[size];
+
+        return $r0;
+    }
+
+    protected boolean isPackageForFilter(java.lang.String, com.android.server.pm.PreferredActivity)
+    {
+        com.android.server.pm.PreferredIntentResolver this;
+        java.lang.String packageName, $r2;
+        com.android.server.pm.PreferredActivity filter;
+        com.android.server.pm.PreferredComponent $r0;
+        android.content.ComponentName $r1;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PreferredIntentResolver;
+
+        packageName := @parameter0: java.lang.String;
+
+        filter := @parameter1: com.android.server.pm.PreferredActivity;
+
+        $r0 = filter.<com.android.server.pm.PreferredActivity: com.android.server.pm.PreferredComponent mPref>;
+
+        $r1 = $r0.<com.android.server.pm.PreferredComponent: android.content.ComponentName mComponent>;
+
+        $r2 = virtualinvoke $r1.<android.content.ComponentName: java.lang.String getPackageName()>();
+
+        $z0 = virtualinvoke packageName.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        return $z0;
+    }
+
+    protected void dumpFilter(java.io.PrintWriter, java.lang.String, com.android.server.pm.PreferredActivity)
+    {
+        com.android.server.pm.PreferredIntentResolver this;
+        java.io.PrintWriter out;
+        java.lang.String prefix;
+        com.android.server.pm.PreferredActivity filter;
+        com.android.server.pm.PreferredComponent $r0;
+
+        this := @this: com.android.server.pm.PreferredIntentResolver;
+
+        out := @parameter0: java.io.PrintWriter;
+
+        prefix := @parameter1: java.lang.String;
+
+        filter := @parameter2: com.android.server.pm.PreferredActivity;
+
+        $r0 = filter.<com.android.server.pm.PreferredActivity: com.android.server.pm.PreferredComponent mPref>;
+
+        virtualinvoke $r0.<com.android.server.pm.PreferredComponent: void dump(java.io.PrintWriter,java.lang.String,java.lang.Object)>(out, prefix, filter);
+
+        return;
+    }
+
+    protected volatile void dumpFilter(java.io.PrintWriter, java.lang.String, android.content.IntentFilter)
+    {
+        com.android.server.pm.PreferredIntentResolver this;
+        java.io.PrintWriter l1;
+        java.lang.String l2;
+        android.content.IntentFilter l3;
+        com.android.server.pm.PreferredActivity $r0;
+
+        this := @this: com.android.server.pm.PreferredIntentResolver;
+
+        l1 := @parameter0: java.io.PrintWriter;
+
+        l2 := @parameter1: java.lang.String;
+
+        l3 := @parameter2: android.content.IntentFilter;
+
+        $r0 = (com.android.server.pm.PreferredActivity) l3;
+
+        virtualinvoke this.<com.android.server.pm.PreferredIntentResolver: void dumpFilter(java.io.PrintWriter,java.lang.String,com.android.server.pm.PreferredActivity)>(l1, l2, $r0);
+
+        return;
+    }
+
+    protected volatile android.content.IntentFilter[] newArray(int)
+    {
+        com.android.server.pm.PreferredIntentResolver this;
+        int l1;
+        com.android.server.pm.PreferredActivity[] $r0;
+
+        this := @this: com.android.server.pm.PreferredIntentResolver;
+
+        l1 := @parameter0: int;
+
+        $r0 = virtualinvoke this.<com.android.server.pm.PreferredIntentResolver: com.android.server.pm.PreferredActivity[] newArray(int)>(l1);
+
+        return $r0;
+    }
+
+    protected volatile boolean isPackageForFilter(java.lang.String, android.content.IntentFilter)
+    {
+        com.android.server.pm.PreferredIntentResolver this;
+        java.lang.String l1;
+        android.content.IntentFilter l2;
+        com.android.server.pm.PreferredActivity $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PreferredIntentResolver;
+
+        l1 := @parameter0: java.lang.String;
+
+        l2 := @parameter1: android.content.IntentFilter;
+
+        $r0 = (com.android.server.pm.PreferredActivity) l2;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PreferredIntentResolver: boolean isPackageForFilter(java.lang.String,com.android.server.pm.PreferredActivity)>(l1, $r0);
+
+        return $z0;
+    }
+}

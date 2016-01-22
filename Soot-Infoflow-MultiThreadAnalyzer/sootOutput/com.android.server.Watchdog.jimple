@@ -1,0 +1,1148 @@
+public class com.android.server.Watchdog extends java.lang.Thread
+{
+    static final java.lang.String TAG;
+    static final boolean DB;
+    static final boolean RECORD_KERNEL_THREADS;
+    static final long DEFAULT_TIMEOUT;
+    static final long CHECK_INTERVAL;
+    static final int COMPLETED;
+    static final int WAITING;
+    static final int WAITED_HALF;
+    static final int OVERDUE;
+    public static final java.lang.String[] NATIVE_STACKS_OF_INTEREST;
+    static com.android.server.Watchdog sWatchdog;
+    final java.util.ArrayList mHandlerCheckers;
+    final com.android.server.Watchdog$HandlerChecker mMonitorChecker;
+    android.content.ContentResolver mResolver;
+    com.android.server.am.ActivityManagerService mActivity;
+    int mPhonePid;
+    android.app.IActivityController mController;
+    boolean mAllowRestart;
+
+    public static com.android.server.Watchdog getInstance()
+    {
+        com.android.server.Watchdog $r0, $r1, $r2;
+
+        $r0 = <com.android.server.Watchdog: com.android.server.Watchdog sWatchdog>;
+
+        if $r0 != null goto label1;
+
+        $r2 = new com.android.server.Watchdog;
+
+        specialinvoke $r2.<com.android.server.Watchdog: void <init>()>();
+
+        <com.android.server.Watchdog: com.android.server.Watchdog sWatchdog> = $r2;
+
+     label1:
+        $r1 = <com.android.server.Watchdog: com.android.server.Watchdog sWatchdog>;
+
+        return $r1;
+    }
+
+    private void <init>()
+    {
+        com.android.server.Watchdog this;
+        java.util.ArrayList $r0, $r4, $r7, $r10, $r12, $r15;
+        com.android.server.Watchdog$HandlerChecker $r1, $r3, $r5, $r9, $r13, $r16;
+        android.os.Handler $r2, $r6, $r11, $r14, $r17;
+        android.os.Looper $r8;
+        com.android.server.Watchdog$BinderThreadMonitor $r18;
+
+        this := @this: com.android.server.Watchdog;
+
+        specialinvoke this.<java.lang.Thread: void <init>(java.lang.String)>("watchdog");
+
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+        this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers> = $r0;
+
+        this.<com.android.server.Watchdog: boolean mAllowRestart> = 1;
+
+        $r1 = new com.android.server.Watchdog$HandlerChecker;
+
+        $r2 = staticinvoke <com.android.server.FgThread: android.os.Handler getHandler()>();
+
+        specialinvoke $r1.<com.android.server.Watchdog$HandlerChecker: void <init>(com.android.server.Watchdog,android.os.Handler,java.lang.String,long)>(this, $r2, "foreground thread", 60000L);
+
+        this.<com.android.server.Watchdog: com.android.server.Watchdog$HandlerChecker mMonitorChecker> = $r1;
+
+        $r4 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r3 = this.<com.android.server.Watchdog: com.android.server.Watchdog$HandlerChecker mMonitorChecker>;
+
+        virtualinvoke $r4.<java.util.ArrayList: boolean add(java.lang.Object)>($r3);
+
+        $r7 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r5 = new com.android.server.Watchdog$HandlerChecker;
+
+        $r6 = new android.os.Handler;
+
+        $r8 = staticinvoke <android.os.Looper: android.os.Looper getMainLooper()>();
+
+        specialinvoke $r6.<android.os.Handler: void <init>(android.os.Looper)>($r8);
+
+        specialinvoke $r5.<com.android.server.Watchdog$HandlerChecker: void <init>(com.android.server.Watchdog,android.os.Handler,java.lang.String,long)>(this, $r6, "main thread", 60000L);
+
+        virtualinvoke $r7.<java.util.ArrayList: boolean add(java.lang.Object)>($r5);
+
+        $r10 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r9 = new com.android.server.Watchdog$HandlerChecker;
+
+        $r11 = staticinvoke <com.android.server.UiThread: android.os.Handler getHandler()>();
+
+        specialinvoke $r9.<com.android.server.Watchdog$HandlerChecker: void <init>(com.android.server.Watchdog,android.os.Handler,java.lang.String,long)>(this, $r11, "ui thread", 60000L);
+
+        virtualinvoke $r10.<java.util.ArrayList: boolean add(java.lang.Object)>($r9);
+
+        $r12 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r13 = new com.android.server.Watchdog$HandlerChecker;
+
+        $r14 = staticinvoke <com.android.server.IoThread: android.os.Handler getHandler()>();
+
+        specialinvoke $r13.<com.android.server.Watchdog$HandlerChecker: void <init>(com.android.server.Watchdog,android.os.Handler,java.lang.String,long)>(this, $r14, "i/o thread", 60000L);
+
+        virtualinvoke $r12.<java.util.ArrayList: boolean add(java.lang.Object)>($r13);
+
+        $r15 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r16 = new com.android.server.Watchdog$HandlerChecker;
+
+        $r17 = staticinvoke <com.android.server.DisplayThread: android.os.Handler getHandler()>();
+
+        specialinvoke $r16.<com.android.server.Watchdog$HandlerChecker: void <init>(com.android.server.Watchdog,android.os.Handler,java.lang.String,long)>(this, $r17, "display thread", 60000L);
+
+        virtualinvoke $r15.<java.util.ArrayList: boolean add(java.lang.Object)>($r16);
+
+        $r18 = new com.android.server.Watchdog$BinderThreadMonitor;
+
+        specialinvoke $r18.<com.android.server.Watchdog$BinderThreadMonitor: void <init>(com.android.server.Watchdog$1)>(null);
+
+        virtualinvoke this.<com.android.server.Watchdog: void addMonitor(com.android.server.Watchdog$Monitor)>($r18);
+
+        return;
+    }
+
+    public void init(android.content.Context, com.android.server.am.ActivityManagerService)
+    {
+        com.android.server.Watchdog this;
+        android.content.Context context;
+        com.android.server.am.ActivityManagerService activity;
+        android.content.ContentResolver $r0;
+        com.android.server.Watchdog$RebootRequestReceiver $r1;
+        android.content.IntentFilter $r2;
+
+        this := @this: com.android.server.Watchdog;
+
+        context := @parameter0: android.content.Context;
+
+        activity := @parameter1: com.android.server.am.ActivityManagerService;
+
+        $r0 = virtualinvoke context.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        this.<com.android.server.Watchdog: android.content.ContentResolver mResolver> = $r0;
+
+        this.<com.android.server.Watchdog: com.android.server.am.ActivityManagerService mActivity> = activity;
+
+        $r1 = new com.android.server.Watchdog$RebootRequestReceiver;
+
+        specialinvoke $r1.<com.android.server.Watchdog$RebootRequestReceiver: void <init>(com.android.server.Watchdog)>(this);
+
+        $r2 = new android.content.IntentFilter;
+
+        specialinvoke $r2.<android.content.IntentFilter: void <init>(java.lang.String)>("android.intent.action.REBOOT");
+
+        virtualinvoke context.<android.content.Context: android.content.Intent registerReceiver(android.content.BroadcastReceiver,android.content.IntentFilter,java.lang.String,android.os.Handler)>($r1, $r2, "android.permission.REBOOT", null);
+
+        return;
+    }
+
+    public void processStarted(java.lang.String, int)
+    {
+        com.android.server.Watchdog this, l3;
+        java.lang.String name, $r1;
+        int pid;
+        java.lang.Throwable l4, $r2;
+        boolean $z0;
+
+        this := @this: com.android.server.Watchdog;
+
+        name := @parameter0: java.lang.String;
+
+        pid := @parameter1: int;
+
+        l3 = this;
+
+        entermonitor this;
+
+     label1:
+        $r1 = "com.android.phone";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $z0 == 0 goto label2;
+
+        this.<com.android.server.Watchdog: int mPhonePid> = pid;
+
+     label2:
+        exitmonitor l3;
+
+     label3:
+        goto label6;
+
+     label4:
+        $r2 := @caughtexception;
+
+        l4 = $r2;
+
+        exitmonitor l3;
+
+     label5:
+        throw l4;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void setActivityController(android.app.IActivityController)
+    {
+        com.android.server.Watchdog this, l2;
+        android.app.IActivityController controller;
+        java.lang.Throwable l3, $r1;
+
+        this := @this: com.android.server.Watchdog;
+
+        controller := @parameter0: android.app.IActivityController;
+
+        l2 = this;
+
+        entermonitor this;
+
+     label1:
+        this.<com.android.server.Watchdog: android.app.IActivityController mController> = controller;
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l3 = $r1;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setAllowRestart(boolean)
+    {
+        com.android.server.Watchdog this, l2;
+        boolean allowRestart;
+        java.lang.Throwable l3, $r1;
+
+        this := @this: com.android.server.Watchdog;
+
+        allowRestart := @parameter0: boolean;
+
+        l2 = this;
+
+        entermonitor this;
+
+     label1:
+        this.<com.android.server.Watchdog: boolean mAllowRestart> = allowRestart;
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l3 = $r1;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void addMonitor(com.android.server.Watchdog$Monitor)
+    {
+        com.android.server.Watchdog this, l2;
+        com.android.server.Watchdog$Monitor monitor;
+        java.lang.Throwable l3, $r3;
+        boolean $z0;
+        com.android.server.Watchdog$HandlerChecker $r1;
+        java.lang.RuntimeException $r2;
+
+        this := @this: com.android.server.Watchdog;
+
+        monitor := @parameter0: com.android.server.Watchdog$Monitor;
+
+        l2 = this;
+
+        entermonitor this;
+
+     label1:
+        $z0 = virtualinvoke this.<com.android.server.Watchdog: boolean isAlive()>();
+
+        if $z0 == 0 goto label2;
+
+        $r2 = new java.lang.RuntimeException;
+
+        specialinvoke $r2.<java.lang.RuntimeException: void <init>(java.lang.String)>("Monitors can\'t be added once the Watchdog is running");
+
+        throw $r2;
+
+     label2:
+        $r1 = this.<com.android.server.Watchdog: com.android.server.Watchdog$HandlerChecker mMonitorChecker>;
+
+        virtualinvoke $r1.<com.android.server.Watchdog$HandlerChecker: void addMonitor(com.android.server.Watchdog$Monitor)>(monitor);
+
+        exitmonitor l2;
+
+     label3:
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l3 = $r3;
+
+        exitmonitor l2;
+
+     label5:
+        throw l3;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void addThread(android.os.Handler)
+    {
+        com.android.server.Watchdog this;
+        android.os.Handler thread;
+
+        this := @this: com.android.server.Watchdog;
+
+        thread := @parameter0: android.os.Handler;
+
+        virtualinvoke this.<com.android.server.Watchdog: void addThread(android.os.Handler,long)>(thread, 60000L);
+
+        return;
+    }
+
+    public void addThread(android.os.Handler, long)
+    {
+        com.android.server.Watchdog this, l4;
+        android.os.Handler thread;
+        long timeoutMillis;
+        java.lang.String name;
+        java.lang.Throwable l6, $r5;
+        boolean $z0;
+        android.os.Looper $r1;
+        java.lang.Thread $r2;
+        com.android.server.Watchdog$HandlerChecker $r3;
+        java.util.ArrayList $r4;
+        java.lang.RuntimeException $r6;
+
+        this := @this: com.android.server.Watchdog;
+
+        thread := @parameter0: android.os.Handler;
+
+        timeoutMillis := @parameter1: long;
+
+        l4 = this;
+
+        entermonitor this;
+
+     label1:
+        $z0 = virtualinvoke this.<com.android.server.Watchdog: boolean isAlive()>();
+
+        if $z0 == 0 goto label2;
+
+        $r6 = new java.lang.RuntimeException;
+
+        specialinvoke $r6.<java.lang.RuntimeException: void <init>(java.lang.String)>("Threads can\'t be added once the Watchdog is running");
+
+        throw $r6;
+
+     label2:
+        $r1 = virtualinvoke thread.<android.os.Handler: android.os.Looper getLooper()>();
+
+        $r2 = virtualinvoke $r1.<android.os.Looper: java.lang.Thread getThread()>();
+
+        name = virtualinvoke $r2.<java.lang.Thread: java.lang.String getName()>();
+
+        $r4 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r3 = new com.android.server.Watchdog$HandlerChecker;
+
+        specialinvoke $r3.<com.android.server.Watchdog$HandlerChecker: void <init>(com.android.server.Watchdog,android.os.Handler,java.lang.String,long)>(this, thread, name, timeoutMillis);
+
+        virtualinvoke $r4.<java.util.ArrayList: boolean add(java.lang.Object)>($r3);
+
+        exitmonitor l4;
+
+     label3:
+        goto label6;
+
+     label4:
+        $r5 := @caughtexception;
+
+        l6 = $r5;
+
+        exitmonitor l4;
+
+     label5:
+        throw l6;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    void rebootSystem(java.lang.String)
+    {
+        com.android.server.Watchdog this;
+        java.lang.String reason, $r3;
+        android.os.IPowerManager pms;
+        android.os.RemoteException l3, $r5;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        android.os.IBinder $r4;
+
+        this := @this: com.android.server.Watchdog;
+
+        reason := @parameter0: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Rebooting system because: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(reason);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("Watchdog", $r3);
+
+        $r4 = staticinvoke <android.os.ServiceManager: android.os.IBinder getService(java.lang.String)>("power");
+
+        pms = (android.os.IPowerManager) $r4;
+
+     label1:
+        interfaceinvoke pms.<android.os.IPowerManager: void reboot(boolean,java.lang.String,boolean)>(0, reason, 0);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r5 := @caughtexception;
+
+        l3 = $r5;
+
+     label4:
+        return;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+
+    private int evaluateCheckerCompletionLocked()
+    {
+        com.android.server.Watchdog this;
+        com.android.server.Watchdog$HandlerChecker hc;
+        java.util.ArrayList $r0, $r1;
+        int $i0, $i1, state#1, i#2;
+        java.lang.Object $r2;
+
+        this := @this: com.android.server.Watchdog;
+
+        state#1 = 0;
+
+        i#2 = 0;
+
+     label1:
+        $r0 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+
+        if i#2 >= $i0 goto label2;
+
+        $r1 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r2 = virtualinvoke $r1.<java.util.ArrayList: java.lang.Object get(int)>(i#2);
+
+        hc = (com.android.server.Watchdog$HandlerChecker) $r2;
+
+        $i1 = virtualinvoke hc.<com.android.server.Watchdog$HandlerChecker: int getCompletionStateLocked()>();
+
+        state#1 = staticinvoke <java.lang.Math: int max(int,int)>(state#1, $i1);
+
+        i#2 = i#2 + 1;
+
+        goto label1;
+
+     label2:
+        return state#1;
+    }
+
+    private java.util.ArrayList getBlockedCheckersLocked()
+    {
+        com.android.server.Watchdog this;
+        java.util.ArrayList checkers, $r0, $r1, $r2;
+        com.android.server.Watchdog$HandlerChecker hc;
+        int $i0, i#1;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        this := @this: com.android.server.Watchdog;
+
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+        checkers = $r0;
+
+        i#1 = 0;
+
+     label1:
+        $r1 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+
+        if i#1 >= $i0 goto label3;
+
+        $r2 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(i#1);
+
+        hc = (com.android.server.Watchdog$HandlerChecker) $r3;
+
+        $z0 = virtualinvoke hc.<com.android.server.Watchdog$HandlerChecker: boolean isOverdueLocked()>();
+
+        if $z0 == 0 goto label2;
+
+        virtualinvoke checkers.<java.util.ArrayList: boolean add(java.lang.Object)>(hc);
+
+     label2:
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label3:
+        return checkers;
+    }
+
+    private java.lang.String describeCheckersLocked(java.util.ArrayList)
+    {
+        com.android.server.Watchdog this;
+        java.util.ArrayList checkers;
+        java.lang.StringBuilder builder, $r0;
+        int $i0, $i1, i#1;
+        java.lang.String $r1, $r4;
+        java.lang.Object $r2;
+        com.android.server.Watchdog$HandlerChecker $r3;
+
+        this := @this: com.android.server.Watchdog;
+
+        checkers := @parameter0: java.util.ArrayList;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(int)>(128);
+
+        builder = $r0;
+
+        i#1 = 0;
+
+     label1:
+        $i0 = virtualinvoke checkers.<java.util.ArrayList: int size()>();
+
+        if i#1 >= $i0 goto label3;
+
+        $i1 = virtualinvoke builder.<java.lang.StringBuilder: int length()>();
+
+        if $i1 <= 0 goto label2;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+     label2:
+        $r2 = virtualinvoke checkers.<java.util.ArrayList: java.lang.Object get(int)>(i#1);
+
+        $r3 = (com.android.server.Watchdog$HandlerChecker) $r2;
+
+        $r4 = virtualinvoke $r3.<com.android.server.Watchdog$HandlerChecker: java.lang.String describeBlockedStateLocked()>();
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label3:
+        $r1 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public void run()
+    {
+        com.android.server.Watchdog this, pids#3, hc#16;
+        java.util.ArrayList blockedCheckers, $r0, $r2, $r26, $r34, pids#10, pids#12;
+        java.lang.String subject, $r9, $r13, $r16, $r25;
+        boolean allowRestart, $z1, $z3, $z4, waitedHalf#1, $z6;
+        com.android.server.Watchdog$1 dropboxThread, $r5;
+        java.lang.StackTraceElement element;
+        int $i0, $i3, $i4, $i6, $i7, $i16, $i17, debuggerWasConnected#2, i#5, e#9, hc#19, hc#21, len$#24, i$#25;
+        byte $b1;
+        java.lang.Integer $r3, $r27, $r28;
+        java.lang.String[] $r4, $r29;
+        java.lang.StringBuilder $r8, $r10, $r11, $r12, $r17, $r18, $r22, $r23, $r24;
+        com.android.server.Watchdog$HandlerChecker $r14, $r20, hc#6;
+        java.lang.Object $r15, $r21, $r33;
+        java.lang.Thread $r19;
+        java.lang.Throwable $r31, $r37, len$#11, i$#18;
+        java.lang.InterruptedException $r32, $r36, e#8, i#15;
+        long $l19, $l20, timeout#4, i#7;
+        android.os.RemoteException $r35, hc#20;
+        java.io.File timeout#14;
+        android.app.IActivityController i#17;
+        java.lang.StackTraceElement[] e#22, pids#23;
+
+        this := @this: com.android.server.Watchdog;
+
+        waitedHalf#1 = 0;
+
+     label01:
+        debuggerWasConnected#2 = 0;
+
+        pids#3 = this;
+
+        entermonitor this;
+
+     label02:
+        timeout#4 = 30000L;
+
+        i#5 = 0;
+
+     label03:
+        $r0 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+
+        if i#5 >= $i0 goto label04;
+
+        $r34 = this.<com.android.server.Watchdog: java.util.ArrayList mHandlerCheckers>;
+
+        $r33 = virtualinvoke $r34.<java.util.ArrayList: java.lang.Object get(int)>(i#5);
+
+        hc#6 = (com.android.server.Watchdog$HandlerChecker) $r33;
+
+        virtualinvoke hc#6.<com.android.server.Watchdog$HandlerChecker: void scheduleCheckLocked()>();
+
+        i#5 = i#5 + 1;
+
+        goto label03;
+
+     label04:
+        if debuggerWasConnected#2 <= 0 goto label05;
+
+        debuggerWasConnected#2 = debuggerWasConnected#2 + -1;
+
+     label05:
+        i#7 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+     label06:
+        $b1 = timeout#4 cmp 0L;
+
+        if $b1 <= 0 goto label12;
+
+        $z3 = staticinvoke <android.os.Debug: boolean isDebuggerConnected()>();
+
+        if $z3 == 0 goto label07;
+
+        debuggerWasConnected#2 = 2;
+
+     label07:
+        virtualinvoke this.<java.lang.Object: void wait(long)>(timeout#4);
+
+     label08:
+        goto label10;
+
+     label09:
+        $r32 := @caughtexception;
+
+        e#8 = $r32;
+
+        staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.Throwable)>("Watchdog", e#8);
+
+     label10:
+        $z4 = staticinvoke <android.os.Debug: boolean isDebuggerConnected()>();
+
+        if $z4 == 0 goto label11;
+
+        debuggerWasConnected#2 = 2;
+
+     label11:
+        $l20 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        $l19 = $l20 - i#7;
+
+        timeout#4 = 30000L - $l19;
+
+        goto label06;
+
+     label12:
+        e#9 = specialinvoke this.<com.android.server.Watchdog: int evaluateCheckerCompletionLocked()>();
+
+        if e#9 != 0 goto label14;
+
+        waitedHalf#1 = 0;
+
+        exitmonitor pids#3;
+
+     label13:
+        goto label01;
+
+     label14:
+        if e#9 != 1 goto label16;
+
+        exitmonitor pids#3;
+
+     label15:
+        goto label01;
+
+     label16:
+        if e#9 != 2 goto label19;
+
+        if waitedHalf#1 != 0 goto label17;
+
+        $r26 = new java.util.ArrayList;
+
+        specialinvoke $r26.<java.util.ArrayList: void <init>()>();
+
+        pids#10 = $r26;
+
+        $i16 = staticinvoke <android.os.Process: int myPid()>();
+
+        $r27 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i16);
+
+        virtualinvoke pids#10.<java.util.ArrayList: boolean add(java.lang.Object)>($r27);
+
+        $r29 = <com.android.server.Watchdog: java.lang.String[] NATIVE_STACKS_OF_INTEREST>;
+
+        staticinvoke <com.android.server.am.ActivityManagerService: java.io.File dumpStackTraces(boolean,java.util.ArrayList,com.android.internal.os.ProcessCpuTracker,android.util.SparseArray,java.lang.String[])>(1, pids#10, null, null, $r29);
+
+        waitedHalf#1 = 1;
+
+     label17:
+        exitmonitor pids#3;
+
+     label18:
+        goto label01;
+
+     label19:
+        blockedCheckers = specialinvoke this.<com.android.server.Watchdog: java.util.ArrayList getBlockedCheckersLocked()>();
+
+        subject = specialinvoke this.<com.android.server.Watchdog: java.lang.String describeCheckersLocked(java.util.ArrayList)>(blockedCheckers);
+
+        allowRestart = this.<com.android.server.Watchdog: boolean mAllowRestart>;
+
+        exitmonitor pids#3;
+
+     label20:
+        goto label23;
+
+     label21:
+        $r37 := @caughtexception;
+
+        len$#11 = $r37;
+
+        exitmonitor pids#3;
+
+     label22:
+        throw len$#11;
+
+     label23:
+        staticinvoke <android.util.EventLog: int writeEvent(int,java.lang.String)>(2802, subject);
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        pids#12 = $r2;
+
+        $i3 = staticinvoke <android.os.Process: int myPid()>();
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i3);
+
+        virtualinvoke pids#12.<java.util.ArrayList: boolean add(java.lang.Object)>($r3);
+
+        $i4 = this.<com.android.server.Watchdog: int mPhonePid>;
+
+        if $i4 <= 0 goto label24;
+
+        $i17 = this.<com.android.server.Watchdog: int mPhonePid>;
+
+        $r28 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i17);
+
+        virtualinvoke pids#12.<java.util.ArrayList: boolean add(java.lang.Object)>($r28);
+
+     label24:
+        if waitedHalf#1 != 0 goto label25;
+
+        $z6 = 1;
+
+        goto label26;
+
+     label25:
+        $z6 = 0;
+
+     label26:
+        $r4 = <com.android.server.Watchdog: java.lang.String[] NATIVE_STACKS_OF_INTEREST>;
+
+        timeout#14 = staticinvoke <com.android.server.am.ActivityManagerService: java.io.File dumpStackTraces(boolean,java.util.ArrayList,com.android.internal.os.ProcessCpuTracker,android.util.SparseArray,java.lang.String[])>($z6, pids#12, null, null, $r4);
+
+        staticinvoke <android.os.SystemClock: void sleep(long)>(2000L);
+
+        specialinvoke this.<com.android.server.Watchdog: java.io.File dumpKernelStackTraces()>();
+
+        specialinvoke this.<com.android.server.Watchdog: void doSysRq(char)>(119);
+
+        specialinvoke this.<com.android.server.Watchdog: void doSysRq(char)>(108);
+
+        $r5 = new com.android.server.Watchdog$1;
+
+        specialinvoke $r5.<com.android.server.Watchdog$1: void <init>(com.android.server.Watchdog,java.lang.String,java.lang.String,java.io.File)>(this, "watchdogWriteToDropbox", subject, timeout#14);
+
+        dropboxThread = $r5;
+
+        virtualinvoke dropboxThread.<java.lang.Thread: void start()>();
+
+     label27:
+        virtualinvoke dropboxThread.<java.lang.Thread: void join(long)>(2000L);
+
+     label28:
+        goto label30;
+
+     label29:
+        $r36 := @caughtexception;
+
+        i#15 = $r36;
+
+     label30:
+        hc#16 = this;
+
+        entermonitor this;
+
+     label31:
+        i#17 = this.<com.android.server.Watchdog: android.app.IActivityController mController>;
+
+        exitmonitor hc#16;
+
+     label32:
+        goto label35;
+
+     label33:
+        $r31 := @caughtexception;
+
+        i$#18 = $r31;
+
+        exitmonitor hc#16;
+
+     label34:
+        throw i$#18;
+
+     label35:
+        if i#17 == null goto label40;
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("Watchdog", "Reporting stuck state to activity controller");
+
+     label36:
+        staticinvoke <android.os.Binder: void setDumpDisabled(java.lang.String)>("Service dumps disabled due to hung system process.");
+
+        hc#19 = interfaceinvoke i#17.<android.app.IActivityController: int systemNotResponding(java.lang.String)>(subject);
+
+        if hc#19 < 0 goto label38;
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("Watchdog", "Activity controller requested to coninue to wait");
+
+        waitedHalf#1 = 0;
+
+     label37:
+        goto label01;
+
+     label38:
+        goto label40;
+
+     label39:
+        $r35 := @caughtexception;
+
+        hc#20 = $r35;
+
+     label40:
+        $z1 = staticinvoke <android.os.Debug: boolean isDebuggerConnected()>();
+
+        if $z1 == 0 goto label41;
+
+        debuggerWasConnected#2 = 2;
+
+     label41:
+        if debuggerWasConnected#2 < 2 goto label42;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("Watchdog", "Debugger connected: Watchdog is *not* killing the system process");
+
+        goto label49;
+
+     label42:
+        if debuggerWasConnected#2 <= 0 goto label43;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("Watchdog", "Debugger was connected: Watchdog is *not* killing the system process");
+
+        goto label49;
+
+     label43:
+        if allowRestart != 0 goto label44;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("Watchdog", "Restart not allowed: Watchdog is *not* killing the system process");
+
+        goto label49;
+
+     label44:
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("*** WATCHDOG KILLING SYSTEM PROCESS: ");
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subject);
+
+        $r9 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("Watchdog", $r9);
+
+        hc#21 = 0;
+
+     label45:
+        $i7 = virtualinvoke blockedCheckers.<java.util.ArrayList: int size()>();
+
+        if hc#21 >= $i7 goto label48;
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r15 = virtualinvoke blockedCheckers.<java.util.ArrayList: java.lang.Object get(int)>(hc#21);
+
+        $r14 = (com.android.server.Watchdog$HandlerChecker) $r15;
+
+        $r13 = virtualinvoke $r14.<com.android.server.Watchdog$HandlerChecker: java.lang.String getName()>();
+
+        $r18 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+
+        $r17 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" stack trace:");
+
+        $r16 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("Watchdog", $r16);
+
+        $r21 = virtualinvoke blockedCheckers.<java.util.ArrayList: java.lang.Object get(int)>(hc#21);
+
+        $r20 = (com.android.server.Watchdog$HandlerChecker) $r21;
+
+        $r19 = virtualinvoke $r20.<com.android.server.Watchdog$HandlerChecker: java.lang.Thread getThread()>();
+
+        e#22 = virtualinvoke $r19.<java.lang.Thread: java.lang.StackTraceElement[] getStackTrace()>();
+
+        pids#23 = e#22;
+
+        len$#24 = lengthof pids#23;
+
+        i$#25 = 0;
+
+     label46:
+        if i$#25 >= len$#24 goto label47;
+
+        element = pids#23[i$#25];
+
+        $r24 = new java.lang.StringBuilder;
+
+        specialinvoke $r24.<java.lang.StringBuilder: void <init>()>();
+
+        $r23 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("    at ");
+
+        $r22 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(element);
+
+        $r25 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("Watchdog", $r25);
+
+        i$#25 = i$#25 + 1;
+
+        goto label46;
+
+     label47:
+        hc#21 = hc#21 + 1;
+
+        goto label45;
+
+     label48:
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("Watchdog", "*** GOODBYE!");
+
+        $i6 = staticinvoke <android.os.Process: int myPid()>();
+
+        staticinvoke <android.os.Process: void killProcess(int)>($i6);
+
+        staticinvoke <java.lang.System: void exit(int)>(10);
+
+     label49:
+        waitedHalf#1 = 0;
+
+        goto label01;
+
+        catch java.lang.InterruptedException from label07 to label08 with label09;
+        catch java.lang.Throwable from label02 to label13 with label21;
+        catch java.lang.Throwable from label14 to label15 with label21;
+        catch java.lang.Throwable from label16 to label18 with label21;
+        catch java.lang.Throwable from label19 to label20 with label21;
+        catch java.lang.Throwable from label21 to label22 with label21;
+        catch java.lang.InterruptedException from label27 to label28 with label29;
+        catch java.lang.Throwable from label31 to label32 with label33;
+        catch java.lang.Throwable from label33 to label34 with label33;
+        catch android.os.RemoteException from label36 to label37 with label39;
+    }
+
+    private void doSysRq(char)
+    {
+        com.android.server.Watchdog this;
+        char c;
+        java.io.FileWriter $r0, sysrq_trigger#1;
+        java.io.IOException $r1, sysrq_trigger#2;
+
+        this := @this: com.android.server.Watchdog;
+
+        c := @parameter0: char;
+
+     label1:
+        $r0 = new java.io.FileWriter;
+
+        specialinvoke $r0.<java.io.FileWriter: void <init>(java.lang.String)>("/proc/sysrq-trigger");
+
+        sysrq_trigger#1 = $r0;
+
+        virtualinvoke sysrq_trigger#1.<java.io.FileWriter: void write(int)>(c);
+
+        virtualinvoke sysrq_trigger#1.<java.io.FileWriter: void close()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+
+        sysrq_trigger#2 = $r1;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("Watchdog", "Failed to write to /proc/sysrq-trigger", sysrq_trigger#2);
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    private java.io.File dumpKernelStackTraces()
+    {
+        com.android.server.Watchdog this;
+        java.lang.String tracesPath;
+        int $i0;
+        java.io.File $r0;
+
+        this := @this: com.android.server.Watchdog;
+
+        tracesPath = staticinvoke <android.os.SystemProperties: java.lang.String get(java.lang.String,java.lang.String)>("dalvik.vm.stack-trace-file", null);
+
+        if tracesPath == null goto label1;
+
+        $i0 = virtualinvoke tracesPath.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label2;
+
+     label1:
+        return null;
+
+     label2:
+        specialinvoke this.<com.android.server.Watchdog: void native_dumpKernelStacks(java.lang.String)>(tracesPath);
+
+        $r0 = new java.io.File;
+
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(tracesPath);
+
+        return $r0;
+    }
+
+    private native void native_dumpKernelStacks(java.lang.String);
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        <com.android.server.Watchdog: int OVERDUE> = 3;
+
+        <com.android.server.Watchdog: int WAITED_HALF> = 2;
+
+        <com.android.server.Watchdog: int WAITING> = 1;
+
+        <com.android.server.Watchdog: int COMPLETED> = 0;
+
+        <com.android.server.Watchdog: long CHECK_INTERVAL> = 30000L;
+
+        <com.android.server.Watchdog: long DEFAULT_TIMEOUT> = 60000L;
+
+        <com.android.server.Watchdog: boolean RECORD_KERNEL_THREADS> = 1;
+
+        <com.android.server.Watchdog: boolean DB> = 0;
+
+        <com.android.server.Watchdog: java.lang.String TAG> = "Watchdog";
+
+        $r0 = newarray (java.lang.String)[3];
+
+        $r0[0] = "/system/bin/mediaserver";
+
+        $r0[1] = "/system/bin/sdcard";
+
+        $r0[2] = "/system/bin/surfaceflinger";
+
+        <com.android.server.Watchdog: java.lang.String[] NATIVE_STACKS_OF_INTEREST> = $r0;
+
+        return;
+    }
+}

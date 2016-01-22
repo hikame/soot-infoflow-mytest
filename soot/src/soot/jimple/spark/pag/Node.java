@@ -118,7 +118,8 @@ public class Node implements ReferenceVariable, Numberable {
 
     /** Creates a new node of pointer assignment graph pag, with type type. */
     Node( PAG pag, Type type ) {
-        if( TypeManager.isUnresolved(type) ) throw new RuntimeException("Unresolved type "+type );
+        if( TypeManager.isUnresolved(type) ) 
+        	throw new RuntimeException("Unresolved type "+type );
         this.type = type;
         this.pag = pag;
         replacement = this;

@@ -50,6 +50,7 @@ public final class Edge
     public SootMethod tgt() { return tgt.method(); }
     public Context tgtCtxt() { return tgt.context(); }
     public MethodOrMethodContext getTgt() { return tgt; }
+    public void setTgt(MethodOrMethodContext mth){tgt = mth;}
 
     /** The kind of edge. Note: kind should not be tested by other classes;
      *  instead, accessors such as isExplicit() should be added.

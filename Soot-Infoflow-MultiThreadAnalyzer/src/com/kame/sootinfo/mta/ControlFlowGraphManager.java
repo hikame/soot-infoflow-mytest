@@ -49,12 +49,12 @@ public class ControlFlowGraphManager {
 	public void generateCFG() {
 		iCfg = null;
         // Perform constant propagation and remove dead code
-        if (config.getCodeEliminationMode() != CodeEliminationMode.NoCodeElimination) {
-			long currentMillis = System.nanoTime();
-			eliminateDeadCode(ssm);
-			logger.info("Dead code elimination took " + (System.nanoTime() - currentMillis) / 1E9
-					+ " seconds");
-        }
+//        if (config.getCodeEliminationMode() != CodeEliminationMode.NoCodeElimination) {
+//			long currentMillis = System.nanoTime();
+//			eliminateDeadCode(ssm);
+//			logger.info("Dead code elimination took " + (System.nanoTime() - currentMillis) / 1E9
+//					+ " seconds");
+//        }
         if (config.getCallgraphAlgorithm() != CallgraphAlgorithm.OnDemand)
         	logger.info("Callgraph has {} edges", Scene.v().getCallGraph().size());
         BiDirICFGFactory icfgFactory = new DefaultBiDiICFGFactory();
@@ -76,6 +76,7 @@ public class ControlFlowGraphManager {
 	 * @param sourcesSinks The SourceSinkManager
 	 */
 	public void eliminateDeadCode(ISourceSinkManager sourcesSinks) {
+		iCfg = null;
 		ICodeOptimizer dce = getCodeOptimizer();
 		dce.run(iCfg, Scene.v().getEntryPoints(), sourcesSinks, taintWrapper);
 	}

@@ -39,7 +39,6 @@ public class MyStmtTag implements Tag{
 	@Deprecated
 	/**Unused!*/
 	public byte[] getValue() throws AttributeValueException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

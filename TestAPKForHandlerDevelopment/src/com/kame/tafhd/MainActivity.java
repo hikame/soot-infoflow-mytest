@@ -229,9 +229,9 @@ public class MainActivity extends Activity {
 	
 //	private void testHandlerSendMSG(String s0, String s1) {
 	private void testHandlerSendMSG(String s0) {
-			staticTaint = s0;
-//			tainted = s0;
-		mhandler.sendEmptyMessage(STATIC_FIELD_NULL);
+//			staticTaint = s0;
+////			tainted = s0;
+//		mhandler.sendEmptyMessage(STATIC_FIELD_NULL);
 		
 		AnotherHandler ah = new AnotherHandler();
 		Message msg = ah.obtainMessage(FIELD_NP);

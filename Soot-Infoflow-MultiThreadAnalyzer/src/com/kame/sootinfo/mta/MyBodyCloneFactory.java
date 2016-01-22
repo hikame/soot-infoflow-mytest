@@ -1,11 +1,13 @@
 package com.kame.sootinfo.mta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import soot.Body;
+import soot.IdentityUnit;
 import soot.Kind;
 import soot.Local;
 import soot.PatchingChain;
@@ -14,17 +16,24 @@ import soot.SootMethod;
 import soot.Trap;
 import soot.Unit;
 import soot.Value;
+import soot.ValueBox;
 import soot.jimple.AssignStmt;
+import soot.jimple.DefinitionStmt;
 import soot.jimple.GotoStmt;
+import soot.jimple.IdentityStmt;
 import soot.jimple.IfStmt;
+import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
+import soot.jimple.LookupSwitchStmt;
+import soot.jimple.SwitchStmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.util.Chain;
+import soot.util.HashChain;
 /**body.importBodyContentsFrom(orgbody) totally workable*/
 public class MyBodyCloneFactory {
 	IInfoflowCFG iCfg = ControlFlowGraphManager.v().getInfoflowCFG();
@@ -34,8 +43,10 @@ public class MyBodyCloneFactory {
 	List<TrapInfo> newTrapInfos = new ArrayList<TrapInfo>(); 
 	Chain<Trap> orgTraps = null;
 	
-	Body newBody = null;
-	Body orgBody = null;
+	private Body newBody = null;
+	private Body orgBody = null;
+	private List<Local> newLocals = null;
+	private List<Local> orgLocals = null;
 	
 	Unit substituteOfStop = null;
 	public Unit getSubstituteOfStop(){
@@ -44,22 +55,28 @@ public class MyBodyCloneFactory {
 	
 	/***/
 	public MyBodyCloneFactory(Body newbody, Body orgbody) {
-//		newbody.importBodyContentsFrom(orgbody);
-		if(newbody == null){
-			if(orgBody == null){	//assert startUnit == null???
-				orgBody = Jimple.v().newBody();
-				for(Local loc : orgBody.getLocals())
-					newBody.getLocals().add(loc);
-			}
-		}
-		else 
-			this.newBody = newbody;
-		
 		this.orgBody = orgbody;
 		for(Unit u : orgBody.getUnits())
 			if(iCfg.getPredsOf(u).size() > 1)
 				multiProdsUnits.put(u, null);
 		orgTraps = orgBody.getTraps();
+		for(int i = 0; i < orgTraps.size(); i++)
+			newTrapInfos.add(i, null);
+		
+		if(newbody == null){
+			if(newBody == null){	//assert startUnit == null???
+				newBody = Jimple.v().newBody();
+				for(Local loc : orgBody.getLocals())
+					newBody.getLocals().add(Jimple.v().newLocal(loc.getName(), loc.getType()));
+//				loc.clone();
+			}
+		}
+		else 
+			this.newBody = newbody;
+		
+		newLocals = new ArrayList<Local>(newBody.getLocals());
+		orgLocals = new ArrayList<Local>(orgBody.getLocals());
+		return;
 	}
 	
 	/**
@@ -74,18 +91,19 @@ public class MyBodyCloneFactory {
 	 * @param stopUnit stop uni in orgBody. If the cloning process come to this unit, the process will stop.
 	 * @return the copy of startUnit in newBody.
 	 **/
-	private Unit addUnits(Unit preUnit, Unit startUnit, Unit stopUnit) {
+	public Unit addUnits(Unit preUnit, Unit startUnit, Unit stopUnit) {
+		substituteOfStop = null;
 		if(multiProdsUnits.containsKey(startUnit) && multiProdsUnits.get(startUnit) != null)	
 			return (Unit) multiProdsUnits.get(startUnit);
 		
 		Unit result = null;
 		for(Unit u = startUnit; u != null; u = orgBody.getUnits().getSuccOf(u)){
-			if(multiProdsUnits.containsKey(u) && multiProdsUnits.get(u) != null){	//exception处理代码并不会有return语句，而其后面的代码有可能已经被加入进去过了~
-				break;	//此处不必担心是代码段的第一句，因为这种情况在本方法开头处已经处理了。
+			if(multiProdsUnits.containsKey(u) && multiProdsUnits.get(u) != null){
+				break;	//no worry about the head of this method
 			}
-			if(u.equals(stopUnit))
-				break;
 			preUnit = addOneUnit(preUnit, u, stopUnit);
+			if(u.equals(stopUnit))	//we need to add the stopUnit into the newBody with a substitute of Nop statement. and then check if it is the stop Unit
+				break;
 			if(u.equals(startUnit))
 				result = preUnit;
 			if(multiProdsUnits.containsKey(u) && multiProdsUnits.get(u) == null)
@@ -98,13 +116,18 @@ public class MyBodyCloneFactory {
 
 	private Unit addOneUnit( Unit preUnit, Unit u, Unit stopUnit) {
 		Unit newUnit = (Unit) u.clone();
-		PatchingChain<Unit> unitsChain = orgBody.getUnits(); 	
-		if(u instanceof InvokeStmt){	//当时方法调用语句时，对call graph进行处理
+		PatchingChain<Unit> unitsChain = newBody.getUnits();
+		if(u.equals(stopUnit)){
+			newUnit = new JNopStmt();	//we replace stopUnit with substituteofstop(a nop stmt)
+			substituteOfStop = newUnit;
+		}
+		else if(u instanceof InvokeStmt){	//take care of call graph
 			InvokeExpr invokeExpr = ((InvokeStmt) u).getInvokeExpr();
 			modifyCallGraph(invokeExpr, newUnit);
 		}
-		else if(u instanceof AssignStmt){
-			Value rightValue = ((AssignStmt) u).getRightOp();
+		else if(u instanceof DefinitionStmt){
+			Value rightValue = ((DefinitionStmt) u).getRightOp();
+			ValueBox leftBox = ((DefinitionStmt) u).getLeftOpBox();
 //			if(rightValue.toString().equals(jifr.toString()))
 //				whats.add(((AssignStmt)u).getLeftOp());
 			if(rightValue instanceof InvokeExpr){
@@ -114,26 +137,47 @@ public class MyBodyCloneFactory {
 		}
 		else if(u instanceof GotoStmt){		
 			Unit target = ((GotoStmt) u).getTarget();
-			Unit newTarget = addUnits(target, null, stopUnit);
+			Unit newTarget = addUnits(null, target, stopUnit);
 			((GotoStmt) newUnit).setTarget(newTarget);
 		}
 		else if(u instanceof IfStmt){
 			Unit target = ((IfStmt) u).getTarget();
-			Unit newTarget = addUnits(target, null, stopUnit);
+			Unit newTarget = addUnits(null, target, stopUnit);
 			((IfStmt) newUnit).setTarget(newTarget);
 		}
-		else if(u instanceof TableSwitchStmt){
-			TableSwitchStmt uu = (TableSwitchStmt) u;	//新的方案下我们的目标switchUnit在这一步被直接添加nop语句
-			if(u.equals(stopUnit)){
-				newUnit = new JNopStmt();
-				substituteOfStop = newUnit;
+		else if(u instanceof SwitchStmt){
+			SwitchStmt swtStmt= (SwitchStmt) u;
+			List<Unit> targets = swtStmt.getTargets();
+			if(swtStmt instanceof TableSwitchStmt){
+				TableSwitchStmt tss = (TableSwitchStmt) swtStmt;
+				for(int i = tss.getLowIndex(); i <= tss.getHighIndex(); i++){
+					Unit target = targets.get(i);
+					Unit newTarget = addUnits(null, target, stopUnit);
+					((TableSwitchStmt) newUnit).setTarget(i, newTarget);
+				}
 			}
-			else for(int i = uu.getLowIndex(); i <= uu.getHighIndex(); i++){
-				Unit target = uu.getTarget(i);
-				Unit newTarget = addUnits(target, null, stopUnit);
-				((TableSwitchStmt) newUnit).setTarget(i, newTarget);
+			else if(swtStmt instanceof LookupSwitchStmt){
+				int count = 0;
+				for(IntConstant luValue : ((LookupSwitchStmt)swtStmt).getLookupValues()){
+					Unit target = targets.get(count);
+					Unit newTarget = addUnits(null, target, stopUnit);
+					((LookupSwitchStmt) newUnit).setTarget(count, newTarget);
+					((LookupSwitchStmt) newUnit).setLookupValue(count, luValue.value);
+					count++;
+				}
 			}
 		}	
+		
+		int index = 0;
+		if(!u.equals(stopUnit))	//handling the local uses.
+			for(ValueBox box : u.getUseAndDefBoxes()){
+				if(box.getValue() instanceof Local){
+					Local newL = newLocals.get(orgLocals.indexOf(box.getValue()));
+					newUnit.getUseAndDefBoxes().get(index).setValue(newL);
+				}
+				index++;
+			}
+		
 		if(preUnit == null)
 			unitsChain.add(newUnit);
 		else
@@ -151,25 +195,58 @@ public class MyBodyCloneFactory {
 	}
 
 	private void checkForTraps(Unit u, Unit newUnit) {
-		int count = 0;
+		int index = 0;
 		for(Trap trap : orgTraps){
 			if(trap.getBeginUnit().equals(u))
-				getTrapInfoAt(count, trap).beginUnit = newUnit;
+				getTrapInfoAt(index, trap).beginUnit = newUnit;
 			if(trap.getEndUnit().equals(u))
-				getTrapInfoAt(count, trap).endUnit = newUnit;
+				getTrapInfoAt(index, trap).endUnit = newUnit;
 			if(trap.getHandlerUnit().equals(u))
-				getTrapInfoAt(count, trap).handlerUnit = newUnit;
-			count++;
+				getTrapInfoAt(index, trap).handlerUnit = newUnit;
+			index++;
 		}
 	}
 
-	private TrapInfo getTrapInfoAt(int count, Trap trap) {
-		TrapInfo ti = newTrapInfos.get(count);
+	private TrapInfo getTrapInfoAt(int index, Trap trap) {
+		TrapInfo ti = newTrapInfos.get(index);
 		if(ti == null){
 			ti = new TrapInfo();
 			ti.exception = trap.getException();
-			newTrapInfos.set(count, ti);
+			newTrapInfos.set(index, ti);
 		}
 		return ti;
+	}
+	
+	public void completeNewTraps(){
+		if(orgTraps == null || orgTraps.isEmpty())
+			return;
+		Chain<Trap> newTrapChain = new HashChain<Trap>();
+		int count = 0;
+		for(Trap orgTrap = orgTraps.getFirst(); orgTrap != null; orgTrap = orgTraps.getSuccOf(orgTrap)){
+			TrapInfo ti = newTrapInfos.get(count);
+			if(ti != null && ti.isValid()){
+				if(ti.handlerUnit == null)
+					ti.handlerUnit = addUnits(null, orgTrap.getHandlerUnit(), null);
+				newTrapChain.add(ti.generateTrap());
+			}
+			count++;
+		}
+		
+		if(newTrapChain.size() == 0)
+			return;
+		
+		try {
+			java.lang.reflect.Field tcField = Body.class.getDeclaredField("trapChain");
+			boolean ac = tcField.isAccessible();
+			tcField.setAccessible(true);
+			tcField.set(newBody, newTrapChain);
+			tcField.setAccessible(ac);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}
+
+	public Body getNewBody() {
+		return newBody;
 	}
 }

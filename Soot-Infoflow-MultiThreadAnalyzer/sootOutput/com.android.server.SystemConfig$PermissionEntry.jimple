@@ -1,0 +1,27 @@
+public final class com.android.server.SystemConfig$PermissionEntry extends java.lang.Object
+{
+    public final java.lang.String name;
+    public int[] gids;
+    public boolean perUser;
+
+    void <init>(java.lang.String, boolean)
+    {
+        com.android.server.SystemConfig$PermissionEntry this;
+        java.lang.String name;
+        boolean perUser;
+
+        this := @this: com.android.server.SystemConfig$PermissionEntry;
+
+        name := @parameter0: java.lang.String;
+
+        perUser := @parameter1: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.SystemConfig$PermissionEntry: java.lang.String name> = name;
+
+        this.<com.android.server.SystemConfig$PermissionEntry: boolean perUser> = perUser;
+
+        return;
+    }
+}

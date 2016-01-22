@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import soot.SootMethod;
 import soot.Unit;
+import soot.jimple.Stmt;
 import soot.jimple.infoflow.collect.ConcurrentHashSet;
 import soot.jimple.infoflow.collect.MyConcurrentHashMap;
 import soot.jimple.infoflow.solver.IMemoryManager;
@@ -250,9 +251,7 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 	private void processCall(PathEdge<N,D> edge) {
 		final D d1 = edge.factAtSource();
 		final N n = edge.getTarget(); // a call node; line 14...	
-		
         logger.trace("Processing call to {}", n);
-        
 		final D d2 = edge.factAtTarget();
 		assert d2 != null;
 		Collection<N> returnSiteNs = icfg.getReturnSitesOfCallAt(n);
@@ -467,8 +466,7 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		final N n = edge.getTarget(); 
 		final D d2 = edge.factAtTarget();
 		List<N> nlist = icfg.getSuccsOf(n);
-if(edge.getTarget().toString().equals("<com.kame.tafhd.MainActivity: java.lang.String staticTaint> = s1"))
-	edge.toString();
+
 		for (N m : nlist) {
 			FlowFunction<D> flowFunction = flowFunctions.getNormalFlowFunction(n,m);
 			Set<D> res = computeNormalFlowFunction(flowFunction, d1, d2);
@@ -637,10 +635,13 @@ static List<SootMethod> outSMList = new ArrayList<SootMethod>();
 
 		public void run() {
 if(Options.v().debug()){
-	SootMethod sm = (SootMethod) icfg.getMethodOf(edge.getTarget());
-	if(!outSMList.contains(sm)){
+	Stmt stmt = (Stmt) edge.getTarget();
+	SootMethod sm = null;
+	if(stmt.containsInvokeExpr())
+		sm = stmt.getInvokeExpr().getMethod();
+	if(sm != null && !outSMList.contains(sm) && sm.hasActiveBody()){
 		outSMList.add(sm);
-		System.out.println("[KM] " + sm.getSignature() + "\n" + sm.getActiveBody());
+		System.out.println("[KM] " + edge.factAtTarget() + "\n" + sm.getActiveBody());
 	}
 }
 			if(icfg.isCallStmt(edge.getTarget())) {

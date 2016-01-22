@@ -1,0 +1,2504 @@
+final class com.android.server.pm.DefaultPermissionGrantPolicy extends java.lang.Object
+{
+    private static final java.lang.String TAG;
+    private static final boolean DEBUG;
+    private static final java.lang.String AUDIO_MIME_TYPE;
+    private static final java.util.Set PHONE_PERMISSIONS;
+    private static final java.util.Set CONTACTS_PERMISSIONS;
+    private static final java.util.Set LOCATION_PERMISSIONS;
+    private static final java.util.Set CALENDAR_PERMISSIONS;
+    private static final java.util.Set SMS_PERMISSIONS;
+    private static final java.util.Set MICROPHONE_PERMISSIONS;
+    private static final java.util.Set CAMERA_PERMISSIONS;
+    private static final java.util.Set SENSORS_PERMISSIONS;
+    private static final java.util.Set STORAGE_PERMISSIONS;
+    private final com.android.server.pm.PackageManagerService mService;
+    private android.content.pm.PackageManagerInternal$PackagesProvider mImePackagesProvider;
+    private android.content.pm.PackageManagerInternal$PackagesProvider mLocationPackagesProvider;
+    private android.content.pm.PackageManagerInternal$PackagesProvider mVoiceInteractionPackagesProvider;
+    private android.content.pm.PackageManagerInternal$PackagesProvider mSmsAppPackagesProvider;
+    private android.content.pm.PackageManagerInternal$PackagesProvider mDialerAppPackagesProvider;
+    private android.content.pm.PackageManagerInternal$PackagesProvider mSimCallManagerPackagesProvider;
+    private android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider mSyncAdapterPackagesProvider;
+
+    public void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        com.android.server.pm.PackageManagerService service;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        service := @parameter0: com.android.server.pm.PackageManagerService;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService> = service;
+
+        return;
+    }
+
+    public void setImePackagesProviderLPr(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mImePackagesProvider> = provider;
+
+        return;
+    }
+
+    public void setLocationPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mLocationPackagesProvider> = provider;
+
+        return;
+    }
+
+    public void setVoiceInteractionPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mVoiceInteractionPackagesProvider> = provider;
+
+        return;
+    }
+
+    public void setSmsAppPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mSmsAppPackagesProvider> = provider;
+
+        return;
+    }
+
+    public void setDialerAppPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mDialerAppPackagesProvider> = provider;
+
+        return;
+    }
+
+    public void setSimCallManagerPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mSimCallManagerPackagesProvider> = provider;
+
+        return;
+    }
+
+    public void setSyncAdapterPackagesProviderLPw(android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider provider;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider;
+
+        this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider mSyncAdapterPackagesProvider> = provider;
+
+        return;
+    }
+
+    public void grantDefaultPermissions(int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        int userId;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        userId := @parameter0: int;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantPermissionsToSysComponentsAndPrivApps(int)>(userId);
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultSystemHandlerPermissions(int)>(userId);
+
+        return;
+    }
+
+    private void grantPermissionsToSysComponentsAndPrivApps(int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        int userId, permissionCount, i#1;
+        android.util.ArrayMap l2, $r6, $r8, $r15;
+        java.util.Iterator i$;
+        android.content.pm.PackageParser$Package pkg;
+        android.util.ArraySet permissions, tmp$2069035230;
+        java.lang.String permission, $r3;
+        com.android.server.pm.BasePermission bp;
+        java.lang.Throwable l10, $r19;
+        java.lang.StringBuilder $r1, $r2, tmp$1601761767;
+        com.android.server.pm.PackageManagerService $r4, $r5, $r17;
+        java.util.Collection $r7;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5;
+        java.lang.Object $r9, $r14, $r16;
+        java.util.ArrayList $r10, $r11, $r13;
+        com.android.server.pm.Settings $r18;
+        java.util.Set tmp$1282100733, tmp$1278938499, tmp$707812824;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        userId := @parameter0: int;
+
+        tmp$1601761767 = new java.lang.StringBuilder;
+
+        specialinvoke tmp$1601761767.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke tmp$1601761767.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Granting permissions to platform components for user ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DefaultPermGrantPolicy", $r3);
+
+        $r4 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r6 = $r4.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r6;
+
+        entermonitor $r6;
+
+     label01:
+        $r5 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r8 = $r5.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        $r7 = virtualinvoke $r8.<android.util.ArrayMap: java.util.Collection values()>();
+
+        i$ = interfaceinvoke $r7.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label02:
+        $z0 = interfaceinvoke i$.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label08;
+
+        $r9 = interfaceinvoke i$.<java.util.Iterator: java.lang.Object next()>();
+
+        pkg = (android.content.pm.PackageParser$Package) $r9;
+
+        $z2 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: boolean isSysComponentOrPersistentPlatformSignedPrivAppLPr(android.content.pm.PackageParser$Package)>(pkg);
+
+        if $z2 == 0 goto label02;
+
+        $z1 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(pkg);
+
+        if $z1 == 0 goto label02;
+
+        $r10 = pkg.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+        $z3 = virtualinvoke $r10.<java.util.ArrayList: boolean isEmpty()>();
+
+        if $z3 == 0 goto label03;
+
+        goto label02;
+
+     label03:
+        tmp$2069035230 = new android.util.ArraySet;
+
+        specialinvoke tmp$2069035230.<android.util.ArraySet: void <init>()>();
+
+        permissions = tmp$2069035230;
+
+        $r11 = pkg.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+        permissionCount = virtualinvoke $r11.<java.util.ArrayList: int size()>();
+
+        i#1 = 0;
+
+     label04:
+        if i#1 >= permissionCount goto label06;
+
+        $r13 = pkg.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+        $r14 = virtualinvoke $r13.<java.util.ArrayList: java.lang.Object get(int)>(i#1);
+
+        permission = (java.lang.String) $r14;
+
+        $r17 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r18 = $r17.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        $r15 = $r18.<com.android.server.pm.Settings: android.util.ArrayMap mPermissions>;
+
+        $r16 = virtualinvoke $r15.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(permission);
+
+        bp = (com.android.server.pm.BasePermission) $r16;
+
+        if bp == null goto label05;
+
+        $z5 = virtualinvoke bp.<com.android.server.pm.BasePermission: boolean isRuntime()>();
+
+        if $z5 == 0 goto label05;
+
+        tmp$1282100733 = (java.util.Set) permissions;
+
+        interfaceinvoke tmp$1282100733.<java.util.Set: boolean add(java.lang.Object)>(permission);
+
+     label05:
+        i#1 = i#1 + 1;
+
+        goto label04;
+
+     label06:
+        tmp$1278938499 = (java.util.Set) permissions;
+
+        $z4 = interfaceinvoke tmp$1278938499.<java.util.Set: boolean isEmpty()>();
+
+        if $z4 != 0 goto label07;
+
+        tmp$707812824 = (java.util.Set) permissions;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(pkg, tmp$707812824, 1, userId);
+
+     label07:
+        goto label02;
+
+     label08:
+        exitmonitor l2;
+
+     label09:
+        goto label12;
+
+     label10:
+        $r19 := @caughtexception;
+
+        l10 = $r19;
+
+        exitmonitor l2;
+
+     label11:
+        throw l10;
+
+     label12:
+        return;
+
+        catch java.lang.Throwable from label01 to label09 with label10;
+        catch java.lang.Throwable from label10 to label11 with label10;
+    }
+
+    private void grantDefaultSystemHandlerPermissions(int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        int userId, calendarSyncAdapterCount, contactsSyncAdapterCount, dialerPackage#16, i$#17, dialerPackage#21, i$#22, dialerPackage#28, i$#29, i#37, i#41, len$#48, i$#49, len$#53, i$#54, imePackageName#60, imePackage#61;
+        android.content.pm.PackageManagerInternal$PackagesProvider imePackagesProvider, locationPackagesProvider, voiceInteractionPackagesProvider, smsAppPackagesProvider, dialerAppPackagesProvider, simCallManagerPackagesProvider;
+        android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider syncAdapterPackagesProvider;
+        java.lang.String[] locationPackageNames, smsAppPackageNames, dialerAppPackageNames, simCallManagerPackageNames, contactsSyncAdapterPackages, calendarSyncAdapterPackages, $r100, imePackageNames#4, $r101, voiceInteractPackageNames#6, $r102, $r103, $r104, $r105, $r106, $r107, dialerIntent#15, dialerIntent#20, dialerIntent#27, browserIntent#47, browserIntent#52, i$#59;
+        android.util.ArrayMap l17, $r2, $r9, imePackageNames#1;
+        android.content.pm.PackageParser$Package verifierPackage, installerPackage, setupPackage, cameraPackage, downloadsPackage, mediaStorePackage, downloadsUiPackage, storagePackage, certInstallerPackage, calendarPackage, calendarProviderPackage, deviceProvisionPackage, galleryPackage, mapsPackage, emailPackage, locationPackage, dialerPackage#14, dialerPackage#19, dialerPackage#24, dialerPackage#26, dialerPackage#31, dialerPackage#33, dialerAppPackageName#35, calendarSyncAdapter#38, calendarSyncAdapter#40, contactsSyncAdapter#42, i#43, browserPackage#45, imePackage#51, imePackage#56, len$#58, imePackageName#63;
+        android.content.Intent setupIntent, cameraIntent, downloadsUiIntent, certInstallerIntent, mapsIntent, emailIntent, galleryIntent, $r12, $r14, $r15, $r16, $r17, $r18, $r19, $r21, $r23, $r25, $r28, $r30, $r34, $r36, $r65, $r82, $r84, dialerIntent#13, dialerIntent#25, dialerIntent#32, i$#34, dialerPackage#36, i#39, contactsSyncAdapter#44, browserIntent#46, browserIntent#57, i$#62;
+        java.util.List calendarSyncAdapters, contactsSyncAdapters;
+        java.lang.String defaultBrowserPackage, packageName, $r5, $r7, $r11, dialerAppPackageName#18, dialerAppPackageName#23, dialerAppPackageName#30, imePackageName#50, imePackageName#55;
+        java.lang.StringBuilder $r0, $r3, $r4;
+        java.lang.Throwable l62, $r98, $r99, voiceInteractPackageNames#2;
+        com.android.server.pm.PackageManagerService $r1, $r6, $r8, $r10, $r26, $r46;
+        android.net.Uri $r31;
+        java.io.File $r32;
+        java.util.Set $r37, $r38, $r39, $r40, $r41, $r42, $r43, $r47, $r48, $r49, $r50, $r51, $r52, $r53, $r54, $r55, $r56, $r57, $r58, $r59, $r60, $r61, $r62, $r63, $r66, $r67, $r68, $r69, $r70, $r71, $r72, $r73, $r74, $r77, $r78, $r79, $r80, $r81, $r85, $r86, $r87, $r88, $r89, $r90, $r91, $r92, $r93, $r94, $r95, $r96, $r97;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5, $z6, $z7, $z8, $z9, $z10, $z11, $z12, $z13, $z14, $z15, $z16, $z17, $z18, $z19, $z20, $z21;
+        com.android.server.pm.Settings $r45;
+        java.lang.Object $r75, $r76;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        userId := @parameter0: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Granting permissions to default platform handlers for user ");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DefaultPermGrantPolicy", $r5);
+
+        $r1 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r2 = $r1.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        imePackageNames#1 = $r2;
+
+        entermonitor $r2;
+
+     label01:
+        imePackagesProvider = this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mImePackagesProvider>;
+
+        locationPackagesProvider = this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mLocationPackagesProvider>;
+
+        voiceInteractionPackagesProvider = this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mVoiceInteractionPackagesProvider>;
+
+        smsAppPackagesProvider = this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mSmsAppPackagesProvider>;
+
+        dialerAppPackagesProvider = this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mDialerAppPackagesProvider>;
+
+        simCallManagerPackagesProvider = this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$PackagesProvider mSimCallManagerPackagesProvider>;
+
+        syncAdapterPackagesProvider = this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider mSyncAdapterPackagesProvider>;
+
+        exitmonitor imePackageNames#1;
+
+     label02:
+        goto label05;
+
+     label03:
+        $r98 := @caughtexception;
+
+        voiceInteractPackageNames#2 = $r98;
+
+        exitmonitor imePackageNames#1;
+
+     label04:
+        throw voiceInteractPackageNames#2;
+
+     label05:
+        if imePackagesProvider == null goto label06;
+
+        $r100 = interfaceinvoke imePackagesProvider.<android.content.pm.PackageManagerInternal$PackagesProvider: java.lang.String[] getPackages(int)>(userId);
+
+        goto label07;
+
+     label06:
+        $r100 = null;
+
+     label07:
+        imePackageNames#4 = $r100;
+
+        if voiceInteractionPackagesProvider == null goto label08;
+
+        $r101 = interfaceinvoke voiceInteractionPackagesProvider.<android.content.pm.PackageManagerInternal$PackagesProvider: java.lang.String[] getPackages(int)>(userId);
+
+        goto label09;
+
+     label08:
+        $r101 = null;
+
+     label09:
+        voiceInteractPackageNames#6 = $r101;
+
+        if locationPackagesProvider == null goto label10;
+
+        $r102 = interfaceinvoke locationPackagesProvider.<android.content.pm.PackageManagerInternal$PackagesProvider: java.lang.String[] getPackages(int)>(userId);
+
+        goto label11;
+
+     label10:
+        $r102 = null;
+
+     label11:
+        locationPackageNames = $r102;
+
+        if smsAppPackagesProvider == null goto label12;
+
+        $r103 = interfaceinvoke smsAppPackagesProvider.<android.content.pm.PackageManagerInternal$PackagesProvider: java.lang.String[] getPackages(int)>(userId);
+
+        goto label13;
+
+     label12:
+        $r103 = null;
+
+     label13:
+        smsAppPackageNames = $r103;
+
+        if dialerAppPackagesProvider == null goto label14;
+
+        $r104 = interfaceinvoke dialerAppPackagesProvider.<android.content.pm.PackageManagerInternal$PackagesProvider: java.lang.String[] getPackages(int)>(userId);
+
+        goto label15;
+
+     label14:
+        $r104 = null;
+
+     label15:
+        dialerAppPackageNames = $r104;
+
+        if simCallManagerPackagesProvider == null goto label16;
+
+        $r105 = interfaceinvoke simCallManagerPackagesProvider.<android.content.pm.PackageManagerInternal$PackagesProvider: java.lang.String[] getPackages(int)>(userId);
+
+        goto label17;
+
+     label16:
+        $r105 = null;
+
+     label17:
+        simCallManagerPackageNames = $r105;
+
+        if syncAdapterPackagesProvider == null goto label18;
+
+        $r106 = interfaceinvoke syncAdapterPackagesProvider.<android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider: java.lang.String[] getPackages(java.lang.String,int)>("com.android.contacts", userId);
+
+        goto label19;
+
+     label18:
+        $r106 = null;
+
+     label19:
+        contactsSyncAdapterPackages = $r106;
+
+        if syncAdapterPackagesProvider == null goto label20;
+
+        $r107 = interfaceinvoke syncAdapterPackagesProvider.<android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider: java.lang.String[] getPackages(java.lang.String,int)>("com.android.calendar", userId);
+
+        goto label21;
+
+     label20:
+        $r107 = null;
+
+     label21:
+        calendarSyncAdapterPackages = $r107;
+
+        $r8 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r9 = $r8.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l17 = $r9;
+
+        entermonitor $r9;
+
+     label22:
+        $r10 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r11 = $r10.<com.android.server.pm.PackageManagerService: java.lang.String mRequiredInstallerPackage>;
+
+        installerPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>($r11);
+
+        if installerPackage == null goto label23;
+
+        $z18 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(installerPackage);
+
+        if $z18 == 0 goto label23;
+
+        $r88 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(installerPackage, $r88, 1, userId);
+
+     label23:
+        $r6 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r7 = $r6.<com.android.server.pm.PackageManagerService: java.lang.String mRequiredVerifierPackage>;
+
+        verifierPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>($r7);
+
+        if verifierPackage == null goto label24;
+
+        $z19 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(verifierPackage);
+
+        if $z19 == 0 goto label24;
+
+        $r90 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(verifierPackage, $r90, 1, userId);
+
+        $r91 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(verifierPackage, $r91, 0, userId);
+
+        $r87 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(verifierPackage, $r87, 0, userId);
+
+     label24:
+        $r14 = new android.content.Intent;
+
+        specialinvoke $r14.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        setupIntent = $r14;
+
+        virtualinvoke setupIntent.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.SETUP_WIZARD");
+
+        setupPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(setupIntent, userId);
+
+        if setupPackage == null goto label25;
+
+        $z20 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(setupPackage);
+
+        if $z20 == 0 goto label25;
+
+        $r94 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(setupPackage, $r94, userId);
+
+        $r89 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(setupPackage, $r89, userId);
+
+     label25:
+        $r15 = new android.content.Intent;
+
+        specialinvoke $r15.<android.content.Intent: void <init>(java.lang.String)>("android.media.action.IMAGE_CAPTURE");
+
+        cameraIntent = $r15;
+
+        cameraPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(cameraIntent, userId);
+
+        if cameraPackage == null goto label26;
+
+        $z21 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(cameraPackage);
+
+        if $z21 == 0 goto label26;
+
+        $r97 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CAMERA_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(cameraPackage, $r97, userId);
+
+        $r92 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(cameraPackage, $r92, userId);
+
+        $r93 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(cameraPackage, $r93, userId);
+
+     label26:
+        mediaStorePackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultProviderAuthorityPackageLPr(java.lang.String,int)>("media", userId);
+
+        if mediaStorePackage == null goto label27;
+
+        $r96 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(mediaStorePackage, $r96, 1, userId);
+
+     label27:
+        downloadsPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultProviderAuthorityPackageLPr(java.lang.String,int)>("downloads", userId);
+
+        if downloadsPackage == null goto label28;
+
+        $r95 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(downloadsPackage, $r95, 1, userId);
+
+     label28:
+        $r12 = new android.content.Intent;
+
+        specialinvoke $r12.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.VIEW_DOWNLOADS");
+
+        downloadsUiIntent = $r12;
+
+        downloadsUiPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(downloadsUiIntent, userId);
+
+        if downloadsUiPackage == null goto label29;
+
+        $z15 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(downloadsUiPackage);
+
+        if $z15 == 0 goto label29;
+
+        $r81 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(downloadsUiPackage, $r81, 1, userId);
+
+     label29:
+        storagePackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultProviderAuthorityPackageLPr(java.lang.String,int)>("com.android.externalstorage.documents", userId);
+
+        if storagePackage == null goto label30;
+
+        $r79 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(storagePackage, $r79, 1, userId);
+
+     label30:
+        $r18 = new android.content.Intent;
+
+        specialinvoke $r18.<android.content.Intent: void <init>(java.lang.String)>("android.credentials.INSTALL");
+
+        certInstallerIntent = $r18;
+
+        certInstallerPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(certInstallerIntent, userId);
+
+        if certInstallerPackage == null goto label31;
+
+        $z16 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(certInstallerPackage);
+
+        if $z16 == 0 goto label31;
+
+        $r80 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(certInstallerPackage, $r80, 1, userId);
+
+     label31:
+        if dialerAppPackageNames != null goto label33;
+
+        $r82 = new android.content.Intent;
+
+        specialinvoke $r82.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.DIAL");
+
+        dialerIntent#13 = $r82;
+
+        dialerPackage#14 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(dialerIntent#13, userId);
+
+        if dialerPackage#14 == null goto label32;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSystemDialerAppLPr(android.content.pm.PackageParser$Package,int)>(dialerPackage#14, userId);
+
+     label32:
+        goto label36;
+
+     label33:
+        dialerIntent#15 = dialerAppPackageNames;
+
+        dialerPackage#16 = lengthof dialerIntent#15;
+
+        i$#17 = 0;
+
+     label34:
+        if i$#17 >= dialerPackage#16 goto label36;
+
+        dialerAppPackageName#18 = dialerIntent#15[i$#17];
+
+        dialerPackage#19 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(dialerAppPackageName#18);
+
+        if dialerPackage#19 == null goto label35;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSystemDialerAppLPr(android.content.pm.PackageParser$Package,int)>(dialerPackage#19, userId);
+
+     label35:
+        i$#17 = i$#17 + 1;
+
+        goto label34;
+
+     label36:
+        if simCallManagerPackageNames == null goto label39;
+
+        dialerIntent#20 = simCallManagerPackageNames;
+
+        dialerPackage#21 = lengthof dialerIntent#20;
+
+        i$#22 = 0;
+
+     label37:
+        if i$#22 >= dialerPackage#21 goto label39;
+
+        dialerAppPackageName#23 = dialerIntent#20[i$#22];
+
+        dialerPackage#24 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(dialerAppPackageName#23);
+
+        if dialerPackage#24 == null goto label38;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSimCallManagerLPr(android.content.pm.PackageParser$Package,int)>(dialerPackage#24, userId);
+
+     label38:
+        i$#22 = i$#22 + 1;
+
+        goto label37;
+
+     label39:
+        if smsAppPackageNames != null goto label41;
+
+        $r84 = new android.content.Intent;
+
+        specialinvoke $r84.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        dialerIntent#25 = $r84;
+
+        virtualinvoke dialerIntent#25.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.APP_MESSAGING");
+
+        dialerPackage#26 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(dialerIntent#25, userId);
+
+        if dialerPackage#26 == null goto label40;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSystemSmsAppLPr(android.content.pm.PackageParser$Package,int)>(dialerPackage#26, userId);
+
+     label40:
+        goto label44;
+
+     label41:
+        dialerIntent#27 = smsAppPackageNames;
+
+        dialerPackage#28 = lengthof dialerIntent#27;
+
+        i$#29 = 0;
+
+     label42:
+        if i$#29 >= dialerPackage#28 goto label44;
+
+        dialerAppPackageName#30 = dialerIntent#27[i$#29];
+
+        dialerPackage#31 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(dialerAppPackageName#30);
+
+        if dialerPackage#31 == null goto label43;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSystemSmsAppLPr(android.content.pm.PackageParser$Package,int)>(dialerPackage#31, userId);
+
+     label43:
+        i$#29 = i$#29 + 1;
+
+        goto label42;
+
+     label44:
+        $r16 = new android.content.Intent;
+
+        specialinvoke $r16.<android.content.Intent: void <init>(java.lang.String)>("android.provider.Telephony.SMS_CB_RECEIVED");
+
+        dialerIntent#32 = $r16;
+
+        dialerPackage#33 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(dialerIntent#32, userId);
+
+        if dialerPackage#33 == null goto label45;
+
+        $z17 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(dialerPackage#33);
+
+        if $z17 == 0 goto label45;
+
+        $r86 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(dialerPackage#33, $r86, userId);
+
+     label45:
+        $r17 = new android.content.Intent;
+
+        specialinvoke $r17.<android.content.Intent: void <init>(java.lang.String)>("android.provider.Telephony.SMS_CARRIER_PROVISION");
+
+        i$#34 = $r17;
+
+        dialerAppPackageName#35 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerServicePackageLPr(android.content.Intent,int)>(i$#34, userId);
+
+        if dialerAppPackageName#35 == null goto label46;
+
+        $z10 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(dialerAppPackageName#35);
+
+        if $z10 == 0 goto label46;
+
+        $r85 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(dialerAppPackageName#35, $r85, 0, userId);
+
+     label46:
+        $r21 = new android.content.Intent;
+
+        specialinvoke $r21.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        dialerPackage#36 = $r21;
+
+        virtualinvoke dialerPackage#36.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.APP_CALENDAR");
+
+        calendarPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(dialerPackage#36, userId);
+
+        if calendarPackage == null goto label47;
+
+        $z11 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(calendarPackage);
+
+        if $z11 == 0 goto label47;
+
+        $r73 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(calendarPackage, $r73, userId);
+
+        $r72 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(calendarPackage, $r72, userId);
+
+     label47:
+        calendarProviderPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultProviderAuthorityPackageLPr(java.lang.String,int)>("com.android.calendar", userId);
+
+        if calendarProviderPackage == null goto label48;
+
+        $r71 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(calendarProviderPackage, $r71, userId);
+
+        $r68 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(calendarProviderPackage, $r68, 1, userId);
+
+        $r69 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(calendarProviderPackage, $r69, userId);
+
+     label48:
+        calendarSyncAdapters = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: java.util.List getHeadlessSyncAdapterPackagesLPr(java.lang.String[],int)>(calendarSyncAdapterPackages, userId);
+
+        calendarSyncAdapterCount = interfaceinvoke calendarSyncAdapters.<java.util.List: int size()>();
+
+        i#37 = 0;
+
+     label49:
+        if i#37 >= calendarSyncAdapterCount goto label51;
+
+        $r76 = interfaceinvoke calendarSyncAdapters.<java.util.List: java.lang.Object get(int)>(i#37);
+
+        calendarSyncAdapter#38 = (android.content.pm.PackageParser$Package) $r76;
+
+        $z14 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(calendarSyncAdapter#38);
+
+        if $z14 == 0 goto label50;
+
+        $r70 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(calendarSyncAdapter#38, $r70, userId);
+
+     label50:
+        i#37 = i#37 + 1;
+
+        goto label49;
+
+     label51:
+        $r19 = new android.content.Intent;
+
+        specialinvoke $r19.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        i#39 = $r19;
+
+        virtualinvoke i#39.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.APP_CONTACTS");
+
+        calendarSyncAdapter#40 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(i#39, userId);
+
+        if calendarSyncAdapter#40 == null goto label52;
+
+        $z12 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(calendarSyncAdapter#40);
+
+        if $z12 == 0 goto label52;
+
+        $r77 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(calendarSyncAdapter#40, $r77, userId);
+
+        $r78 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(calendarSyncAdapter#40, $r78, userId);
+
+     label52:
+        contactsSyncAdapters = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: java.util.List getHeadlessSyncAdapterPackagesLPr(java.lang.String[],int)>(contactsSyncAdapterPackages, userId);
+
+        contactsSyncAdapterCount = interfaceinvoke contactsSyncAdapters.<java.util.List: int size()>();
+
+        i#41 = 0;
+
+     label53:
+        if i#41 >= contactsSyncAdapterCount goto label55;
+
+        $r75 = interfaceinvoke contactsSyncAdapters.<java.util.List: java.lang.Object get(int)>(i#41);
+
+        contactsSyncAdapter#42 = (android.content.pm.PackageParser$Package) $r75;
+
+        $z13 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(contactsSyncAdapter#42);
+
+        if $z13 == 0 goto label54;
+
+        $r74 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(contactsSyncAdapter#42, $r74, userId);
+
+     label54:
+        i#41 = i#41 + 1;
+
+        goto label53;
+
+     label55:
+        i#43 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultProviderAuthorityPackageLPr(java.lang.String,int)>("com.android.contacts", userId);
+
+        if i#43 == null goto label56;
+
+        $r62 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(i#43, $r62, 1, userId);
+
+        $r61 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(i#43, $r61, 1, userId);
+
+        $r60 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(i#43, $r60, userId);
+
+     label56:
+        $r25 = new android.content.Intent;
+
+        specialinvoke $r25.<android.content.Intent: void <init>(java.lang.String)>("android.app.action.PROVISION_MANAGED_DEVICE");
+
+        contactsSyncAdapter#44 = $r25;
+
+        deviceProvisionPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(contactsSyncAdapter#44, userId);
+
+        if deviceProvisionPackage == null goto label57;
+
+        $z6 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(deviceProvisionPackage);
+
+        if $z6 == 0 goto label57;
+
+        $r63 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(deviceProvisionPackage, $r63, userId);
+
+     label57:
+        $r23 = new android.content.Intent;
+
+        specialinvoke $r23.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        mapsIntent = $r23;
+
+        virtualinvoke mapsIntent.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.APP_MAPS");
+
+        mapsPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(mapsIntent, userId);
+
+        if mapsPackage == null goto label58;
+
+        $z7 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(mapsPackage);
+
+        if $z7 == 0 goto label58;
+
+        $r58 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(mapsPackage, $r58, userId);
+
+     label58:
+        $r30 = new android.content.Intent;
+
+        specialinvoke $r30.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        galleryIntent = $r30;
+
+        virtualinvoke galleryIntent.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.APP_GALLERY");
+
+        galleryPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(galleryIntent, userId);
+
+        if galleryPackage == null goto label59;
+
+        $z8 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(galleryPackage);
+
+        if $z8 == 0 goto label59;
+
+        $r59 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(galleryPackage, $r59, userId);
+
+     label59:
+        $r28 = new android.content.Intent;
+
+        specialinvoke $r28.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        emailIntent = $r28;
+
+        virtualinvoke emailIntent.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.APP_EMAIL");
+
+        emailPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(emailIntent, userId);
+
+        if emailPackage == null goto label60;
+
+        $z9 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(emailPackage);
+
+        if $z9 == 0 goto label60;
+
+        $r67 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(emailPackage, $r67, userId);
+
+     label60:
+        browserPackage#45 = null;
+
+        $r26 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        defaultBrowserPackage = virtualinvoke $r26.<com.android.server.pm.PackageManagerService: java.lang.String getDefaultBrowserPackageName(int)>(userId);
+
+        if defaultBrowserPackage == null goto label61;
+
+        browserPackage#45 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getPackageLPr(java.lang.String)>(defaultBrowserPackage);
+
+     label61:
+        if browserPackage#45 != null goto label62;
+
+        $r65 = new android.content.Intent;
+
+        specialinvoke $r65.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        browserIntent#46 = $r65;
+
+        virtualinvoke browserIntent#46.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.APP_BROWSER");
+
+        browserPackage#45 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(browserIntent#46, userId);
+
+     label62:
+        if browserPackage#45 == null goto label63;
+
+        $z3 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(browserPackage#45);
+
+        if $z3 == 0 goto label63;
+
+        $r66 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(browserPackage#45, $r66, userId);
+
+     label63:
+        if imePackageNames#4 == null goto label66;
+
+        browserIntent#47 = imePackageNames#4;
+
+        len$#48 = lengthof browserIntent#47;
+
+        i$#49 = 0;
+
+     label64:
+        if i$#49 >= len$#48 goto label66;
+
+        imePackageName#50 = browserIntent#47[i$#49];
+
+        imePackage#51 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(imePackageName#50);
+
+        if imePackage#51 == null goto label65;
+
+        $z2 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(imePackage#51);
+
+        if $z2 == 0 goto label65;
+
+        $r52 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackage#51, $r52, userId);
+
+     label65:
+        i$#49 = i$#49 + 1;
+
+        goto label64;
+
+     label66:
+        if voiceInteractPackageNames#6 == null goto label69;
+
+        browserIntent#52 = voiceInteractPackageNames#6;
+
+        len$#53 = lengthof browserIntent#52;
+
+        i$#54 = 0;
+
+     label67:
+        if i$#54 >= len$#53 goto label69;
+
+        imePackageName#55 = browserIntent#52[i$#54];
+
+        imePackage#56 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(imePackageName#55);
+
+        if imePackage#56 == null goto label68;
+
+        $z5 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(imePackage#56);
+
+        if $z5 == 0 goto label68;
+
+        $r56 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackage#56, $r56, userId);
+
+        $r57 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackage#56, $r57, userId);
+
+        $r48 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackage#56, $r48, userId);
+
+        $r49 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackage#56, $r49, userId);
+
+        $r50 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackage#56, $r50, userId);
+
+        $r51 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackage#56, $r51, userId);
+
+     label68:
+        i$#54 = i$#54 + 1;
+
+        goto label67;
+
+     label69:
+        $r36 = new android.content.Intent;
+
+        specialinvoke $r36.<android.content.Intent: void <init>(java.lang.String)>("android.speech.RecognitionService");
+
+        browserIntent#57 = $r36;
+
+        virtualinvoke browserIntent#57.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.DEFAULT");
+
+        len$#58 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerServicePackageLPr(android.content.Intent,int)>(browserIntent#57, userId);
+
+        if len$#58 == null goto label70;
+
+        $z4 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(len$#58);
+
+        if $z4 == 0 goto label70;
+
+        $r55 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(len$#58, $r55, userId);
+
+     label70:
+        if locationPackageNames == null goto label73;
+
+        i$#59 = locationPackageNames;
+
+        imePackageName#60 = lengthof i$#59;
+
+        imePackage#61 = 0;
+
+     label71:
+        if imePackage#61 >= imePackageName#60 goto label73;
+
+        packageName = i$#59[imePackage#61];
+
+        locationPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(packageName);
+
+        if locationPackage == null goto label72;
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(locationPackage);
+
+        if $z0 == 0 goto label72;
+
+        $r37 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r37, userId);
+
+        $r39 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r39, userId);
+
+        $r38 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r38, userId);
+
+        $r41 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r41, userId);
+
+        $r40 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r40, userId);
+
+        $r43 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,int)>(locationPackage, $r43, 1, userId);
+
+        $r42 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CAMERA_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r42, userId);
+
+        $r53 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SENSORS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r53, userId);
+
+        $r54 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(locationPackage, $r54, userId);
+
+     label72:
+        imePackage#61 = imePackage#61 + 1;
+
+        goto label71;
+
+     label73:
+        $r34 = new android.content.Intent;
+
+        specialinvoke $r34.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.VIEW");
+
+        i$#62 = $r34;
+
+        virtualinvoke i$#62.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.DEFAULT");
+
+        $r32 = new java.io.File;
+
+        specialinvoke $r32.<java.io.File: void <init>(java.lang.String)>("foo.mp3");
+
+        $r31 = staticinvoke <android.net.Uri: android.net.Uri fromFile(java.io.File)>($r32);
+
+        virtualinvoke i$#62.<android.content.Intent: android.content.Intent setDataAndType(android.net.Uri,java.lang.String)>($r31, "audio/mpeg");
+
+        imePackageName#63 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent,int)>(i$#62, userId);
+
+        if imePackageName#63 == null goto label74;
+
+        $z1 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(imePackageName#63);
+
+        if $z1 == 0 goto label74;
+
+        $r47 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(imePackageName#63, $r47, userId);
+
+     label74:
+        $r46 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r45 = $r46.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        virtualinvoke $r45.<com.android.server.pm.Settings: void onDefaultRuntimePermissionsGrantedLPr(int)>(userId);
+
+        exitmonitor l17;
+
+     label75:
+        goto label78;
+
+     label76:
+        $r99 := @caughtexception;
+
+        l62 = $r99;
+
+        exitmonitor l17;
+
+     label77:
+        throw l62;
+
+     label78:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label03;
+        catch java.lang.Throwable from label03 to label04 with label03;
+        catch java.lang.Throwable from label22 to label75 with label76;
+        catch java.lang.Throwable from label76 to label77 with label76;
+    }
+
+    private void grantDefaultPermissionsToDefaultSystemDialerAppLPr(android.content.pm.PackageParser$Package, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageParser$Package dialerPackage;
+        int userId;
+        boolean $z0;
+        java.util.Set $r0, $r1, $r2, $r3;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        dialerPackage := @parameter0: android.content.pm.PackageParser$Package;
+
+        userId := @parameter1: int;
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(dialerPackage);
+
+        if $z0 == 0 goto label1;
+
+        $r0 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(dialerPackage, $r0, userId);
+
+        $r1 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(dialerPackage, $r1, userId);
+
+        $r2 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(dialerPackage, $r2, userId);
+
+        $r3 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(dialerPackage, $r3, userId);
+
+     label1:
+        return;
+    }
+
+    private void grantDefaultPermissionsToDefaultSystemSmsAppLPr(android.content.pm.PackageParser$Package, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageParser$Package smsPackage;
+        int userId;
+        boolean $z0;
+        java.util.Set $r0, $r1, $r2;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        smsPackage := @parameter0: android.content.pm.PackageParser$Package;
+
+        userId := @parameter1: int;
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(smsPackage);
+
+        if $z0 == 0 goto label1;
+
+        $r0 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(smsPackage, $r0, userId);
+
+        $r1 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(smsPackage, $r1, userId);
+
+        $r2 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(smsPackage, $r2, userId);
+
+     label1:
+        return;
+    }
+
+    public void grantDefaultPermissionsToDefaultSmsAppLPr(java.lang.String, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String packageName, $r3;
+        int userId;
+        android.content.pm.PackageParser$Package smsPackage;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        boolean $z0;
+        java.util.Set $r4, $r5, $r6;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        packageName := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Granting permissions to default sms app for user:");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DefaultPermGrantPolicy", $r3);
+
+        if packageName != null goto label1;
+
+        return;
+
+     label1:
+        smsPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getPackageLPr(java.lang.String)>(packageName);
+
+        if smsPackage == null goto label2;
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(smsPackage);
+
+        if $z0 == 0 goto label2;
+
+        $r4 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(smsPackage, $r4, 0, 1, userId);
+
+        $r5 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(smsPackage, $r5, 0, 1, userId);
+
+        $r6 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(smsPackage, $r6, 0, 1, userId);
+
+     label2:
+        return;
+    }
+
+    public void grantDefaultPermissionsToDefaultDialerAppLPr(java.lang.String, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String packageName, $r3;
+        int userId;
+        android.content.pm.PackageParser$Package dialerPackage;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        boolean $z0;
+        java.util.Set $r4, $r5, $r6, $r7;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        packageName := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Granting permissions to default dialer app for user:");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DefaultPermGrantPolicy", $r3);
+
+        if packageName != null goto label1;
+
+        return;
+
+     label1:
+        dialerPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getPackageLPr(java.lang.String)>(packageName);
+
+        if dialerPackage == null goto label2;
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(dialerPackage);
+
+        if $z0 == 0 goto label2;
+
+        $r4 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(dialerPackage, $r4, 0, 1, userId);
+
+        $r5 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(dialerPackage, $r5, 0, 1, userId);
+
+        $r6 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(dialerPackage, $r6, 0, 1, userId);
+
+        $r7 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(dialerPackage, $r7, 0, 1, userId);
+
+     label2:
+        return;
+    }
+
+    private void grantDefaultPermissionsToDefaultSimCallManagerLPr(android.content.pm.PackageParser$Package, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageParser$Package simCallManagerPackage;
+        int userId;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        java.lang.String $r3;
+        boolean $z0;
+        java.util.Set $r4, $r5;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        simCallManagerPackage := @parameter0: android.content.pm.PackageParser$Package;
+
+        userId := @parameter1: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Granting permissions to sim call manager for user:");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DefaultPermGrantPolicy", $r3);
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(simCallManagerPackage);
+
+        if $z0 == 0 goto label1;
+
+        $r4 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(simCallManagerPackage, $r4, userId);
+
+        $r5 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(simCallManagerPackage, $r5, userId);
+
+     label1:
+        return;
+    }
+
+    public void grantDefaultPermissionsToDefaultSimCallManagerLPr(java.lang.String, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String packageName;
+        int userId;
+        android.content.pm.PackageParser$Package simCallManagerPackage;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        packageName := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        if packageName != null goto label1;
+
+        return;
+
+     label1:
+        simCallManagerPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getPackageLPr(java.lang.String)>(packageName);
+
+        if simCallManagerPackage == null goto label2;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSimCallManagerLPr(android.content.pm.PackageParser$Package,int)>(simCallManagerPackage, userId);
+
+     label2:
+        return;
+    }
+
+    public void grantDefaultPermissionsToEnabledCarrierAppsLPr(java.lang.String[], int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String[] packageNames, arr$;
+        int userId, len$, i$#1;
+        java.lang.String packageName, $r3;
+        android.content.pm.PackageParser$Package carrierPackage;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        boolean $z0;
+        java.util.Set $r4, $r5, $r6;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        packageNames := @parameter0: java.lang.String[];
+
+        userId := @parameter1: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Granting permissions to enabled carrier apps for user:");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DefaultPermGrantPolicy", $r3);
+
+        if packageNames != null goto label1;
+
+        return;
+
+     label1:
+        arr$ = packageNames;
+
+        len$ = lengthof arr$;
+
+        i$#1 = 0;
+
+     label2:
+        if i$#1 >= len$ goto label4;
+
+        packageName = arr$[i$#1];
+
+        carrierPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(packageName);
+
+        if carrierPackage == null goto label3;
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(carrierPackage);
+
+        if $z0 == 0 goto label3;
+
+        $r5 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(carrierPackage, $r5, userId);
+
+        $r4 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(carrierPackage, $r4, userId);
+
+        $r6 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,int)>(carrierPackage, $r6, userId);
+
+     label3:
+        i$#1 = i$#1 + 1;
+
+        goto label2;
+
+     label4:
+        return;
+    }
+
+    public void grantDefaultPermissionsToDefaultBrowserLPr(java.lang.String, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String packageName, $r3;
+        int userId;
+        android.content.pm.PackageParser$Package browserPackage;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        boolean $z0;
+        java.util.Set $r4;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        packageName := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Granting permissions to default browser for user:");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DefaultPermGrantPolicy", $r3);
+
+        if packageName != null goto label1;
+
+        return;
+
+     label1:
+        browserPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(packageName);
+
+        if browserPackage == null goto label2;
+
+        $z0 = staticinvoke <com.android.server.pm.DefaultPermissionGrantPolicy: boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)>(browserPackage);
+
+        if $z0 == 0 goto label2;
+
+        $r4 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(browserPackage, $r4, 0, 0, userId);
+
+     label2:
+        return;
+    }
+
+    private android.content.pm.PackageParser$Package getDefaultSystemHandlerActivityPackageLPr(android.content.Intent, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.Intent intent;
+        int userId, handlerCount, i#1;
+        java.util.List handlers;
+        android.content.pm.ResolveInfo handler;
+        android.content.pm.PackageParser$Package handlerPackage;
+        com.android.server.pm.PackageManagerService $r0, $r1;
+        android.content.Context $r2;
+        com.android.server.pm.PackageManagerService$ActivityIntentResolver $r3;
+        android.content.ContentResolver $r4;
+        java.lang.String $r5, $r8;
+        android.content.pm.ActivityInfo $r6;
+        java.lang.Object $r7;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        intent := @parameter0: android.content.Intent;
+
+        userId := @parameter1: int;
+
+        $r0 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r3 = $r0.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$ActivityIntentResolver mActivities>;
+
+        $r1 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r2 = $r1.<com.android.server.pm.PackageManagerService: android.content.Context mContext>;
+
+        $r4 = virtualinvoke $r2.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        $r5 = virtualinvoke intent.<android.content.Intent: java.lang.String resolveType(android.content.ContentResolver)>($r4);
+
+        handlers = virtualinvoke $r3.<com.android.server.pm.PackageManagerService$ActivityIntentResolver: java.util.List queryIntent(android.content.Intent,java.lang.String,int,int)>(intent, $r5, 512, userId);
+
+        if handlers != null goto label1;
+
+        return null;
+
+     label1:
+        handlerCount = interfaceinvoke handlers.<java.util.List: int size()>();
+
+        i#1 = 0;
+
+     label2:
+        if i#1 >= handlerCount goto label4;
+
+        $r7 = interfaceinvoke handlers.<java.util.List: java.lang.Object get(int)>(i#1);
+
+        handler = (android.content.pm.ResolveInfo) $r7;
+
+        $r6 = handler.<android.content.pm.ResolveInfo: android.content.pm.ActivityInfo activityInfo>;
+
+        $r8 = $r6.<android.content.pm.ActivityInfo: java.lang.String packageName>;
+
+        handlerPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>($r8);
+
+        if handlerPackage == null goto label3;
+
+        return handlerPackage;
+
+     label3:
+        i#1 = i#1 + 1;
+
+        goto label2;
+
+     label4:
+        return null;
+    }
+
+    private android.content.pm.PackageParser$Package getDefaultSystemHandlerServicePackageLPr(android.content.Intent, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.Intent intent;
+        int userId, handlerCount, i#1;
+        java.util.List handlers;
+        android.content.pm.ResolveInfo handler;
+        android.content.pm.PackageParser$Package handlerPackage;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        android.content.Context $r1;
+        android.content.ContentResolver $r3;
+        java.lang.String $r4, $r6;
+        java.lang.Object $r5;
+        android.content.pm.ServiceInfo $r7;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        intent := @parameter0: android.content.Intent;
+
+        userId := @parameter1: int;
+
+        $r2 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r0 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.content.Context mContext>;
+
+        $r3 = virtualinvoke $r1.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        $r4 = virtualinvoke intent.<android.content.Intent: java.lang.String resolveType(android.content.ContentResolver)>($r3);
+
+        handlers = virtualinvoke $r2.<com.android.server.pm.PackageManagerService: java.util.List queryIntentServices(android.content.Intent,java.lang.String,int,int)>(intent, $r4, 512, userId);
+
+        if handlers != null goto label1;
+
+        return null;
+
+     label1:
+        handlerCount = interfaceinvoke handlers.<java.util.List: int size()>();
+
+        i#1 = 0;
+
+     label2:
+        if i#1 >= handlerCount goto label4;
+
+        $r5 = interfaceinvoke handlers.<java.util.List: java.lang.Object get(int)>(i#1);
+
+        handler = (android.content.pm.ResolveInfo) $r5;
+
+        $r7 = handler.<android.content.pm.ResolveInfo: android.content.pm.ServiceInfo serviceInfo>;
+
+        $r6 = $r7.<android.content.pm.ServiceInfo: java.lang.String packageName>;
+
+        handlerPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>($r6);
+
+        if handlerPackage == null goto label3;
+
+        return handlerPackage;
+
+     label3:
+        i#1 = i#1 + 1;
+
+        goto label2;
+
+     label4:
+        return null;
+    }
+
+    private java.util.List getHeadlessSyncAdapterPackagesLPr(java.lang.String[], int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String[] syncAdapterPackageNames, arr$;
+        int userId, len$, i$#1;
+        java.util.ArrayList syncAdapterPackages, tmp$1514164675;
+        android.content.Intent homeIntent, tmp$502545891;
+        java.lang.String syncAdapterPackageName, $r9;
+        java.util.List homeActivities, tmp$1904485240, tmp$44897688;
+        android.content.pm.PackageParser$Package syncAdapterPackage;
+        com.android.server.pm.PackageManagerService $r4, $r6;
+        android.content.Context $r5;
+        android.content.ContentResolver $r7;
+        com.android.server.pm.PackageManagerService$ActivityIntentResolver $r8;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        syncAdapterPackageNames := @parameter0: java.lang.String[];
+
+        userId := @parameter1: int;
+
+        tmp$1514164675 = new java.util.ArrayList;
+
+        specialinvoke tmp$1514164675.<java.util.ArrayList: void <init>()>();
+
+        syncAdapterPackages = tmp$1514164675;
+
+        tmp$502545891 = new android.content.Intent;
+
+        specialinvoke tmp$502545891.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.MAIN");
+
+        homeIntent = tmp$502545891;
+
+        virtualinvoke homeIntent.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.intent.category.LAUNCHER");
+
+        arr$ = syncAdapterPackageNames;
+
+        len$ = lengthof arr$;
+
+        i$#1 = 0;
+
+     label1:
+        if i$#1 >= len$ goto label4;
+
+        syncAdapterPackageName = arr$[i$#1];
+
+        virtualinvoke homeIntent.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>(syncAdapterPackageName);
+
+        $r4 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r8 = $r4.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$ActivityIntentResolver mActivities>;
+
+        $r6 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r5 = $r6.<com.android.server.pm.PackageManagerService: android.content.Context mContext>;
+
+        $r7 = virtualinvoke $r5.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        $r9 = virtualinvoke homeIntent.<android.content.Intent: java.lang.String resolveType(android.content.ContentResolver)>($r7);
+
+        homeActivities = virtualinvoke $r8.<com.android.server.pm.PackageManagerService$ActivityIntentResolver: java.util.List queryIntent(android.content.Intent,java.lang.String,int,int)>(homeIntent, $r9, 512, userId);
+
+        $z0 = interfaceinvoke homeActivities.<java.util.List: boolean isEmpty()>();
+
+        if $z0 != 0 goto label2;
+
+        goto label3;
+
+     label2:
+        syncAdapterPackage = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>(syncAdapterPackageName);
+
+        if syncAdapterPackage == null goto label3;
+
+        tmp$1904485240 = (java.util.List) syncAdapterPackages;
+
+        interfaceinvoke tmp$1904485240.<java.util.List: boolean add(java.lang.Object)>(syncAdapterPackage);
+
+     label3:
+        i$#1 = i$#1 + 1;
+
+        goto label1;
+
+     label4:
+        tmp$44897688 = (java.util.List) syncAdapterPackages;
+
+        return tmp$44897688;
+    }
+
+    private android.content.pm.PackageParser$Package getDefaultProviderAuthorityPackageLPr(java.lang.String, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String authority, $r1;
+        int userId;
+        android.content.pm.ProviderInfo provider;
+        com.android.server.pm.PackageManagerService $r0;
+        android.content.pm.PackageParser$Package $r2;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        authority := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        provider = virtualinvoke $r0.<com.android.server.pm.PackageManagerService: android.content.pm.ProviderInfo resolveContentProvider(java.lang.String,int,int)>(authority, 0, userId);
+
+        if provider == null goto label1;
+
+        $r1 = provider.<android.content.pm.ProviderInfo: java.lang.String packageName>;
+
+        $r2 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)>($r1);
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+
+    private android.content.pm.PackageParser$Package getPackageLPr(java.lang.String)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String packageName;
+        com.android.server.pm.PackageManagerService $r0;
+        android.util.ArrayMap $r1;
+        java.lang.Object $r2;
+        android.content.pm.PackageParser$Package $r3;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        packageName := @parameter0: java.lang.String;
+
+        $r0 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        $r2 = virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(packageName);
+
+        $r3 = (android.content.pm.PackageParser$Package) $r2;
+
+        return $r3;
+    }
+
+    private android.content.pm.PackageParser$Package getSystemPackageLPr(java.lang.String)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        java.lang.String packageName;
+        android.content.pm.PackageParser$Package pkg, $r0;
+        boolean $z0, $z1;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        packageName := @parameter0: java.lang.String;
+
+        pkg = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: android.content.pm.PackageParser$Package getPackageLPr(java.lang.String)>(packageName);
+
+        if pkg == null goto label3;
+
+        $z0 = virtualinvoke pkg.<android.content.pm.PackageParser$Package: boolean isSystemApp()>();
+
+        if $z0 == 0 goto label3;
+
+        $z1 = specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: boolean isSysComponentOrPersistentPlatformSignedPrivAppLPr(android.content.pm.PackageParser$Package)>(pkg);
+
+        if $z1 != 0 goto label1;
+
+        $r0 = pkg;
+
+        goto label2;
+
+     label1:
+        $r0 = null;
+
+     label2:
+        return $r0;
+
+     label3:
+        return null;
+    }
+
+    private void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package, java.util.Set, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageParser$Package pkg;
+        java.util.Set permissions;
+        int userId;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        pkg := @parameter0: android.content.pm.PackageParser$Package;
+
+        permissions := @parameter1: java.util.Set;
+
+        userId := @parameter2: int;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(pkg, permissions, 0, 0, userId);
+
+        return;
+    }
+
+    private void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package, java.util.Set, boolean, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageParser$Package pkg;
+        java.util.Set permissions;
+        boolean systemFixed;
+        int userId;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        pkg := @parameter0: android.content.pm.PackageParser$Package;
+
+        permissions := @parameter1: java.util.Set;
+
+        systemFixed := @parameter2: boolean;
+
+        userId := @parameter3: int;
+
+        specialinvoke this.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package,java.util.Set,boolean,boolean,int)>(pkg, permissions, systemFixed, 0, userId);
+
+        return;
+    }
+
+    private void grantRuntimePermissionsLPw(android.content.pm.PackageParser$Package, java.util.Set, boolean, boolean, int)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageParser$Package pkg, $r12, $r14, $r16;
+        java.util.Set permissions, tmp$674849410;
+        boolean systemFixed, overrideUserChoice, $z0, $z1, $z2, $z3, $z4, $z5;
+        int userId, flags, $i0, sysPs#4, i#5;
+        java.lang.String permission, $r3, $r5, $r7, $r10;
+        byte fixedFlags, newFlags#6;
+        java.util.ArrayList $r0, $r11, $r15, requestedPermissions#1;
+        java.lang.Object $r1;
+        com.android.server.pm.PackageManagerService $r2, $r4, $r6, $r8;
+        com.android.server.pm.Settings $r9;
+        android.util.ArraySet grantablePermissions#2, tmp$505129181;
+        com.android.server.pm.PackageSetting sysPs#3;
+        java.util.List tmp$1201771054, tmp$985443088, tmp$293113324;
+        java.util.Collection tmp$639180464;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        pkg := @parameter0: android.content.pm.PackageParser$Package;
+
+        permissions := @parameter1: java.util.Set;
+
+        systemFixed := @parameter2: boolean;
+
+        overrideUserChoice := @parameter3: boolean;
+
+        userId := @parameter4: int;
+
+        $r0 = pkg.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+        $z0 = virtualinvoke $r0.<java.util.ArrayList: boolean isEmpty()>();
+
+        if $z0 == 0 goto label01;
+
+        return;
+
+     label01:
+        requestedPermissions#1 = pkg.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+        grantablePermissions#2 = null;
+
+        $z1 = virtualinvoke pkg.<android.content.pm.PackageParser$Package: boolean isUpdatedSystemApp()>();
+
+        if $z1 == 0 goto label03;
+
+        $r8 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r9 = $r8.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        $r10 = pkg.<android.content.pm.PackageParser$Package: java.lang.String packageName>;
+
+        sysPs#3 = virtualinvoke $r9.<com.android.server.pm.Settings: com.android.server.pm.PackageSetting getDisabledSystemPkgLPr(java.lang.String)>($r10);
+
+        if sysPs#3 == null goto label03;
+
+        $r12 = sysPs#3.<com.android.server.pm.PackageSetting: android.content.pm.PackageParser$Package pkg>;
+
+        $r11 = $r12.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+        $z4 = virtualinvoke $r11.<java.util.ArrayList: boolean isEmpty()>();
+
+        if $z4 == 0 goto label02;
+
+        return;
+
+     label02:
+        $r14 = sysPs#3.<com.android.server.pm.PackageSetting: android.content.pm.PackageParser$Package pkg>;
+
+        $r15 = $r14.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+        tmp$1201771054 = (java.util.List) requestedPermissions#1;
+
+        $z5 = interfaceinvoke tmp$1201771054.<java.util.List: boolean equals(java.lang.Object)>($r15);
+
+        if $z5 != 0 goto label03;
+
+        tmp$505129181 = new android.util.ArraySet;
+
+        tmp$639180464 = (java.util.Collection) requestedPermissions#1;
+
+        specialinvoke tmp$505129181.<android.util.ArraySet: void <init>(java.util.Collection)>(tmp$639180464);
+
+        grantablePermissions#2 = tmp$505129181;
+
+        $r16 = sysPs#3.<com.android.server.pm.PackageSetting: android.content.pm.PackageParser$Package pkg>;
+
+        requestedPermissions#1 = $r16.<android.content.pm.PackageParser$Package: java.util.ArrayList requestedPermissions>;
+
+     label03:
+        tmp$985443088 = (java.util.List) requestedPermissions#1;
+
+        sysPs#4 = interfaceinvoke tmp$985443088.<java.util.List: int size()>();
+
+        i#5 = 0;
+
+     label04:
+        if i#5 >= sysPs#4 goto label10;
+
+        tmp$293113324 = (java.util.List) requestedPermissions#1;
+
+        $r1 = interfaceinvoke tmp$293113324.<java.util.List: java.lang.Object get(int)>(i#5);
+
+        permission = (java.lang.String) $r1;
+
+        if grantablePermissions#2 == null goto label05;
+
+        tmp$674849410 = (java.util.Set) grantablePermissions#2;
+
+        $z3 = interfaceinvoke tmp$674849410.<java.util.Set: boolean contains(java.lang.Object)>(permission);
+
+        if $z3 != 0 goto label05;
+
+        goto label09;
+
+     label05:
+        $z2 = interfaceinvoke permissions.<java.util.Set: boolean contains(java.lang.Object)>(permission);
+
+        if $z2 == 0 goto label09;
+
+        $r2 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r3 = pkg.<android.content.pm.PackageParser$Package: java.lang.String packageName>;
+
+        flags = virtualinvoke $r2.<com.android.server.pm.PackageManagerService: int getPermissionFlags(java.lang.String,java.lang.String,int)>(permission, $r3, userId);
+
+        if flags == 0 goto label06;
+
+        if overrideUserChoice == 0 goto label09;
+
+     label06:
+        fixedFlags = 20;
+
+        $i0 = flags & 20;
+
+        if $i0 == 0 goto label07;
+
+        goto label09;
+
+     label07:
+        $r4 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r5 = pkg.<android.content.pm.PackageParser$Package: java.lang.String packageName>;
+
+        virtualinvoke $r4.<com.android.server.pm.PackageManagerService: void grantRuntimePermission(java.lang.String,java.lang.String,int)>($r5, permission, userId);
+
+        newFlags#6 = 32;
+
+        if systemFixed == 0 goto label08;
+
+        newFlags#6 = newFlags#6 | 16;
+
+     label08:
+        $r6 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r7 = pkg.<android.content.pm.PackageParser$Package: java.lang.String packageName>;
+
+        virtualinvoke $r6.<com.android.server.pm.PackageManagerService: void updatePermissionFlags(java.lang.String,java.lang.String,int,int,int)>(permission, $r7, newFlags#6, newFlags#6, userId);
+
+     label09:
+        i#5 = i#5 + 1;
+
+        goto label04;
+
+     label10:
+        return;
+    }
+
+    private boolean isSysComponentOrPersistentPlatformSignedPrivAppLPr(android.content.pm.PackageParser$Package)
+    {
+        com.android.server.pm.DefaultPermissionGrantPolicy this;
+        android.content.pm.PackageParser$Package pkg, $r6, $r10;
+        com.android.server.pm.PackageSetting sysPkg;
+        android.content.pm.ApplicationInfo $r0, $r4, $r9;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        boolean $z0, $z1;
+        com.android.server.pm.PackageManagerService $r1, $r5;
+        java.lang.String $r2;
+        com.android.server.pm.Settings $r3;
+        android.content.pm.Signature[] $r7, $r8;
+
+        this := @this: com.android.server.pm.DefaultPermissionGrantPolicy;
+
+        pkg := @parameter0: android.content.pm.PackageParser$Package;
+
+        $r0 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i0 = $r0.<android.content.pm.ApplicationInfo: int uid>;
+
+        $i1 = staticinvoke <android.os.UserHandle: int getAppId(int)>($i0);
+
+        if $i1 >= 10000 goto label1;
+
+        return 1;
+
+     label1:
+        $z0 = virtualinvoke pkg.<android.content.pm.PackageParser$Package: boolean isPrivilegedApp()>();
+
+        if $z0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r1 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r3 = $r1.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        $r2 = pkg.<android.content.pm.PackageParser$Package: java.lang.String packageName>;
+
+        sysPkg = virtualinvoke $r3.<com.android.server.pm.Settings: com.android.server.pm.PackageSetting getDisabledSystemPkgLPr(java.lang.String)>($r2);
+
+        if sysPkg == null goto label3;
+
+        $r10 = sysPkg.<com.android.server.pm.PackageSetting: android.content.pm.PackageParser$Package pkg>;
+
+        $r9 = $r10.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i6 = $r9.<android.content.pm.ApplicationInfo: int flags>;
+
+        $i5 = $i6 & 8;
+
+        if $i5 != 0 goto label4;
+
+        return 0;
+
+     label3:
+        $r4 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i2 = $r4.<android.content.pm.ApplicationInfo: int flags>;
+
+        $i3 = $i2 & 8;
+
+        if $i3 != 0 goto label4;
+
+        return 0;
+
+     label4:
+        $r5 = this.<com.android.server.pm.DefaultPermissionGrantPolicy: com.android.server.pm.PackageManagerService mService>;
+
+        $r6 = $r5.<com.android.server.pm.PackageManagerService: android.content.pm.PackageParser$Package mPlatformPackage>;
+
+        $r7 = $r6.<android.content.pm.PackageParser$Package: android.content.pm.Signature[] mSignatures>;
+
+        $r8 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.Signature[] mSignatures>;
+
+        $i4 = staticinvoke <com.android.server.pm.PackageManagerService: int compareSignatures(android.content.pm.Signature[],android.content.pm.Signature[])>($r7, $r8);
+
+        if $i4 != 0 goto label5;
+
+        $z1 = 1;
+
+        goto label6;
+
+     label5:
+        $z1 = 0;
+
+     label6:
+        return $z1;
+    }
+
+    private static boolean doesPackageSupportRuntimePermissions(android.content.pm.PackageParser$Package)
+    {
+        android.content.pm.PackageParser$Package pkg;
+        android.content.pm.ApplicationInfo $r0;
+        int $i0;
+        boolean $z0;
+
+        pkg := @parameter0: android.content.pm.PackageParser$Package;
+
+        $r0 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i0 = $r0.<android.content.pm.ApplicationInfo: int targetSdkVersion>;
+
+        if $i0 <= 22 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    static void <clinit>()
+    {
+        java.util.Set $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r9, $r10, $r11, $r12, $r14, $r16, $r17, $r18, $r20, $r21, $r22, $r23, $r24, $r25, $r28, $r30, $r32, $r33, tmp$411599845, tmp$453913754, tmp$448655029, tmp$330643991, tmp$513181946, tmp$197237308, tmp$501721819, tmp$718174365, tmp$1016238536;
+        android.util.ArraySet tmp$786287687, tmp$412716742, tmp$799580749, tmp$355013800, tmp$26414890, tmp$439471878, tmp$1682002396, tmp$1763827126, tmp$1762993428;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.lang.String AUDIO_MIME_TYPE> = "audio/mpeg";
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: boolean DEBUG> = 0;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.lang.String TAG> = "DefaultPermGrantPolicy";
+
+        tmp$786287687 = new android.util.ArraySet;
+
+        specialinvoke tmp$786287687.<android.util.ArraySet: void <init>()>();
+
+        tmp$411599845 = (java.util.Set) tmp$786287687;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS> = tmp$411599845;
+
+        $r1 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("android.permission.READ_PHONE_STATE");
+
+        $r2 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        interfaceinvoke $r2.<java.util.Set: boolean add(java.lang.Object)>("android.permission.CALL_PHONE");
+
+        $r3 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        interfaceinvoke $r3.<java.util.Set: boolean add(java.lang.Object)>("android.permission.READ_CALL_LOG");
+
+        $r4 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("android.permission.WRITE_CALL_LOG");
+
+        $r5 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        interfaceinvoke $r5.<java.util.Set: boolean add(java.lang.Object)>("com.android.voicemail.permission.ADD_VOICEMAIL");
+
+        $r6 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        interfaceinvoke $r6.<java.util.Set: boolean add(java.lang.Object)>("android.permission.USE_SIP");
+
+        $r7 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set PHONE_PERMISSIONS>;
+
+        interfaceinvoke $r7.<java.util.Set: boolean add(java.lang.Object)>("android.permission.PROCESS_OUTGOING_CALLS");
+
+        tmp$412716742 = new android.util.ArraySet;
+
+        specialinvoke tmp$412716742.<android.util.ArraySet: void <init>()>();
+
+        tmp$453913754 = (java.util.Set) tmp$412716742;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS> = tmp$453913754;
+
+        $r9 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        interfaceinvoke $r9.<java.util.Set: boolean add(java.lang.Object)>("android.permission.READ_CONTACTS");
+
+        $r10 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        interfaceinvoke $r10.<java.util.Set: boolean add(java.lang.Object)>("android.permission.WRITE_CONTACTS");
+
+        $r11 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CONTACTS_PERMISSIONS>;
+
+        interfaceinvoke $r11.<java.util.Set: boolean add(java.lang.Object)>("android.permission.GET_ACCOUNTS");
+
+        tmp$799580749 = new android.util.ArraySet;
+
+        specialinvoke tmp$799580749.<android.util.ArraySet: void <init>()>();
+
+        tmp$448655029 = (java.util.Set) tmp$799580749;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS> = tmp$448655029;
+
+        $r12 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        interfaceinvoke $r12.<java.util.Set: boolean add(java.lang.Object)>("android.permission.ACCESS_FINE_LOCATION");
+
+        $r14 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set LOCATION_PERMISSIONS>;
+
+        interfaceinvoke $r14.<java.util.Set: boolean add(java.lang.Object)>("android.permission.ACCESS_COARSE_LOCATION");
+
+        tmp$355013800 = new android.util.ArraySet;
+
+        specialinvoke tmp$355013800.<android.util.ArraySet: void <init>()>();
+
+        tmp$330643991 = (java.util.Set) tmp$355013800;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS> = tmp$330643991;
+
+        $r16 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS>;
+
+        interfaceinvoke $r16.<java.util.Set: boolean add(java.lang.Object)>("android.permission.READ_CALENDAR");
+
+        $r17 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CALENDAR_PERMISSIONS>;
+
+        interfaceinvoke $r17.<java.util.Set: boolean add(java.lang.Object)>("android.permission.WRITE_CALENDAR");
+
+        tmp$26414890 = new android.util.ArraySet;
+
+        specialinvoke tmp$26414890.<android.util.ArraySet: void <init>()>();
+
+        tmp$513181946 = (java.util.Set) tmp$26414890;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS> = tmp$513181946;
+
+        $r20 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        interfaceinvoke $r20.<java.util.Set: boolean add(java.lang.Object)>("android.permission.SEND_SMS");
+
+        $r18 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        interfaceinvoke $r18.<java.util.Set: boolean add(java.lang.Object)>("android.permission.RECEIVE_SMS");
+
+        $r22 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        interfaceinvoke $r22.<java.util.Set: boolean add(java.lang.Object)>("android.permission.READ_SMS");
+
+        $r21 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        interfaceinvoke $r21.<java.util.Set: boolean add(java.lang.Object)>("android.permission.RECEIVE_WAP_PUSH");
+
+        $r24 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        interfaceinvoke $r24.<java.util.Set: boolean add(java.lang.Object)>("android.permission.RECEIVE_MMS");
+
+        $r23 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SMS_PERMISSIONS>;
+
+        interfaceinvoke $r23.<java.util.Set: boolean add(java.lang.Object)>("android.permission.READ_CELL_BROADCASTS");
+
+        tmp$439471878 = new android.util.ArraySet;
+
+        specialinvoke tmp$439471878.<android.util.ArraySet: void <init>()>();
+
+        tmp$197237308 = (java.util.Set) tmp$439471878;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS> = tmp$197237308;
+
+        $r25 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set MICROPHONE_PERMISSIONS>;
+
+        interfaceinvoke $r25.<java.util.Set: boolean add(java.lang.Object)>("android.permission.RECORD_AUDIO");
+
+        tmp$1682002396 = new android.util.ArraySet;
+
+        specialinvoke tmp$1682002396.<android.util.ArraySet: void <init>()>();
+
+        tmp$501721819 = (java.util.Set) tmp$1682002396;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CAMERA_PERMISSIONS> = tmp$501721819;
+
+        $r28 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set CAMERA_PERMISSIONS>;
+
+        interfaceinvoke $r28.<java.util.Set: boolean add(java.lang.Object)>("android.permission.CAMERA");
+
+        tmp$1763827126 = new android.util.ArraySet;
+
+        specialinvoke tmp$1763827126.<android.util.ArraySet: void <init>()>();
+
+        tmp$718174365 = (java.util.Set) tmp$1763827126;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SENSORS_PERMISSIONS> = tmp$718174365;
+
+        $r32 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set SENSORS_PERMISSIONS>;
+
+        interfaceinvoke $r32.<java.util.Set: boolean add(java.lang.Object)>("android.permission.BODY_SENSORS");
+
+        tmp$1762993428 = new android.util.ArraySet;
+
+        specialinvoke tmp$1762993428.<android.util.ArraySet: void <init>()>();
+
+        tmp$1016238536 = (java.util.Set) tmp$1762993428;
+
+        <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS> = tmp$1016238536;
+
+        $r30 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        interfaceinvoke $r30.<java.util.Set: boolean add(java.lang.Object)>("android.permission.READ_EXTERNAL_STORAGE");
+
+        $r33 = <com.android.server.pm.DefaultPermissionGrantPolicy: java.util.Set STORAGE_PERMISSIONS>;
+
+        interfaceinvoke $r33.<java.util.Set: boolean add(java.lang.Object)>("android.permission.WRITE_EXTERNAL_STORAGE");
+
+        return;
+    }
+}

@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 
 import soot.Body;
+import soot.Scene;
+import soot.SootClass;
 import soot.SootMethod;
 import soot.Unit;
 import soot.UnitBox;
@@ -76,8 +78,13 @@ public abstract class AbstractJimpleBasedICFG implements BiDiInterproceduralCFG<
 	
 	@Override
 	public SootMethod getMethodOf(Unit u) {
-		assert unitToOwner.containsKey(u) : "Statement " + u
-				+ " not in unit-to-owner mapping";
+//		assert unitToOwner.containsKey(u) : "Statement " + u
+//				+ " not in unit-to-owner mapping";
+		if(!unitToOwner.containsKey(u)){
+			throw new RuntimeException("Statement " + u
+					+ " not in unit-to-owner mapping");
+		
+		}
 		return unitToOwner.get(u).getMethod();
 	}
 

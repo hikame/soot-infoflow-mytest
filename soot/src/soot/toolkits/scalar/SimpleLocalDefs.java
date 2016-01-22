@@ -335,7 +335,10 @@ public class SimpleLocalDefs implements LocalDefs {
 				if (v instanceof Local) {
 					Local l = (Local) v;
 					int lno = l.getNumber();
-					
+if(unitList.length <= lno){
+	System.out.println("ERROR: " + l + " - " + lno);
+	continue;
+}
 					switch (unitList[lno].size()) {
 					case 0:
 						unitList[lno] = singletonList(unit);

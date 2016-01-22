@@ -213,8 +213,6 @@ public class SootResolver {
 			return;
 		}
 		
-//		G.v().out.println("[KM] DefaltPhantom is set!");
-		
 		List<String> list = Options.v().getNonPhantomList();
 		String name = sc.getName();
 		
@@ -268,10 +266,6 @@ public class SootResolver {
 		if (Options.v().debug_resolver())
 			G.v().out.println("bringing to HIERARCHY: " + sc);
 		sc.setResolvingLevel(SootClass.HIERARCHY);
-//G.v().out.println("[T1] " + Options.v());
-//G.v().out.println("[T1] " + G.v());
-//String s = Options.v().soot_classpath();
-//G.v().out.println(s);
 		String className = sc.getName();
 		ClassSource is = SourceLocator.v().getClassSource(className);
 		boolean modelAsPhantomRef = is == null;
@@ -304,8 +298,9 @@ public class SootResolver {
 			}
 		} else {
 			Dependencies dependencies = is.resolve(sc);
-			if (!dependencies.typesToSignature.isEmpty())
+			if (!dependencies.typesToSignature.isEmpty()){
 				classToTypesSignature.put(sc, dependencies.typesToSignature);
+			}
 			if (!dependencies.typesToHierarchy.isEmpty())
 				classToTypesHierarchy.put(sc, dependencies.typesToHierarchy);
 		}

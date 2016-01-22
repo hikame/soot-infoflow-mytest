@@ -14,7 +14,12 @@ import soot.jimple.infoflow.cfg.LibraryClassPatcher;
 import soot.jimple.infoflow.data.AccessPathFactory;
 import soot.jimple.infoflow.handlers.PreAnalysisHandler;
 import soot.jimple.infoflow.ipc.IIPCManager;
+import soot.jimple.toolkits.base.Aggregator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
+import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
+import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.options.Options;
+import soot.toolkits.scalar.UnusedLocalEliminator;
 
 public class CallGraphManager {
 	private CallGraphManager(){}
@@ -137,5 +142,13 @@ public class CallGraphManager {
 			Options.v().set_whole_program(true);
 			Options.v().setPhaseOption("cg", "trim-clinit:false");
 		}
+	}
+
+	public static void optimizeCG(Body body) {
+//	    DeadAssignmentEliminator.v().transform(body);
+//        UnreachableCodeEliminator.v().transform(body);
+//        UnconditionalBranchFolder.v().transform(body);
+////        Aggregator.v().transform(body);
+//        UnusedLocalEliminator.v().transform(body);
 	}
 }

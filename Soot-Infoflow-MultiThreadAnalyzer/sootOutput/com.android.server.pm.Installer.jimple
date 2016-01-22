@@ -1,0 +1,1711 @@
+public final class com.android.server.pm.Installer extends com.android.server.SystemService
+{
+    private static final java.lang.String TAG;
+    private final com.android.internal.os.InstallerConnection mInstaller;
+
+    public void <init>(android.content.Context)
+    {
+        com.android.server.pm.Installer this;
+        android.content.Context context;
+        com.android.internal.os.InstallerConnection $r0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        context := @parameter0: android.content.Context;
+
+        specialinvoke this.<com.android.server.SystemService: void <init>(android.content.Context)>(context);
+
+        $r0 = new com.android.internal.os.InstallerConnection;
+
+        specialinvoke $r0.<com.android.internal.os.InstallerConnection: void <init>()>();
+
+        this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller> = $r0;
+
+        return;
+    }
+
+    public void onStart()
+    {
+        com.android.server.pm.Installer this;
+        com.android.internal.os.InstallerConnection $r0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("Installer", "Waiting for installd to be ready.");
+
+        $r0 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        virtualinvoke $r0.<com.android.internal.os.InstallerConnection: void waitForConnection()>();
+
+        return;
+    }
+
+    private static java.lang.String escapeNull(java.lang.String)
+    {
+        java.lang.String arg;
+        boolean $z0;
+        int $i0, $i1;
+        java.lang.IllegalArgumentException $r0;
+
+        arg := @parameter0: java.lang.String;
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>(arg);
+
+        if $z0 == 0 goto label1;
+
+        return "!";
+
+     label1:
+        $i0 = virtualinvoke arg.<java.lang.String: int indexOf(int)>(0);
+
+        if $i0 != -1 goto label2;
+
+        $i1 = virtualinvoke arg.<java.lang.String: int indexOf(int)>(32);
+
+        if $i1 == -1 goto label3;
+
+     label2:
+        $r0 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>(arg);
+
+        throw $r0;
+
+     label3:
+        return arg;
+    }
+
+    public int install(java.lang.String, int, int, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String name, seinfo;
+        int uid, gid, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        name := @parameter0: java.lang.String;
+
+        uid := @parameter1: int;
+
+        gid := @parameter2: int;
+
+        seinfo := @parameter3: java.lang.String;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int install(java.lang.String,java.lang.String,int,int,java.lang.String)>(null, name, uid, gid, seinfo);
+
+        return $i0;
+    }
+
+    public int install(java.lang.String, java.lang.String, int, int, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, name, seinfo, $r2, $r13, $r14;
+        int uid, gid, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r11;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        name := @parameter1: java.lang.String;
+
+        uid := @parameter2: int;
+
+        gid := @parameter3: int;
+
+        seinfo := @parameter4: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("install");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(gid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if seinfo == null goto label1;
+
+        $r14 = seinfo;
+
+        goto label2;
+
+     label1:
+        $r14 = "!";
+
+     label2:
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+
+        $r11 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r13 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r11.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r13);
+
+        return $i0;
+    }
+
+    public int dexopt(java.lang.String, int, boolean, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String apkPath, instructionSet, $r4;
+        int uid, dexoptNeeded, $i0;
+        boolean isPublic, $z0;
+        com.android.internal.os.InstallerConnection $r0;
+        java.lang.StringBuilder $r1, $r2, $r3;
+
+        this := @this: com.android.server.pm.Installer;
+
+        apkPath := @parameter0: java.lang.String;
+
+        uid := @parameter1: int;
+
+        isPublic := @parameter2: boolean;
+
+        instructionSet := @parameter3: java.lang.String;
+
+        dexoptNeeded := @parameter4: int;
+
+        $z0 = staticinvoke <com.android.server.pm.Installer: boolean isValidInstructionSet(java.lang.String)>(instructionSet);
+
+        if $z0 != 0 goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid instruction set: ");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", $r4);
+
+        return -1;
+
+     label1:
+        $r0 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.os.InstallerConnection: int dexopt(java.lang.String,int,boolean,java.lang.String,int)>(apkPath, uid, isPublic, instructionSet, dexoptNeeded);
+
+        return $i0;
+    }
+
+    public int dexopt(java.lang.String, int, boolean, java.lang.String, java.lang.String, int, boolean, boolean, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String apkPath, pkgName, instructionSet, outputPath, $r3;
+        int uid, dexoptNeeded, $i0;
+        boolean isPublic, vmSafeMode, debuggable, $z0;
+        com.android.internal.os.InstallerConnection $r0;
+        java.lang.StringBuilder $r1, $r2, $r4;
+
+        this := @this: com.android.server.pm.Installer;
+
+        apkPath := @parameter0: java.lang.String;
+
+        uid := @parameter1: int;
+
+        isPublic := @parameter2: boolean;
+
+        pkgName := @parameter3: java.lang.String;
+
+        instructionSet := @parameter4: java.lang.String;
+
+        dexoptNeeded := @parameter5: int;
+
+        vmSafeMode := @parameter6: boolean;
+
+        debuggable := @parameter7: boolean;
+
+        outputPath := @parameter8: java.lang.String;
+
+        $z0 = staticinvoke <com.android.server.pm.Installer: boolean isValidInstructionSet(java.lang.String)>(instructionSet);
+
+        if $z0 != 0 goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid instruction set: ");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", $r3);
+
+        return -1;
+
+     label1:
+        $r0 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.os.InstallerConnection: int dexopt(java.lang.String,int,boolean,java.lang.String,java.lang.String,int,boolean,boolean,java.lang.String)>(apkPath, uid, isPublic, pkgName, instructionSet, dexoptNeeded, vmSafeMode, debuggable, outputPath);
+
+        return $i0;
+    }
+
+    public int idmap(java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String targetApkPath, overlayApkPath, $r8;
+        int uid, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r7;
+
+        this := @this: com.android.server.pm.Installer;
+
+        targetApkPath := @parameter0: java.lang.String;
+
+        overlayApkPath := @parameter1: java.lang.String;
+
+        uid := @parameter2: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("idmap");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(targetApkPath);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(overlayApkPath);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        $r7 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r8 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r7.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r8);
+
+        return $i0;
+    }
+
+    public int movedex(java.lang.String, java.lang.String, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String srcPath, dstPath, instructionSet, $r8, $r12;
+        java.lang.StringBuilder builder, $r0, $r9, $r10, $r11;
+        boolean $z0;
+        com.android.internal.os.InstallerConnection $r7;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        srcPath := @parameter0: java.lang.String;
+
+        dstPath := @parameter1: java.lang.String;
+
+        instructionSet := @parameter2: java.lang.String;
+
+        $z0 = staticinvoke <com.android.server.pm.Installer: boolean isValidInstructionSet(java.lang.String)>(instructionSet);
+
+        if $z0 != 0 goto label1;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid instruction set: ");
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", $r12);
+
+        return -1;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("movedex");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(srcPath);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(dstPath);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r7 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r8 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r7.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r8);
+
+        return $i0;
+    }
+
+    public int rmdex(java.lang.String, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String codePath, instructionSet, $r6, $r9;
+        java.lang.StringBuilder builder, $r0, $r7, $r8, $r10;
+        boolean $z0;
+        com.android.internal.os.InstallerConnection $r5;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        codePath := @parameter0: java.lang.String;
+
+        instructionSet := @parameter1: java.lang.String;
+
+        $z0 = staticinvoke <com.android.server.pm.Installer: boolean isValidInstructionSet(java.lang.String)>(instructionSet);
+
+        if $z0 != 0 goto label1;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid instruction set: ");
+
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", $r9);
+
+        return -1;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("rmdex");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(codePath);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r5 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r6 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r5.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r6);
+
+        return $i0;
+    }
+
+    public int rmPackageDir(java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String packageDir, $r4;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r3;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        packageDir := @parameter0: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("rmpackagedir");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(packageDir);
+
+        $r3 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r4 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r3.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r4);
+
+        return $i0;
+    }
+
+    public int remove(java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String name;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int remove(java.lang.String,java.lang.String,int)>(null, name, userId);
+
+        return $i0;
+    }
+
+    public int remove(java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, name, $r2, $r9;
+        int userId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r8;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        name := @parameter1: java.lang.String;
+
+        userId := @parameter2: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("remove");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r8 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r9 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r8.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r9);
+
+        return $i0;
+    }
+
+    public int rename(java.lang.String, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String oldname, newname, $r6;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r5;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        oldname := @parameter0: java.lang.String;
+
+        newname := @parameter1: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("rename");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(oldname);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(newname);
+
+        $r5 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r6 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r5.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r6);
+
+        return $i0;
+    }
+
+    public int fixUid(java.lang.String, int, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String name;
+        int uid, gid, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        name := @parameter0: java.lang.String;
+
+        uid := @parameter1: int;
+
+        gid := @parameter2: int;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int fixUid(java.lang.String,java.lang.String,int,int)>(null, name, uid, gid);
+
+        return $i0;
+    }
+
+    public int fixUid(java.lang.String, java.lang.String, int, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, name, $r2, $r10;
+        int uid, gid, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r11;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        name := @parameter1: java.lang.String;
+
+        uid := @parameter2: int;
+
+        gid := @parameter3: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("fixuid");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(gid);
+
+        $r11 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r10 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r11.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r10);
+
+        return $i0;
+    }
+
+    public int deleteCacheFiles(java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String name;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int deleteCacheFiles(java.lang.String,java.lang.String,int)>(null, name, userId);
+
+        return $i0;
+    }
+
+    public int deleteCacheFiles(java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, name, $r2, $r9;
+        int userId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r8;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        name := @parameter1: java.lang.String;
+
+        userId := @parameter2: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("rmcache");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r8 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r9 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r8.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r9);
+
+        return $i0;
+    }
+
+    public int deleteCodeCacheFiles(java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String name;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int deleteCodeCacheFiles(java.lang.String,java.lang.String,int)>(null, name, userId);
+
+        return $i0;
+    }
+
+    public int deleteCodeCacheFiles(java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, name, $r2, $r9;
+        int userId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r8;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        name := @parameter1: java.lang.String;
+
+        userId := @parameter2: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("rmcodecache");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r8 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r9 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r8.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r9);
+
+        return $i0;
+    }
+
+    public int createUserData(java.lang.String, int, int, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String name, seinfo;
+        int uid, userId, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        name := @parameter0: java.lang.String;
+
+        uid := @parameter1: int;
+
+        userId := @parameter2: int;
+
+        seinfo := @parameter3: java.lang.String;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int createUserData(java.lang.String,java.lang.String,int,int,java.lang.String)>(null, name, uid, userId, seinfo);
+
+        return $i0;
+    }
+
+    public int createUserData(java.lang.String, java.lang.String, int, int, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, name, seinfo, $r2, $r13, $r14;
+        int uid, userId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r11;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        name := @parameter1: java.lang.String;
+
+        uid := @parameter2: int;
+
+        userId := @parameter3: int;
+
+        seinfo := @parameter4: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("mkuserdata");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if seinfo == null goto label1;
+
+        $r14 = seinfo;
+
+        goto label2;
+
+     label1:
+        $r14 = "!";
+
+     label2:
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+
+        $r11 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r13 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r11.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r13);
+
+        return $i0;
+    }
+
+    public int createUserConfig(int)
+    {
+        com.android.server.pm.Installer this;
+        int userId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r3;
+        java.lang.String $r4;
+
+        this := @this: com.android.server.pm.Installer;
+
+        userId := @parameter0: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("mkuserconfig");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r3 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r4 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r3.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r4);
+
+        return $i0;
+    }
+
+    public int removeUserDataDirs(int)
+    {
+        com.android.server.pm.Installer this;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        userId := @parameter0: int;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int removeUserDataDirs(java.lang.String,int)>(null, userId);
+
+        return $i0;
+    }
+
+    public int removeUserDataDirs(java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, $r2, $r7;
+        int userId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r6;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("rmuser");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r6 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r7 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r6.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r7);
+
+        return $i0;
+    }
+
+    public int copyCompleteApp(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String fromUuid, toUuid, packageName, dataAppName, seinfo, $r2, $r5, $r16;
+        int appId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r14;
+
+        this := @this: com.android.server.pm.Installer;
+
+        fromUuid := @parameter0: java.lang.String;
+
+        toUuid := @parameter1: java.lang.String;
+
+        packageName := @parameter2: java.lang.String;
+
+        dataAppName := @parameter3: java.lang.String;
+
+        appId := @parameter4: int;
+
+        seinfo := @parameter5: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("cpcompleteapp");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(fromUuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r5 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(toUuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(packageName);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(dataAppName);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(appId);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(seinfo);
+
+        $r14 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r16 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r14.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r16);
+
+        return $i0;
+    }
+
+    public int clearUserData(java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String name;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int clearUserData(java.lang.String,java.lang.String,int)>(null, name, userId);
+
+        return $i0;
+    }
+
+    public int clearUserData(java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, name, $r2, $r9;
+        int userId, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r8;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        name := @parameter1: java.lang.String;
+
+        userId := @parameter2: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("rmuserdata");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r8 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r9 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r8.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r9);
+
+        return $i0;
+    }
+
+    public int markBootComplete(java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String instructionSet, $r4, $r8;
+        java.lang.StringBuilder builder, $r0, $r5, $r6, $r7;
+        boolean $z0;
+        com.android.internal.os.InstallerConnection $r3;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        instructionSet := @parameter0: java.lang.String;
+
+        $z0 = staticinvoke <com.android.server.pm.Installer: boolean isValidInstructionSet(java.lang.String)>(instructionSet);
+
+        if $z0 != 0 goto label1;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid instruction set: ");
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", $r8);
+
+        return -1;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("markbootcomplete");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet);
+
+        $r3 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r4 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r3.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r4);
+
+        return $i0;
+    }
+
+    public int freeCache(long)
+    {
+        com.android.server.pm.Installer this;
+        long freeStorageSize;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        freeStorageSize := @parameter0: long;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int freeCache(java.lang.String,long)>(null, freeStorageSize);
+
+        return $i0;
+    }
+
+    public int freeCache(java.lang.String, long)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, $r2, $r5, $r8;
+        long freeStorageSize;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r7;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        freeStorageSize := @parameter1: long;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("freecache");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>(freeStorageSize);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r7 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r8 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r7.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r8);
+
+        return $i0;
+    }
+
+    public int getSizeInfo(java.lang.String, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String[], android.content.pm.PackageStats)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String pkgName, apkPath, libDirPath, fwdLockApkPath, asecPath;
+        int persona, $i0;
+        java.lang.String[] instructionSets;
+        android.content.pm.PackageStats pStats;
+
+        this := @this: com.android.server.pm.Installer;
+
+        pkgName := @parameter0: java.lang.String;
+
+        persona := @parameter1: int;
+
+        apkPath := @parameter2: java.lang.String;
+
+        libDirPath := @parameter3: java.lang.String;
+
+        fwdLockApkPath := @parameter4: java.lang.String;
+
+        asecPath := @parameter5: java.lang.String;
+
+        instructionSets := @parameter6: java.lang.String[];
+
+        pStats := @parameter7: android.content.pm.PackageStats;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int getSizeInfo(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String[],android.content.pm.PackageStats)>(null, pkgName, persona, apkPath, libDirPath, fwdLockApkPath, asecPath, instructionSets, pStats);
+
+        return $i0;
+    }
+
+    public int getSizeInfo(java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String[], android.content.pm.PackageStats)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, pkgName, apkPath, libDirPath, fwdLockApkPath, asecPath, $r3, $r16, $r18, $r21, $r22, $r23, $r24, $r25, $r30, instructionSet#4, $r31, $r32, $r33, len$#9;
+        int persona, $i1, $i4, len$#2, i$#3;
+        java.lang.String[] instructionSets, arr$#1, i$#10;
+        android.content.pm.PackageStats pStats;
+        java.lang.StringBuilder $r0, $r26, $r27, $r28, arr$#5;
+        com.android.internal.os.InstallerConnection $r20;
+        long $l0, $l2, $l3, $l5;
+        boolean $z0;
+        java.lang.NumberFormatException $r29, instructionSet#11;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        pkgName := @parameter1: java.lang.String;
+
+        persona := @parameter2: int;
+
+        apkPath := @parameter3: java.lang.String;
+
+        libDirPath := @parameter4: java.lang.String;
+
+        fwdLockApkPath := @parameter5: java.lang.String;
+
+        asecPath := @parameter6: java.lang.String;
+
+        instructionSets := @parameter7: java.lang.String[];
+
+        pStats := @parameter8: android.content.pm.PackageStats;
+
+        arr$#1 = instructionSets;
+
+        len$#2 = lengthof arr$#1;
+
+        i$#3 = 0;
+
+     label01:
+        if i$#3 >= len$#2 goto label03;
+
+        instructionSet#4 = arr$#1[i$#3];
+
+        $z0 = staticinvoke <com.android.server.pm.Installer: boolean isValidInstructionSet(java.lang.String)>(instructionSet#4);
+
+        if $z0 != 0 goto label02;
+
+        $r28 = new java.lang.StringBuilder;
+
+        specialinvoke $r28.<java.lang.StringBuilder: void <init>()>();
+
+        $r27 = virtualinvoke $r28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid instruction set: ");
+
+        $r26 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(instructionSet#4);
+
+        $r30 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", $r30);
+
+        return -1;
+
+     label02:
+        i$#3 = i$#3 + 1;
+
+        goto label01;
+
+     label03:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("getsize");
+
+        arr$#5 = $r0;
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r3 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(pkgName);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(persona);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(apkPath);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if libDirPath == null goto label04;
+
+        $r31 = libDirPath;
+
+        goto label05;
+
+     label04:
+        $r31 = "!";
+
+     label05:
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r31);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if fwdLockApkPath == null goto label06;
+
+        $r32 = fwdLockApkPath;
+
+        goto label07;
+
+     label06:
+        $r32 = "!";
+
+     label07:
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r32);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if asecPath == null goto label08;
+
+        $r33 = asecPath;
+
+        goto label09;
+
+     label08:
+        $r33 = "!";
+
+     label09:
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r33);
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r16 = instructionSets[0];
+
+        virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r16);
+
+        $r20 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r18 = virtualinvoke arr$#5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        len$#9 = virtualinvoke $r20.<com.android.internal.os.InstallerConnection: java.lang.String transact(java.lang.String)>($r18);
+
+        i$#10 = virtualinvoke len$#9.<java.lang.String: java.lang.String[] split(java.lang.String)>(" ");
+
+        if i$#10 == null goto label10;
+
+        $i1 = lengthof i$#10;
+
+        if $i1 == 5 goto label11;
+
+     label10:
+        return -1;
+
+     label11:
+        $r21 = i$#10[1];
+
+        $l0 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r21);
+
+        pStats.<android.content.pm.PackageStats: long codeSize> = $l0;
+
+        $r23 = i$#10[2];
+
+        $l3 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r23);
+
+        pStats.<android.content.pm.PackageStats: long dataSize> = $l3;
+
+        $r22 = i$#10[3];
+
+        $l2 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r22);
+
+        pStats.<android.content.pm.PackageStats: long cacheSize> = $l2;
+
+        $r25 = i$#10[4];
+
+        $l5 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r25);
+
+        pStats.<android.content.pm.PackageStats: long externalCodeSize> = $l5;
+
+        $r24 = i$#10[0];
+
+        $i4 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r24);
+
+     label12:
+        return $i4;
+
+     label13:
+        $r29 := @caughtexception;
+
+        instructionSet#11 = $r29;
+
+        return -1;
+
+        catch java.lang.NumberFormatException from label11 to label12 with label13;
+    }
+
+    public int moveFiles()
+    {
+        com.android.server.pm.Installer this;
+        com.android.internal.os.InstallerConnection $r0;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        $r0 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>("movefiles");
+
+        return $i0;
+    }
+
+    public int linkNativeLibraryDirectory(java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String dataPath, nativeLibPath32;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        dataPath := @parameter0: java.lang.String;
+
+        nativeLibPath32 := @parameter1: java.lang.String;
+
+        userId := @parameter2: int;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.Installer: int linkNativeLibraryDirectory(java.lang.String,java.lang.String,java.lang.String,int)>(null, dataPath, nativeLibPath32, userId);
+
+        return $i0;
+    }
+
+    public int linkNativeLibraryDirectory(java.lang.String, java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, dataPath, nativeLibPath32, $r2, $r10;
+        int userId, $i1;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r11;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        dataPath := @parameter1: java.lang.String;
+
+        nativeLibPath32 := @parameter2: java.lang.String;
+
+        userId := @parameter3: int;
+
+        if dataPath != null goto label1;
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", "linkNativeLibraryDirectory dataPath is null");
+
+        return -1;
+
+     label1:
+        if nativeLibPath32 != null goto label2;
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("Installer", "linkNativeLibraryDirectory nativeLibPath is null");
+
+        return -1;
+
+     label2:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("linklib");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(dataPath);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(nativeLibPath32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r11 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r10 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = virtualinvoke $r11.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r10);
+
+        return $i1;
+    }
+
+    public boolean restoreconData(java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String pkgName, seinfo;
+        int uid;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        pkgName := @parameter0: java.lang.String;
+
+        seinfo := @parameter1: java.lang.String;
+
+        uid := @parameter2: int;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.Installer: boolean restoreconData(java.lang.String,java.lang.String,java.lang.String,int)>(null, pkgName, seinfo, uid);
+
+        return $z0;
+    }
+
+    public boolean restoreconData(java.lang.String, java.lang.String, java.lang.String, int)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String uuid, pkgName, seinfo, $r2, $r10, $r12;
+        int uid, $i0;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r11;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        uuid := @parameter0: java.lang.String;
+
+        pkgName := @parameter1: java.lang.String;
+
+        seinfo := @parameter2: java.lang.String;
+
+        uid := @parameter3: int;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("restorecondata");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r2 = staticinvoke <com.android.server.pm.Installer: java.lang.String escapeNull(java.lang.String)>(uuid);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(pkgName);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if seinfo == null goto label1;
+
+        $r12 = seinfo;
+
+        goto label2;
+
+     label1:
+        $r12 = "!";
+
+     label2:
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r12);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        $r11 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r10 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r11.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r10);
+
+        if $i0 != 0 goto label3;
+
+        $z0 = 1;
+
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        return $z0;
+    }
+
+    public int createOatDir(java.lang.String, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String oatDir, dexInstructionSet, $r6;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r5;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        oatDir := @parameter0: java.lang.String;
+
+        dexInstructionSet := @parameter1: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("createoatdir");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(oatDir);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(dexInstructionSet);
+
+        $r5 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r6 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r5.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r6);
+
+        return $i0;
+    }
+
+    public int linkFile(java.lang.String, java.lang.String, java.lang.String)
+    {
+        com.android.server.pm.Installer this;
+        java.lang.String relativePath, fromBase, toBase, $r8;
+        java.lang.StringBuilder builder, $r0;
+        com.android.internal.os.InstallerConnection $r7;
+        int $i0;
+
+        this := @this: com.android.server.pm.Installer;
+
+        relativePath := @parameter0: java.lang.String;
+
+        fromBase := @parameter1: java.lang.String;
+
+        toBase := @parameter2: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("linkfile");
+
+        builder = $r0;
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(relativePath);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(fromBase);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke builder.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(toBase);
+
+        $r7 = this.<com.android.server.pm.Installer: com.android.internal.os.InstallerConnection mInstaller>;
+
+        $r8 = virtualinvoke builder.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r7.<com.android.internal.os.InstallerConnection: int execute(java.lang.String)>($r8);
+
+        return $i0;
+    }
+
+    private static boolean isValidInstructionSet(java.lang.String)
+    {
+        java.lang.String instructionSet, abi, $r0;
+        java.lang.String[] arr$;
+        int len$, i$#1;
+        boolean $z0;
+
+        instructionSet := @parameter0: java.lang.String;
+
+        if instructionSet != null goto label1;
+
+        return 0;
+
+     label1:
+        arr$ = <android.os.Build: java.lang.String[] SUPPORTED_ABIS>;
+
+        len$ = lengthof arr$;
+
+        i$#1 = 0;
+
+     label2:
+        if i$#1 >= len$ goto label4;
+
+        abi = arr$[i$#1];
+
+        $r0 = staticinvoke <dalvik.system.VMRuntime: java.lang.String getInstructionSet(java.lang.String)>(abi);
+
+        $z0 = virtualinvoke instructionSet.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label3;
+
+        return 1;
+
+     label3:
+        i$#1 = i$#1 + 1;
+
+        goto label2;
+
+     label4:
+        return 0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.pm.Installer: java.lang.String TAG> = "Installer";
+
+        return;
+    }
+}

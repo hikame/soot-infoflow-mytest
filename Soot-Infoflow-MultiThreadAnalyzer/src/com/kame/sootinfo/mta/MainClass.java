@@ -2,12 +2,28 @@ package com.kame.sootinfo.mta;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.kame.sootinfo.mta.myplugin.MySourceSinkManager;
+
+import soot.Body;
+import soot.FastHierarchy;
+import soot.PackManager;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Unit;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
 import soot.jimple.infoflow.InfoflowConfiguration.CodeEliminationMode;
+import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
+import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
 
 public class MainClass {
@@ -17,7 +33,6 @@ public class MainClass {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	String sourceSinkFile = "EasyTaintWrapperSource.txt";
 
-	//һЩ��������
 	private final int accessPathLength = 5;	//InfoFlowConfig.accessPathLength
 	private final boolean enableStaticFields = true; //InfoFlowConfig.enableStaticFields
 	
@@ -68,12 +83,64 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 
 	private void begin() throws Exception {
 		initializeSoot();
+		
 		configSootInfoflow();
 		testConfig();
+		
+		logger.info("Start constuct the class path.");
 		constructClasspath();
+		
+		logger.info("Start resolve the classes.");
 		ClassResolveManager.v().start();
+
+		ControlFlowGraphManager.v().generateCFG();
+		logger.info("Handling the dispatchMessage() method invocations.");
 		AndroidHandlerProcessor.v().handleDispatchMsg();
+		
+//test();	
+
+		logger.info("Reconstruct the control flow graph for the infoflow analyzer.");
+//		ControlFlowGraphManager.v().eliminateDeadCode(new MySourceSinkManager());
+		ControlFlowGraphManager.v().generateCFG(); //in order to take care of infoflow analysis.
+
+//		Scene.v().releaseFastHierarchy();
+//		FastHierarchy fh = Scene.v().getOrMakeFastHierarchy();
+		logger.info("Start the infoflow analysis.");
 		InfoflowAnalyzer.v().start();
+		
+		logger.info("Output the transformed Jimple files.");
+		if (MTAScene.v().getInfoflowConfig().getWriteOutputFiles())
+			PackManager.v().writeOutput();
+	}
+
+	private void test() {
+		SootMethod msgobtain = Scene.v().getMethod("<android.os.Handler: boolean sendEmptyMessage(int)>");
+		IInfoflowCFG cfg = ControlFlowGraphManager.v().getInfoflowCFG();
+		Collection<Unit> mbCallers = cfg.getCallersOf(msgobtain);
+		
+		for(Unit caller : mbCallers){
+			SootMethod sm = null;
+			try{sm = cfg.getMethodOf(caller);}catch(Exception e){
+				System.out.println("[ER] " + caller);
+				continue;
+			};
+			System.out.println("[MB]" + sm.toString());
+			Body body = sm.getActiveBody();
+//			System.out.println(sm.getActiveBody().toString());
+			SootClass sc = sm.getDeclaringClass();
+			sc.toString();
+		}
+		
+		System.out.println(msgobtain.getActiveBody().toString());
+		return;
+//		Scene.v().releaseFastHierarchy();
+//		FastHierarchy fh = Scene.v().getOrMakeFastHierarchy();
+//		SootClass pms1 = Scene.v().getSootClass("com.android.server.pm.PackageManagerService$1");
+//		SootClass sel = Scene.v().getSootClass("android.os.storage.StorageEventListener");
+//		Collection<SootClass> subclasses = fh.getSubclassesOf(sel);
+//		boolean tmp1 = fh.canStoreType(sel.getType(), pms1.getType());
+//		boolean tmp2 = fh.canStoreType(pms1.getType(), sel.getType());;
+//		return;
 	}
 
 	private void initializeSoot() {
@@ -85,7 +152,8 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 		Options.v().set_output_format(Options.output_format_jimple);
 		Options.v().setPhaseOption("jb", "use-original-names:true");
 		Options.v().setPhaseOption("jb.ulp", "off");
-		Options.v().set_src_prec(Options.src_prec_class);		//different from Original
+		Options.v().set_src_prec(Options.src_prec_jimple);		//different from Original
+//		Options.v().set_src_prec(Options.src_prec_class);		//different from Original
 	}
 
 	private void configSootInfoflow() {

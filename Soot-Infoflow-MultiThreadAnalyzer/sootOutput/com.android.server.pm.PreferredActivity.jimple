@@ -1,0 +1,184 @@
+class com.android.server.pm.PreferredActivity extends android.content.IntentFilter implements com.android.server.pm.PreferredComponent$Callbacks
+{
+    private static final java.lang.String TAG;
+    private static final boolean DEBUG_FILTERS;
+    final com.android.server.pm.PreferredComponent mPref;
+
+    void <init>(android.content.IntentFilter, int, android.content.ComponentName[], android.content.ComponentName, boolean)
+    {
+        com.android.server.pm.PreferredActivity this;
+        android.content.IntentFilter filter;
+        int match;
+        android.content.ComponentName[] set;
+        android.content.ComponentName activity;
+        boolean always;
+        com.android.server.pm.PreferredComponent tmp$973514056;
+        com.android.server.pm.PreferredComponent$Callbacks tmp$2029959641;
+
+        this := @this: com.android.server.pm.PreferredActivity;
+
+        filter := @parameter0: android.content.IntentFilter;
+
+        match := @parameter1: int;
+
+        set := @parameter2: android.content.ComponentName[];
+
+        activity := @parameter3: android.content.ComponentName;
+
+        always := @parameter4: boolean;
+
+        specialinvoke this.<android.content.IntentFilter: void <init>(android.content.IntentFilter)>(filter);
+
+        tmp$973514056 = new com.android.server.pm.PreferredComponent;
+
+        tmp$2029959641 = (com.android.server.pm.PreferredComponent$Callbacks) this;
+
+        specialinvoke tmp$973514056.<com.android.server.pm.PreferredComponent: void <init>(com.android.server.pm.PreferredComponent$Callbacks,int,android.content.ComponentName[],android.content.ComponentName,boolean)>(tmp$2029959641, match, set, activity, always);
+
+        this.<com.android.server.pm.PreferredActivity: com.android.server.pm.PreferredComponent mPref> = tmp$973514056;
+
+        return;
+    }
+
+    void <init>(org.xmlpull.v1.XmlPullParser) throws org.xmlpull.v1.XmlPullParserException, java.io.IOException
+    {
+        com.android.server.pm.PreferredActivity this;
+        org.xmlpull.v1.XmlPullParser parser;
+        com.android.server.pm.PreferredComponent tmp$1838732569;
+        com.android.server.pm.PreferredComponent$Callbacks tmp$493376132;
+
+        this := @this: com.android.server.pm.PreferredActivity;
+
+        parser := @parameter0: org.xmlpull.v1.XmlPullParser;
+
+        specialinvoke this.<android.content.IntentFilter: void <init>()>();
+
+        tmp$1838732569 = new com.android.server.pm.PreferredComponent;
+
+        tmp$493376132 = (com.android.server.pm.PreferredComponent$Callbacks) this;
+
+        specialinvoke tmp$1838732569.<com.android.server.pm.PreferredComponent: void <init>(com.android.server.pm.PreferredComponent$Callbacks,org.xmlpull.v1.XmlPullParser)>(tmp$493376132, parser);
+
+        this.<com.android.server.pm.PreferredActivity: com.android.server.pm.PreferredComponent mPref> = tmp$1838732569;
+
+        return;
+    }
+
+    public void writeToXml(org.xmlpull.v1.XmlSerializer, boolean) throws java.io.IOException
+    {
+        com.android.server.pm.PreferredActivity this;
+        org.xmlpull.v1.XmlSerializer serializer;
+        boolean full;
+        com.android.server.pm.PreferredComponent $r0;
+
+        this := @this: com.android.server.pm.PreferredActivity;
+
+        serializer := @parameter0: org.xmlpull.v1.XmlSerializer;
+
+        full := @parameter1: boolean;
+
+        $r0 = this.<com.android.server.pm.PreferredActivity: com.android.server.pm.PreferredComponent mPref>;
+
+        virtualinvoke $r0.<com.android.server.pm.PreferredComponent: void writeToXml(org.xmlpull.v1.XmlSerializer,boolean)>(serializer, full);
+
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer startTag(java.lang.String,java.lang.String)>(null, "filter");
+
+        specialinvoke this.<android.content.IntentFilter: void writeToXml(org.xmlpull.v1.XmlSerializer)>(serializer);
+
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, "filter");
+
+        return;
+    }
+
+    public boolean onReadTag(java.lang.String, org.xmlpull.v1.XmlPullParser) throws org.xmlpull.v1.XmlPullParserException, java.io.IOException
+    {
+        com.android.server.pm.PreferredActivity this;
+        java.lang.String tagName, $r2, $r4;
+        org.xmlpull.v1.XmlPullParser parser;
+        boolean $z0;
+        java.lang.StringBuilder $r0, $r1, $r3;
+
+        this := @this: com.android.server.pm.PreferredActivity;
+
+        tagName := @parameter0: java.lang.String;
+
+        parser := @parameter1: org.xmlpull.v1.XmlPullParser;
+
+        $z0 = virtualinvoke tagName.<java.lang.String: boolean equals(java.lang.Object)>("filter");
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke this.<com.android.server.pm.PreferredActivity: void readFromXml(org.xmlpull.v1.XmlPullParser)>(parser);
+
+        goto label2;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown element under <preferred-activities>: ");
+
+        $r2 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r4);
+
+        staticinvoke <com.android.internal.util.XmlUtils: void skipCurrentTag(org.xmlpull.v1.XmlPullParser)>(parser);
+
+     label2:
+        return 1;
+    }
+
+    public java.lang.String toString()
+    {
+        com.android.server.pm.PreferredActivity this;
+        java.lang.StringBuilder $r0, $r1, $r3, $r4, $r8, $r9;
+        int $i0;
+        java.lang.String $r2, $r7, $r10;
+        com.android.server.pm.PreferredComponent $r5;
+        android.content.ComponentName $r6;
+
+        this := @this: com.android.server.pm.PreferredActivity;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PreferredActivity{0x");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r5 = this.<com.android.server.pm.PreferredActivity: com.android.server.pm.PreferredComponent mPref>;
+
+        $r6 = $r5.<com.android.server.pm.PreferredComponent: android.content.ComponentName mComponent>;
+
+        $r7 = virtualinvoke $r6.<android.content.ComponentName: java.lang.String flattenToShortString()>();
+
+        $r8 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r10;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.pm.PreferredActivity: boolean DEBUG_FILTERS> = 0;
+
+        <com.android.server.pm.PreferredActivity: java.lang.String TAG> = "PreferredActivity";
+
+        return;
+    }
+}

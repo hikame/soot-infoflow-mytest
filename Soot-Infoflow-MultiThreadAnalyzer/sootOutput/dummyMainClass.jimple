@@ -14,11 +14,10 @@ class dummyMainClass
         specialinvoke $r1.<com.kame.tafhd.MainActivity: void <init>()>();
 
      label1:
-        if $i0 == 0 goto label2;
+        if $i0 == 0 goto label1;
 
         virtualinvoke $r1.<com.kame.tafhd.MainActivity: void testHandlerSendMSG(java.lang.String)>("");
 
-     label2:
         goto label1;
     }
 }

@@ -1,5 +1,0 @@
-public interface  android.os.INetworkActivityListener extends java.lang.Object implements android.os.IInterface
-{
-
-    public abstract void onNetworkActive() throws android.os.RemoteException;
-}

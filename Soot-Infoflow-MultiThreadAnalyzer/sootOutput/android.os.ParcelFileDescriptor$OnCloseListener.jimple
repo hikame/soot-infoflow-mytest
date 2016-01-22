@@ -1,5 +1,0 @@
-public interface  android.os.ParcelFileDescriptor$OnCloseListener extends java.lang.Object
-{
-
-    public abstract void onClose(java.io.IOException);
-}

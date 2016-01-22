@@ -1,5 +1,0 @@
-public interface  android.os.Handler$Callback extends java.lang.Object
-{
-
-    public abstract boolean handleMessage(android.os.Message);
-}

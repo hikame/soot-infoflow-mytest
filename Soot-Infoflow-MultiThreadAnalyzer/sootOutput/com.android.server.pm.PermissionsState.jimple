@@ -1,0 +1,1268 @@
+public final class com.android.server.pm.PermissionsState extends java.lang.Object
+{
+    public static final int PERMISSION_OPERATION_FAILURE;
+    public static final int PERMISSION_OPERATION_SUCCESS;
+    public static final int PERMISSION_OPERATION_SUCCESS_GIDS_CHANGED;
+    private static final int[] NO_GIDS;
+    private android.util.ArrayMap mPermissions;
+    private int[] mGlobalGids;
+
+    public void <init>()
+    {
+        com.android.server.pm.PermissionsState this;
+        int[] $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+        this.<com.android.server.pm.PermissionsState: int[] mGlobalGids> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.android.server.pm.PermissionsState)
+    {
+        com.android.server.pm.PermissionsState this, prototype;
+        int[] $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        prototype := @parameter0: com.android.server.pm.PermissionsState;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+        this.<com.android.server.pm.PermissionsState: int[] mGlobalGids> = $r0;
+
+        virtualinvoke this.<com.android.server.pm.PermissionsState: void copyFrom(com.android.server.pm.PermissionsState)>(prototype);
+
+        return;
+    }
+
+    public void setGlobalGids(int[])
+    {
+        com.android.server.pm.PermissionsState this;
+        int[] globalGids, $r0;
+        boolean $z0;
+        int $i0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        globalGids := @parameter0: int[];
+
+        $z0 = staticinvoke <com.android.internal.util.ArrayUtils: boolean isEmpty(int[])>(globalGids);
+
+        if $z0 != 0 goto label1;
+
+        $i0 = lengthof globalGids;
+
+        $r0 = staticinvoke <java.util.Arrays: int[] copyOf(int[],int)>(globalGids, $i0);
+
+        this.<com.android.server.pm.PermissionsState: int[] mGlobalGids> = $r0;
+
+     label1:
+        return;
+    }
+
+    public void copyFrom(com.android.server.pm.PermissionsState)
+    {
+        com.android.server.pm.PermissionsState this, other;
+        int permissionCount, $i0, i#1;
+        java.lang.String name;
+        com.android.server.pm.PermissionsState$PermissionData permissionData, $r15;
+        android.util.ArrayMap $r0, $r1, $r8, $r9, $r11, $r13, $r14, $r16, $r18, $r19;
+        int[] $r2, $r3, $r4, $r5, $r6, $r7;
+        java.lang.Object $r10, $r12;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        other := @parameter0: com.android.server.pm.PermissionsState;
+
+        if other != this goto label1;
+
+        return;
+
+     label1:
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 == null goto label3;
+
+        $r19 = other.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r19 != null goto label2;
+
+        this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions> = null;
+
+        goto label3;
+
+     label2:
+        $r18 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        virtualinvoke $r18.<android.util.ArrayMap: void clear()>();
+
+     label3:
+        $r1 = other.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r1 == null goto label6;
+
+        $r8 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r8 != null goto label4;
+
+        $r16 = new android.util.ArrayMap;
+
+        specialinvoke $r16.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions> = $r16;
+
+     label4:
+        $r9 = other.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        permissionCount = virtualinvoke $r9.<android.util.ArrayMap: int size()>();
+
+        i#1 = 0;
+
+     label5:
+        if i#1 >= permissionCount goto label6;
+
+        $r11 = other.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r10 = virtualinvoke $r11.<android.util.ArrayMap: java.lang.Object keyAt(int)>(i#1);
+
+        name = (java.lang.String) $r10;
+
+        $r13 = other.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r12 = virtualinvoke $r13.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#1);
+
+        permissionData = (com.android.server.pm.PermissionsState$PermissionData) $r12;
+
+        $r14 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r15 = new com.android.server.pm.PermissionsState$PermissionData;
+
+        specialinvoke $r15.<com.android.server.pm.PermissionsState$PermissionData: void <init>(com.android.server.pm.PermissionsState$PermissionData)>(permissionData);
+
+        virtualinvoke $r14.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(name, $r15);
+
+        i#1 = i#1 + 1;
+
+        goto label5;
+
+     label6:
+        $r2 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+        this.<com.android.server.pm.PermissionsState: int[] mGlobalGids> = $r2;
+
+        $r4 = other.<com.android.server.pm.PermissionsState: int[] mGlobalGids>;
+
+        $r3 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+        if $r4 == $r3 goto label7;
+
+        $r6 = other.<com.android.server.pm.PermissionsState: int[] mGlobalGids>;
+
+        $r5 = other.<com.android.server.pm.PermissionsState: int[] mGlobalGids>;
+
+        $i0 = lengthof $r5;
+
+        $r7 = staticinvoke <java.util.Arrays: int[] copyOf(int[],int)>($r6, $i0);
+
+        this.<com.android.server.pm.PermissionsState: int[] mGlobalGids> = $r7;
+
+     label7:
+        return;
+    }
+
+    public int grantInstallPermission(com.android.server.pm.BasePermission)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        int $i0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        $i0 = specialinvoke this.<com.android.server.pm.PermissionsState: int grantPermission(com.android.server.pm.BasePermission,int)>(permission, -1);
+
+        return $i0;
+    }
+
+    public int revokeInstallPermission(com.android.server.pm.BasePermission)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        int $i0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        $i0 = specialinvoke this.<com.android.server.pm.PermissionsState: int revokePermission(com.android.server.pm.BasePermission,int)>(permission, -1);
+
+        return $i0;
+    }
+
+    public int grantRuntimePermission(com.android.server.pm.BasePermission, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        userId := @parameter1: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        if userId != -1 goto label1;
+
+        return -1;
+
+     label1:
+        $i0 = specialinvoke this.<com.android.server.pm.PermissionsState: int grantPermission(com.android.server.pm.BasePermission,int)>(permission, userId);
+
+        return $i0;
+    }
+
+    public int revokeRuntimePermission(com.android.server.pm.BasePermission, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        int userId, $i0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        userId := @parameter1: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        if userId != -1 goto label1;
+
+        return -1;
+
+     label1:
+        $i0 = specialinvoke this.<com.android.server.pm.PermissionsState: int revokePermission(com.android.server.pm.BasePermission,int)>(permission, userId);
+
+        return $i0;
+    }
+
+    public boolean hasRuntimePermission(java.lang.String, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        int userId;
+        boolean $z0, $z1, $z2;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasInstallPermission(java.lang.String)>(name);
+
+        if $z0 != 0 goto label1;
+
+        $z1 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasPermission(java.lang.String,int)>(name, userId);
+
+        if $z1 == 0 goto label1;
+
+        $z2 = 1;
+
+        goto label2;
+
+     label1:
+        $z2 = 0;
+
+     label2:
+        return $z2;
+    }
+
+    public boolean hasInstallPermission(java.lang.String)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasPermission(java.lang.String,int)>(name, -1);
+
+        return $z0;
+    }
+
+    public boolean hasPermission(java.lang.String, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        int userId;
+        com.android.server.pm.PermissionsState$PermissionData permissionData;
+        android.util.ArrayMap $r0, $r1;
+        java.lang.Object $r2;
+        boolean $z0, $z1;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        return 0;
+
+     label1:
+        $r1 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r2 = virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(name);
+
+        permissionData = (com.android.server.pm.PermissionsState$PermissionData) $r2;
+
+        if permissionData == null goto label2;
+
+        $z0 = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: boolean isGranted(int)>(userId);
+
+        if $z0 == 0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        return $z1;
+    }
+
+    public boolean hasRequestedPermission(android.util.ArraySet)
+    {
+        com.android.server.pm.PermissionsState this;
+        android.util.ArraySet names;
+        android.util.ArrayMap $r0, $r1;
+        int $i0, i#1;
+        java.lang.Object $r2, $r3;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        names := @parameter0: android.util.ArraySet;
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = virtualinvoke names.<android.util.ArraySet: int size()>();
+
+        i#1 = $i0 - 1;
+
+     label2:
+        if i#1 < 0 goto label4;
+
+        $r1 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r2 = virtualinvoke names.<android.util.ArraySet: java.lang.Object valueAt(int)>(i#1);
+
+        $r3 = virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>($r2);
+
+        if $r3 == null goto label3;
+
+        return 1;
+
+     label3:
+        i#1 = i#1 + -1;
+
+        goto label2;
+
+     label4:
+        return 0;
+    }
+
+    public java.util.Set getPermissions(int)
+    {
+        com.android.server.pm.PermissionsState this;
+        int userId, permissionCount, i#1;
+        android.util.ArraySet permissions, tmp$489624974;
+        java.lang.String permission;
+        android.util.ArrayMap $r0, $r2, $r3;
+        java.lang.Object $r4;
+        boolean $z0, $z1;
+        java.util.Set $r5, tmp$502521410, tmp$1644940652, tmp$2127850810;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        userId := @parameter0: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        $r5 = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+        return $r5;
+
+     label1:
+        tmp$489624974 = new android.util.ArraySet;
+
+        specialinvoke tmp$489624974.<android.util.ArraySet: void <init>()>();
+
+        permissions = tmp$489624974;
+
+        $r2 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        permissionCount = virtualinvoke $r2.<android.util.ArrayMap: int size()>();
+
+        i#1 = 0;
+
+     label2:
+        if i#1 >= permissionCount goto label5;
+
+        $r3 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r4 = virtualinvoke $r3.<android.util.ArrayMap: java.lang.Object keyAt(int)>(i#1);
+
+        permission = (java.lang.String) $r4;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasInstallPermission(java.lang.String)>(permission);
+
+        if $z0 == 0 goto label3;
+
+        tmp$502521410 = (java.util.Set) permissions;
+
+        interfaceinvoke tmp$502521410.<java.util.Set: boolean add(java.lang.Object)>(permission);
+
+     label3:
+        if userId == -1 goto label4;
+
+        $z1 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasRuntimePermission(java.lang.String,int)>(permission, userId);
+
+        if $z1 == 0 goto label4;
+
+        tmp$1644940652 = (java.util.Set) permissions;
+
+        interfaceinvoke tmp$1644940652.<java.util.Set: boolean add(java.lang.Object)>(permission);
+
+     label4:
+        i#1 = i#1 + 1;
+
+        goto label2;
+
+     label5:
+        tmp$2127850810 = (java.util.Set) permissions;
+
+        return tmp$2127850810;
+    }
+
+    public com.android.server.pm.PermissionsState$PermissionState getInstallPermissionState(java.lang.String)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        com.android.server.pm.PermissionsState$PermissionState $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = specialinvoke this.<com.android.server.pm.PermissionsState: com.android.server.pm.PermissionsState$PermissionState getPermissionState(java.lang.String,int)>(name, -1);
+
+        return $r0;
+    }
+
+    public com.android.server.pm.PermissionsState$PermissionState getRuntimePermissionState(java.lang.String, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        int userId;
+        com.android.server.pm.PermissionsState$PermissionState $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        $r0 = specialinvoke this.<com.android.server.pm.PermissionsState: com.android.server.pm.PermissionsState$PermissionState getPermissionState(java.lang.String,int)>(name, userId);
+
+        return $r0;
+    }
+
+    public java.util.List getInstallPermissionStates()
+    {
+        com.android.server.pm.PermissionsState this;
+        java.util.List $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        $r0 = specialinvoke this.<com.android.server.pm.PermissionsState: java.util.List getPermissionStatesInternal(int)>(-1);
+
+        return $r0;
+    }
+
+    public java.util.List getRuntimePermissionStates(int)
+    {
+        com.android.server.pm.PermissionsState this;
+        int userId;
+        java.util.List $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        userId := @parameter0: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        $r0 = specialinvoke this.<com.android.server.pm.PermissionsState: java.util.List getPermissionStatesInternal(int)>(userId);
+
+        return $r0;
+    }
+
+    public int getPermissionFlags(java.lang.String, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        int userId, $i0, $i1;
+        com.android.server.pm.PermissionsState$PermissionState installPermState, runtimePermState;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        installPermState = virtualinvoke this.<com.android.server.pm.PermissionsState: com.android.server.pm.PermissionsState$PermissionState getInstallPermissionState(java.lang.String)>(name);
+
+        if installPermState == null goto label1;
+
+        $i1 = virtualinvoke installPermState.<com.android.server.pm.PermissionsState$PermissionState: int getFlags()>();
+
+        return $i1;
+
+     label1:
+        runtimePermState = virtualinvoke this.<com.android.server.pm.PermissionsState: com.android.server.pm.PermissionsState$PermissionState getRuntimePermissionState(java.lang.String,int)>(name, userId);
+
+        if runtimePermState == null goto label2;
+
+        $i0 = virtualinvoke runtimePermState.<com.android.server.pm.PermissionsState$PermissionState: int getFlags()>();
+
+        return $i0;
+
+     label2:
+        return 0;
+    }
+
+    public boolean updatePermissionFlags(com.android.server.pm.BasePermission, int, int, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        int userId, flagMask, flagValues;
+        boolean mayChangeFlags, $z0, $z1;
+        android.util.ArrayMap $r0, $r2;
+        java.lang.String $r1;
+        java.lang.Object $r3;
+        com.android.server.pm.PermissionsState$PermissionData permissionData#2;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        userId := @parameter1: int;
+
+        flagMask := @parameter2: int;
+
+        flagValues := @parameter3: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        if flagValues != 0 goto label1;
+
+        if flagMask == 0 goto label2;
+
+     label1:
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        mayChangeFlags = $z1;
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label5;
+
+        if mayChangeFlags != 0 goto label4;
+
+        return 0;
+
+     label4:
+        specialinvoke this.<com.android.server.pm.PermissionsState: com.android.server.pm.PermissionsState$PermissionData ensurePermissionData(com.android.server.pm.BasePermission)>(permission);
+
+     label5:
+        $r2 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r1 = permission.<com.android.server.pm.BasePermission: java.lang.String name>;
+
+        $r3 = virtualinvoke $r2.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>($r1);
+
+        permissionData#2 = (com.android.server.pm.PermissionsState$PermissionData) $r3;
+
+        if permissionData#2 != null goto label7;
+
+        if mayChangeFlags != 0 goto label6;
+
+        return 0;
+
+     label6:
+        permissionData#2 = specialinvoke this.<com.android.server.pm.PermissionsState: com.android.server.pm.PermissionsState$PermissionData ensurePermissionData(com.android.server.pm.BasePermission)>(permission);
+
+     label7:
+        $z0 = virtualinvoke permissionData#2.<com.android.server.pm.PermissionsState$PermissionData: boolean updateFlags(int,int,int)>(userId, flagMask, flagValues);
+
+        return $z0;
+    }
+
+    public boolean updatePermissionFlagsForAllPermissions(int, int, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        int userId, flagMask, flagValues, permissionCount, i#2;
+        com.android.server.pm.PermissionsState$PermissionData permissionData;
+        android.util.ArrayMap $r0, $r1, $r2;
+        java.lang.Object $r3;
+        boolean $z0, changed#1;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        userId := @parameter0: int;
+
+        flagMask := @parameter1: int;
+
+        flagValues := @parameter2: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        return 0;
+
+     label1:
+        changed#1 = 0;
+
+        $r1 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        permissionCount = virtualinvoke $r1.<android.util.ArrayMap: int size()>();
+
+        i#2 = 0;
+
+     label2:
+        if i#2 >= permissionCount goto label3;
+
+        $r2 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r3 = virtualinvoke $r2.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#2);
+
+        permissionData = (com.android.server.pm.PermissionsState$PermissionData) $r3;
+
+        $z0 = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: boolean updateFlags(int,int,int)>(userId, flagMask, flagValues);
+
+        changed#1 = changed#1 | $z0;
+
+        i#2 = i#2 + 1;
+
+        goto label2;
+
+     label3:
+        return changed#1;
+    }
+
+    public int[] computeGids(int)
+    {
+        com.android.server.pm.PermissionsState this;
+        int userId, permissionCount, i#2;
+        java.lang.String permission;
+        com.android.server.pm.PermissionsState$PermissionData permissionData;
+        int[] permGids, $r6, gids#1;
+        android.util.ArrayMap $r0, $r1, $r2, $r4;
+        java.lang.Object $r3, $r5;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        userId := @parameter0: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        gids#1 = this.<com.android.server.pm.PermissionsState: int[] mGlobalGids>;
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 == null goto label4;
+
+        $r1 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        permissionCount = virtualinvoke $r1.<android.util.ArrayMap: int size()>();
+
+        i#2 = 0;
+
+     label1:
+        if i#2 >= permissionCount goto label4;
+
+        $r2 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r3 = virtualinvoke $r2.<android.util.ArrayMap: java.lang.Object keyAt(int)>(i#2);
+
+        permission = (java.lang.String) $r3;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasPermission(java.lang.String,int)>(permission, userId);
+
+        if $z0 != 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $r4 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r5 = virtualinvoke $r4.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#2);
+
+        permissionData = (com.android.server.pm.PermissionsState$PermissionData) $r5;
+
+        permGids = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: int[] computeGids(int)>(userId);
+
+        $r6 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+        if permGids == $r6 goto label3;
+
+        gids#1 = staticinvoke <com.android.server.pm.PermissionsState: int[] appendInts(int[],int[])>(gids#1, permGids);
+
+     label3:
+        i#2 = i#2 + 1;
+
+        goto label1;
+
+     label4:
+        return gids#1;
+    }
+
+    public int[] computeGids(int[])
+    {
+        com.android.server.pm.PermissionsState this;
+        int[] userIds, arr$, userGids, gids#1;
+        int len$, userId, i$#2;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        userIds := @parameter0: int[];
+
+        gids#1 = this.<com.android.server.pm.PermissionsState: int[] mGlobalGids>;
+
+        arr$ = userIds;
+
+        len$ = lengthof arr$;
+
+        i$#2 = 0;
+
+     label1:
+        if i$#2 >= len$ goto label2;
+
+        userId = arr$[i$#2];
+
+        userGids = virtualinvoke this.<com.android.server.pm.PermissionsState: int[] computeGids(int)>(userId);
+
+        gids#1 = staticinvoke <com.android.server.pm.PermissionsState: int[] appendInts(int[],int[])>(gids#1, userGids);
+
+        i$#2 = i$#2 + 1;
+
+        goto label1;
+
+     label2:
+        return gids#1;
+    }
+
+    public void reset()
+    {
+        com.android.server.pm.PermissionsState this;
+        int[] $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        $r0 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+        this.<com.android.server.pm.PermissionsState: int[] mGlobalGids> = $r0;
+
+        this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions> = null;
+
+        return;
+    }
+
+    private com.android.server.pm.PermissionsState$PermissionState getPermissionState(java.lang.String, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        int userId;
+        com.android.server.pm.PermissionsState$PermissionData permissionData;
+        android.util.ArrayMap $r0, $r1;
+        java.lang.Object $r2;
+        com.android.server.pm.PermissionsState$PermissionState $r3;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r2 = virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(name);
+
+        permissionData = (com.android.server.pm.PermissionsState$PermissionData) $r2;
+
+        if permissionData != null goto label2;
+
+        return null;
+
+     label2:
+        $r3 = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: com.android.server.pm.PermissionsState$PermissionState getPermissionState(int)>(userId);
+
+        return $r3;
+    }
+
+    private java.util.List getPermissionStatesInternal(int)
+    {
+        com.android.server.pm.PermissionsState this;
+        int userId, permissionCount, i#1;
+        java.util.ArrayList permissionStates, tmp$19962004;
+        com.android.server.pm.PermissionsState$PermissionData permissionData;
+        com.android.server.pm.PermissionsState$PermissionState permissionState;
+        android.util.ArrayMap $r0, $r2, $r3;
+        java.lang.Object $r4;
+        java.util.List $r5, tmp$996601080, tmp$1555402373;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        userId := @parameter0: int;
+
+        staticinvoke <com.android.server.pm.PermissionsState: void enforceValidUserId(int)>(userId);
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        $r5 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r5;
+
+     label1:
+        tmp$19962004 = new java.util.ArrayList;
+
+        specialinvoke tmp$19962004.<java.util.ArrayList: void <init>()>();
+
+        permissionStates = tmp$19962004;
+
+        $r2 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        permissionCount = virtualinvoke $r2.<android.util.ArrayMap: int size()>();
+
+        i#1 = 0;
+
+     label2:
+        if i#1 >= permissionCount goto label4;
+
+        $r3 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r4 = virtualinvoke $r3.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#1);
+
+        permissionData = (com.android.server.pm.PermissionsState$PermissionData) $r4;
+
+        permissionState = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: com.android.server.pm.PermissionsState$PermissionState getPermissionState(int)>(userId);
+
+        if permissionState == null goto label3;
+
+        tmp$996601080 = (java.util.List) permissionStates;
+
+        interfaceinvoke tmp$996601080.<java.util.List: boolean add(java.lang.Object)>(permissionState);
+
+     label3:
+        i#1 = i#1 + 1;
+
+        goto label2;
+
+     label4:
+        tmp$1555402373 = (java.util.List) permissionStates;
+
+        return tmp$1555402373;
+    }
+
+    private int grantPermission(com.android.server.pm.BasePermission, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        int userId, $i0, $i1;
+        boolean hasGids, $z0, $z1, $z2, $z3;
+        int[] oldGids, newGids, $r1, $r2;
+        com.android.server.pm.PermissionsState$PermissionData permissionData;
+        java.lang.String $r0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        userId := @parameter1: int;
+
+        $r0 = permission.<com.android.server.pm.BasePermission: java.lang.String name>;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasPermission(java.lang.String,int)>($r0, userId);
+
+        if $z0 == 0 goto label1;
+
+        return -1;
+
+     label1:
+        $r1 = virtualinvoke permission.<com.android.server.pm.BasePermission: int[] computeGids(int)>(userId);
+
+        $z1 = staticinvoke <com.android.internal.util.ArrayUtils: boolean isEmpty(int[])>($r1);
+
+        if $z1 != 0 goto label2;
+
+        $z3 = 1;
+
+        goto label3;
+
+     label2:
+        $z3 = 0;
+
+     label3:
+        hasGids = $z3;
+
+        if hasGids == 0 goto label4;
+
+        $r2 = virtualinvoke this.<com.android.server.pm.PermissionsState: int[] computeGids(int)>(userId);
+
+        goto label5;
+
+     label4:
+        $r2 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+     label5:
+        oldGids = $r2;
+
+        permissionData = specialinvoke this.<com.android.server.pm.PermissionsState: com.android.server.pm.PermissionsState$PermissionData ensurePermissionData(com.android.server.pm.BasePermission)>(permission);
+
+        $z2 = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: boolean grant(int)>(userId);
+
+        if $z2 != 0 goto label6;
+
+        return -1;
+
+     label6:
+        if hasGids == 0 goto label7;
+
+        newGids = virtualinvoke this.<com.android.server.pm.PermissionsState: int[] computeGids(int)>(userId);
+
+        $i1 = lengthof oldGids;
+
+        $i0 = lengthof newGids;
+
+        if $i1 == $i0 goto label7;
+
+        return 1;
+
+     label7:
+        return 0;
+    }
+
+    private int revokePermission(com.android.server.pm.BasePermission, int)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        int userId, $i0, $i1;
+        boolean hasGids, $z0, $z1, $z2, $z3, $z4;
+        int[] oldGids, newGids, $r1, $r6;
+        com.android.server.pm.PermissionsState$PermissionData permissionData;
+        java.lang.String $r0, $r2, $r5;
+        android.util.ArrayMap $r3;
+        java.lang.Object $r4;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        userId := @parameter1: int;
+
+        $r0 = permission.<com.android.server.pm.BasePermission: java.lang.String name>;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PermissionsState: boolean hasPermission(java.lang.String,int)>($r0, userId);
+
+        if $z0 != 0 goto label1;
+
+        return -1;
+
+     label1:
+        $r1 = virtualinvoke permission.<com.android.server.pm.BasePermission: int[] computeGids(int)>(userId);
+
+        $z1 = staticinvoke <com.android.internal.util.ArrayUtils: boolean isEmpty(int[])>($r1);
+
+        if $z1 != 0 goto label2;
+
+        $z4 = 1;
+
+        goto label3;
+
+     label2:
+        $z4 = 0;
+
+     label3:
+        hasGids = $z4;
+
+        if hasGids == 0 goto label4;
+
+        $r6 = virtualinvoke this.<com.android.server.pm.PermissionsState: int[] computeGids(int)>(userId);
+
+        goto label5;
+
+     label4:
+        $r6 = <com.android.server.pm.PermissionsState: int[] NO_GIDS>;
+
+     label5:
+        oldGids = $r6;
+
+        $r3 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r2 = permission.<com.android.server.pm.BasePermission: java.lang.String name>;
+
+        $r4 = virtualinvoke $r3.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>($r2);
+
+        permissionData = (com.android.server.pm.PermissionsState$PermissionData) $r4;
+
+        $z2 = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: boolean revoke(int)>(userId);
+
+        if $z2 != 0 goto label6;
+
+        return -1;
+
+     label6:
+        $z3 = virtualinvoke permissionData.<com.android.server.pm.PermissionsState$PermissionData: boolean isDefault()>();
+
+        if $z3 == 0 goto label7;
+
+        $r5 = permission.<com.android.server.pm.BasePermission: java.lang.String name>;
+
+        specialinvoke this.<com.android.server.pm.PermissionsState: void ensureNoPermissionData(java.lang.String)>($r5);
+
+     label7:
+        if hasGids == 0 goto label8;
+
+        newGids = virtualinvoke this.<com.android.server.pm.PermissionsState: int[] computeGids(int)>(userId);
+
+        $i1 = lengthof oldGids;
+
+        $i0 = lengthof newGids;
+
+        if $i1 == $i0 goto label8;
+
+        return 1;
+
+     label8:
+        return 0;
+    }
+
+    private static int[] appendInts(int[], int[])
+    {
+        int[] added, arr$, current#1;
+        int len$, guid, i$#2;
+
+        current#1 := @parameter0: int[];
+
+        added := @parameter1: int[];
+
+        if current#1 == null goto label2;
+
+        if added == null goto label2;
+
+        arr$ = added;
+
+        len$ = lengthof arr$;
+
+        i$#2 = 0;
+
+     label1:
+        if i$#2 >= len$ goto label2;
+
+        guid = arr$[i$#2];
+
+        current#1 = staticinvoke <com.android.internal.util.ArrayUtils: int[] appendInt(int[],int)>(current#1, guid);
+
+        i$#2 = i$#2 + 1;
+
+        goto label1;
+
+     label2:
+        return current#1;
+    }
+
+    private static void enforceValidUserId(int)
+    {
+        int userId;
+        java.lang.IllegalArgumentException $r0;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        java.lang.String $r4;
+
+        userId := @parameter0: int;
+
+        if userId == -1 goto label1;
+
+        if userId >= 0 goto label1;
+
+        $r0 = new java.lang.IllegalArgumentException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid userId:");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(userId);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+
+        throw $r0;
+
+     label1:
+        return;
+    }
+
+    private com.android.server.pm.PermissionsState$PermissionData ensurePermissionData(com.android.server.pm.BasePermission)
+    {
+        com.android.server.pm.PermissionsState this;
+        com.android.server.pm.BasePermission permission;
+        android.util.ArrayMap $r0, $r2, $r6, $r8;
+        java.lang.String $r1, $r5;
+        java.lang.Object $r3;
+        com.android.server.pm.PermissionsState$PermissionData $r4, permissionData#1;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        permission := @parameter0: com.android.server.pm.BasePermission;
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        $r8 = new android.util.ArrayMap;
+
+        specialinvoke $r8.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions> = $r8;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r1 = permission.<com.android.server.pm.BasePermission: java.lang.String name>;
+
+        $r3 = virtualinvoke $r2.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>($r1);
+
+        permissionData#1 = (com.android.server.pm.PermissionsState$PermissionData) $r3;
+
+        if permissionData#1 != null goto label2;
+
+        $r4 = new com.android.server.pm.PermissionsState$PermissionData;
+
+        specialinvoke $r4.<com.android.server.pm.PermissionsState$PermissionData: void <init>(com.android.server.pm.BasePermission)>(permission);
+
+        permissionData#1 = $r4;
+
+        $r6 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $r5 = permission.<com.android.server.pm.BasePermission: java.lang.String name>;
+
+        virtualinvoke $r6.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r5, permissionData#1);
+
+     label2:
+        return permissionData#1;
+    }
+
+    private void ensureNoPermissionData(java.lang.String)
+    {
+        com.android.server.pm.PermissionsState this;
+        java.lang.String name;
+        android.util.ArrayMap $r0, $r1, $r3;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PermissionsState;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        if $r0 != null goto label1;
+
+        return;
+
+     label1:
+        $r1 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object remove(java.lang.Object)>(name);
+
+        $r3 = this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions>;
+
+        $z0 = virtualinvoke $r3.<android.util.ArrayMap: boolean isEmpty()>();
+
+        if $z0 == 0 goto label2;
+
+        this.<com.android.server.pm.PermissionsState: android.util.ArrayMap mPermissions> = null;
+
+     label2:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        int[] $r0;
+
+        <com.android.server.pm.PermissionsState: int PERMISSION_OPERATION_SUCCESS_GIDS_CHANGED> = 1;
+
+        <com.android.server.pm.PermissionsState: int PERMISSION_OPERATION_SUCCESS> = 0;
+
+        <com.android.server.pm.PermissionsState: int PERMISSION_OPERATION_FAILURE> = -1;
+
+        $r0 = newarray (int)[0];
+
+        <com.android.server.pm.PermissionsState: int[] NO_GIDS> = $r0;
+
+        return;
+    }
+}

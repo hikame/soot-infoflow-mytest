@@ -1,0 +1,615 @@
+class com.android.server.pm.PackageManagerService$IntentVerifierProxy extends java.lang.Object implements com.android.server.pm.PackageManagerService$IntentFilterVerifier
+{
+    private android.content.Context mContext;
+    private android.content.ComponentName mIntentFilterVerifierComponent;
+    private java.util.ArrayList mCurrentIntentFilterVerifications;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    public void <init>(com.android.server.pm.PackageManagerService, android.content.Context, android.content.ComponentName)
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+        com.android.server.pm.PackageManagerService l1;
+        android.content.Context context;
+        android.content.ComponentName verifierComponent;
+        java.util.ArrayList $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        context := @parameter1: android.content.Context;
+
+        verifierComponent := @parameter2: android.content.ComponentName;
+
+        this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: java.util.ArrayList mCurrentIntentFilterVerifications> = $r0;
+
+        this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: android.content.Context mContext> = context;
+
+        this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: android.content.ComponentName mIntentFilterVerifierComponent> = verifierComponent;
+
+        return;
+    }
+
+    private java.lang.String getDefaultScheme()
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        return "https";
+    }
+
+    public void startVerifications(int)
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+        int userId, count, verificationId, filterCount, n#1, m#2;
+        com.android.server.pm.IntentFilterVerificationState ivs;
+        java.lang.String packageName;
+        java.util.ArrayList filters, $r0, $r1, $r3, $r8, $r18, m#4;
+        android.util.ArraySet domainsSet, $r9;
+        java.lang.Throwable l12, $r17;
+        java.lang.Object $r2, $r7, $r15;
+        java.lang.Integer $r4;
+        android.util.SparseArray $r5;
+        com.android.server.pm.PackageManagerService $r6, $r11, $r13, $r14;
+        android.util.ArrayMap $r10, filter#5;
+        com.android.server.pm.Settings $r12;
+        android.content.pm.IntentFilterVerificationInfo $r16;
+        android.content.pm.PackageParser$ActivityIntentInfo filter#3;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        userId := @parameter0: int;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: java.util.ArrayList mCurrentIntentFilterVerifications>;
+
+        count = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+
+        n#1 = 0;
+
+     label01:
+        if n#1 >= count goto label10;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: java.util.ArrayList mCurrentIntentFilterVerifications>;
+
+        $r2 = virtualinvoke $r3.<java.util.ArrayList: java.lang.Object get(int)>(n#1);
+
+        $r4 = (java.lang.Integer) $r2;
+
+        verificationId = virtualinvoke $r4.<java.lang.Integer: int intValue()>();
+
+        $r6 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r5 = $r6.<com.android.server.pm.PackageManagerService: android.util.SparseArray mIntentFilterVerificationStates>;
+
+        $r7 = virtualinvoke $r5.<android.util.SparseArray: java.lang.Object get(int)>(verificationId);
+
+        ivs = (com.android.server.pm.IntentFilterVerificationState) $r7;
+
+        packageName = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: java.lang.String getPackageName()>();
+
+        filters = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: java.util.ArrayList getFilters()>();
+
+        filterCount = virtualinvoke filters.<java.util.ArrayList: int size()>();
+
+        $r9 = new android.util.ArraySet;
+
+        specialinvoke $r9.<android.util.ArraySet: void <init>()>();
+
+        domainsSet = $r9;
+
+        m#2 = 0;
+
+     label02:
+        if m#2 >= filterCount goto label03;
+
+        $r15 = virtualinvoke filters.<java.util.ArrayList: java.lang.Object get(int)>(m#2);
+
+        filter#3 = (android.content.pm.PackageParser$ActivityIntentInfo) $r15;
+
+        $r18 = virtualinvoke filter#3.<android.content.pm.PackageParser$ActivityIntentInfo: java.util.ArrayList getHostsList()>();
+
+        virtualinvoke domainsSet.<android.util.ArraySet: boolean addAll(java.util.Collection)>($r18);
+
+        m#2 = m#2 + 1;
+
+        goto label02;
+
+     label03:
+        $r8 = new java.util.ArrayList;
+
+        specialinvoke $r8.<java.util.ArrayList: void <init>(java.util.Collection)>(domainsSet);
+
+        m#4 = $r8;
+
+        $r11 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r10 = $r11.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        filter#5 = $r10;
+
+        entermonitor $r10;
+
+     label04:
+        $r13 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r12 = $r13.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        $r16 = virtualinvoke $r12.<com.android.server.pm.Settings: android.content.pm.IntentFilterVerificationInfo createIntentFilterVerificationIfNeededLPw(java.lang.String,java.util.ArrayList)>(packageName, m#4);
+
+        if $r16 == null goto label05;
+
+        $r14 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        virtualinvoke $r14.<com.android.server.pm.PackageManagerService: void scheduleWriteSettingsLocked()>();
+
+     label05:
+        exitmonitor filter#5;
+
+     label06:
+        goto label09;
+
+     label07:
+        $r17 := @caughtexception;
+
+        l12 = $r17;
+
+        exitmonitor filter#5;
+
+     label08:
+        throw l12;
+
+     label09:
+        specialinvoke this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: void sendVerificationRequest(int,int,com.android.server.pm.IntentFilterVerificationState)>(userId, verificationId, ivs);
+
+        n#1 = n#1 + 1;
+
+        goto label01;
+
+     label10:
+        $r1 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: java.util.ArrayList mCurrentIntentFilterVerifications>;
+
+        virtualinvoke $r1.<java.util.ArrayList: void clear()>();
+
+        return;
+
+        catch java.lang.Throwable from label04 to label06 with label07;
+        catch java.lang.Throwable from label07 to label08 with label07;
+    }
+
+    private void sendVerificationRequest(int, int, com.android.server.pm.IntentFilterVerificationState)
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+        int userId, verificationId;
+        com.android.server.pm.IntentFilterVerificationState ivs;
+        android.content.Intent verificationIntent, $r0;
+        android.os.UserHandle user, $r12;
+        java.lang.String $r2, $r4, $r6;
+        android.content.ComponentName $r7;
+        android.content.Context $r11;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        userId := @parameter0: int;
+
+        verificationId := @parameter1: int;
+
+        ivs := @parameter2: com.android.server.pm.IntentFilterVerificationState;
+
+        $r0 = new android.content.Intent;
+
+        specialinvoke $r0.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.INTENT_FILTER_NEEDS_VERIFICATION");
+
+        verificationIntent = $r0;
+
+        virtualinvoke verificationIntent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.content.pm.extra.INTENT_FILTER_VERIFICATION_ID", verificationId);
+
+        $r2 = specialinvoke this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: java.lang.String getDefaultScheme()>();
+
+        virtualinvoke verificationIntent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.pm.extra.INTENT_FILTER_VERIFICATION_URI_SCHEME", $r2);
+
+        $r4 = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: java.lang.String getHostsString()>();
+
+        virtualinvoke verificationIntent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.pm.extra.INTENT_FILTER_VERIFICATION_HOSTS", $r4);
+
+        $r6 = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: java.lang.String getPackageName()>();
+
+        virtualinvoke verificationIntent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.pm.extra.INTENT_FILTER_VERIFICATION_PACKAGE_NAME", $r6);
+
+        $r7 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: android.content.ComponentName mIntentFilterVerifierComponent>;
+
+        virtualinvoke verificationIntent.<android.content.Intent: android.content.Intent setComponent(android.content.ComponentName)>($r7);
+
+        virtualinvoke verificationIntent.<android.content.Intent: android.content.Intent addFlags(int)>(268435456);
+
+        $r12 = new android.os.UserHandle;
+
+        specialinvoke $r12.<android.os.UserHandle: void <init>(int)>(userId);
+
+        user = $r12;
+
+        $r11 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: android.content.Context mContext>;
+
+        virtualinvoke $r11.<android.content.Context: void sendBroadcastAsUser(android.content.Intent,android.os.UserHandle)>(verificationIntent, user);
+
+        return;
+    }
+
+    public void receiveVerificationResponse(int)
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+        int verificationId, count, userStatus, n#1, userId#9;
+        com.android.server.pm.IntentFilterVerificationState ivs;
+        boolean verified, needUpdate#11;
+        java.util.ArrayList filters;
+        java.lang.Throwable l13, $r23, $r25, userId#7;
+        com.android.server.pm.PackageManagerService $r0, $r4, $r5, $r6, $r9, $r10, $r12, $r15, $r17;
+        android.util.SparseArray $r1, $r3;
+        java.lang.Object $r2, $r24;
+        android.util.ArrayMap $r7, $r11, l8#5, l8#8;
+        com.android.server.pm.Settings $r8, $r13, $r14;
+        java.lang.StringBuilder $r16, $r18, $r19, $r21, $r22;
+        java.lang.String $r20, n#3;
+        android.content.pm.PackageParser$ActivityIntentInfo filter#2;
+        android.content.pm.IntentFilterVerificationInfo filter#6;
+        byte updatedStatus#10;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        verificationId := @parameter0: int;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.SparseArray mIntentFilterVerificationStates>;
+
+        $r2 = virtualinvoke $r1.<android.util.SparseArray: java.lang.Object get(int)>(verificationId);
+
+        ivs = (com.android.server.pm.IntentFilterVerificationState) $r2;
+
+        verified = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: boolean isVerified()>();
+
+        filters = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: java.util.ArrayList getFilters()>();
+
+        count = virtualinvoke filters.<java.util.ArrayList: int size()>();
+
+        n#1 = 0;
+
+     label01:
+        if n#1 >= count goto label02;
+
+        $r24 = virtualinvoke filters.<java.util.ArrayList: java.lang.Object get(int)>(n#1);
+
+        filter#2 = (android.content.pm.PackageParser$ActivityIntentInfo) $r24;
+
+        virtualinvoke filter#2.<android.content.pm.PackageParser$ActivityIntentInfo: void setVerified(boolean)>(verified);
+
+        n#1 = n#1 + 1;
+
+        goto label01;
+
+     label02:
+        $r4 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r4.<com.android.server.pm.PackageManagerService: android.util.SparseArray mIntentFilterVerificationStates>;
+
+        virtualinvoke $r3.<android.util.SparseArray: void remove(int)>(verificationId);
+
+        n#3 = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: java.lang.String getPackageName()>();
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r7 = $r5.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l8#5 = $r7;
+
+        entermonitor $r7;
+
+     label03:
+        $r6 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r8 = $r6.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        filter#6 = virtualinvoke $r8.<com.android.server.pm.Settings: android.content.pm.IntentFilterVerificationInfo getIntentFilterVerificationLPr(java.lang.String)>(n#3);
+
+        exitmonitor l8#5;
+
+     label04:
+        goto label07;
+
+     label05:
+        $r23 := @caughtexception;
+
+        userId#7 = $r23;
+
+        exitmonitor l8#5;
+
+     label06:
+        throw userId#7;
+
+     label07:
+        if filter#6 != null goto label08;
+
+        $r18 = new java.lang.StringBuilder;
+
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>()>();
+
+        $r16 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IntentFilterVerificationInfo not found for verificationId:");
+
+        $r21 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(verificationId);
+
+        $r22 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" packageName:");
+
+        $r19 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(n#3);
+
+        $r20 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", $r20);
+
+        return;
+
+     label08:
+        $r9 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r11 = $r9.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l8#8 = $r11;
+
+        entermonitor $r11;
+
+     label09:
+        if verified == 0 goto label10;
+
+        virtualinvoke filter#6.<android.content.pm.IntentFilterVerificationInfo: void setStatus(int)>(2);
+
+        goto label11;
+
+     label10:
+        virtualinvoke filter#6.<android.content.pm.IntentFilterVerificationInfo: void setStatus(int)>(1);
+
+     label11:
+        $r10 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        virtualinvoke $r10.<com.android.server.pm.PackageManagerService: void scheduleWriteSettingsLocked()>();
+
+        userId#9 = virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: int getUserId()>();
+
+        if userId#9 == -1 goto label17;
+
+        $r12 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r13 = $r12.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        userStatus = virtualinvoke $r13.<com.android.server.pm.Settings: int getIntentFilterVerificationStatusLPr(java.lang.String,int)>(n#3, userId#9);
+
+        updatedStatus#10 = 0;
+
+        needUpdate#11 = 0;
+
+        lookupswitch(userStatus)
+        {
+            case 0: goto label12;
+            case 1: goto label15;
+            default: goto label16;
+        };
+
+     label12:
+        if verified == 0 goto label13;
+
+        updatedStatus#10 = 2;
+
+        goto label14;
+
+     label13:
+        updatedStatus#10 = 1;
+
+     label14:
+        needUpdate#11 = 1;
+
+        goto label16;
+
+     label15:
+        if verified == 0 goto label16;
+
+        updatedStatus#10 = 2;
+
+        needUpdate#11 = 1;
+
+        goto label16;
+
+     label16:
+        if needUpdate#11 == 0 goto label17;
+
+        $r15 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r14 = $r15.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        virtualinvoke $r14.<com.android.server.pm.Settings: boolean updateIntentFilterVerificationStatusLPw(java.lang.String,int,int)>(n#3, updatedStatus#10, userId#9);
+
+        $r17 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        virtualinvoke $r17.<com.android.server.pm.PackageManagerService: void scheduleWritePackageRestrictionsLocked(int)>(userId#9);
+
+     label17:
+        exitmonitor l8#8;
+
+     label18:
+        goto label21;
+
+     label19:
+        $r25 := @caughtexception;
+
+        l13 = $r25;
+
+        exitmonitor l8#8;
+
+     label20:
+        throw l13;
+
+     label21:
+        return;
+
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label05 to label06 with label05;
+        catch java.lang.Throwable from label09 to label18 with label19;
+        catch java.lang.Throwable from label19 to label20 with label19;
+    }
+
+    public boolean addOneIntentFilterVerification(int, int, int, android.content.pm.PackageParser$ActivityIntentInfo, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+        int verifierUid, userId, verificationId;
+        android.content.pm.PackageParser$ActivityIntentInfo filter;
+        java.lang.String packageName;
+        boolean $z0;
+        com.android.server.pm.PackageManagerService $r0;
+        android.util.SparseArray $r1;
+        java.lang.Object $r2;
+        com.android.server.pm.IntentFilterVerificationState ivs#1;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        verifierUid := @parameter0: int;
+
+        userId := @parameter1: int;
+
+        verificationId := @parameter2: int;
+
+        filter := @parameter3: android.content.pm.PackageParser$ActivityIntentInfo;
+
+        packageName := @parameter4: java.lang.String;
+
+        $z0 = staticinvoke <com.android.server.pm.PackageManagerService: boolean access$200(android.content.pm.PackageParser$ActivityIntentInfo)>(filter);
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r0 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.SparseArray mIntentFilterVerificationStates>;
+
+        $r2 = virtualinvoke $r1.<android.util.SparseArray: java.lang.Object get(int)>(verificationId);
+
+        ivs#1 = (com.android.server.pm.IntentFilterVerificationState) $r2;
+
+        if ivs#1 != null goto label2;
+
+        ivs#1 = specialinvoke this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.IntentFilterVerificationState createDomainVerificationState(int,int,int,java.lang.String)>(verifierUid, userId, verificationId, packageName);
+
+     label2:
+        virtualinvoke ivs#1.<com.android.server.pm.IntentFilterVerificationState: void addFilter(android.content.pm.PackageParser$ActivityIntentInfo)>(filter);
+
+        return 1;
+    }
+
+    private com.android.server.pm.IntentFilterVerificationState createDomainVerificationState(int, int, int, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+        int verifierUid, userId, verificationId;
+        java.lang.String packageName;
+        com.android.server.pm.IntentFilterVerificationState ivs, $r0;
+        android.util.ArrayMap l6, $r2;
+        java.lang.Throwable l7, $r7;
+        com.android.server.pm.PackageManagerService $r1, $r3;
+        android.util.SparseArray $r4;
+        java.util.ArrayList $r5;
+        java.lang.Integer $r6;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        verifierUid := @parameter0: int;
+
+        userId := @parameter1: int;
+
+        verificationId := @parameter2: int;
+
+        packageName := @parameter3: java.lang.String;
+
+        $r0 = new com.android.server.pm.IntentFilterVerificationState;
+
+        specialinvoke $r0.<com.android.server.pm.IntentFilterVerificationState: void <init>(int,int,java.lang.String)>(verifierUid, userId, packageName);
+
+        ivs = $r0;
+
+        virtualinvoke ivs.<com.android.server.pm.IntentFilterVerificationState: void setPendingState()>();
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r2 = $r1.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l6 = $r2;
+
+        entermonitor $r2;
+
+     label1:
+        $r3 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: com.android.server.pm.PackageManagerService this$0>;
+
+        $r4 = $r3.<com.android.server.pm.PackageManagerService: android.util.SparseArray mIntentFilterVerificationStates>;
+
+        virtualinvoke $r4.<android.util.SparseArray: void append(int,java.lang.Object)>(verificationId, ivs);
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: java.util.ArrayList mCurrentIntentFilterVerifications>;
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(verificationId);
+
+        virtualinvoke $r5.<java.util.ArrayList: boolean add(java.lang.Object)>($r6);
+
+        exitmonitor l6;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r7 := @caughtexception;
+
+        l7 = $r7;
+
+        exitmonitor l6;
+
+     label4:
+        throw l7;
+
+     label5:
+        return ivs;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public volatile boolean addOneIntentFilterVerification(int, int, int, android.content.IntentFilter, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$IntentVerifierProxy this;
+        int l1, l2, l3;
+        android.content.IntentFilter l4;
+        java.lang.String l5;
+        android.content.pm.PackageParser$ActivityIntentInfo $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$IntentVerifierProxy;
+
+        l1 := @parameter0: int;
+
+        l2 := @parameter1: int;
+
+        l3 := @parameter2: int;
+
+        l4 := @parameter3: android.content.IntentFilter;
+
+        l5 := @parameter4: java.lang.String;
+
+        $r0 = (android.content.pm.PackageParser$ActivityIntentInfo) l4;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$IntentVerifierProxy: boolean addOneIntentFilterVerification(int,int,int,android.content.pm.PackageParser$ActivityIntentInfo,java.lang.String)>(l1, l2, l3, $r0, l5);
+
+        return $z0;
+    }
+}

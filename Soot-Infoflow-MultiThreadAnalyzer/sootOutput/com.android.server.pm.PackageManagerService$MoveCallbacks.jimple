@@ -1,0 +1,1387 @@
+class com.android.server.pm.PackageManagerService$MoveCallbacks extends android.os.Handler
+{
+    private static final int MSG_CREATED;
+    private static final int MSG_STATUS_CHANGED;
+    private final android.os.RemoteCallbackList mCallbacks;
+    private final android.util.SparseIntArray mLastStatus;
+
+    public void <init>(android.os.Looper)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Looper looper;
+        android.os.RemoteCallbackList $r0;
+        android.util.SparseIntArray $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        looper := @parameter0: android.os.Looper;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void <init>(android.os.Looper)>(looper);
+
+        $r0 = new android.os.RemoteCallbackList;
+
+        specialinvoke $r0.<android.os.RemoteCallbackList: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.RemoteCallbackList mCallbacks> = $r0;
+
+        $r1 = new android.util.SparseIntArray;
+
+        specialinvoke $r1.<android.util.SparseIntArray: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.util.SparseIntArray mLastStatus> = $r1;
+
+        return;
+    }
+
+    public void register(android.content.pm.IPackageMoveObserver)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.content.pm.IPackageMoveObserver callback;
+        android.os.RemoteCallbackList $r0;
+        android.os.IInterface tmp$218376309;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        callback := @parameter0: android.content.pm.IPackageMoveObserver;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.RemoteCallbackList mCallbacks>;
+
+        tmp$218376309 = (android.os.IInterface) callback;
+
+        virtualinvoke $r0.<android.os.RemoteCallbackList: boolean register(android.os.IInterface)>(tmp$218376309);
+
+        return;
+    }
+
+    public void unregister(android.content.pm.IPackageMoveObserver)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.content.pm.IPackageMoveObserver callback;
+        android.os.RemoteCallbackList $r0;
+        android.os.IInterface tmp$829632586;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        callback := @parameter0: android.content.pm.IPackageMoveObserver;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.RemoteCallbackList mCallbacks>;
+
+        tmp$829632586 = (android.os.IInterface) callback;
+
+        virtualinvoke $r0.<android.os.RemoteCallbackList: boolean unregister(android.os.IInterface)>(tmp$829632586);
+
+        return;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message msg;
+        com.android.internal.os.SomeArgs args;
+        int n, $i0, i#1;
+        android.content.pm.IPackageMoveObserver callback;
+        android.os.RemoteException l6, $r5;
+        java.lang.Object $r0;
+        android.os.RemoteCallbackList $r1, $r2, $r3;
+        android.os.IInterface $r4;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        msg := @parameter0: android.os.Message;
+
+        $r0 = msg.<android.os.Message: java.lang.Object obj>;
+
+        args = (com.android.internal.os.SomeArgs) $r0;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.RemoteCallbackList mCallbacks>;
+
+        n = virtualinvoke $r1.<android.os.RemoteCallbackList: int beginBroadcast()>();
+
+        i#1 = 0;
+
+     label1:
+        if i#1 >= n goto label6;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.RemoteCallbackList mCallbacks>;
+
+        $r4 = virtualinvoke $r3.<android.os.RemoteCallbackList: android.os.IInterface getBroadcastItem(int)>(i#1);
+
+        callback = (android.content.pm.IPackageMoveObserver) $r4;
+
+     label2:
+        $i0 = msg.<android.os.Message: int what>;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void invokeCallback(android.content.pm.IPackageMoveObserver,int,com.android.internal.os.SomeArgs)>(callback, $i0, args);
+
+     label3:
+        goto label5;
+
+     label4:
+        $r5 := @caughtexception;
+
+        l6 = $r5;
+
+     label5:
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label6:
+        $r2 = this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.RemoteCallbackList mCallbacks>;
+
+        virtualinvoke $r2.<android.os.RemoteCallbackList: void finishBroadcast()>();
+
+        virtualinvoke args.<com.android.internal.os.SomeArgs: void recycle()>();
+
+        return;
+
+        catch android.os.RemoteException from label2 to label3 with label4;
+    }
+
+    private void invokeCallback(android.content.pm.IPackageMoveObserver, int, com.android.internal.os.SomeArgs) throws android.os.RemoteException
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.content.pm.IPackageMoveObserver callback;
+        int what, $i0, $i1, $i3;
+        com.android.internal.os.SomeArgs args;
+        java.lang.Object $r0, $r2;
+        java.lang.Long $r1;
+        long $l2;
+        android.os.Bundle $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        callback := @parameter0: android.content.pm.IPackageMoveObserver;
+
+        what := @parameter1: int;
+
+        args := @parameter2: com.android.internal.os.SomeArgs;
+
+        lookupswitch(what)
+        {
+            case 1: goto label1;
+            case 2: goto label2;
+            default: goto label3;
+        };
+
+     label1:
+        $i3 = args.<com.android.internal.os.SomeArgs: int argi1>;
+
+        $r2 = args.<com.android.internal.os.SomeArgs: java.lang.Object arg2>;
+
+        $r3 = (android.os.Bundle) $r2;
+
+        interfaceinvoke callback.<android.content.pm.IPackageMoveObserver: void onCreated(int,android.os.Bundle)>($i3, $r3);
+
+        goto label3;
+
+     label2:
+        $i0 = args.<com.android.internal.os.SomeArgs: int argi1>;
+
+        $i1 = args.<com.android.internal.os.SomeArgs: int argi2>;
+
+        $r0 = args.<com.android.internal.os.SomeArgs: java.lang.Object arg3>;
+
+        $r1 = (java.lang.Long) $r0;
+
+        $l2 = virtualinvoke $r1.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke callback.<android.content.pm.IPackageMoveObserver: void onStatusChanged(int,int,long)>($i0, $i1, $l2);
+
+     label3:
+        return;
+    }
+
+    private void notifyCreated(int, android.os.Bundle)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int moveId;
+        android.os.Bundle extras;
+        com.android.internal.os.SomeArgs args;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r5;
+        java.lang.String $r4, $r6;
+        android.os.Message $r7;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        moveId := @parameter0: int;
+
+        extras := @parameter1: android.os.Bundle;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Move ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(moveId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" created ");
+
+        $r4 = virtualinvoke extras.<android.os.Bundle: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int v(java.lang.String,java.lang.String)>("PackageManager", $r6);
+
+        args = staticinvoke <com.android.internal.os.SomeArgs: com.android.internal.os.SomeArgs obtain()>();
+
+        args.<com.android.internal.os.SomeArgs: int argi1> = moveId;
+
+        args.<com.android.internal.os.SomeArgs: java.lang.Object arg2> = extras;
+
+        $r7 = virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.Message obtainMessage(int,java.lang.Object)>(1, args);
+
+        virtualinvoke $r7.<android.os.Message: void sendToTarget()>();
+
+        return;
+    }
+
+    private void notifyStatusChanged(int, int)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int moveId, status;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        moveId := @parameter0: int;
+
+        status := @parameter1: int;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void notifyStatusChanged(int,int,long)>(moveId, status, -1L);
+
+        return;
+    }
+
+    private void notifyStatusChanged(int, int, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int moveId, status;
+        long estMillis;
+        com.android.internal.os.SomeArgs args;
+        android.util.SparseIntArray l6, $r7, $r9;
+        java.lang.Throwable l7, $r10;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4;
+        java.lang.String $r5;
+        java.lang.Long $r6;
+        android.os.Message $r8;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        moveId := @parameter0: int;
+
+        status := @parameter1: int;
+
+        estMillis := @parameter2: long;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Move ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(moveId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" status ");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(status);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int v(java.lang.String,java.lang.String)>("PackageManager", $r5);
+
+        args = staticinvoke <com.android.internal.os.SomeArgs: com.android.internal.os.SomeArgs obtain()>();
+
+        args.<com.android.internal.os.SomeArgs: int argi1> = moveId;
+
+        args.<com.android.internal.os.SomeArgs: int argi2> = status;
+
+        $r6 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(estMillis);
+
+        args.<com.android.internal.os.SomeArgs: java.lang.Object arg3> = $r6;
+
+        $r8 = virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.os.Message obtainMessage(int,java.lang.Object)>(2, args);
+
+        virtualinvoke $r8.<android.os.Message: void sendToTarget()>();
+
+        $r7 = this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.util.SparseIntArray mLastStatus>;
+
+        l6 = $r7;
+
+        entermonitor $r7;
+
+     label1:
+        $r9 = this.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.util.SparseIntArray mLastStatus>;
+
+        virtualinvoke $r9.<android.util.SparseIntArray: void put(int,int)>(moveId, status);
+
+        exitmonitor l6;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r10 := @caughtexception;
+
+        l7 = $r10;
+
+        exitmonitor l6;
+
+     label4:
+        throw l7;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    static void access$5700(com.android.server.pm.PackageManagerService$MoveCallbacks, int, int)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks x0;
+        int x1, x2;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        x1 := @parameter1: int;
+
+        x2 := @parameter2: int;
+
+        specialinvoke x0.<com.android.server.pm.PackageManagerService$MoveCallbacks: void notifyStatusChanged(int,int)>(x1, x2);
+
+        return;
+    }
+
+    static void access$5800(com.android.server.pm.PackageManagerService$MoveCallbacks, int, android.os.Bundle)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks x0;
+        int x1;
+        android.os.Bundle x2;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        x1 := @parameter1: int;
+
+        x2 := @parameter2: android.os.Bundle;
+
+        specialinvoke x0.<com.android.server.pm.PackageManagerService$MoveCallbacks: void notifyCreated(int,android.os.Bundle)>(x1, x2);
+
+        return;
+    }
+
+    static void access$6100(com.android.server.pm.PackageManagerService$MoveCallbacks, int, int, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks x0;
+        int x1, x2;
+        long x3;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        x1 := @parameter1: int;
+
+        x2 := @parameter2: int;
+
+        x3 := @parameter3: long;
+
+        specialinvoke x0.<com.android.server.pm.PackageManagerService$MoveCallbacks: void notifyStatusChanged(int,int,long)>(x1, x2, x3);
+
+        return;
+    }
+
+    static android.util.SparseIntArray access$6200(com.android.server.pm.PackageManagerService$MoveCallbacks)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks x0;
+        android.util.SparseIntArray $r0;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        $r0 = x0.<com.android.server.pm.PackageManagerService$MoveCallbacks: android.util.SparseIntArray mLastStatus>;
+
+        return $r0;
+    }
+
+    void dispatchMessage(android.os.Message)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message msg;
+        java.lang.Runnable $r0;
+        android.os.Handler$Callback $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        msg := @parameter0: android.os.Message;
+
+        $r0 = msg.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        staticinvoke <android.os.Handler: void handleCallback(android.os.Message)>(msg);
+
+        goto label3;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        if $r1 == null goto label2;
+
+        $r2 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        $z0 = interfaceinvoke $r2.<android.os.Handler$Callback: boolean handleMessage(android.os.Message)>(msg);
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void handleMessage(android.os.Message)>(msg);
+
+     label3:
+        return;
+    }
+
+    void <init>()
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void <init>(android.os.Handler$Callback,boolean)>(null, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Handler$Callback)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Handler$Callback callback;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void <init>(android.os.Handler$Callback,boolean)>(callback, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Looper, android.os.Handler$Callback)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, callback, 0);
+
+        return;
+    }
+
+    void <init>(boolean)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        boolean async;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        async := @parameter0: boolean;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void <init>(android.os.Handler$Callback,boolean)>(null, async);
+
+        return;
+    }
+
+    void <init>(android.os.Handler$Callback, boolean)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.Looper $r0, $r1, $r2;
+        android.os.MessageQueue $r3;
+        java.lang.RuntimeException $r4;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        async := @parameter1: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = $r0;
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r1 != null goto label1;
+
+        $r4 = new java.lang.RuntimeException;
+
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String)>("Can\'t create handler inside thread that has not called Looper.prepare()");
+
+        throw $r4;
+
+     label1:
+        $r2 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r3 = $r2.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r3;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = callback;
+
+        this.<android.os.Handler: boolean mAsynchronous> = async;
+
+        return;
+    }
+
+    void <init>(android.os.Looper, android.os.Handler$Callback, boolean)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        async := @parameter2: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = looper;
+
+        $r0 = looper.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r0;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = callback;
+
+        this.<android.os.Handler: boolean mAsynchronous> = async;
+
+        return;
+    }
+
+    java.lang.String getMessageName(android.os.Message)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message message;
+        java.lang.Runnable $r0, $r6;
+        java.lang.StringBuilder $r1, $r2, $r4;
+        int $i0;
+        java.lang.String $r3, $r5, $r8;
+        java.lang.Class $r7;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        $r6 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        $r7 = virtualinvoke $r6.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.Class: java.lang.String getName()>();
+
+        return $r8;
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0x");
+
+        $i0 = message.<android.os.Message: int what>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+    }
+
+    android.os.Message obtainMessage()
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler)>(this);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        android.os.Message result;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        result = new android.os.Message;
+
+        specialinvoke result.<android.os.Message: void <init>()>();
+
+        result.<android.os.Message: int what> = what;
+
+        result.<android.os.Message: android.os.Handler target> = this;
+    }
+
+    android.os.Message obtainMessage(int, java.lang.Object)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        obj := @parameter1: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,java.lang.Object)>(this, what, obj);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int, int, int)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what, arg1, arg2;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int)>(this, what, arg1, arg2);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int, int, int, java.lang.Object)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what, arg1, arg2;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        obj := @parameter3: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int,java.lang.Object)>(this, what, arg1, arg2, obj);
+
+        return $r0;
+    }
+
+    boolean post(java.lang.Runnable)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable param0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtTime(java.lang.Runnable, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtTime(java.lang.Runnable, java.lang.Object, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable param0;
+        java.lang.Object param1;
+        long param2;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: java.lang.Object;
+
+        param2 := @parameter2: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postDelayed(java.lang.Runnable, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtFrontOfQueue(java.lang.Runnable)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable param0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean runWithScissors(java.lang.Runnable, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable r;
+        long timeout;
+        android.os.Handler$BlockingRunnable br, $r2;
+        byte $b0;
+        android.os.Looper $r0, $r1;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r3, $r4;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        r := @parameter0: java.lang.Runnable;
+
+        timeout := @parameter1: long;
+
+        if r != null goto label1;
+
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("runnable must not be null");
+
+        throw $r4;
+
+     label1:
+        $b0 = timeout cmp 0L;
+
+        if $b0 >= 0 goto label2;
+
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("timeout must be non-negative");
+
+        throw $r3;
+
+     label2:
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r0 != $r1 goto label3;
+
+        interfaceinvoke r.<java.lang.Runnable: void run()>();
+
+        return 1;
+
+     label3:
+        $r2 = new android.os.Handler$BlockingRunnable;
+
+        specialinvoke $r2.<android.os.Handler$BlockingRunnable: void <init>(java.lang.Runnable)>(r);
+
+        br = $r2;
+
+        $z0 = virtualinvoke br.<android.os.Handler$BlockingRunnable: boolean postAndWait(android.os.Handler,long)>(this, timeout);
+
+        return $z0;
+    }
+
+    void removeCallbacks(java.lang.Runnable)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return;
+    }
+
+    void removeCallbacks(java.lang.Runnable, java.lang.Object)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, token);
+
+        return;
+    }
+
+    boolean sendMessage(android.os.Message)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message msg;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        msg := @parameter0: android.os.Message;
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendEmptyMessage(int)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: boolean sendEmptyMessageDelayed(int,long)>(what, 0L);
+
+        return $z0;
+    }
+
+    boolean sendEmptyMessageDelayed(int, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        long delayMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        delayMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: boolean sendMessageDelayed(android.os.Message,long)>(msg, delayMillis);
+
+        return $z0;
+    }
+
+    boolean sendEmptyMessageAtTime(int, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        long uptimeMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        uptimeMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: boolean sendMessageAtTime(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z0;
+    }
+
+    boolean sendMessageDelayed(android.os.Message, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message msg;
+        long param1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        msg := @parameter0: android.os.Message;
+
+        param1 := @parameter1: long;
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendMessageAtTime(android.os.Message, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message msg;
+        long param1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        msg := @parameter0: android.os.Message;
+
+        param1 := @parameter1: long;
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendMessageAtFrontOfQueue(android.os.Message)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Message msg;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        msg := @parameter0: android.os.Message;
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$MoveCallbacks: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean enqueueMessage(android.os.MessageQueue, android.os.Message, long)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.MessageQueue queue;
+        android.os.Message msg;
+        long uptimeMillis;
+        boolean $z0, $z1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        queue := @parameter0: android.os.MessageQueue;
+
+        msg := @parameter1: android.os.Message;
+
+        uptimeMillis := @parameter2: long;
+
+        msg.<android.os.Message: android.os.Handler target> = this;
+
+        $z0 = this.<android.os.Handler: boolean mAsynchronous>;
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke msg.<android.os.Message: void setAsynchronous(boolean)>(1);
+
+     label1:
+        $z1 = virtualinvoke queue.<android.os.MessageQueue: boolean enqueueMessage(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z1;
+    }
+
+    void removeMessages(int)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return;
+    }
+
+    void removeMessages(int, java.lang.Object)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return;
+    }
+
+    void removeCallbacksAndMessages(java.lang.Object)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        token := @parameter0: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeCallbacksAndMessages(android.os.Handler,java.lang.Object)>(this, token);
+
+        return;
+    }
+
+    boolean hasMessages(int)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return $z0;
+    }
+
+    boolean hasMessages(int, java.lang.Object)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return $z0;
+    }
+
+    boolean hasCallbacks(java.lang.Runnable)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return $z0;
+    }
+
+    android.os.Looper getLooper()
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.Looper $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        $r0 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        return $r0;
+    }
+
+    void dump(android.util.Printer, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.util.Printer pw;
+        java.lang.String prefix, $r5, $r11, $r14;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r15;
+        long $l0;
+        android.os.Looper $r6, $r8;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        pw := @parameter0: android.util.Printer;
+
+        prefix := @parameter1: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" @ ");
+
+        $l0 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r5);
+
+        $r6 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r6 != null goto label1;
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r14);
+
+        goto label2;
+
+     label1:
+        $r8 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<android.os.Looper: void dump(android.util.Printer,java.lang.String)>(pw, $r11);
+
+     label2:
+        return;
+    }
+
+    java.lang.String toString()
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        java.lang.StringBuilder $r0, $r1, $r4, $r5, $r7, $r8;
+        java.lang.Class $r2;
+        java.lang.String $r3, $r6, $r9;
+        int $i0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Handler (");
+
+        $r2 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") {");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r9;
+    }
+
+    android.os.IMessenger getIMessenger()
+    {
+        com.android.server.pm.PackageManagerService$MoveCallbacks this;
+        android.os.MessageQueue l1, $r0;
+        java.lang.Throwable l2, $r5;
+        android.os.IMessenger $r1, $r3, $r4, tmp$1071492655;
+        android.os.Handler$MessengerImpl tmp$555932112;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveCallbacks;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        if $r1 == null goto label3;
+
+        $r4 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label2:
+        return $r4;
+
+     label3:
+        tmp$555932112 = new android.os.Handler$MessengerImpl;
+
+        specialinvoke tmp$555932112.<android.os.Handler$MessengerImpl: void <init>(android.os.Handler,android.os.Handler$1)>(this, null);
+
+        tmp$1071492655 = (android.os.IMessenger) tmp$555932112;
+
+        this.<android.os.Handler: android.os.IMessenger mMessenger> = tmp$1071492655;
+
+        $r3 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label4:
+        return $r3;
+
+     label5:
+        $r5 := @caughtexception;
+
+        l2 = $r5;
+
+        exitmonitor l1;
+
+     label6:
+        throw l2;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    android.os.Message getPostMessage(java.lang.Runnable)
+    {
+        java.lang.Runnable r;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    android.os.Message getPostMessage(java.lang.Runnable, java.lang.Object)
+    {
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Object obj> = token;
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    void handleCallback(android.os.Message)
+    {
+        android.os.Message message;
+        java.lang.Runnable $r0;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        interfaceinvoke $r0.<java.lang.Runnable: void run()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.pm.PackageManagerService$MoveCallbacks: int MSG_STATUS_CHANGED> = 2;
+
+        <com.android.server.pm.PackageManagerService$MoveCallbacks: int MSG_CREATED> = 1;
+
+        return;
+    }
+}
