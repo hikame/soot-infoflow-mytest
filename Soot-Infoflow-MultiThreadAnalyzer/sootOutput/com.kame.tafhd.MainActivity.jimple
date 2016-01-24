@@ -64,17 +64,24 @@ public class com.kame.tafhd.MainActivity extends android.app.Activity
     {
         com.kame.tafhd.MainActivity this;
         java.lang.String s0;
-        android.os.Handler $r0;
+        com.kame.tafhd.MainActivity$AnotherHandler ah, $r0;
+        android.os.Message msg;
 
         this := @this: com.kame.tafhd.MainActivity;
 
         s0 := @parameter0: java.lang.String;
 
-        <com.kame.tafhd.MainActivity: java.lang.String staticTaint> = s0;
+        $r0 = new com.kame.tafhd.MainActivity$AnotherHandler;
 
-        $r0 = this.<com.kame.tafhd.MainActivity: android.os.Handler mhandler>;
+        specialinvoke $r0.<com.kame.tafhd.MainActivity$AnotherHandler: void <init>(com.kame.tafhd.MainActivity)>(this);
 
-        virtualinvoke $r0.<android.os.Handler: boolean sendEmptyMessage(int)>(8);
+        ah = $r0;
+
+        this.<com.kame.tafhd.MainActivity: java.lang.String tainted> = s0;
+
+        msg = virtualinvoke ah.<com.kame.tafhd.MainActivity$AnotherHandler: android.os.Message obtainMessage(int)>(6);
+
+        virtualinvoke ah.<com.kame.tafhd.MainActivity$AnotherHandler: void dispatchMessage_MainActivity__AnotherHandler_6(android.os.Message)>(msg);
 
         return;
     }

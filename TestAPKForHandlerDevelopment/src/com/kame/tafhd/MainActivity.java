@@ -234,6 +234,7 @@ public class MainActivity extends Activity {
 //		mhandler.sendEmptyMessage(STATIC_FIELD_NULL);
 		
 		AnotherHandler ah = new AnotherHandler();
+		tainted = s0;
 		Message msg = ah.obtainMessage(FIELD_NP);
 		ah.sendMessage(msg);
 ////		tainted = s0;

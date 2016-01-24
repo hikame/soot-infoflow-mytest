@@ -150,7 +150,7 @@ public class AndroidHandlerProcessor {
 						orgMethod.getName() + "_" + dispathMsgOfChild.getDeclaringClass().getShortName().replace("$", "__") + "_" + codecase, 
 						orgMethod.getParameterTypes(), 
 						orgMethod.getReturnType());
-				newMethod.addTag(new MyMethodTag(true));
+
 				assert (sc.getMethodUnsafe(newMethod.getSubSignature()) == null);
 				sc.addMethod(newMethod);
 				newMethod.setDeclaringClass(sc);
@@ -269,6 +269,9 @@ public class AndroidHandlerProcessor {
 			InvokeExpr ie = invokeStmt.getInvokeExpr();
 			ie.setMethodRef(newMethod.makeRef());
 			
+			MyMethodTag mmt = (MyMethodTag) orgCaller.getTag(MyMethodTag.class.getSimpleName());
+			if(mmt != null && mmt.isMultithread())
+				newCaller.addTag(mmt);
 			cg.addEdge(new Edge(newCaller, invokeStmt, newMethod));
 			iCfg.notifyMethodChanged(newCaller);
 //			CallGraphManager.optimizeCG(newCaller.getActiveBody());

@@ -1,10 +1,12 @@
 package com.kame.sootinfo.mta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.kame.sootinfo.mta.tags.MyMethodTag;
 
 import soot.Body;
+import soot.Hierarchy;
 import soot.IdentityUnit;
 import soot.Local;
 import soot.MethodOrMethodContext;
@@ -85,14 +88,19 @@ public class ClassResolveManager {
 		return invokedMths;
 	}
 	
-	String[] myBasicClass = {
-		"java.lang.Thread",
-		"java.lang.Throwable",
-		"android.os.Handler",
-		"android.os.Message",
-		"java.lang.Runnable",
-		"java.lang.Exception"
-	};
+	List<String> myBasicClassList = null;
+	{
+		String[] myBasicClassSet = {
+				"java.lang.Runnable",
+				"java.lang.Thread",
+				"java.lang.Throwable",
+				"java.lang.Exception",
+				"android.os.Message",
+				"android.os.Handler"
+		};	
+		myBasicClassList = Arrays.asList(myBasicClassSet);
+	}
+	
 	
 	String[] sendMessageMethods = {
 		"boolean sendMessage(android.os.Message)",
@@ -103,13 +111,13 @@ public class ClassResolveManager {
 	
 	String dipatchMsgSubsignature = "void dispatchMessage(android.os.Message)";
 	
-	private SootClass handlerClass = null;
 	private List<SootClass> handlerChildren = new ArrayList<SootClass>();
 	private CallGraph cg;
 	private IInfoflowCFG iCfg;
 	public List<SootClass> getHandlerChildren(){
 		return handlerChildren;
 	}
+	public SootMethod targetMethod;
 
 	/**It should be able to dynamically extend the include&nonPhantom lists.
 	 * And at the same time, generate&extend the control flow graph*/
@@ -117,58 +125,71 @@ public class ClassResolveManager {
 		Options.v().set_include(includeList);
 		Options.v().set_exclude(excludeList);
 		Options.v().set_nonPhantom(nonPhantomList);
-		for(String s: myBasicClass){
-			nonPhantomList.add(s);
-			Scene.v().addBasicClass(s, SootClass.BODIES);
+		for(String s: myBasicClassList){
+			resolveClass(s, 0);
+			Scene.v().forceResolve(s, SootClass.BODIES);
 		}
 		Scene.v().loadBasicClasses();
+		patchMultiThreadClasses();	//taking care of thread.start handler.post handler.send message.sendtotarget and so on.
 		for(String s : MTAScene.v().getTargetList()){	//Resolve be base class of target method.
 			String clsName = s.substring(1, s.indexOf(":"));
-			nonPhantomList.add(clsName);
+//			nonPhantomList.add(clsName);
 			Scene.v().addBasicClass(clsName, SootClass.BODIES);
-			SootClass base = Scene.v().forceResolve(clsName, SootClass.BODIES);
+			SootClass base = resolveClass(clsName, 0);	//TODO does it need: resolve to body?
+			Scene.v().forceResolve(base.getName(), SootClass.BODIES);
 			List<Tag> tags = base.getTags();
 			for(Tag tag : tags){
 				if(!(tag instanceof InnerClassTag))
 					continue;
 				String inner = ((InnerClassTag) tag).getInnerClass().replace("/", ".");
-				Scene.v().forceResolve(inner, SootClass.SIGNATURES);	//It should not be BODIES because that Some of the methods in tagged class may be subclass of android.os.Handler
+				resolveClass(inner, 0);	//It should not be BODIES because that Some of the methods in tagged class may be subclass of android.os.Handler
 			}
+		}
+
+		for(SootClass sc : Scene.v().getClasses(SootClass.SIGNATURES)){
+			if(!sc.isPhantom())
+				Scene.v().forceResolve(sc.getName(), SootClass.BODIES);
 		}
 		
 		setDummyEntryPoints();	//generate the dummy main method.
-		patchMultiThreadClasses();	//taking care of thread.start handler.post handler.send message.sendtotarget and so on.
+		targetMethod = Scene.v().getMethod(MTAScene.v().getTargetList().get(0));
 		
 		CallGraphManager.v().constructCallgraph();//it will be used for long
 		ControlFlowGraphManager.v().generateCFG();	//it is used for temp
 		cg = Scene.v().getCallGraph();
 		iCfg = ControlFlowGraphManager.v().getInfoflowCFG();
 		
+Iterator<Edge> edges = cg.edgesOutOf(targetMethod);
+List<Edge> edgesList = new ArrayList<Edge>();
+while(edges.hasNext()){
+	edgesList.add(edges.next());
+}
+Set<Unit> callees = iCfg.getCallsFromWithin(targetMethod);
+List<Unit> calleeList = new ArrayList<Unit>(callees);
+List<List<SootMethod>> calleeMethodList = new ArrayList<List<SootMethod>>();
+for(Unit cle : callees){
+	calleeMethodList.add(new ArrayList<SootMethod>(iCfg.getCalleesOfCallAt(cle)));
+}
+
+logger.info("[T] Finished generating the call graph.");
+SootClass subSC = Scene.v().getSootClass("com.kame.tafhd.MainActivity$AnotherHandler");
+ReachableMethods rm = Scene.v().getReachableMethods();
+QueueReader<MethodOrMethodContext> ls = rm.listener();
+while(ls.hasNext()){
+	System.out.println("[T] " + ls.next().toString());
+}
 		// In fact, this part of codes should not be useful. because any codes in the subclass of Handler should not be resolved at BODIES level. 
 		// Modify the children of handler which are initialed from the start method resolving.
-		handlerClass = Scene.v().getSootClass("android.os.Handler");
-		Chain<SootClass> resolvedClasses = Scene.v().getClasses();
-		for(SootClass sc = resolvedClasses.getFirst(); resolvedClasses.getSuccOf(sc) != null; sc = resolvedClasses.getSuccOf(sc)){
-			if(sc.isPhantom())
-				continue;
-			if(sc.hasSuperclass() && 
-					sc.getSuperclass().equals(handlerClass)){	//add all unimplemented bodys from Handler to SubHander;
-				assert sc.resolvingLevel() == SootClass.SIGNATURES;
-//				if(sc.resolvingLevel() == SootClass.BODIES)	//some methods should be solved.
-//					modifyChildOfHandler(sc);	//
-//				if(sc.resolvingLevel() < SootClass.SIGNATURES)
-//					Scene.v().forceResolve(sc.getName(), SootClass.SIGNATURES);
-			}
-		}
 
 		List<SootMethod> startPoints = Scene.v().getEntryPoints();
 		assert startPoints.size() == 1;
 		String startMethd = startPoints.get(0).getSignature();
 		List<String> list = new ArrayList<String>();
 		list.add(startMethd);
+logger.info("[T] Start doning the resolving.");
 		doResolve(list);
 		
-		handlerClass.getMethod(this.dipatchMsgSubsignature).addTag(new MyMethodTag(true));
+		Scene.v().getSootClass("android.os.Handler").getMethod(this.dipatchMsgSubsignature).addTag(new MyMethodTag(true));
 		for(SootClass sc : handlerChildren){
 			SootMethod sm = sc.getMethod(this.dipatchMsgSubsignature);
 			sm.addTag(new MyMethodTag(true));
@@ -176,11 +197,10 @@ public class ClassResolveManager {
 	}
 
 	private void modifyChildOfHandler(SootClass childClass) {
-		
 		List<SootMethod> childMethods = childClass.getMethods();
 		int orgSize = childMethods.size();
 		List<SootMethod> newChildMths = new ArrayList<SootMethod>();
-		for(SootMethod hm : handlerClass.getMethods()){	//all methods changed.
+		for(SootMethod hm : Scene.v().getSootClass("android.os.Handler").getMethods()){	//all methods changed.
 			boolean exist = false;
 			for(SootMethod sm : childMethods)
 				if(sm.getSubSignature().equals(hm.getSubSignature())){
@@ -200,15 +220,18 @@ public class ClassResolveManager {
 		}
 		
 		int index = 0;
+		childMethods = childClass.getMethods();	//re-get the methods list.
 		while(index < orgSize){	//Original children methods. change the this references and do cg/cfg update. 
-			if(modifyThisRefs(childMethods.get(index), childClass, false))	//call graph will be updated dynamically. return true mean the statements have been changed.
+			if(modifyThisRefs(childMethods.get(index), childClass, false) && iCfg != null)	//call graph will be updated dynamically. return true mean the statements have been changed.
 				iCfg.notifyMethodChanged(childMethods.get(index));	//update cfg
 			index++;
 		}
 		while(index < childMethods.size()){	//copied from Handler class.
 			modifyThisRefs(childMethods.get(index), childClass, true);	//call graph will not be updated dynamically
-			notifyNewMethod(childMethods.get(index));	//notify all new added method invocations to cg.
-			iCfg.notifyMethodChanged(childMethods.get(index));
+			notifyCGofNewMethod(childMethods.get(index));	//notify all new added method invocations to cg.
+			if(iCfg != null)
+				iCfg.notifyMethodChanged(childMethods.get(index));
+//			SootMethod target = this. TODO
 			index++;
 		}
 		if(handlerChildren.indexOf(childClass) < 0)
@@ -245,7 +268,7 @@ public class ClassResolveManager {
 					Value base = iie.getBase();
 					if(!base.equals(thisLocal))
 						continue;
-					if(!iie.getMethod().getDeclaringClass().equals(this.handlerClass))
+					if(!iie.getMethod().getDeclaringClass().equals(Scene.v().getSootClass("android.os.Handler")))
 						continue;
 					String subSig = iie.getMethod().getSubSignature();
 					SootMethod substitute = cls.getMethod(subSig);
@@ -265,23 +288,25 @@ public class ClassResolveManager {
 		return true;
 	}
 
-	private void notifyNewMethod(SootMethod newcm) {
+	private void notifyCGofNewMethod(SootMethod newcm) {
+		if(cg == null)
+			return;
 		for(Unit caller : newcm.getActiveBody().getUnits()){
 			Stmt callStmt = (Stmt)caller;
 			if(!callStmt.containsInvokeExpr())
 				continue;
 			Edge edge = new Edge(newcm, callStmt, callStmt.getInvokeExpr().getMethod());
-			cg.addEdge(edge);
+				cg.addEdge(edge);
 		}
 	}
 
 	private void patchMultiThreadClasses() {
 		// learn from MyMultiThreadPatcher
-logger.info("PATCHING android.os.Handler!");
+		logger.info("PATCHING android.os.Handler!");
 		patchHandler();
-logger.info("PATCHING java.lang.Thread!");
+		logger.info("PATCHING java.lang.Thread!");
 		patchThread();
-logger.info("***PATCHING of Multi-Thread Methods Finished!***");
+		logger.info("***PATCHING of Multi-Thread Methods Finished!***");
 	}
 	
 	/**
@@ -589,6 +614,8 @@ logger.info("***PATCHING of Multi-Thread Methods Finished!***");
 
 
 	private SootClass resolveClass(String clsName, int clsDepth) {
+if(clsName.equals("com.kame.tafhd.MainActivity$AnotherHandler"))
+	clsName.toString();
 		if(clsDepth > MAX_CLASS_RESOLVE_DEPTH){
 			SootClass rt = Scene.v().getSootClassUnsafe(clsName);
 			if(rt == null){
@@ -602,14 +629,17 @@ logger.info("***PATCHING of Multi-Thread Methods Finished!***");
 			return Scene.v().getSootClass(clsName);
 		
 		String pkgName = clsName.substring(0, clsName.lastIndexOf("."));
-		if(clsName.startsWith("java.lang.") && !clsName.equals("java.lang.Thread"))
+		if(clsName.startsWith("java.lang.") && !myBasicClassList.contains(clsName))
 			return Scene.v().getSootClass(clsName);
 		
 		nonPhantomList.add(clsName);
 		if(clsName.startsWith("com.android.server") || clsName.equals("android.os.Handler") || clsName.equals("java.lang.Thread") || 
 				MTAScene.v().getTargetList().get(0).startsWith("<" + pkgName))
 			includeList.add(clsName);
-		SootClass targetSC = Scene.v().getSootClass(clsName);
+		
+		SootClass targetSC = Scene.v().getSootClassUnsafe(clsName);
+		if(targetSC == null)
+			targetSC = Scene.v().forceResolve(clsName, SootClass.SIGNATURES);
 		if(targetSC.isPhantom()){
 			Scene.v().removeClass(targetSC);
 			targetSC = Scene.v().forceResolve(clsName, SootClass.SIGNATURES);
@@ -632,7 +662,7 @@ logger.info("***PATCHING of Multi-Thread Methods Finished!***");
 		if(MTAScene.v().getTargetList().get(0).startsWith("<" + pkgName))
 			targetSC.setApplicationClass();
 		
-		if(targetSC.hasSuperclass() && targetSC.getSuperclass().equals(handlerClass))
+		if(targetSC.hasSuperclass() && targetSC.getSuperclass().equals(Scene.v().getSootClass("android.os.Handler")))
 			modifyChildOfHandler(targetSC);
 		return targetSC;
 	}
@@ -683,20 +713,59 @@ logger.info("***PATCHING of Multi-Thread Methods Finished!***");
 System.out.println("[BEFORE] " + sm.getSignature() + "\n" + sm.getActiveBody().toString());
 		CallGraphManager.optimizeCG(sm.getActiveBody());
 System.out.println("[AFTER] " + sm.getSignature() + "\n" + sm.getActiveBody().toString());
-iCfg.notifyMethodChanged(sm);
-		List<ValueBox> boxes = sm.getActiveBody().getUseAndDefBoxes();
-		for(ValueBox box : boxes){
-			Value value = box.getValue();
-			Type type = value.getType();
-			addTypeToLists(type);
+//iCfg.notifyMethodChanged(sm);
+
+		for(Unit unit : sm.getActiveBody().getUnits()){
+			Stmt stmt = (Stmt)unit;
+			for(ValueBox box : stmt.getUseAndDefBoxes()){
+				Value val = box.getValue();
+				Type type = val.getType();
+				SootClass tgt = null;
+				if(type instanceof RefType){
+					tgt = resolveClass(((RefType)type).getSootClass().getName(), 0);
+				}
+			}
+//			if(stmt.containsInvokeExpr()){
+//				Collection<SootMethod> callees = iCfg.getCalleesOfCallAt(stmt);
+//				Iterator<Edge> edges = cg.edgesOutOf(stmt);
+//				ValueBox basebox = ((InstanceInvokeExpr)stmt.getInvokeExpr()).getBaseBox();
+//				SootClass baseSC = ((RefType)basebox.getValue().getType()).getSootClass();
+//				List<SootClass> superCls = Scene.v().getActiveHierarchy().getSuperclassesOf(baseSC);
+////				List<SootClass> interCls = Scene.v().getActiveHierarchy().getSuperinterfacesOf(baseSC);
+//				while(edges.hasNext()){
+//					Edge e = edges.next();
+//					SootMethod tgt = (SootMethod) e.getTgt();
+//					SootClass orgSC = tgt.getDeclaringClass();
+//					if(superCls.contains(orgSC)){	//we can update the call edges!  
+//						
+//					}
+//				}
+////				callees 不包含 basebox的情况！
+//			}
 		}
 		
-		for(Unit u : iCfg.getCallsFromWithin(sm)){
+		iCfg.notifyMethodChanged(sm);
+
+		for(Unit u : iCfg.getCallsFromWithin(sm)){	//get the invoke statement in one method. 
 			Collection<SootMethod> callees = iCfg.getCalleesOfCallAt(u);
+			if(callees.size() == 0){
+				SootMethod callee = ((Stmt)u).getInvokeExpr().getMethod();
+				callee.toString();
+			}
 			for(SootMethod cle : callees){
 				SootMethod newcle = resolveMethod(cle.getSignature(), mthDepth + 1);
-				if(newcle != null && newcle != cle)
-					
+				Iterator<Edge> edges0 = cg.edgesOutOf(u);
+				if(newcle != null && newcle != cle){
+					// the callee has been updated. we should modify the cg and cfg for next test.
+					InvokeExpr ie = ((Stmt)u).getInvokeExpr();
+					ie.setMethodRef(newcle.makeRef());
+					Iterator<Edge> edges = cg.edgesOutOf(u);
+					while(edges.hasNext()){
+						Edge e = edges.next();
+						e.setTgt(newcle);
+					}
+					iCfg.notifyMethodChanged(sm);
+				}
 			}
 		}
 		
@@ -714,12 +783,5 @@ iCfg.notifyMethodChanged(sm);
 			target = target.getSuperclass();
 		}
 		return false;
-	}
-
-	private void addTypeToLists(Type type) {
-		if(type instanceof RefType){
-			SootClass sc = ((RefType) type).getSootClass();
-			resolveClass(sc.getName(), 0);
-		}
 	}
 }

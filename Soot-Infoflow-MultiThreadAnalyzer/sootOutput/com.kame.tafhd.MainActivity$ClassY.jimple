@@ -1,0 +1,21 @@
+class com.kame.tafhd.MainActivity$ClassY extends java.lang.Object
+{
+    public java.lang.String tainted;
+    final com.kame.tafhd.MainActivity this$0;
+
+    void <init>(com.kame.tafhd.MainActivity)
+    {
+        com.kame.tafhd.MainActivity$ClassY this;
+        com.kame.tafhd.MainActivity l1;
+
+        this := @this: com.kame.tafhd.MainActivity$ClassY;
+
+        l1 := @parameter0: com.kame.tafhd.MainActivity;
+
+        this.<com.kame.tafhd.MainActivity$ClassY: com.kame.tafhd.MainActivity this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

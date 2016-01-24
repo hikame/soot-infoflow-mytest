@@ -1,211 +1,184 @@
-final class com.android.server.pm.PackageManagerService$OnPermissionChangeListeners extends android.os.Handler
+class com.kame.tafhd.MainActivity$AnotherHandler extends android.os.Handler
 {
-    private static final int MSG_ON_PERMISSIONS_CHANGED;
-    private final android.os.RemoteCallbackList mPermissionListeners;
-    final com.android.server.pm.PackageManagerService this$0;
+    final com.kame.tafhd.MainActivity this$0;
 
-    public void <init>(com.android.server.pm.PackageManagerService, android.os.Looper)
+    void <init>(com.kame.tafhd.MainActivity)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
-        com.android.server.pm.PackageManagerService l1;
-        android.os.Looper looper;
-        android.os.RemoteCallbackList $r0;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
+        com.kame.tafhd.MainActivity l1;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
-        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+        l1 := @parameter0: com.kame.tafhd.MainActivity;
 
-        looper := @parameter1: android.os.Looper;
+        this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0> = l1;
 
-        this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: com.android.server.pm.PackageManagerService this$0> = l1;
-
-        specialinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void <init>(android.os.Looper)>(looper);
-
-        $r0 = new android.os.RemoteCallbackList;
-
-        specialinvoke $r0.<android.os.RemoteCallbackList: void <init>()>();
-
-        this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners> = $r0;
+        specialinvoke this.<android.os.Handler: void <init>()>();
 
         return;
     }
 
     public void handleMessage(android.os.Message)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message msg;
-        int uid, $i0;
+        com.kame.tafhd.Publisher pub, pb, $r0, $r9, $r14, $r17, $r20, $r23;
+        com.kame.tafhd.MainActivity$ClassX x;
+        java.lang.Object loc, $r1, $r18;
+        int $i0;
+        com.kame.tafhd.MainActivity$ClassY $r2;
+        java.lang.String $r3, $r4, $r6, $r8, $r11, $r13, $r16, $r19, $r22;
+        com.kame.tafhd.MainActivity $r5, $r7, $r10, $r12, $r15, $r21;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         msg := @parameter0: android.os.Message;
 
         $i0 = msg.<android.os.Message: int what>;
 
-        lookupswitch($i0)
+        tableswitch($i0)
         {
-            case 1: goto label1;
-            default: goto label2;
+            case 0: goto label01;
+            case 1: goto label02;
+            case 2: goto label03;
+            case 3: goto label04;
+            case 4: goto label05;
+            case 5: goto label07;
+            case 6: goto label06;
+            case 7: goto label08;
+            case 8: goto label10;
+            default: goto label11;
         };
 
-     label1:
-        uid = msg.<android.os.Message: int arg1>;
-
-        specialinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void handleOnPermissionsChanged(int)>(uid);
-
-     label2:
-        return;
-    }
-
-    public void addListenerLocked(android.content.pm.IOnPermissionsChangeListener)
-    {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
-        android.content.pm.IOnPermissionsChangeListener listener;
-        android.os.RemoteCallbackList $r0;
-        android.os.IInterface tmp$727931090;
-
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
-
-        listener := @parameter0: android.content.pm.IOnPermissionsChangeListener;
-
-        $r0 = this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners>;
-
-        tmp$727931090 = (android.os.IInterface) listener;
-
-        virtualinvoke $r0.<android.os.RemoteCallbackList: boolean register(android.os.IInterface)>(tmp$727931090);
-
-        return;
-    }
-
-    public void removeListenerLocked(android.content.pm.IOnPermissionsChangeListener)
-    {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
-        android.content.pm.IOnPermissionsChangeListener listener;
-        android.os.RemoteCallbackList $r0;
-        android.os.IInterface tmp$640849656;
-
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
-
-        listener := @parameter0: android.content.pm.IOnPermissionsChangeListener;
-
-        $r0 = this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners>;
-
-        tmp$640849656 = (android.os.IInterface) listener;
-
-        virtualinvoke $r0.<android.os.RemoteCallbackList: boolean unregister(android.os.IInterface)>(tmp$640849656);
-
-        return;
-    }
-
-    public void onPermissionsChanged(int)
-    {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
-        int uid, $i0;
-        android.os.RemoteCallbackList $r0;
-        android.os.Message $r1;
-
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
-
-        uid := @parameter0: int;
-
-        $r0 = this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners>;
-
-        $i0 = virtualinvoke $r0.<android.os.RemoteCallbackList: int getRegisteredCallbackCount()>();
-
-        if $i0 <= 0 goto label1;
-
-        $r1 = virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.Message obtainMessage(int,int,int)>(1, uid, 0);
-
-        virtualinvoke $r1.<android.os.Message: void sendToTarget()>();
-
-     label1:
-        return;
-    }
-
-    private void handleOnPermissionsChanged(int)
-    {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
-        int uid, count, i#1;
-        android.content.pm.IOnPermissionsChangeListener callback;
-        android.os.RemoteException e, $r4;
-        java.lang.Throwable l6, $r5;
-        android.os.RemoteCallbackList $r0, $r1, $r2, $r6;
-        android.os.IInterface $r3;
-
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
-
-        uid := @parameter0: int;
-
-        $r0 = this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners>;
-
-        count = virtualinvoke $r0.<android.os.RemoteCallbackList: int beginBroadcast()>();
-
      label01:
-        i#1 = 0;
+        $r0 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r0.<com.kame.tafhd.Publisher: void <init>()>();
+
+        pub = $r0;
+
+        $r1 = msg.<android.os.Message: java.lang.Object obj>;
+
+        x = (com.kame.tafhd.MainActivity$ClassX) $r1;
+
+        $r2 = x.<com.kame.tafhd.MainActivity$ClassX: com.kame.tafhd.MainActivity$ClassY objY>;
+
+        $r3 = $r2.<com.kame.tafhd.MainActivity$ClassY: java.lang.String tainted>;
+
+        virtualinvoke pub.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r3);
+
+        goto label11;
 
      label02:
-        if i#1 >= count goto label07;
+        $r23 = new com.kame.tafhd.Publisher;
 
-        $r2 = this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners>;
+        specialinvoke $r23.<com.kame.tafhd.Publisher: void <init>()>();
 
-        $r3 = virtualinvoke $r2.<android.os.RemoteCallbackList: android.os.IInterface getBroadcastItem(int)>(i#1);
+        virtualinvoke $r23.<com.kame.tafhd.Publisher: void publish(java.lang.String)>("I am in the unrelevent parts.");
 
-        callback = (android.content.pm.IOnPermissionsChangeListener) $r3;
+        goto label11;
 
      label03:
-        interfaceinvoke callback.<android.content.pm.IOnPermissionsChangeListener: void onPermissionsChanged(int)>(uid);
+        $r20 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r20.<com.kame.tafhd.Publisher: void <init>()>();
+
+        $r21 = this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r22 = $r21.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r20.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r22);
+
+        goto label11;
 
      label04:
-        goto label06;
+        $r17 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r17.<com.kame.tafhd.Publisher: void <init>()>();
+
+        $r18 = msg.<android.os.Message: java.lang.Object obj>;
+
+        $r19 = (java.lang.String) $r18;
+
+        virtualinvoke $r17.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r19);
+
+        goto label11;
 
      label05:
-        $r4 := @caughtexception;
+        $r14 = new com.kame.tafhd.Publisher;
 
-        e = $r4;
+        specialinvoke $r14.<com.kame.tafhd.Publisher: void <init>()>();
 
-        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("PackageManager", "Permission listener is dead", e);
+        $r15 = this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r16 = $r15.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r14.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r16);
+
+        goto label11;
 
      label06:
-        i#1 = i#1 + 1;
+        $r12 = this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0>;
 
-        goto label02;
+        $r13 = $r12.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r13.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        goto label11;
 
      label07:
-        $r1 = this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners>;
+        loc = msg.<android.os.Message: java.lang.Object obj>;
 
-        virtualinvoke $r1.<android.os.RemoteCallbackList: void finishBroadcast()>();
+        virtualinvoke loc.<java.lang.Object: boolean equals(java.lang.Object)>("");
 
-        goto label10;
+        goto label11;
 
      label08:
-        $r5 := @caughtexception;
+        $r5 = this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0>;
 
-        l6 = $r5;
+        $r6 = $r5.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        if $r6 == null goto label09;
+
+        $r9 = new com.kame.tafhd.Publisher;
+
+        specialinvoke $r9.<com.kame.tafhd.Publisher: void <init>()>();
+
+        pb = $r9;
+
+        $r10 = this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r11 = $r10.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke pb.<com.kame.tafhd.Publisher: void publish(java.lang.String)>($r11);
 
      label09:
-        $r6 = this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: android.os.RemoteCallbackList mPermissionListeners>;
+        $r7 = this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0>;
 
-        virtualinvoke $r6.<android.os.RemoteCallbackList: void finishBroadcast()>();
+        $r8 = $r7.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
 
-        throw l6;
+        virtualinvoke $r8.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        goto label11;
 
      label10:
-        return;
+        $r4 = <com.kame.tafhd.MainActivity: java.lang.String staticTaint>;
 
-        catch android.os.RemoteException from label03 to label04 with label05;
-        catch java.lang.Throwable from label01 to label07 with label08;
-        catch java.lang.Throwable from label08 to label09 with label08;
+        virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+     label11:
+        return;
     }
 
     void dispatchMessage(android.os.Message)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message msg;
         java.lang.Runnable $r0;
         android.os.Handler$Callback $r1, $r2;
         boolean $z0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         msg := @parameter0: android.os.Message;
 
@@ -231,7 +204,7 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
         return;
 
      label2:
-        virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void handleMessage(android.os.Message)>(msg);
+        virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void handleMessage(android.os.Message)>(msg);
 
      label3:
         return;
@@ -239,84 +212,84 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void <init>()
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
-        specialinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void <init>(android.os.Handler$Callback,boolean)>(null, 0);
+        specialinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void <init>(android.os.Handler$Callback,boolean)>(null, 0);
 
         return;
     }
 
     void <init>(android.os.Handler$Callback)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Handler$Callback callback;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         callback := @parameter0: android.os.Handler$Callback;
 
-        specialinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void <init>(android.os.Handler$Callback,boolean)>(callback, 0);
+        specialinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void <init>(android.os.Handler$Callback,boolean)>(callback, 0);
 
         return;
     }
 
     void <init>(android.os.Looper)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Looper looper;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         looper := @parameter0: android.os.Looper;
 
-        specialinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, null, 0);
+        specialinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, null, 0);
 
         return;
     }
 
     void <init>(android.os.Looper, android.os.Handler$Callback)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Looper looper;
         android.os.Handler$Callback callback;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         looper := @parameter0: android.os.Looper;
 
         callback := @parameter1: android.os.Handler$Callback;
 
-        specialinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, callback, 0);
+        specialinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, callback, 0);
 
         return;
     }
 
     void <init>(boolean)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         boolean async;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         async := @parameter0: boolean;
 
-        specialinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void <init>(android.os.Handler$Callback,boolean)>(null, async);
+        specialinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void <init>(android.os.Handler$Callback,boolean)>(null, async);
 
         return;
     }
 
     void <init>(android.os.Handler$Callback, boolean)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Handler$Callback callback;
         boolean async;
         android.os.Looper $r0, $r1, $r2;
         android.os.MessageQueue $r3;
         java.lang.RuntimeException $r4;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         callback := @parameter0: android.os.Handler$Callback;
 
@@ -354,13 +327,13 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void <init>(android.os.Looper, android.os.Handler$Callback, boolean)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Looper looper;
         android.os.Handler$Callback callback;
         boolean async;
         android.os.MessageQueue $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         looper := @parameter0: android.os.Looper;
 
@@ -385,7 +358,7 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     java.lang.String getMessageName(android.os.Message)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message message;
         java.lang.Runnable $r0, $r6;
         java.lang.StringBuilder $r1, $r2, $r4;
@@ -393,7 +366,7 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
         java.lang.String $r3, $r5, $r8;
         java.lang.Class $r7;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         message := @parameter0: android.os.Message;
 
@@ -429,10 +402,10 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     android.os.Message obtainMessage()
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler)>(this);
 
@@ -441,11 +414,11 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     android.os.Message obtainMessage(int)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         android.os.Message result;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -460,12 +433,12 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     android.os.Message obtainMessage(int, java.lang.Object)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         java.lang.Object obj;
         android.os.Message $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -478,11 +451,11 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     android.os.Message obtainMessage(int, int, int)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what, arg1, arg2;
         android.os.Message $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -497,12 +470,12 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     android.os.Message obtainMessage(int, int, int, java.lang.Object)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what, arg1, arg2;
         java.lang.Object obj;
         android.os.Message $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -519,10 +492,10 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean post(java.lang.Runnable)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable param0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         param0 := @parameter0: java.lang.Runnable;
 
@@ -533,11 +506,11 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean postAtTime(java.lang.Runnable, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable param0;
         long param1;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         param0 := @parameter0: java.lang.Runnable;
 
@@ -550,12 +523,12 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean postAtTime(java.lang.Runnable, java.lang.Object, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable param0;
         java.lang.Object param1;
         long param2;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         param0 := @parameter0: java.lang.Runnable;
 
@@ -570,11 +543,11 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean postDelayed(java.lang.Runnable, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable param0;
         long param1;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         param0 := @parameter0: java.lang.Runnable;
 
@@ -587,10 +560,10 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean postAtFrontOfQueue(java.lang.Runnable)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable param0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         param0 := @parameter0: java.lang.Runnable;
 
@@ -601,7 +574,7 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean runWithScissors(java.lang.Runnable, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable r;
         long timeout;
         android.os.Handler$BlockingRunnable br, $r2;
@@ -610,7 +583,7 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
         boolean $z0;
         java.lang.IllegalArgumentException $r3, $r4;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         r := @parameter0: java.lang.Runnable;
 
@@ -660,11 +633,11 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void removeCallbacks(java.lang.Runnable)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable r;
         android.os.MessageQueue $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         r := @parameter0: java.lang.Runnable;
 
@@ -677,12 +650,12 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void removeCallbacks(java.lang.Runnable, java.lang.Object)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable r;
         java.lang.Object token;
         android.os.MessageQueue $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         r := @parameter0: java.lang.Runnable;
 
@@ -697,42 +670,42 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean sendMessage(android.os.Message)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message msg;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         msg := @parameter0: android.os.Message;
 
-        virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void dispatchMessage(android.os.Message)>(msg);
+        virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void dispatchMessage(android.os.Message)>(msg);
 
         return 1;
     }
 
     boolean sendEmptyMessage(int)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         boolean $z0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
-        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: boolean sendEmptyMessageDelayed(int,long)>(what, 0L);
+        $z0 = virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: boolean sendEmptyMessageDelayed(int,long)>(what, 0L);
 
         return $z0;
     }
 
     boolean sendEmptyMessageDelayed(int, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         long delayMillis;
         android.os.Message msg;
         boolean $z0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -742,20 +715,20 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
         msg.<android.os.Message: int what> = what;
 
-        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: boolean sendMessageDelayed(android.os.Message,long)>(msg, delayMillis);
+        $z0 = virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: boolean sendMessageDelayed(android.os.Message,long)>(msg, delayMillis);
 
         return $z0;
     }
 
     boolean sendEmptyMessageAtTime(int, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         long uptimeMillis;
         android.os.Message msg;
         boolean $z0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -765,68 +738,68 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
         msg.<android.os.Message: int what> = what;
 
-        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: boolean sendMessageAtTime(android.os.Message,long)>(msg, uptimeMillis);
+        $z0 = virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: boolean sendMessageAtTime(android.os.Message,long)>(msg, uptimeMillis);
 
         return $z0;
     }
 
     boolean sendMessageDelayed(android.os.Message, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message msg;
         long param1;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         msg := @parameter0: android.os.Message;
 
         param1 := @parameter1: long;
 
-        virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void dispatchMessage(android.os.Message)>(msg);
+        virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void dispatchMessage(android.os.Message)>(msg);
 
         return 1;
     }
 
     boolean sendMessageAtTime(android.os.Message, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message msg;
         long param1;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         msg := @parameter0: android.os.Message;
 
         param1 := @parameter1: long;
 
-        virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void dispatchMessage(android.os.Message)>(msg);
+        virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void dispatchMessage(android.os.Message)>(msg);
 
         return 1;
     }
 
     boolean sendMessageAtFrontOfQueue(android.os.Message)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Message msg;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         msg := @parameter0: android.os.Message;
 
-        virtualinvoke this.<com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: void dispatchMessage(android.os.Message)>(msg);
+        virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void dispatchMessage(android.os.Message)>(msg);
 
         return 1;
     }
 
     boolean enqueueMessage(android.os.MessageQueue, android.os.Message, long)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.MessageQueue queue;
         android.os.Message msg;
         long uptimeMillis;
         boolean $z0, $z1;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         queue := @parameter0: android.os.MessageQueue;
 
@@ -850,11 +823,11 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void removeMessages(int)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         android.os.MessageQueue $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -867,12 +840,12 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void removeMessages(int, java.lang.Object)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         java.lang.Object object;
         android.os.MessageQueue $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -887,11 +860,11 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void removeCallbacksAndMessages(java.lang.Object)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Object token;
         android.os.MessageQueue $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         token := @parameter0: java.lang.Object;
 
@@ -904,12 +877,12 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean hasMessages(int)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         android.os.MessageQueue $r0;
         boolean $z0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -922,13 +895,13 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean hasMessages(int, java.lang.Object)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         int what;
         java.lang.Object object;
         android.os.MessageQueue $r0;
         boolean $z0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         what := @parameter0: int;
 
@@ -943,12 +916,12 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     boolean hasCallbacks(java.lang.Runnable)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.Runnable r;
         android.os.MessageQueue $r0;
         boolean $z0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         r := @parameter0: java.lang.Runnable;
 
@@ -961,10 +934,10 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     android.os.Looper getLooper()
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.Looper $r0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         $r0 = this.<android.os.Handler: android.os.Looper mLooper>;
 
@@ -973,14 +946,14 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     void dump(android.util.Printer, java.lang.String)
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.util.Printer pw;
-        java.lang.String prefix, $r5, $r11, $r14;
-        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r15;
+        java.lang.String prefix, $r5, $r11, $r15;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r14;
         long $l0;
         android.os.Looper $r6, $r8;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         pw := @parameter0: android.util.Printer;
 
@@ -1008,17 +981,17 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
         if $r6 != null goto label1;
 
-        $r13 = new java.lang.StringBuilder;
+        $r12 = new java.lang.StringBuilder;
 
-        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
 
-        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
 
-        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
 
-        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.String toString()>();
 
-        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r14);
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r15);
 
         goto label2;
 
@@ -1043,13 +1016,13 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     java.lang.String toString()
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         java.lang.StringBuilder $r0, $r1, $r4, $r5, $r7, $r8;
         java.lang.Class $r2;
         java.lang.String $r3, $r6, $r9;
         int $i0;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         $r0 = new java.lang.StringBuilder;
 
@@ -1080,13 +1053,13 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
 
     android.os.IMessenger getIMessenger()
     {
-        com.android.server.pm.PackageManagerService$OnPermissionChangeListeners this;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
         android.os.MessageQueue l1, $r0;
         java.lang.Throwable l2, $r5;
-        android.os.IMessenger $r1, $r3, $r4, tmp$1071492655;
-        android.os.Handler$MessengerImpl tmp$555932112;
+        android.os.IMessenger $r1, $r3, $r4, tmp$330128595;
+        android.os.Handler$MessengerImpl tmp$1724457619;
 
-        this := @this: com.android.server.pm.PackageManagerService$OnPermissionChangeListeners;
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
 
         $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
 
@@ -1107,13 +1080,13 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
         return $r4;
 
      label3:
-        tmp$555932112 = new android.os.Handler$MessengerImpl;
+        tmp$1724457619 = new android.os.Handler$MessengerImpl;
 
-        specialinvoke tmp$555932112.<android.os.Handler$MessengerImpl: void <init>(android.os.Handler,android.os.Handler$1)>(this, null);
+        specialinvoke tmp$1724457619.<android.os.Handler$MessengerImpl: void <init>(android.os.Handler,android.os.Handler$1)>(this, null);
 
-        tmp$1071492655 = (android.os.IMessenger) tmp$555932112;
+        tmp$330128595 = (android.os.IMessenger) tmp$1724457619;
 
-        this.<android.os.Handler: android.os.IMessenger mMessenger> = tmp$1071492655;
+        this.<android.os.Handler: android.os.IMessenger mMessenger> = tmp$330128595;
 
         $r3 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
 
@@ -1184,10 +1157,75 @@ final class com.android.server.pm.PackageManagerService$OnPermissionChangeListen
         return;
     }
 
-    public static void <clinit>()
+    void handleMessage_MainActivity__AnotherHandler_6(android.os.Message)
     {
-        <com.android.server.pm.PackageManagerService$OnPermissionChangeListeners: int MSG_ON_PERMISSIONS_CHANGED> = 1;
+        com.kame.tafhd.MainActivity$AnotherHandler this;
+        android.os.Message msg;
+        com.kame.tafhd.Publisher pub, pb, $r0, $r9, $r14, $r17, $r20, $r23;
+        com.kame.tafhd.MainActivity$ClassX x;
+        java.lang.Object loc, $r1, $r18;
+        int $i0;
+        com.kame.tafhd.MainActivity$ClassY $r2;
+        java.lang.String $r3, $r4, $r6, $r8, $r11, $r13, $r16, $r19, $r22;
+        com.kame.tafhd.MainActivity $r5, $r7, $r10, $r12, $r15, $r21;
 
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $i0 = msg.<android.os.Message: int what>;
+
+        nop;
+
+        $r12 = this.<com.kame.tafhd.MainActivity$AnotherHandler: com.kame.tafhd.MainActivity this$0>;
+
+        $r13 = $r12.<com.kame.tafhd.MainActivity: java.lang.String tainted>;
+
+        virtualinvoke $r13.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        goto label1;
+
+     label1:
+        return;
+    }
+
+    void dispatchMessage_MainActivity__AnotherHandler_6(android.os.Message)
+    {
+        com.kame.tafhd.MainActivity$AnotherHandler this;
+        android.os.Message msg;
+        java.lang.Runnable $r0;
+        android.os.Handler$Callback $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.kame.tafhd.MainActivity$AnotherHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $r0 = msg.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        staticinvoke <android.os.Handler: void handleCallback(android.os.Message)>(msg);
+
+        goto label3;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        if $r1 == null goto label2;
+
+        $r2 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        $z0 = interfaceinvoke $r2.<android.os.Handler$Callback: boolean handleMessage(android.os.Message)>(msg);
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        virtualinvoke this.<com.kame.tafhd.MainActivity$AnotherHandler: void handleMessage_MainActivity__AnotherHandler_6(android.os.Message)>(msg);
+
+     label3:
         return;
     }
 }

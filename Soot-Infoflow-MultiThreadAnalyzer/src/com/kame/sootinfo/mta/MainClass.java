@@ -100,7 +100,7 @@ cpSoot = cpSoot + File.pathSeparator + "E:\\GitHub_Projects\\soot-infoflow-mytes
 //test();	
 
 		logger.info("Reconstruct the control flow graph for the infoflow analyzer.");
-//		ControlFlowGraphManager.v().eliminateDeadCode(new MySourceSinkManager());
+		ControlFlowGraphManager.v().eliminateDeadCode(new MySourceSinkManager());
 		ControlFlowGraphManager.v().generateCFG(); //in order to take care of infoflow analysis.
 
 //		Scene.v().releaseFastHierarchy();
