@@ -1,0 +1,141 @@
+class com.android.server.pm.PackageManagerService$2 extends java.lang.Object implements java.lang.Runnable
+{
+    final java.lang.String val$volumeUuid;
+    final long val$freeStorageSize;
+    final android.content.pm.IPackageDataObserver val$observer;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, java.lang.String, long, android.content.pm.IPackageDataObserver)
+    {
+        com.android.server.pm.PackageManagerService$2 this;
+        com.android.server.pm.PackageManagerService l1;
+        java.lang.String l2;
+        long l3;
+        android.content.pm.IPackageDataObserver l5;
+
+        this := @this: com.android.server.pm.PackageManagerService$2;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: java.lang.String;
+
+        l3 := @parameter2: long;
+
+        l5 := @parameter3: android.content.pm.IPackageDataObserver;
+
+        this.<com.android.server.pm.PackageManagerService$2: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$2: java.lang.String val$volumeUuid> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$2: long val$freeStorageSize> = l3;
+
+        this.<com.android.server.pm.PackageManagerService$2: android.content.pm.IPackageDataObserver val$observer> = l5;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$2 this;
+        java.lang.Throwable l3, $r9;
+        com.android.server.pm.PackageManagerService $r0, $r2, $r4;
+        com.android.server.pm.PackageManagerService$PackageHandler $r1;
+        java.lang.Object $r3, e#2;
+        long $l0;
+        java.lang.String $r5;
+        com.android.server.pm.Installer $r6;
+        android.content.pm.IPackageDataObserver $r7, $r8;
+        android.os.RemoteException $r10, e#5;
+        byte retCode#1;
+        int retCode#3;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$2;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$2: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        virtualinvoke $r1.<com.android.server.pm.PackageManagerService$PackageHandler: void removeCallbacks(java.lang.Runnable)>(this);
+
+        retCode#1 = -1;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$2: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: java.lang.Object mInstallLock>;
+
+        e#2 = $r3;
+
+        entermonitor $r3;
+
+     label01:
+        $r4 = this.<com.android.server.pm.PackageManagerService$2: com.android.server.pm.PackageManagerService this$0>;
+
+        $r6 = $r4.<com.android.server.pm.PackageManagerService: com.android.server.pm.Installer mInstaller>;
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$2: java.lang.String val$volumeUuid>;
+
+        $l0 = this.<com.android.server.pm.PackageManagerService$2: long val$freeStorageSize>;
+
+        retCode#3 = virtualinvoke $r6.<com.android.server.pm.Installer: int freeCache(java.lang.String,long)>($r5, $l0);
+
+        if retCode#3 >= 0 goto label02;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", "Couldn\'t clear application caches");
+
+     label02:
+        exitmonitor e#2;
+
+     label03:
+        goto label06;
+
+     label04:
+        $r9 := @caughtexception;
+
+        l3 = $r9;
+
+        exitmonitor e#2;
+
+     label05:
+        throw l3;
+
+     label06:
+        $r7 = this.<com.android.server.pm.PackageManagerService$2: android.content.pm.IPackageDataObserver val$observer>;
+
+        if $r7 == null goto label12;
+
+     label07:
+        $r8 = this.<com.android.server.pm.PackageManagerService$2: android.content.pm.IPackageDataObserver val$observer>;
+
+        if retCode#3 < 0 goto label08;
+
+        $z0 = 1;
+
+        goto label09;
+
+     label08:
+        $z0 = 0;
+
+     label09:
+        interfaceinvoke $r8.<android.content.pm.IPackageDataObserver: void onRemoveCompleted(java.lang.String,boolean)>(null, $z0);
+
+     label10:
+        goto label12;
+
+     label11:
+        $r10 := @caughtexception;
+
+        e#5 = $r10;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", "RemoveException when invoking call back");
+
+     label12:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label04;
+        catch java.lang.Throwable from label04 to label05 with label04;
+        catch android.os.RemoteException from label07 to label10 with label11;
+    }
+}

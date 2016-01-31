@@ -1,0 +1,196 @@
+public final class com.android.server.AppOpsService$ClientState extends android.os.Binder implements android.os.IBinder$DeathRecipient
+{
+    final android.os.IBinder mAppToken;
+    final int mPid;
+    final java.util.ArrayList mStartedOps;
+    final com.android.server.AppOpsService this$0;
+
+    public void <init>(com.android.server.AppOpsService, android.os.IBinder)
+    {
+        com.android.server.AppOpsService$ClientState this;
+        com.android.server.AppOpsService l1;
+        android.os.IBinder appToken, $r1;
+        android.os.RemoteException l3, $r2;
+        int $i0;
+        boolean $z0;
+        java.util.ArrayList $r0;
+
+        this := @this: com.android.server.AppOpsService$ClientState;
+
+        l1 := @parameter0: com.android.server.AppOpsService;
+
+        appToken := @parameter1: android.os.IBinder;
+
+        this.<com.android.server.AppOpsService$ClientState: com.android.server.AppOpsService this$0> = l1;
+
+        specialinvoke this.<android.os.Binder: void <init>()>();
+
+        this.<com.android.server.AppOpsService$ClientState: android.os.IBinder mAppToken> = appToken;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        this.<com.android.server.AppOpsService$ClientState: int mPid> = $i0;
+
+        $z0 = appToken instanceof android.os.Binder;
+
+        if $z0 == 0 goto label1;
+
+        this.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps> = null;
+
+        goto label5;
+
+     label1:
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+        this.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps> = $r0;
+
+     label2:
+        $r1 = this.<com.android.server.AppOpsService$ClientState: android.os.IBinder mAppToken>;
+
+        interfaceinvoke $r1.<android.os.IBinder: void linkToDeath(android.os.IBinder$DeathRecipient,int)>(this, 0);
+
+     label3:
+        goto label5;
+
+     label4:
+        $r2 := @caughtexception;
+
+        l3 = $r2;
+
+     label5:
+        return;
+
+        catch android.os.RemoteException from label2 to label3 with label4;
+    }
+
+    public java.lang.String toString()
+    {
+        com.android.server.AppOpsService$ClientState this;
+        java.lang.StringBuilder $r0, $r1, $r3, $r4, $r6, $r7, $r9, $r10, $r11;
+        android.os.IBinder $r2;
+        java.util.ArrayList $r5;
+        java.lang.String $r8, $r12;
+        int $i0;
+
+        this := @this: com.android.server.AppOpsService$ClientState;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ClientState{mAppToken=");
+
+        $r2 = this.<com.android.server.AppOpsService$ClientState: android.os.IBinder mAppToken>;
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r5 = this.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        if $r5 == null goto label1;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("pid=");
+
+        $i0 = this.<com.android.server.AppOpsService$ClientState: int mPid>;
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label2;
+
+     label1:
+        $r12 = "local";
+
+     label2:
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r12);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(125);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r8;
+    }
+
+    public void binderDied()
+    {
+        com.android.server.AppOpsService$ClientState this;
+        com.android.server.AppOpsService l1, $r0, $r2, $r7;
+        java.lang.Throwable l3, $r10;
+        java.util.ArrayList $r1, $r6;
+        int $i0, i#1;
+        android.os.IBinder $r3;
+        android.util.ArrayMap $r4;
+        java.lang.Object $r8;
+        com.android.server.AppOpsService$Op $r9;
+
+        this := @this: com.android.server.AppOpsService$ClientState;
+
+        $r0 = this.<com.android.server.AppOpsService$ClientState: com.android.server.AppOpsService this$0>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = this.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+
+        i#1 = $i0 - 1;
+
+     label2:
+        if i#1 < 0 goto label3;
+
+        $r7 = this.<com.android.server.AppOpsService$ClientState: com.android.server.AppOpsService this$0>;
+
+        $r6 = this.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        $r8 = virtualinvoke $r6.<java.util.ArrayList: java.lang.Object get(int)>(i#1);
+
+        $r9 = (com.android.server.AppOpsService$Op) $r8;
+
+        virtualinvoke $r7.<com.android.server.AppOpsService: void finishOperationLocked(com.android.server.AppOpsService$Op)>($r9);
+
+        i#1 = i#1 + -1;
+
+        goto label2;
+
+     label3:
+        $r2 = this.<com.android.server.AppOpsService$ClientState: com.android.server.AppOpsService this$0>;
+
+        $r4 = $r2.<com.android.server.AppOpsService: android.util.ArrayMap mClients>;
+
+        $r3 = this.<com.android.server.AppOpsService$ClientState: android.os.IBinder mAppToken>;
+
+        virtualinvoke $r4.<android.util.ArrayMap: java.lang.Object remove(java.lang.Object)>($r3);
+
+        exitmonitor l1;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r10 := @caughtexception;
+
+        l3 = $r10;
+
+        exitmonitor l1;
+
+     label6:
+        throw l3;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+}

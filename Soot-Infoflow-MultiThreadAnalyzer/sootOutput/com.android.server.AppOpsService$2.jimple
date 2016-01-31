@@ -1,0 +1,93 @@
+class com.android.server.AppOpsService$2 extends java.lang.Object implements android.os.storage.MountServiceInternal$ExternalStorageMountPolicy
+{
+    final com.android.server.AppOpsService this$0;
+
+    void <init>(com.android.server.AppOpsService)
+    {
+        com.android.server.AppOpsService$2 this;
+        com.android.server.AppOpsService l1;
+
+        this := @this: com.android.server.AppOpsService$2;
+
+        l1 := @parameter0: com.android.server.AppOpsService;
+
+        this.<com.android.server.AppOpsService$2: com.android.server.AppOpsService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public int getMountMode(int, java.lang.String)
+    {
+        com.android.server.AppOpsService$2 this;
+        int uid, $i0, $i1;
+        java.lang.String packageName;
+        boolean $z0;
+        com.android.server.AppOpsService $r0, $r1;
+
+        this := @this: com.android.server.AppOpsService$2;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        $z0 = staticinvoke <android.os.Process: boolean isIsolated(int)>(uid);
+
+        if $z0 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r0 = this.<com.android.server.AppOpsService$2: com.android.server.AppOpsService this$0>;
+
+        $i0 = virtualinvoke $r0.<com.android.server.AppOpsService: int noteOperation(int,int,java.lang.String)>(59, uid, packageName);
+
+        if $i0 == 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r1 = this.<com.android.server.AppOpsService$2: com.android.server.AppOpsService this$0>;
+
+        $i1 = virtualinvoke $r1.<com.android.server.AppOpsService: int noteOperation(int,int,java.lang.String)>(60, uid, packageName);
+
+        if $i1 == 0 goto label3;
+
+        return 2;
+
+     label3:
+        return 3;
+    }
+
+    public boolean hasExternalStorage(int, java.lang.String)
+    {
+        com.android.server.AppOpsService$2 this;
+        int uid, mountMode;
+        java.lang.String packageName;
+        boolean $z0;
+
+        this := @this: com.android.server.AppOpsService$2;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        mountMode = virtualinvoke this.<com.android.server.AppOpsService$2: int getMountMode(int,java.lang.String)>(uid, packageName);
+
+        if mountMode == 2 goto label1;
+
+        if mountMode != 3 goto label2;
+
+     label1:
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        return $z0;
+    }
+}

@@ -8,6 +8,7 @@ import com.kame.sootinfo.mta.MTAScene;
 import com.kame.sootinfo.mta.tags.MyStmtTag;
 
 import heros.InterproceduralCFG;
+import kame.soot.info.SourceSinkType;
 import soot.Local;
 import soot.PrimType;
 import soot.SootMethod;
@@ -25,7 +26,6 @@ import soot.jimple.infoflow.data.AccessPath;
 import soot.jimple.infoflow.data.AccessPathFactory;
 import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.source.SourceInfo;
-import soot.kame.SourceSinkType;
 
 public class MySourceSinkManager implements ISourceSinkManager {
 	List<String> targetMethods = MTAScene.v().getTargetList(); 
@@ -44,7 +44,7 @@ public class MySourceSinkManager implements ISourceSinkManager {
 		//对于产生source的语句进行了tag标注
 		SourceInfo result = isParameterOfTargetMethods(stmt, cfg);
 		
-		if(result == null)
+		if(result == null && MTAScene.v().isNatureSourceEnabled())
 			result = isNewNullValue(stmt, cfg);;	//查看是否可能引入新的空指，是则返回sourceinfo
 		return result;
 	}
@@ -98,7 +98,7 @@ public class MySourceSinkManager implements ISourceSinkManager {
 			AccessPath ap) {
 		//TODO sink是要根据sinkStmt中的MyStmtTag进行重新判定的
 		boolean result = false;
-		result = isPublishSink(sinkStmt, cfg, ap);
+//		result = isPublishSink(sinkStmt, cfg, ap);
 		result = result || isNullPointExceptionSink(sinkStmt, cfg, ap);
 		return result;
 	}
@@ -160,8 +160,8 @@ public class MySourceSinkManager implements ISourceSinkManager {
 	private boolean isPublishSink(Stmt stmt, InterproceduralCFG<Unit, SootMethod> cfg, AccessPath ap) {
 		if(!(stmt instanceof InvokeStmt))
 			return false;
-		if(ap != null && !ap.getSourceTypes().contains(SourceSinkType.MyTestPublish))
-			return false;
+//		if(ap != null && !ap.getSourceTypes().contains(SourceSinkType.MyTestPublish))
+//			return false;
 		InvokeStmt sCallSite = (InvokeStmt)stmt;
 		String targetMth = sCallSite.getInvokeExpr().getMethod().getSignature();
 		boolean isSink = false;
@@ -175,7 +175,7 @@ public class MySourceSinkManager implements ISourceSinkManager {
 				Value param = sCallSite.getInvokeExpr().getArg(0);	//这个0不应是写死的！
 				if(ap.getPlainValue().equals(param)){
 					isSink = true;
-					addTagIfNeccesary(stmt, SourceSinkType.MyTestPublish);
+//					addTagIfNeccesary(stmt, SourceSinkType.MyTestPublish);
 					break;
 				}
 			}

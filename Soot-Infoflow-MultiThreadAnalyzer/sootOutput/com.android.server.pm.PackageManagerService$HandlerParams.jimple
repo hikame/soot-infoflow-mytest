@@ -1,0 +1,131 @@
+abstract class com.android.server.pm.PackageManagerService$HandlerParams extends java.lang.Object
+{
+    private static final int MAX_RETRIES;
+    private int mRetries;
+    private final android.os.UserHandle mUser;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, android.os.UserHandle)
+    {
+        com.android.server.pm.PackageManagerService$HandlerParams this;
+        com.android.server.pm.PackageManagerService l1;
+        android.os.UserHandle user;
+
+        this := @this: com.android.server.pm.PackageManagerService$HandlerParams;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        user := @parameter1: android.os.UserHandle;
+
+        this.<com.android.server.pm.PackageManagerService$HandlerParams: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$HandlerParams: int mRetries> = 0;
+
+        this.<com.android.server.pm.PackageManagerService$HandlerParams: android.os.UserHandle mUser> = user;
+
+        return;
+    }
+
+    android.os.UserHandle getUser()
+    {
+        com.android.server.pm.PackageManagerService$HandlerParams this;
+        android.os.UserHandle $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$HandlerParams;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$HandlerParams: android.os.UserHandle mUser>;
+
+        return $r0;
+    }
+
+    final boolean startCopy()
+    {
+        com.android.server.pm.PackageManagerService$HandlerParams this;
+        android.os.RemoteException e, $r2;
+        int $i0, $i1;
+        com.android.server.pm.PackageManagerService $r0, $r3;
+        com.android.server.pm.PackageManagerService$PackageHandler $r1, $r4;
+        boolean res#1;
+
+        this := @this: com.android.server.pm.PackageManagerService$HandlerParams;
+
+     label1:
+        $i0 = this.<com.android.server.pm.PackageManagerService$HandlerParams: int mRetries>;
+
+        $i1 = $i0 + 1;
+
+        this.<com.android.server.pm.PackageManagerService$HandlerParams: int mRetries> = $i1;
+
+        if $i1 <= 4 goto label3;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", "Failed to invoke remote methods on default container service. Giving up");
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$HandlerParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        virtualinvoke $r1.<com.android.server.pm.PackageManagerService$PackageHandler: boolean sendEmptyMessage(int)>(11);
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$HandlerParams: void handleServiceError()>();
+
+     label2:
+        return 0;
+
+     label3:
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$HandlerParams: void handleStartCopy()>();
+
+        res#1 = 1;
+
+     label4:
+        goto label6;
+
+     label5:
+        $r2 := @caughtexception;
+
+        e = $r2;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$HandlerParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r4 = $r3.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        virtualinvoke $r4.<com.android.server.pm.PackageManagerService$PackageHandler: boolean sendEmptyMessage(int)>(10);
+
+        res#1 = 0;
+
+     label6:
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$HandlerParams: void handleReturnCode()>();
+
+        return res#1;
+
+        catch android.os.RemoteException from label1 to label2 with label5;
+        catch android.os.RemoteException from label3 to label4 with label5;
+    }
+
+    final void serviceError()
+    {
+        com.android.server.pm.PackageManagerService$HandlerParams this;
+
+        this := @this: com.android.server.pm.PackageManagerService$HandlerParams;
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$HandlerParams: void handleServiceError()>();
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$HandlerParams: void handleReturnCode()>();
+
+        return;
+    }
+
+    abstract void handleStartCopy() throws android.os.RemoteException;
+
+    abstract void handleServiceError();
+
+    abstract void handleReturnCode();
+
+    public static void <clinit>()
+    {
+        <com.android.server.pm.PackageManagerService$HandlerParams: int MAX_RETRIES> = 4;
+
+        return;
+    }
+}

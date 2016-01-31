@@ -1,0 +1,129 @@
+class com.android.server.pm.PackageManagerService$22 extends android.content.pm.IPackageInstallObserver2$Stub
+{
+    final java.util.concurrent.CountDownLatch val$installedLatch;
+    final java.lang.String val$packageName;
+    final int val$moveId;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, java.util.concurrent.CountDownLatch, java.lang.String, int)
+    {
+        com.android.server.pm.PackageManagerService$22 this;
+        com.android.server.pm.PackageManagerService l1;
+        java.util.concurrent.CountDownLatch l2;
+        java.lang.String l3;
+        int l4;
+
+        this := @this: com.android.server.pm.PackageManagerService$22;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: java.util.concurrent.CountDownLatch;
+
+        l3 := @parameter2: java.lang.String;
+
+        l4 := @parameter3: int;
+
+        this.<com.android.server.pm.PackageManagerService$22: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$22: java.util.concurrent.CountDownLatch val$installedLatch> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$22: java.lang.String val$packageName> = l3;
+
+        this.<com.android.server.pm.PackageManagerService$22: int val$moveId> = l4;
+
+        specialinvoke this.<android.content.pm.IPackageInstallObserver2$Stub: void <init>()>();
+
+        return;
+    }
+
+    public void onUserActionRequired(android.content.Intent) throws android.os.RemoteException
+    {
+        com.android.server.pm.PackageManagerService$22 this;
+        android.content.Intent intent;
+        java.lang.IllegalStateException $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$22;
+
+        intent := @parameter0: android.content.Intent;
+
+        $r0 = new java.lang.IllegalStateException;
+
+        specialinvoke $r0.<java.lang.IllegalStateException: void <init>()>();
+
+        throw $r0;
+    }
+
+    public void onPackageInstalled(java.lang.String, int, java.lang.String, android.os.Bundle) throws android.os.RemoteException
+    {
+        com.android.server.pm.PackageManagerService$22 this;
+        java.lang.String basePackageName, msg, $r1;
+        int returnCode, status, $i0, $i1, $i2;
+        android.os.Bundle extras;
+        java.util.concurrent.CountDownLatch $r0;
+        com.android.server.pm.PackageManagerService $r2, $r3, $r5, $r8;
+        com.android.server.pm.PackageManagerService$MoveCallbacks $r4, $r6, $r7;
+
+        this := @this: com.android.server.pm.PackageManagerService$22;
+
+        basePackageName := @parameter0: java.lang.String;
+
+        returnCode := @parameter1: int;
+
+        msg := @parameter2: java.lang.String;
+
+        extras := @parameter3: android.os.Bundle;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$22: java.util.concurrent.CountDownLatch val$installedLatch>;
+
+        virtualinvoke $r0.<java.util.concurrent.CountDownLatch: void countDown()>();
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$22: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$22: java.lang.String val$packageName>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void access$5900(com.android.server.pm.PackageManagerService,java.lang.String)>($r2, $r1);
+
+        status = staticinvoke <android.content.pm.PackageManager: int installStatusToPublicStatus(int)>(returnCode);
+
+        lookupswitch(status)
+        {
+            case 0: goto label1;
+            case 6: goto label2;
+            default: goto label3;
+        };
+
+     label1:
+        $r5 = this.<com.android.server.pm.PackageManagerService$22: com.android.server.pm.PackageManagerService this$0>;
+
+        $r6 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$MoveCallbacks access$6000(com.android.server.pm.PackageManagerService)>($r5);
+
+        $i1 = this.<com.android.server.pm.PackageManagerService$22: int val$moveId>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService$MoveCallbacks: void access$5700(com.android.server.pm.PackageManagerService$MoveCallbacks,int,int)>($r6, $i1, -100);
+
+        goto label4;
+
+     label2:
+        $r3 = this.<com.android.server.pm.PackageManagerService$22: com.android.server.pm.PackageManagerService this$0>;
+
+        $r4 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$MoveCallbacks access$6000(com.android.server.pm.PackageManagerService)>($r3);
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$22: int val$moveId>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService$MoveCallbacks: void access$5700(com.android.server.pm.PackageManagerService$MoveCallbacks,int,int)>($r4, $i0, -1);
+
+        goto label4;
+
+     label3:
+        $r8 = this.<com.android.server.pm.PackageManagerService$22: com.android.server.pm.PackageManagerService this$0>;
+
+        $r7 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$MoveCallbacks access$6000(com.android.server.pm.PackageManagerService)>($r8);
+
+        $i2 = this.<com.android.server.pm.PackageManagerService$22: int val$moveId>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService$MoveCallbacks: void access$5700(com.android.server.pm.PackageManagerService$MoveCallbacks,int,int)>($r7, $i2, -6);
+
+     label4:
+        return;
+    }
+}

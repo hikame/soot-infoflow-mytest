@@ -1,0 +1,121 @@
+class com.android.server.pm.PackageManagerService$23 extends java.lang.Thread
+{
+    final java.util.concurrent.CountDownLatch val$installedLatch;
+    final long val$startFreeBytes;
+    final java.io.File val$measurePath;
+    final long val$sizeBytes;
+    final int val$moveId;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, java.util.concurrent.CountDownLatch, long, java.io.File, long, int)
+    {
+        com.android.server.pm.PackageManagerService$23 this;
+        com.android.server.pm.PackageManagerService l1;
+        java.util.concurrent.CountDownLatch l2;
+        long l3, l6;
+        java.io.File l5;
+        int l8;
+
+        this := @this: com.android.server.pm.PackageManagerService$23;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: java.util.concurrent.CountDownLatch;
+
+        l3 := @parameter2: long;
+
+        l5 := @parameter3: java.io.File;
+
+        l6 := @parameter4: long;
+
+        l8 := @parameter5: int;
+
+        this.<com.android.server.pm.PackageManagerService$23: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$23: java.util.concurrent.CountDownLatch val$installedLatch> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$23: long val$startFreeBytes> = l3;
+
+        this.<com.android.server.pm.PackageManagerService$23: java.io.File val$measurePath> = l5;
+
+        this.<com.android.server.pm.PackageManagerService$23: long val$sizeBytes> = l6;
+
+        this.<com.android.server.pm.PackageManagerService$23: int val$moveId> = l8;
+
+        specialinvoke this.<java.lang.Thread: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$23 this;
+        int progress, $i6, $i7;
+        java.util.concurrent.TimeUnit $r0;
+        java.util.concurrent.CountDownLatch $r1;
+        boolean $z0;
+        java.io.File $r2;
+        long $l0, $l1, $l2, $l3, $l4, $l5, deltaFreeBytes#2;
+        com.android.server.pm.PackageManagerService$MoveCallbacks $r3;
+        com.android.server.pm.PackageManagerService $r4;
+        java.lang.InterruptedException $r5, deltaFreeBytes#1;
+
+        this := @this: com.android.server.pm.PackageManagerService$23;
+
+     label1:
+        $r1 = this.<com.android.server.pm.PackageManagerService$23: java.util.concurrent.CountDownLatch val$installedLatch>;
+
+        $r0 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit SECONDS>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.CountDownLatch: boolean await(long,java.util.concurrent.TimeUnit)>(1L, $r0);
+
+        if $z0 == 0 goto label3;
+
+     label2:
+        goto label6;
+
+     label3:
+        goto label5;
+
+     label4:
+        $r5 := @caughtexception;
+
+        deltaFreeBytes#1 = $r5;
+
+     label5:
+        $l0 = this.<com.android.server.pm.PackageManagerService$23: long val$startFreeBytes>;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$23: java.io.File val$measurePath>;
+
+        $l1 = virtualinvoke $r2.<java.io.File: long getFreeSpace()>();
+
+        deltaFreeBytes#2 = $l0 - $l1;
+
+        $l3 = deltaFreeBytes#2 * 80L;
+
+        $l2 = this.<com.android.server.pm.PackageManagerService$23: long val$sizeBytes>;
+
+        $l4 = $l3 / $l2;
+
+        $l5 = staticinvoke <android.util.MathUtils: long constrain(long,long,long)>($l4, 0L, 80L);
+
+        $i6 = (int) $l5;
+
+        progress = 10 + $i6;
+
+        $r4 = this.<com.android.server.pm.PackageManagerService$23: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$MoveCallbacks access$6000(com.android.server.pm.PackageManagerService)>($r4);
+
+        $i7 = this.<com.android.server.pm.PackageManagerService$23: int val$moveId>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService$MoveCallbacks: void access$5700(com.android.server.pm.PackageManagerService$MoveCallbacks,int,int)>($r3, $i7, progress);
+
+        goto label1;
+
+     label6:
+        return;
+
+        catch java.lang.InterruptedException from label1 to label2 with label4;
+    }
+}

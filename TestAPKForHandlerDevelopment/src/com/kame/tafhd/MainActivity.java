@@ -237,9 +237,6 @@ public class MainActivity extends Activity {
 		tainted = s0;
 		Message msg = ah.obtainMessage(FIELD_NP);
 		ah.sendMessage(msg);
-////		tainted = s0;
-//		if(s1 != null)
-//			staticTaint = s1;
 	}
 
 	private void doSink() {

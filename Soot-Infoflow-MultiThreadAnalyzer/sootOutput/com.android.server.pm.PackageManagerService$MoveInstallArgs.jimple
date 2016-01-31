@@ -1,0 +1,480 @@
+class com.android.server.pm.PackageManagerService$MoveInstallArgs extends com.android.server.pm.PackageManagerService$InstallArgs
+{
+    private java.io.File codeFile;
+    private java.io.File resourceFile;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, com.android.server.pm.PackageManagerService$InstallParams)
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        com.android.server.pm.PackageManagerService l1;
+        com.android.server.pm.PackageManagerService$InstallParams params;
+        com.android.server.pm.PackageManagerService$OriginInfo $r0;
+        com.android.server.pm.PackageManagerService$MoveInfo $r1;
+        android.content.pm.IPackageInstallObserver2 $r2;
+        int $i0;
+        java.lang.String $r3, $r4, $r8;
+        android.content.pm.ManifestDigest $r5;
+        android.os.UserHandle $r6;
+        java.lang.String[] $r7;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        params := @parameter1: com.android.server.pm.PackageManagerService$InstallParams;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        $r0 = params.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r1 = params.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r2 = params.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.IPackageInstallObserver2 observer>;
+
+        $i0 = params.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $r3 = params.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String installerPackageName>;
+
+        $r4 = params.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String volumeUuid>;
+
+        $r5 = virtualinvoke params.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.ManifestDigest getManifestDigest()>();
+
+        $r6 = virtualinvoke params.<com.android.server.pm.PackageManagerService$InstallParams: android.os.UserHandle getUser()>();
+
+        $r8 = params.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String packageAbiOverride>;
+
+        $r7 = params.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String[] grantedRuntimePermissions>;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$InstallArgs: void <init>(com.android.server.pm.PackageManagerService$OriginInfo,com.android.server.pm.PackageManagerService$MoveInfo,android.content.pm.IPackageInstallObserver2,int,java.lang.String,java.lang.String,android.content.pm.ManifestDigest,android.os.UserHandle,java.lang.String[],java.lang.String,java.lang.String[])>($r0, $r1, $r2, $i0, $r3, $r4, $r5, $r6, null, $r8, $r7);
+
+        return;
+    }
+
+    int copyApk(com.android.internal.app.IMediaContainerService, boolean)
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        com.android.internal.app.IMediaContainerService imcs;
+        boolean temp;
+        com.android.server.pm.Installer l3, $r1, $r14;
+        java.lang.Throwable l4, $r22;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.PackageManagerService$MoveInfo $r3, $r4, $r5, $r6, $r7, $r8, $r17, $r18;
+        java.lang.String $r9, $r10, $r11, $r12, $r13, $r16, $r21;
+        int $i0, $i1;
+        java.io.File $r15, $r19, $r20;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        imcs := @parameter0: com.android.internal.app.IMediaContainerService;
+
+        temp := @parameter1: boolean;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: com.android.server.pm.Installer mInstaller>;
+
+        l3 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService this$0>;
+
+        $r14 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.Installer mInstaller>;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r12 = $r3.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String fromUuid>;
+
+        $r4 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r13 = $r4.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String toUuid>;
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r10 = $r5.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String packageName>;
+
+        $r6 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r11 = $r6.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String dataAppName>;
+
+        $r7 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $i0 = $r7.<com.android.server.pm.PackageManagerService$MoveInfo: int appId>;
+
+        $r8 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r9 = $r8.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String seinfo>;
+
+        $i1 = virtualinvoke $r14.<com.android.server.pm.Installer: int copyCompleteApp(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String)>($r12, $r13, $r10, $r11, $i0, $r9);
+
+        if $i1 == 0 goto label3;
+
+        exitmonitor l3;
+
+     label2:
+        return -110;
+
+     label3:
+        exitmonitor l3;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r22 := @caughtexception;
+
+        l4 = $r22;
+
+        exitmonitor l3;
+
+     label6:
+        throw l4;
+
+     label7:
+        $r15 = new java.io.File;
+
+        $r17 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r16 = $r17.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String toUuid>;
+
+        $r19 = staticinvoke <android.os.Environment: java.io.File getDataAppDirectory(java.lang.String)>($r16);
+
+        $r18 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r21 = $r18.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String dataAppName>;
+
+        specialinvoke $r15.<java.io.File: void <init>(java.io.File,java.lang.String)>($r19, $r21);
+
+        this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: java.io.File codeFile> = $r15;
+
+        $r20 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: java.io.File codeFile>;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: java.io.File resourceFile> = $r20;
+
+        return 1;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    int doPreInstall(int)
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        int status;
+        com.android.server.pm.PackageManagerService$MoveInfo $r0;
+        java.lang.String $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        status := @parameter0: int;
+
+        if status == 1 goto label1;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String toUuid>;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: boolean cleanUp(java.lang.String)>($r1);
+
+     label1:
+        return status;
+    }
+
+    boolean doRename(int, android.content.pm.PackageParser$Package, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        int status;
+        android.content.pm.PackageParser$Package pkg;
+        java.lang.String oldCodePath, $r0, $r2, $r4, $r8, $r10, $r14;
+        android.content.pm.ApplicationInfo $r1, $r3, $r5, $r7, $r9, $r11, $r12;
+        java.lang.String[] $r6, $r13;
+        com.android.server.pm.PackageManagerService$MoveInfo $r15;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        status := @parameter0: int;
+
+        pkg := @parameter1: android.content.pm.PackageParser$Package;
+
+        oldCodePath := @parameter2: java.lang.String;
+
+        if status == 1 goto label1;
+
+        $r15 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r14 = $r15.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String toUuid>;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: boolean cleanUp(java.lang.String)>($r14);
+
+        return 0;
+
+     label1:
+        $r1 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r0 = pkg.<android.content.pm.PackageParser$Package: java.lang.String volumeUuid>;
+
+        $r1.<android.content.pm.ApplicationInfo: java.lang.String volumeUuid> = $r0;
+
+        $r3 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r2 = pkg.<android.content.pm.PackageParser$Package: java.lang.String codePath>;
+
+        virtualinvoke $r3.<android.content.pm.ApplicationInfo: void setCodePath(java.lang.String)>($r2);
+
+        $r5 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r4 = pkg.<android.content.pm.PackageParser$Package: java.lang.String baseCodePath>;
+
+        virtualinvoke $r5.<android.content.pm.ApplicationInfo: void setBaseCodePath(java.lang.String)>($r4);
+
+        $r7 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r6 = pkg.<android.content.pm.PackageParser$Package: java.lang.String[] splitCodePaths>;
+
+        virtualinvoke $r7.<android.content.pm.ApplicationInfo: void setSplitCodePaths(java.lang.String[])>($r6);
+
+        $r9 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r8 = pkg.<android.content.pm.PackageParser$Package: java.lang.String codePath>;
+
+        virtualinvoke $r9.<android.content.pm.ApplicationInfo: void setResourcePath(java.lang.String)>($r8);
+
+        $r11 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r10 = pkg.<android.content.pm.PackageParser$Package: java.lang.String baseCodePath>;
+
+        virtualinvoke $r11.<android.content.pm.ApplicationInfo: void setBaseResourcePath(java.lang.String)>($r10);
+
+        $r12 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r13 = pkg.<android.content.pm.PackageParser$Package: java.lang.String[] splitCodePaths>;
+
+        virtualinvoke $r12.<android.content.pm.ApplicationInfo: void setSplitResourcePaths(java.lang.String[])>($r13);
+
+        return 1;
+    }
+
+    int doPostInstall(int, int)
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        int status, uid;
+        com.android.server.pm.PackageManagerService$MoveInfo $r0, $r2;
+        java.lang.String $r1, $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        status := @parameter0: int;
+
+        uid := @parameter1: int;
+
+        if status != 1 goto label1;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String fromUuid>;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: boolean cleanUp(java.lang.String)>($r3);
+
+        goto label2;
+
+     label1:
+        $r0 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String toUuid>;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: boolean cleanUp(java.lang.String)>($r1);
+
+     label2:
+        return status;
+    }
+
+    java.lang.String getCodePath()
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        java.io.File $r0, $r1;
+        java.lang.String $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: java.io.File codeFile>;
+
+        if $r0 == null goto label1;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: java.io.File codeFile>;
+
+        $r2 = virtualinvoke $r1.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        goto label2;
+
+     label1:
+        $r2 = null;
+
+     label2:
+        return $r2;
+    }
+
+    java.lang.String getResourcePath()
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        java.io.File $r0, $r1;
+        java.lang.String $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: java.io.File resourceFile>;
+
+        if $r0 == null goto label1;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: java.io.File resourceFile>;
+
+        $r2 = virtualinvoke $r1.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        goto label2;
+
+     label1:
+        $r2 = null;
+
+     label2:
+        return $r2;
+    }
+
+    private boolean cleanUp(java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        java.lang.String volumeUuid, $r3, $r7, $r10, $r16, $r19;
+        java.io.File codeFile, $r0, $r1;
+        java.lang.Object l3, $r14;
+        java.lang.Throwable l4, $r20;
+        com.android.server.pm.PackageManagerService$MoveInfo $r2, $r6, $r13;
+        java.lang.StringBuilder $r4, $r5, $r8, $r9, $r11;
+        com.android.server.pm.PackageManagerService $r12, $r15, $r18;
+        boolean $z0;
+        com.android.server.pm.Installer $r17;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        volumeUuid := @parameter0: java.lang.String;
+
+        $r0 = new java.io.File;
+
+        $r1 = staticinvoke <android.os.Environment: java.io.File getDataAppDirectory(java.lang.String)>(volumeUuid);
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String dataAppName>;
+
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, $r3);
+
+        codeFile = $r0;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cleaning up ");
+
+        $r6 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r7 = $r6.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String packageName>;
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" on ");
+
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(volumeUuid);
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int d(java.lang.String,java.lang.String)>("PackageManager", $r10);
+
+        $r12 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService this$0>;
+
+        $r14 = $r12.<com.android.server.pm.PackageManagerService: java.lang.Object mInstallLock>;
+
+        l3 = $r14;
+
+        entermonitor $r14;
+
+     label1:
+        $r15 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService this$0>;
+
+        $r13 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService$MoveInfo move>;
+
+        $r16 = $r13.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String packageName>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService: int access$4900(com.android.server.pm.PackageManagerService,java.lang.String,java.lang.String)>($r15, volumeUuid, $r16);
+
+        $z0 = virtualinvoke codeFile.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label2;
+
+        $r18 = this.<com.android.server.pm.PackageManagerService$MoveInstallArgs: com.android.server.pm.PackageManagerService this$0>;
+
+        $r17 = $r18.<com.android.server.pm.PackageManagerService: com.android.server.pm.Installer mInstaller>;
+
+        $r19 = virtualinvoke codeFile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        virtualinvoke $r17.<com.android.server.pm.Installer: int rmPackageDir(java.lang.String)>($r19);
+
+        goto label3;
+
+     label2:
+        virtualinvoke codeFile.<java.io.File: boolean delete()>();
+
+     label3:
+        exitmonitor l3;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r20 := @caughtexception;
+
+        l4 = $r20;
+
+        exitmonitor l3;
+
+     label6:
+        throw l4;
+
+     label7:
+        return 1;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    void cleanUpResourcesLI()
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        $r0 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+
+        throw $r0;
+    }
+
+    boolean doPostDeleteLI(boolean)
+    {
+        com.android.server.pm.PackageManagerService$MoveInstallArgs this;
+        boolean delete;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInstallArgs;
+
+        delete := @parameter0: boolean;
+
+        $r0 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+
+        throw $r0;
+    }
+}

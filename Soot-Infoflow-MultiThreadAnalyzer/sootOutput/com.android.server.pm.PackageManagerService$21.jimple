@@ -1,0 +1,91 @@
+class com.android.server.pm.PackageManagerService$21 extends android.content.IIntentReceiver$Stub
+{
+    final boolean val$reportStatus;
+    final java.util.Set val$keys;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, boolean, java.util.Set)
+    {
+        com.android.server.pm.PackageManagerService$21 this;
+        com.android.server.pm.PackageManagerService l1;
+        boolean l2;
+        java.util.Set l3;
+
+        this := @this: com.android.server.pm.PackageManagerService$21;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: boolean;
+
+        l3 := @parameter2: java.util.Set;
+
+        this.<com.android.server.pm.PackageManagerService$21: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$21: boolean val$reportStatus> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$21: java.util.Set val$keys> = l3;
+
+        specialinvoke this.<android.content.IIntentReceiver$Stub: void <init>()>();
+
+        return;
+    }
+
+    public void performReceive(android.content.Intent, int, java.lang.String, android.os.Bundle, boolean, boolean, int) throws android.os.RemoteException
+    {
+        com.android.server.pm.PackageManagerService$21 this;
+        android.content.Intent intent;
+        int resultCode, sendingUser;
+        java.lang.String data;
+        android.os.Bundle extras;
+        boolean ordered, sticky, $z1;
+        android.os.Message msg;
+        com.android.server.pm.PackageManagerService $r0, $r3;
+        java.util.Set $r1;
+        com.android.server.pm.PackageManagerService$PackageHandler $r2, $r4;
+        byte $b0;
+
+        this := @this: com.android.server.pm.PackageManagerService$21;
+
+        intent := @parameter0: android.content.Intent;
+
+        resultCode := @parameter1: int;
+
+        data := @parameter2: java.lang.String;
+
+        extras := @parameter3: android.os.Bundle;
+
+        ordered := @parameter4: boolean;
+
+        sticky := @parameter5: boolean;
+
+        sendingUser := @parameter6: int;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$21: com.android.server.pm.PackageManagerService this$0>;
+
+        $r2 = $r0.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        $z1 = this.<com.android.server.pm.PackageManagerService$21: boolean val$reportStatus>;
+
+        if $z1 == 0 goto label1;
+
+        $b0 = 1;
+
+        goto label2;
+
+     label1:
+        $b0 = 0;
+
+     label2:
+        $r1 = this.<com.android.server.pm.PackageManagerService$21: java.util.Set val$keys>;
+
+        msg = virtualinvoke $r2.<com.android.server.pm.PackageManagerService$PackageHandler: android.os.Message obtainMessage(int,int,int,java.lang.Object)>(12, $b0, 1, $r1);
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$21: com.android.server.pm.PackageManagerService this$0>;
+
+        $r4 = $r3.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        virtualinvoke $r4.<com.android.server.pm.PackageManagerService$PackageHandler: boolean sendMessage(android.os.Message)>(msg);
+
+        return;
+    }
+}

@@ -1,0 +1,202 @@
+public class com.android.internal.telephony.SubscriptionController extends com.android.internal.telephony.ISub$Stub
+{
+    static final java.lang.String LOG_TAG;
+    static final boolean DBG;
+    static final boolean VDBG;
+    static final int MAX_LOCAL_LOG_LINES;
+    private com.android.internal.telephony.SubscriptionController$ScLocalLog mLocalLog;
+    protected final java.lang.Object mLock;
+    private static com.android.internal.telephony.SubscriptionController sInstance;
+    protected static com.android.internal.telephony.PhoneProxy[] sProxyPhones;
+    protected android.content.Context mContext;
+    protected android.telephony.TelephonyManager mTelephonyManager;
+    protected com.android.internal.telephony.CallManager mCM;
+    private static java.util.HashMap mSlotIdxToSubId;
+    private static int mDefaultFallbackSubId;
+    private static int mDefaultPhoneId;
+    private int[] colorArr;
+
+    public static com.android.internal.telephony.SubscriptionController init(com.android.internal.telephony.Phone)
+    {
+        com.android.internal.telephony.Phone phone;
+        java.lang.Class l1;
+        java.lang.Throwable l2, $r8;
+        com.android.internal.telephony.SubscriptionController $r0, $r3, $r6, $r7;
+        java.lang.StringBuilder $r1, $r2, $r4;
+        java.lang.String $r5;
+
+        phone := @parameter0: com.android.internal.telephony.Phone;
+
+        l1 = class "com/android/internal/telephony/SubscriptionController";
+
+        entermonitor class "com/android/internal/telephony/SubscriptionController";
+
+     label1:
+        $r0 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        if $r0 != null goto label2;
+
+        $r7 = new com.android.internal.telephony.SubscriptionController;
+
+        specialinvoke $r7.<com.android.internal.telephony.SubscriptionController: void <init>(com.android.internal.telephony.Phone)>(phone);
+
+        <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance> = $r7;
+
+        goto label3;
+
+     label2:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("init() called multiple times!  sInstance = ");
+
+        $r3 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String)>("SubscriptionController", $r5);
+
+     label3:
+        $r6 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        exitmonitor l1;
+
+     label4:
+        return $r6;
+
+     label5:
+        $r8 := @caughtexception;
+
+        l2 = $r8;
+
+        exitmonitor l1;
+
+     label6:
+        throw l2;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public static com.android.internal.telephony.SubscriptionController init(android.content.Context, com.android.internal.telephony.CommandsInterface[])
+    {
+        android.content.Context c;
+        com.android.internal.telephony.CommandsInterface[] ci;
+        java.lang.Class l2;
+        java.lang.Throwable l3, $r8;
+        com.android.internal.telephony.SubscriptionController $r0, $r3, $r6, $r7;
+        java.lang.StringBuilder $r1, $r2, $r4;
+        java.lang.String $r5;
+
+        c := @parameter0: android.content.Context;
+
+        ci := @parameter1: com.android.internal.telephony.CommandsInterface[];
+
+        l2 = class "com/android/internal/telephony/SubscriptionController";
+
+        entermonitor class "com/android/internal/telephony/SubscriptionController";
+
+     label1:
+        $r0 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        if $r0 != null goto label2;
+
+        $r7 = new com.android.internal.telephony.SubscriptionController;
+
+        specialinvoke $r7.<com.android.internal.telephony.SubscriptionController: void <init>(android.content.Context)>(c);
+
+        <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance> = $r7;
+
+        goto label3;
+
+     label2:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("init() called multiple times!  sInstance = ");
+
+        $r3 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String)>("SubscriptionController", $r5);
+
+     label3:
+        $r6 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        exitmonitor l2;
+
+     label4:
+        return $r6;
+
+     label5:
+        $r8 := @caughtexception;
+
+        l3 = $r8;
+
+        exitmonitor l2;
+
+     label6:
+        throw l3;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public static com.android.internal.telephony.SubscriptionController getInstance()
+    {
+        com.android.internal.telephony.SubscriptionController $r0, $r1;
+
+        $r0 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        if $r0 != null goto label1;
+
+        staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String)>("SubscriptionController", "getInstance null");
+
+     label1:
+        $r1 = <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController sInstance>;
+
+        return $r1;
+    }
+
+    private void <init>(android.content.Context)
+    {
+        com.android.internal.telephony.SubscriptionController this;
+        android.content.Context c, $r3;
+        com.android.internal.telephony.SubscriptionController$ScLocalLog $r0;
+        java.lang.Object $r1;
+        com.android.internal.telephony.CallManager $r2;
+        android.telephony.TelephonyManager $r4;
+        android.os.IBinder $r5;
+
+        this := @this: com.android.internal.telephony.SubscriptionController;
+
+        c := @parameter0: android.content.Context;
+
+        specialinvoke this.<com.android.internal.telephony.ISub$Stub: void <init>()>();
+
+        $r0 = new com.android.internal.telephony.SubscriptionController$ScLocalLog;
+
+        specialinvoke $r0.<com.android.internal.telephony.SubscriptionController$ScLocalLog: void <init>(int)>(500);
+
+        this.<com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController$ScLocalLog mLocalLog> = $r0;
+
+        $r1 = new java.lang.Object;
+
+        specialinvoke $r1.<java.lang.Object: void <init>()>();
+
+        this.<com.android.internal.telephony.SubscriptionController: java.lang.Object mLock> = $r1;
+
+        this.<com.android.internal.telephony.SubscriptionController: android.content.Context mContext> = c;
+
+        $r2 = staticinvoke <com.android.internal.telephony.CallManager: com.android.internal.telephony.CallManager getInstance()>();
+
+        this.<com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.CallManager mCM> = $r2;
+
+        $r3 = this.<com.android.internal.telephony.SubscriptionController: android.conten

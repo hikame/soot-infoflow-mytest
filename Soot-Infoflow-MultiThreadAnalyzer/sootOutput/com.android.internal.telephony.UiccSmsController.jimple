@@ -1,0 +1,1227 @@
+public class com.android.internal.telephony.UiccSmsController extends com.android.internal.telephony.ISms$Stub
+{
+    static final java.lang.String LOG_TAG;
+    protected com.android.internal.telephony.Phone[] mPhone;
+
+    protected void <init>(com.android.internal.telephony.Phone[])
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        com.android.internal.telephony.Phone[] phone;
+        android.os.IBinder $r0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        phone := @parameter0: com.android.internal.telephony.Phone[];
+
+        specialinvoke this.<com.android.internal.telephony.ISms$Stub: void <init>()>();
+
+        this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.Phone[] mPhone> = phone;
+
+        $r0 = staticinvoke <android.os.ServiceManager: android.os.IBinder getService(java.lang.String)>("isms");
+
+        if $r0 != null goto label1;
+
+        staticinvoke <android.os.ServiceManager: void addService(java.lang.String,android.os.IBinder)>("isms", this);
+
+     label1:
+        return;
+    }
+
+    public boolean updateMessageOnIccEf(java.lang.String, int, int, byte[]) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String callingPackage;
+        int index, status, $i0;
+        byte[] pdu;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        index := @parameter1: int;
+
+        status := @parameter2: int;
+
+        pdu := @parameter3: byte[];
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean updateMessageOnIccEfForSubscriber(int,java.lang.String,int,int,byte[])>($i0, callingPackage, index, status, pdu);
+
+        return $z0;
+    }
+
+    public boolean updateMessageOnIccEfForSubscriber(int, java.lang.String, int, int, byte[]) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, index, status;
+        java.lang.String callingPackage, $r3;
+        byte[] pdu;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPackage := @parameter1: java.lang.String;
+
+        index := @parameter2: int;
+
+        status := @parameter3: int;
+
+        pdu := @parameter4: byte[];
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $z0 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: boolean updateMessageOnIccEf(java.lang.String,int,int,byte[])>(callingPackage, index, status, pdu);
+
+        return $z0;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("updateMessageOnIccEf iccSmsIntMgr is null for Subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+        return 0;
+    }
+
+    public boolean copyMessageToIccEf(java.lang.String, int, byte[], byte[]) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String callingPackage;
+        int status, $i0;
+        byte[] pdu, smsc;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        status := @parameter1: int;
+
+        pdu := @parameter2: byte[];
+
+        smsc := @parameter3: byte[];
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean copyMessageToIccEfForSubscriber(int,java.lang.String,int,byte[],byte[])>($i0, callingPackage, status, pdu, smsc);
+
+        return $z0;
+    }
+
+    public boolean copyMessageToIccEfForSubscriber(int, java.lang.String, int, byte[], byte[]) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, status;
+        java.lang.String callingPackage, $r3;
+        byte[] pdu, smsc;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPackage := @parameter1: java.lang.String;
+
+        status := @parameter2: int;
+
+        pdu := @parameter3: byte[];
+
+        smsc := @parameter4: byte[];
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $z0 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: boolean copyMessageToIccEf(java.lang.String,int,byte[],byte[])>(callingPackage, status, pdu, smsc);
+
+        return $z0;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("copyMessageToIccEf iccSmsIntMgr is null for Subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+        return 0;
+    }
+
+    public java.util.List getAllMessagesFromIccEf(java.lang.String) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String callingPackage;
+        int $i0;
+        java.util.List $r0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $r0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: java.util.List getAllMessagesFromIccEfForSubscriber(int,java.lang.String)>($i0, callingPackage);
+
+        return $r0;
+    }
+
+    public java.util.List getAllMessagesFromIccEfForSubscriber(int, java.lang.String) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        java.lang.String callingPackage, $r3;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        java.util.List $r4;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPackage := @parameter1: java.lang.String;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $r4 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: java.util.List getAllMessagesFromIccEf(java.lang.String)>(callingPackage);
+
+        return $r4;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("getAllMessagesFromIccEf iccSmsIntMgr is null for Subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+        return null;
+    }
+
+    public void sendData(java.lang.String, java.lang.String, java.lang.String, int, byte[], android.app.PendingIntent, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String callingPackage, destAddr, scAddr;
+        int destPort, $i0;
+        byte[] data;
+        android.app.PendingIntent sentIntent, deliveryIntent;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        destAddr := @parameter1: java.lang.String;
+
+        scAddr := @parameter2: java.lang.String;
+
+        destPort := @parameter3: int;
+
+        data := @parameter4: byte[];
+
+        sentIntent := @parameter5: android.app.PendingIntent;
+
+        deliveryIntent := @parameter6: android.app.PendingIntent;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        virtualinvoke this.<com.android.internal.telephony.UiccSmsController: void sendDataForSubscriber(int,java.lang.String,java.lang.String,java.lang.String,int,byte[],android.app.PendingIntent,android.app.PendingIntent)>($i0, callingPackage, destAddr, scAddr, destPort, data, sentIntent, deliveryIntent);
+
+        return;
+    }
+
+    public void sendDataForSubscriber(int, java.lang.String, java.lang.String, java.lang.String, int, byte[], android.app.PendingIntent, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, destPort;
+        java.lang.String callingPackage, destAddr, scAddr, $r3;
+        byte[] data;
+        android.app.PendingIntent sentIntent, deliveryIntent;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPackage := @parameter1: java.lang.String;
+
+        destAddr := @parameter2: java.lang.String;
+
+        scAddr := @parameter3: java.lang.String;
+
+        destPort := @parameter4: int;
+
+        data := @parameter5: byte[];
+
+        sentIntent := @parameter6: android.app.PendingIntent;
+
+        deliveryIntent := @parameter7: android.app.PendingIntent;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: void sendData(java.lang.String,java.lang.String,java.lang.String,int,byte[],android.app.PendingIntent,android.app.PendingIntent)>(callingPackage, destAddr, scAddr, destPort, data, sentIntent, deliveryIntent);
+
+        goto label2;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendText iccSmsIntMgr is null for Subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+     label2:
+        return;
+    }
+
+    public void sendText(java.lang.String, java.lang.String, java.lang.String, java.lang.String, android.app.PendingIntent, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String callingPackage, destAddr, scAddr, text;
+        android.app.PendingIntent sentIntent, deliveryIntent;
+        int $i0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        destAddr := @parameter1: java.lang.String;
+
+        scAddr := @parameter2: java.lang.String;
+
+        text := @parameter3: java.lang.String;
+
+        sentIntent := @parameter4: android.app.PendingIntent;
+
+        deliveryIntent := @parameter5: android.app.PendingIntent;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        virtualinvoke this.<com.android.internal.telephony.UiccSmsController: void sendTextForSubscriber(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,android.app.PendingIntent,android.app.PendingIntent)>($i0, callingPackage, destAddr, scAddr, text, sentIntent, deliveryIntent);
+
+        return;
+    }
+
+    public void sendTextForSubscriber(int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, android.app.PendingIntent, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        java.lang.String callingPackage, destAddr, scAddr, text, $r3;
+        android.app.PendingIntent sentIntent, deliveryIntent;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPackage := @parameter1: java.lang.String;
+
+        destAddr := @parameter2: java.lang.String;
+
+        scAddr := @parameter3: java.lang.String;
+
+        text := @parameter4: java.lang.String;
+
+        sentIntent := @parameter5: android.app.PendingIntent;
+
+        deliveryIntent := @parameter6: android.app.PendingIntent;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: void sendText(java.lang.String,java.lang.String,java.lang.String,java.lang.String,android.app.PendingIntent,android.app.PendingIntent)>(callingPackage, destAddr, scAddr, text, sentIntent, deliveryIntent);
+
+        goto label2;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendText iccSmsIntMgr is null for Subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+     label2:
+        return;
+    }
+
+    public void sendMultipartText(java.lang.String, java.lang.String, java.lang.String, java.util.List, java.util.List, java.util.List) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String callingPackage, destAddr, scAddr;
+        java.util.List parts, sentIntents, deliveryIntents;
+        int $i0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        destAddr := @parameter1: java.lang.String;
+
+        scAddr := @parameter2: java.lang.String;
+
+        parts := @parameter3: java.util.List;
+
+        sentIntents := @parameter4: java.util.List;
+
+        deliveryIntents := @parameter5: java.util.List;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        virtualinvoke this.<com.android.internal.telephony.UiccSmsController: void sendMultipartTextForSubscriber(int,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List)>($i0, callingPackage, destAddr, scAddr, parts, sentIntents, deliveryIntents);
+
+        return;
+    }
+
+    public void sendMultipartTextForSubscriber(int, java.lang.String, java.lang.String, java.lang.String, java.util.List, java.util.List, java.util.List) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        java.lang.String callingPackage, destAddr, scAddr, $r3;
+        java.util.List parts, sentIntents, deliveryIntents;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPackage := @parameter1: java.lang.String;
+
+        destAddr := @parameter2: java.lang.String;
+
+        scAddr := @parameter3: java.lang.String;
+
+        parts := @parameter4: java.util.List;
+
+        sentIntents := @parameter5: java.util.List;
+
+        deliveryIntents := @parameter6: java.util.List;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: void sendMultipartText(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List)>(callingPackage, destAddr, scAddr, parts, sentIntents, deliveryIntents);
+
+        goto label2;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendMultipartText iccSmsIntMgr is null for Subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+     label2:
+        return;
+    }
+
+    public boolean enableCellBroadcast(int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int messageIdentifier, ranType, $i0;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        messageIdentifier := @parameter0: int;
+
+        ranType := @parameter1: int;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean enableCellBroadcastForSubscriber(int,int,int)>($i0, messageIdentifier, ranType);
+
+        return $z0;
+    }
+
+    public boolean enableCellBroadcastForSubscriber(int, int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, messageIdentifier, ranType;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        messageIdentifier := @parameter1: int;
+
+        ranType := @parameter2: int;
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean enableCellBroadcastRangeForSubscriber(int,int,int,int)>(subId, messageIdentifier, messageIdentifier, ranType);
+
+        return $z0;
+    }
+
+    public boolean enableCellBroadcastRange(int, int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int startMessageId, endMessageId, ranType, $i0;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        startMessageId := @parameter0: int;
+
+        endMessageId := @parameter1: int;
+
+        ranType := @parameter2: int;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean enableCellBroadcastRangeForSubscriber(int,int,int,int)>($i0, startMessageId, endMessageId, ranType);
+
+        return $z0;
+    }
+
+    public boolean enableCellBroadcastRangeForSubscriber(int, int, int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, startMessageId, endMessageId, ranType;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        startMessageId := @parameter1: int;
+
+        endMessageId := @parameter2: int;
+
+        ranType := @parameter3: int;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $z0 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: boolean enableCellBroadcastRange(int,int,int)>(startMessageId, endMessageId, ranType);
+
+        return $z0;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("enableCellBroadcast iccSmsIntMgr is null for Subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+        return 0;
+    }
+
+    public boolean disableCellBroadcast(int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int messageIdentifier, ranType, $i0;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        messageIdentifier := @parameter0: int;
+
+        ranType := @parameter1: int;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean disableCellBroadcastForSubscriber(int,int,int)>($i0, messageIdentifier, ranType);
+
+        return $z0;
+    }
+
+    public boolean disableCellBroadcastForSubscriber(int, int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, messageIdentifier, ranType;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        messageIdentifier := @parameter1: int;
+
+        ranType := @parameter2: int;
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean disableCellBroadcastRangeForSubscriber(int,int,int,int)>(subId, messageIdentifier, messageIdentifier, ranType);
+
+        return $z0;
+    }
+
+    public boolean disableCellBroadcastRange(int, int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int startMessageId, endMessageId, ranType, $i0;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        startMessageId := @parameter0: int;
+
+        endMessageId := @parameter1: int;
+
+        ranType := @parameter2: int;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean disableCellBroadcastRangeForSubscriber(int,int,int,int)>($i0, startMessageId, endMessageId, ranType);
+
+        return $z0;
+    }
+
+    public boolean disableCellBroadcastRangeForSubscriber(int, int, int, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, startMessageId, endMessageId, ranType;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        startMessageId := @parameter1: int;
+
+        endMessageId := @parameter2: int;
+
+        ranType := @parameter3: int;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $z0 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: boolean disableCellBroadcastRange(int,int,int)>(startMessageId, endMessageId, ranType);
+
+        return $z0;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("disableCellBroadcast iccSmsIntMgr is null for Subscription:");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+        return 0;
+    }
+
+    public int getPremiumSmsPermission(java.lang.String)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String packageName;
+        int $i0, $i1;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        packageName := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPremiumSmsPermissionForSubscriber(int,java.lang.String)>($i0, packageName);
+
+        return $i1;
+    }
+
+    public int getPremiumSmsPermissionForSubscriber(int, java.lang.String)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, $i1;
+        java.lang.String packageName;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $i1 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: int getPremiumSmsPermission(java.lang.String)>(packageName);
+
+        return $i1;
+
+     label1:
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", "getPremiumSmsPermission iccSmsIntMgr is null");
+
+        return 0;
+    }
+
+    public void setPremiumSmsPermission(java.lang.String, int)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        java.lang.String packageName;
+        int permission, $i0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        packageName := @parameter0: java.lang.String;
+
+        permission := @parameter1: int;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        virtualinvoke this.<com.android.internal.telephony.UiccSmsController: void setPremiumSmsPermissionForSubscriber(int,java.lang.String,int)>($i0, packageName, permission);
+
+        return;
+    }
+
+    public void setPremiumSmsPermissionForSubscriber(int, java.lang.String, int)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, permission;
+        java.lang.String packageName;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        permission := @parameter2: int;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: void setPremiumSmsPermission(java.lang.String,int)>(packageName, permission);
+
+        goto label2;
+
+     label1:
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", "setPremiumSmsPermission iccSmsIntMgr is null");
+
+     label2:
+        return;
+    }
+
+    public boolean isImsSmsSupported()
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: boolean isImsSmsSupportedForSubscriber(int)>($i0);
+
+        return $z0;
+    }
+
+    public boolean isImsSmsSupportedForSubscriber(int)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $z0 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: boolean isImsSmsSupported()>();
+
+        return $z0;
+
+     label1:
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", "isImsSmsSupported iccSmsIntMgr is null");
+
+        return 0;
+    }
+
+    public boolean isSmsSimPickActivityNeeded(int)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, $i0, $i1, subInfoLength#2, i#3;
+        android.content.Context context;
+        android.telephony.TelephonyManager telephonyManager;
+        java.util.List subInfoList;
+        long identity;
+        android.telephony.SubscriptionInfo sir;
+        android.app.Application $r0;
+        java.lang.Object $r1, $r3;
+        android.telephony.SubscriptionManager $r2;
+        java.lang.Throwable $r4, subInfoLength#1;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        $r0 = staticinvoke <android.app.ActivityThread: android.app.Application currentApplication()>();
+
+        context = virtualinvoke $r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        $r1 = virtualinvoke context.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("phone");
+
+        telephonyManager = (android.telephony.TelephonyManager) $r1;
+
+        identity = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
+
+     label1:
+        $r2 = staticinvoke <android.telephony.SubscriptionManager: android.telephony.SubscriptionManager 'from'(android.content.Context)>(context);
+
+        subInfoList = virtualinvoke $r2.<android.telephony.SubscriptionManager: java.util.List getActiveSubscriptionInfoList()>();
+
+     label2:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(identity);
+
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        subInfoLength#1 = $r4;
+
+     label4:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(identity);
+
+        throw subInfoLength#1;
+
+     label5:
+        if subInfoList == null goto label9;
+
+        subInfoLength#2 = interfaceinvoke subInfoList.<java.util.List: int size()>();
+
+        i#3 = 0;
+
+     label6:
+        if i#3 >= subInfoLength#2 goto label8;
+
+        $r3 = interfaceinvoke subInfoList.<java.util.List: java.lang.Object get(int)>(i#3);
+
+        sir = (android.telephony.SubscriptionInfo) $r3;
+
+        if sir == null goto label7;
+
+        $i1 = virtualinvoke sir.<android.telephony.SubscriptionInfo: int getSubscriptionId()>();
+
+        if $i1 != subId goto label7;
+
+        return 0;
+
+     label7:
+        i#3 = i#3 + 1;
+
+        goto label6;
+
+     label8:
+        if subInfoLength#2 <= 0 goto label9;
+
+        $i0 = virtualinvoke telephonyManager.<android.telephony.TelephonyManager: int getSimCount()>();
+
+        if $i0 <= 1 goto label9;
+
+        return 1;
+
+     label9:
+        return 0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public java.lang.String getImsSmsFormat()
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int $i0;
+        java.lang.String $r0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        $i0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: int getPreferredSmsSubscription()>();
+
+        $r0 = virtualinvoke this.<com.android.internal.telephony.UiccSmsController: java.lang.String getImsSmsFormatForSubscriber(int)>($i0);
+
+        return $r0;
+    }
+
+    public java.lang.String getImsSmsFormatForSubscriber(int)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.String $r0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        $r0 = virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.String getImsSmsFormat()>();
+
+        return $r0;
+
+     label1:
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", "getImsSmsFormat iccSmsIntMgr is null");
+
+        return null;
+    }
+
+    public void injectSmsPdu(byte[], java.lang.String, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        byte[] pdu;
+        java.lang.String format;
+        android.app.PendingIntent receivedIntent;
+        int $i0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        pdu := @parameter0: byte[];
+
+        format := @parameter1: java.lang.String;
+
+        receivedIntent := @parameter2: android.app.PendingIntent;
+
+        $i0 = staticinvoke <android.telephony.SubscriptionManager: int getDefaultSmsSubId()>();
+
+        virtualinvoke this.<com.android.internal.telephony.UiccSmsController: void injectSmsPdu(int,byte[],java.lang.String,android.app.PendingIntent)>($i0, pdu, format, receivedIntent);
+
+        return;
+    }
+
+    public void injectSmsPdu(int, byte[], java.lang.String, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        byte[] pdu;
+        java.lang.String format;
+        android.app.PendingIntent receivedIntent;
+        com.android.internal.telephony.IccSmsInterfaceManager $r0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        pdu := @parameter1: byte[];
+
+        format := @parameter2: java.lang.String;
+
+        receivedIntent := @parameter3: android.app.PendingIntent;
+
+        $r0 = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        virtualinvoke $r0.<com.android.internal.telephony.IccSmsInterfaceManager: void injectSmsPdu(byte[],java.lang.String,android.app.PendingIntent)>(pdu, format, receivedIntent);
+
+        return;
+    }
+
+    private com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId, phoneId#1;
+        com.android.internal.telephony.SubscriptionController $r0;
+        boolean $z0;
+        com.android.internal.telephony.Phone[] $r1;
+        com.android.internal.telephony.Phone $r2;
+        com.android.internal.telephony.PhoneProxy $r3;
+        com.android.internal.telephony.IccSmsInterfaceManager $r4;
+        java.lang.ArrayIndexOutOfBoundsException $r5, e#3;
+        java.lang.StringBuilder $r6, $r7, $r9, $r10, $r12, $r14, $r16, $r17, $r18, $r20;
+        java.lang.String $r8, $r11, $r15, $r19;
+        java.lang.NullPointerException $r13, e#2;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        $r0 = staticinvoke <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController getInstance()>();
+
+        phoneId#1 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getPhoneId(int)>(subId);
+
+        $z0 = staticinvoke <android.telephony.SubscriptionManager: boolean isValidPhoneId(int)>(phoneId#1);
+
+        if $z0 == 0 goto label1;
+
+        if phoneId#1 != 2147483647 goto label2;
+
+     label1:
+        phoneId#1 = 0;
+
+     label2:
+        $r1 = this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.Phone[] mPhone>;
+
+        $r2 = $r1[phoneId#1];
+
+        $r3 = (com.android.internal.telephony.PhoneProxy) $r2;
+
+        $r4 = virtualinvoke $r3.<com.android.internal.telephony.PhoneProxy: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager()>();
+
+     label3:
+        return $r4;
+
+     label4:
+        $r13 := @caughtexception;
+
+        e#2 = $r13;
+
+        $r14 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        specialinvoke $r14.<java.lang.StringBuilder: void <init>()>();
+
+        $r16 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Exception is :");
+
+        $r15 = virtualinvoke e#2.<java.lang.NullPointerException: java.lang.String toString()>();
+
+        $r18 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+
+        $r17 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" For subscription :");
+
+        $r20 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r19 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r19);
+
+        virtualinvoke e#2.<java.lang.NullPointerException: void printStackTrace()>();
+
+        return null;
+
+     label5:
+        $r5 := @caughtexception;
+
+        e#3 = $r5;
+
+        $r6 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Exception is :");
+
+        $r8 = virtualinvoke e#3.<java.lang.ArrayIndexOutOfBoundsException: java.lang.String toString()>();
+
+        $r10 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" For subscription :");
+
+        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r11);
+
+        virtualinvoke e#3.<java.lang.ArrayIndexOutOfBoundsException: void printStackTrace()>();
+
+        return null;
+
+        catch java.lang.NullPointerException from label2 to label3 with label4;
+        catch java.lang.ArrayIndexOutOfBoundsException from label2 to label3 with label5;
+    }
+
+    public int getPreferredSmsSubscription()
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        com.android.internal.telephony.SubscriptionController $r0;
+        int $i0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        $r0 = staticinvoke <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController getInstance()>();
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultSmsSubId()>();
+
+        return $i0;
+    }
+
+    public boolean isSMSPromptEnabled()
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        $z0 = staticinvoke <com.android.internal.telephony.PhoneFactory: boolean isSMSPromptEnabled()>();
+
+        return $z0;
+    }
+
+    public void sendStoredText(int, java.lang.String, android.net.Uri, java.lang.String, android.app.PendingIntent, android.app.PendingIntent) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        java.lang.String callingPkg, scAddress, $r3;
+        android.net.Uri messageUri;
+        android.app.PendingIntent sentIntent, deliveryIntent;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPkg := @parameter1: java.lang.String;
+
+        messageUri := @parameter2: android.net.Uri;
+
+        scAddress := @parameter3: java.lang.String;
+
+        sentIntent := @parameter4: android.app.PendingIntent;
+
+        deliveryIntent := @parameter5: android.app.PendingIntent;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: void sendStoredText(java.lang.String,android.net.Uri,java.lang.String,android.app.PendingIntent,android.app.PendingIntent)>(callingPkg, messageUri, scAddress, sentIntent, deliveryIntent);
+
+        goto label2;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendStoredText iccSmsIntMgr is null for subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+     label2:
+        return;
+    }
+
+    public void sendStoredMultipartText(int, java.lang.String, android.net.Uri, java.lang.String, java.util.List, java.util.List) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.UiccSmsController this;
+        int subId;
+        java.lang.String callingPkg, scAddress, $r3;
+        android.net.Uri messageUri;
+        java.util.List sentIntents, deliveryIntents;
+        com.android.internal.telephony.IccSmsInterfaceManager iccSmsIntMgr;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        this := @this: com.android.internal.telephony.UiccSmsController;
+
+        subId := @parameter0: int;
+
+        callingPkg := @parameter1: java.lang.String;
+
+        messageUri := @parameter2: android.net.Uri;
+
+        scAddress := @parameter3: java.lang.String;
+
+        sentIntents := @parameter4: java.util.List;
+
+        deliveryIntents := @parameter5: java.util.List;
+
+        iccSmsIntMgr = specialinvoke this.<com.android.internal.telephony.UiccSmsController: com.android.internal.telephony.IccSmsInterfaceManager getIccSmsInterfaceManager(int)>(subId);
+
+        if iccSmsIntMgr == null goto label1;
+
+        virtualinvoke iccSmsIntMgr.<com.android.internal.telephony.IccSmsInterfaceManager: void sendStoredMultipartText(java.lang.String,android.net.Uri,java.lang.String,java.util.List,java.util.List)>(callingPkg, messageUri, scAddress, sentIntents, deliveryIntents);
+
+        goto label2;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendStoredMultipartText iccSmsIntMgr is null for subscription: ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("RIL_UiccSmsController", $r3);
+
+     label2:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.internal.telephony.UiccSmsController: java.lang.String LOG_TAG> = "RIL_UiccSmsController";
+
+        return;
+    }
+}

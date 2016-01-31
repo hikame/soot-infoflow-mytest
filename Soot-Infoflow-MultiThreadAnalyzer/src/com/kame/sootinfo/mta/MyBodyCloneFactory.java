@@ -1,13 +1,11 @@
 package com.kame.sootinfo.mta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import soot.Body;
-import soot.IdentityUnit;
 import soot.Kind;
 import soot.Local;
 import soot.PatchingChain;
@@ -17,10 +15,8 @@ import soot.Trap;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-import soot.jimple.AssignStmt;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.GotoStmt;
-import soot.jimple.IdentityStmt;
 import soot.jimple.IfStmt;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
@@ -30,13 +26,16 @@ import soot.jimple.LookupSwitchStmt;
 import soot.jimple.SwitchStmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
+import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JNopStmt;
+import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
+import soot.toolkits.graph.ExceptionalUnitGraph;
 import soot.util.Chain;
 import soot.util.HashChain;
 /**body.importBodyContentsFrom(orgbody) totally workable*/
 public class MyBodyCloneFactory {
-	IInfoflowCFG iCfg = ControlFlowGraphManager.v().getInfoflowCFG();
+	CallGraph cg = Scene.v().getCallGraph();
 	
 	/**Original body unit -> New body unit*/
 	Map<Unit, Unit> multiProdsUnits = new HashMap<Unit, Unit>(); 	
@@ -48,6 +47,8 @@ public class MyBodyCloneFactory {
 	private List<Local> newLocals = null;
 	private List<Local> orgLocals = null;
 	
+	ExceptionalUnitGraph orgUnitGraph;
+	
 	Unit substituteOfStop = null;
 	public Unit getSubstituteOfStop(){
 		return substituteOfStop;
@@ -55,9 +56,10 @@ public class MyBodyCloneFactory {
 	
 	/***/
 	public MyBodyCloneFactory(Body newbody, Body orgbody) {
+		orgUnitGraph = new ExceptionalUnitGraph(orgbody);
 		this.orgBody = orgbody;
 		for(Unit u : orgBody.getUnits())
-			if(iCfg.getPredsOf(u).size() > 1)
+			if(orgUnitGraph.getPredsOf(u).size() > 1)
 				multiProdsUnits.put(u, null);
 		orgTraps = orgBody.getTraps();
 		for(int i = 0; i < orgTraps.size(); i++)
@@ -97,10 +99,8 @@ public class MyBodyCloneFactory {
 			return (Unit) multiProdsUnits.get(startUnit);
 		
 		Unit result = null;
-		for(Unit u = startUnit; u != null; u = orgBody.getUnits().getSuccOf(u)){
-			if(multiProdsUnits.containsKey(u) && multiProdsUnits.get(u) != null){
-				break;	//no worry about the head of this method
-			}
+		Unit u = startUnit; 
+		while(u != null){
 			preUnit = addOneUnit(preUnit, u, stopUnit);
 			if(u.equals(stopUnit))	//we need to add the stopUnit into the newBody with a substitute of Nop statement. and then check if it is the stop Unit
 				break;
@@ -108,8 +108,14 @@ public class MyBodyCloneFactory {
 				result = preUnit;
 			if(multiProdsUnits.containsKey(u) && multiProdsUnits.get(u) == null)
 				multiProdsUnits.put(u, preUnit);
-			if((u instanceof GotoStmt) || iCfg.isExitStmt(u))
+			if((u instanceof GotoStmt) || orgUnitGraph.getTails().contains(u))
 				break;
+			u = orgBody.getUnits().getSuccOf(u);
+			if(multiProdsUnits.containsKey(u) && multiProdsUnits.get(u) != null){
+				GotoStmt gs = new JGotoStmt(multiProdsUnits.get(u));
+				newBody.getUnits().insertAfter(gs, preUnit);
+				break;	//no worry about the head of this method
+			}
 		}		
 		return result;
 	}

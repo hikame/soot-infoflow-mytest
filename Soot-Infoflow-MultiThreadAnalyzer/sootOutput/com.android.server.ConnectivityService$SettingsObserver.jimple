@@ -1,0 +1,69 @@
+class com.android.server.ConnectivityService$SettingsObserver extends android.database.ContentObserver
+{
+    private int mWhat;
+    private android.os.Handler mHandler;
+
+    void <init>(android.os.Handler, int)
+    {
+        com.android.server.ConnectivityService$SettingsObserver this;
+        android.os.Handler handler;
+        int what;
+
+        this := @this: com.android.server.ConnectivityService$SettingsObserver;
+
+        handler := @parameter0: android.os.Handler;
+
+        what := @parameter1: int;
+
+        specialinvoke this.<android.database.ContentObserver: void <init>(android.os.Handler)>(handler);
+
+        this.<com.android.server.ConnectivityService$SettingsObserver: android.os.Handler mHandler> = handler;
+
+        this.<com.android.server.ConnectivityService$SettingsObserver: int mWhat> = 9;
+
+        return;
+    }
+
+    void observe(android.content.Context)
+    {
+        com.android.server.ConnectivityService$SettingsObserver this;
+        android.content.Context context;
+        android.content.ContentResolver resolver;
+        android.net.Uri $r0;
+
+        this := @this: com.android.server.ConnectivityService$SettingsObserver;
+
+        context := @parameter0: android.content.Context;
+
+        resolver = virtualinvoke context.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        $r0 = staticinvoke <android.provider.Settings$Global: android.net.Uri getUriFor(java.lang.String)>("http_proxy");
+
+        virtualinvoke resolver.<android.content.ContentResolver: void registerContentObserver(android.net.Uri,boolean,android.database.ContentObserver)>($r0, 0, this);
+
+        return;
+    }
+
+    public void onChange(boolean)
+    {
+        com.android.server.ConnectivityService$SettingsObserver this;
+        boolean selfChange;
+        int $i0;
+        android.os.Handler $r0;
+        android.os.Message $r1;
+
+        this := @this: com.android.server.ConnectivityService$SettingsObserver;
+
+        selfChange := @parameter0: boolean;
+
+        $r0 = this.<com.android.server.ConnectivityService$SettingsObserver: android.os.Handler mHandler>;
+
+        $i0 = this.<com.android.server.ConnectivityService$SettingsObserver: int mWhat>;
+
+        $r1 = virtualinvoke $r0.<android.os.Handler: android.os.Message obtainMessage(int)>($i0);
+
+        virtualinvoke $r1.<android.os.Message: void sendToTarget()>();
+
+        return;
+    }
+}

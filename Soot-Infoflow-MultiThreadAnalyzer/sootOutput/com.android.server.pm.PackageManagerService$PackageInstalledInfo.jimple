@@ -1,0 +1,103 @@
+class com.android.server.pm.PackageManagerService$PackageInstalledInfo extends java.lang.Object
+{
+    java.lang.String name;
+    int uid;
+    int[] origUsers;
+    int[] newUsers;
+    android.content.pm.PackageParser$Package pkg;
+    int returnCode;
+    java.lang.String returnMsg;
+    com.android.server.pm.PackageManagerService$PackageRemovedInfo removedInfo;
+    java.lang.String origPackage;
+    java.lang.String origPermission;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.PackageManagerService$PackageInstalledInfo this;
+        com.android.server.pm.PackageManagerService l1;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageInstalledInfo;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        this.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setError(int, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$PackageInstalledInfo this;
+        int code;
+        java.lang.String msg;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageInstalledInfo;
+
+        code := @parameter0: int;
+
+        msg := @parameter1: java.lang.String;
+
+        this.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode> = code;
+
+        this.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: java.lang.String returnMsg> = msg;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", msg);
+
+        return;
+    }
+
+    public void setError(java.lang.String, android.content.pm.PackageParser$PackageParserException)
+    {
+        com.android.server.pm.PackageManagerService$PackageInstalledInfo this;
+        java.lang.String msg, $r0;
+        android.content.pm.PackageParser$PackageParserException e;
+        int $i0;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageInstalledInfo;
+
+        msg := @parameter0: java.lang.String;
+
+        e := @parameter1: android.content.pm.PackageParser$PackageParserException;
+
+        $i0 = e.<android.content.pm.PackageParser$PackageParserException: int error>;
+
+        this.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode> = $i0;
+
+        $r0 = staticinvoke <android.util.ExceptionUtils: java.lang.String getCompleteMessage(java.lang.String,java.lang.Throwable)>(msg, e);
+
+        this.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: java.lang.String returnMsg> = $r0;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("PackageManager", msg, e);
+
+        return;
+    }
+
+    public void setError(java.lang.String, com.android.server.pm.PackageManagerException)
+    {
+        com.android.server.pm.PackageManagerService$PackageInstalledInfo this;
+        java.lang.String msg, $r0;
+        com.android.server.pm.PackageManagerException e;
+        int $i0;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageInstalledInfo;
+
+        msg := @parameter0: java.lang.String;
+
+        e := @parameter1: com.android.server.pm.PackageManagerException;
+
+        $i0 = e.<com.android.server.pm.PackageManagerException: int error>;
+
+        this.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode> = $i0;
+
+        $r0 = staticinvoke <android.util.ExceptionUtils: java.lang.String getCompleteMessage(java.lang.String,java.lang.Throwable)>(msg, e);
+
+        this.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: java.lang.String returnMsg> = $r0;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("PackageManager", msg, e);
+
+        return;
+    }
+}

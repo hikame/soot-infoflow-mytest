@@ -1,0 +1,86 @@
+class com.android.server.pm.PackageManagerService$19 extends java.lang.Object implements android.os.storage.MountServiceInternal$ExternalStorageMountPolicy
+{
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.PackageManagerService$19 this;
+        com.android.server.pm.PackageManagerService l1;
+
+        this := @this: com.android.server.pm.PackageManagerService$19;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        this.<com.android.server.pm.PackageManagerService$19: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public int getMountMode(int, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$19 this;
+        int uid, $i0, $i1, $i2;
+        java.lang.String packageName;
+        boolean $z0;
+        com.android.server.pm.PackageManagerService $r0, $r1, $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$19;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        $z0 = staticinvoke <android.os.Process: boolean isIsolated(int)>(uid);
+
+        if $z0 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r0 = this.<com.android.server.pm.PackageManagerService$19: com.android.server.pm.PackageManagerService this$0>;
+
+        $i0 = virtualinvoke $r0.<com.android.server.pm.PackageManagerService: int checkUidPermission(java.lang.String,int)>("android.permission.WRITE_MEDIA_STORAGE", uid);
+
+        if $i0 != 0 goto label2;
+
+        return 1;
+
+     label2:
+        $r1 = this.<com.android.server.pm.PackageManagerService$19: com.android.server.pm.PackageManagerService this$0>;
+
+        $i1 = virtualinvoke $r1.<com.android.server.pm.PackageManagerService: int checkUidPermission(java.lang.String,int)>("android.permission.READ_EXTERNAL_STORAGE", uid);
+
+        if $i1 != -1 goto label3;
+
+        return 1;
+
+     label3:
+        $r2 = this.<com.android.server.pm.PackageManagerService$19: com.android.server.pm.PackageManagerService this$0>;
+
+        $i2 = virtualinvoke $r2.<com.android.server.pm.PackageManagerService: int checkUidPermission(java.lang.String,int)>("android.permission.WRITE_EXTERNAL_STORAGE", uid);
+
+        if $i2 != -1 goto label4;
+
+        return 2;
+
+     label4:
+        return 3;
+    }
+
+    public boolean hasExternalStorage(int, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$19 this;
+        int uid;
+        java.lang.String packageName;
+
+        this := @this: com.android.server.pm.PackageManagerService$19;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        return 1;
+    }
+}

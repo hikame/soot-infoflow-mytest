@@ -1,0 +1,78 @@
+final class com.android.server.AppOpsService$UidState extends java.lang.Object
+{
+    public final int uid;
+    public android.util.ArrayMap pkgOps;
+    public android.util.SparseIntArray opModes;
+
+    public void <init>(int)
+    {
+        com.android.server.AppOpsService$UidState this;
+        int uid;
+
+        this := @this: com.android.server.AppOpsService$UidState;
+
+        uid := @parameter0: int;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.AppOpsService$UidState: int uid> = uid;
+
+        return;
+    }
+
+    public void clear()
+    {
+        com.android.server.AppOpsService$UidState this;
+
+        this := @this: com.android.server.AppOpsService$UidState;
+
+        this.<com.android.server.AppOpsService$UidState: android.util.ArrayMap pkgOps> = null;
+
+        this.<com.android.server.AppOpsService$UidState: android.util.SparseIntArray opModes> = null;
+
+        return;
+    }
+
+    public boolean isDefault()
+    {
+        com.android.server.AppOpsService$UidState this;
+        android.util.ArrayMap $r0, $r3;
+        android.util.SparseIntArray $r1, $r2;
+        int $i0;
+        boolean $z0, $z1;
+
+        this := @this: com.android.server.AppOpsService$UidState;
+
+        $r0 = this.<com.android.server.AppOpsService$UidState: android.util.ArrayMap pkgOps>;
+
+        if $r0 == null goto label1;
+
+        $r3 = this.<com.android.server.AppOpsService$UidState: android.util.ArrayMap pkgOps>;
+
+        $z0 = virtualinvoke $r3.<android.util.ArrayMap: boolean isEmpty()>();
+
+        if $z0 == 0 goto label3;
+
+     label1:
+        $r1 = this.<com.android.server.AppOpsService$UidState: android.util.SparseIntArray opModes>;
+
+        if $r1 == null goto label2;
+
+        $r2 = this.<com.android.server.AppOpsService$UidState: android.util.SparseIntArray opModes>;
+
+        $i0 = virtualinvoke $r2.<android.util.SparseIntArray: int size()>();
+
+        if $i0 > 0 goto label3;
+
+     label2:
+        $z1 = 1;
+
+        goto label4;
+
+     label3:
+        $z1 = 0;
+
+     label4:
+        return $z1;
+    }
+}

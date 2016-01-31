@@ -1,0 +1,99 @@
+class com.android.server.LockSettingsService$2 extends android.content.BroadcastReceiver
+{
+    final com.android.server.LockSettingsService this$0;
+
+    void <init>(com.android.server.LockSettingsService)
+    {
+        com.android.server.LockSettingsService$2 this;
+        com.android.server.LockSettingsService l1;
+
+        this := @this: com.android.server.LockSettingsService$2;
+
+        l1 := @parameter0: com.android.server.LockSettingsService;
+
+        this.<com.android.server.LockSettingsService$2: com.android.server.LockSettingsService this$0> = l1;
+
+        specialinvoke this.<android.content.BroadcastReceiver: void <init>()>();
+
+        return;
+    }
+
+    public void onReceive(android.content.Context, android.content.Intent)
+    {
+        com.android.server.LockSettingsService$2 this;
+        android.content.Context context, $r6;
+        android.content.Intent intent;
+        int userSysUid, parentSysUid, $i0, userHandle#1, userHandle#2;
+        android.security.KeyStore ks;
+        android.os.UserManager um;
+        android.content.pm.UserInfo parentInfo;
+        java.lang.String $r0, $r1, $r2, $r3;
+        boolean $z0, $z1;
+        com.android.server.LockSettingsStorage $r4;
+        com.android.server.LockSettingsService $r5, $r7;
+        java.lang.Object $r8;
+
+        this := @this: com.android.server.LockSettingsService$2;
+
+        context := @parameter0: android.content.Context;
+
+        intent := @parameter1: android.content.Intent;
+
+        $r0 = "android.intent.action.USER_ADDED";
+
+        $r1 = virtualinvoke intent.<android.content.Intent: java.lang.String getAction()>();
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        userHandle#1 = virtualinvoke intent.<android.content.Intent: int getIntExtra(java.lang.String,int)>("android.intent.extra.user_handle", 0);
+
+        userSysUid = staticinvoke <android.os.UserHandle: int getUid(int,int)>(userHandle#1, 1000);
+
+        ks = staticinvoke <android.security.KeyStore: android.security.KeyStore getInstance()>();
+
+        virtualinvoke ks.<android.security.KeyStore: boolean resetUid(int)>(userSysUid);
+
+        $r7 = this.<com.android.server.LockSettingsService$2: com.android.server.LockSettingsService this$0>;
+
+        $r6 = staticinvoke <com.android.server.LockSettingsService: android.content.Context access$100(com.android.server.LockSettingsService)>($r7);
+
+        $r8 = virtualinvoke $r6.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("user");
+
+        um = (android.os.UserManager) $r8;
+
+        parentInfo = virtualinvoke um.<android.os.UserManager: android.content.pm.UserInfo getProfileParent(int)>(userHandle#1);
+
+        if parentInfo == null goto label1;
+
+        $i0 = parentInfo.<android.content.pm.UserInfo: int id>;
+
+        parentSysUid = staticinvoke <android.os.UserHandle: int getUid(int,int)>($i0, 1000);
+
+        virtualinvoke ks.<android.security.KeyStore: boolean syncUid(int,int)>(parentSysUid, userSysUid);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r2 = "android.intent.action.USER_STARTING";
+
+        $r3 = virtualinvoke intent.<android.content.Intent: java.lang.String getAction()>();
+
+        $z1 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 == 0 goto label3;
+
+        userHandle#2 = virtualinvoke intent.<android.content.Intent: int getIntExtra(java.lang.String,int)>("android.intent.extra.user_handle", 0);
+
+        $r5 = this.<com.android.server.LockSettingsService$2: com.android.server.LockSettingsService this$0>;
+
+        $r4 = staticinvoke <com.android.server.LockSettingsService: com.android.server.LockSettingsStorage access$000(com.android.server.LockSettingsService)>($r5);
+
+        virtualinvoke $r4.<com.android.server.LockSettingsStorage: void prefetchUser(int)>(userHandle#2);
+
+     label3:
+        return;
+    }
+}

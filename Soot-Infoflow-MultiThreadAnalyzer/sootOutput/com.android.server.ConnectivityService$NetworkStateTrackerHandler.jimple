@@ -1,0 +1,1694 @@
+class com.android.server.ConnectivityService$NetworkStateTrackerHandler extends android.os.Handler
+{
+    final com.android.server.ConnectivityService this$0;
+
+    public void <init>(com.android.server.ConnectivityService, android.os.Looper)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        com.android.server.ConnectivityService l1;
+        android.os.Looper looper;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        l1 := @parameter0: com.android.server.ConnectivityService;
+
+        looper := @parameter1: android.os.Looper;
+
+        this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0> = l1;
+
+        specialinvoke this.<android.os.Handler: void <init>(android.os.Looper)>(looper);
+
+        return;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message msg;
+        com.android.server.connectivity.NetworkAgentInfo l5, nai#1, nai#2, nai#3, nai#5, nai#7, nai#9, nai#11, nai#13, nai#14, nai#18, nai#21;
+        java.lang.Throwable l6, l7, $r110, $r123;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, $i13;
+        com.android.server.ConnectivityService $r0, $r2, $r6, $r11, $r12, $r14, $r16, $r18, $r25, $r28, $r29, $r34, $r37, $r40, $r51, $r54, $r56, $r58, $r68, $r73, $r74, $r78, $r81, $r101, $r102, $r106, $r107, $r119;
+        android.util.SparseArray $r1, $r3, oldLp#20;
+        java.lang.Object $r4, $r10, $r13, $r15, $r31, $r38, $r44, $r47, $r50, $r55, $r59, $r62, $r66, $r69, $r70, $r75, $r76, $r77, $r80, $r117;
+        android.net.NetworkInfo $r5, $r8, info#6, info#22, info#25;
+        java.lang.String $r7, $r21, $r23, $r86, $r91, $r97, $r109, $r124;
+        android.app.PendingIntent $r9;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5, $z6, $z7, oldLp#16;
+        java.lang.StringBuilder $r17, $r20, $r22, $r83, $r84, $r85, $r87, $r88, $r92, $r94, $r95, $r96, $r98, $r108, $r112, $r113, $r114, $r121, $r122;
+        com.android.internal.util.AsyncChannel $r19, $r118;
+        com.android.server.ConnectivityService$NascentState $r24;
+        com.android.server.ConnectivityService$ReapUnvalidatedNetworks $r26;
+        java.util.HashMap $r27, $r33, $r41, $r57, $r64, $r71, $r82, $r115;
+        android.net.NetworkMisc $r30, $r35;
+        android.os.Messenger $r32, $r39, $r42, $r60, $r63, $r72, $r79, $r116;
+        android.os.INetworkManagementService $r36, $r52;
+        android.net.Network $r43, $r53;
+        android.net.UidRange[] $r45, $r46, $r48, $r49;
+        android.net.LinkProperties $r61, oldLp#4, oldLp#24;
+        android.net.NetworkCapabilities $r67;
+        android.net.NetworkInfo$State $r89, $r99, $r100, $r103, $r104, $r105, nai#23;
+        android.net.NetworkInfo$DetailedState $r90, $r93;
+        java.lang.Exception $r111, $r120, oldLp#10, oldLp#12;
+        java.lang.Integer oldLp#8;
+        byte $b14;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $i0 = msg.<android.os.Message: int what>;
+
+        lookupswitch($i0)
+        {
+            case 69632: goto label01;
+            case 69635: goto label02;
+            case 69636: goto label03;
+            case 458752: goto label44;
+            case 458753: goto label51;
+            case 528385: goto label14;
+            case 528386: goto label04;
+            case 528387: goto label06;
+            case 528388: goto label16;
+            case 528389: goto label18;
+            case 528390: goto label22;
+            case 528392: goto label26;
+            case 532482: goto label29;
+            case 532485: goto label35;
+            case 532490: goto label36;
+            default: goto label52;
+        };
+
+     label01:
+        $r119 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$900(com.android.server.ConnectivityService,android.os.Message)>($r119, msg);
+
+        goto label52;
+
+     label02:
+        $r101 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r115 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r101);
+
+        $r116 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r117 = virtualinvoke $r115.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r116);
+
+        nai#1 = (com.android.server.connectivity.NetworkAgentInfo) $r117;
+
+        if nai#1 == null goto label52;
+
+        $r118 = nai#1.<com.android.server.connectivity.NetworkAgentInfo: com.android.internal.util.AsyncChannel asyncChannel>;
+
+        virtualinvoke $r118.<com.android.internal.util.AsyncChannel: void disconnect()>();
+
+        goto label52;
+
+     label03:
+        $r102 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1100(com.android.server.ConnectivityService,android.os.Message)>($r102, msg);
+
+        goto label52;
+
+     label04:
+        $r74 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r71 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r74);
+
+        $r72 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r69 = virtualinvoke $r71.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r72);
+
+        nai#2 = (com.android.server.connectivity.NetworkAgentInfo) $r69;
+
+        if nai#2 != null goto label05;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("EVENT_NETWORK_CAPABILITIES_CHANGED from unknown NetworkAgent");
+
+        goto label52;
+
+     label05:
+        $r68 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r70 = msg.<android.os.Message: java.lang.Object obj>;
+
+        $r67 = (android.net.NetworkCapabilities) $r70;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1200(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo,android.net.NetworkCapabilities)>($r68, nai#2, $r67);
+
+        goto label52;
+
+     label06:
+        $r56 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r64 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r56);
+
+        $r63 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r66 = virtualinvoke $r64.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r63);
+
+        nai#3 = (com.android.server.connectivity.NetworkAgentInfo) $r66;
+
+        if nai#3 != null goto label07;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("NetworkAgent not found for EVENT_NETWORK_PROPERTIES_CHANGED");
+
+        goto label52;
+
+     label07:
+        oldLp#4 = nai#3.<com.android.server.connectivity.NetworkAgentInfo: android.net.LinkProperties linkProperties>;
+
+        l5 = nai#3;
+
+        entermonitor nai#3;
+
+     label08:
+        $r62 = msg.<android.os.Message: java.lang.Object obj>;
+
+        $r61 = (android.net.LinkProperties) $r62;
+
+        nai#3.<com.android.server.connectivity.NetworkAgentInfo: android.net.LinkProperties linkProperties> = $r61;
+
+        exitmonitor l5;
+
+     label09:
+        goto label12;
+
+     label10:
+        $r110 := @caughtexception;
+
+        l6 = $r110;
+
+        exitmonitor l5;
+
+     label11:
+        throw l6;
+
+     label12:
+        $z5 = nai#3.<com.android.server.connectivity.NetworkAgentInfo: boolean created>;
+
+        if $z5 == 0 goto label13;
+
+        $r73 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1300(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo,android.net.LinkProperties)>($r73, nai#3, oldLp#4);
+
+     label13:
+        goto label52;
+
+     label14:
+        $r81 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r82 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r81);
+
+        $r79 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r80 = virtualinvoke $r82.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r79);
+
+        nai#5 = (com.android.server.connectivity.NetworkAgentInfo) $r80;
+
+        if nai#5 != null goto label15;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("EVENT_NETWORK_INFO_CHANGED from unknown NetworkAgent");
+
+        goto label52;
+
+     label15:
+        $r77 = msg.<android.os.Message: java.lang.Object obj>;
+
+        info#6 = (android.net.NetworkInfo) $r77;
+
+        $r78 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1400(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo,android.net.NetworkInfo)>($r78, nai#5, info#6);
+
+        goto label52;
+
+     label16:
+        $r58 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r57 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r58);
+
+        $r60 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r59 = virtualinvoke $r57.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r60);
+
+        nai#7 = (com.android.server.connectivity.NetworkAgentInfo) $r59;
+
+        if nai#7 != null goto label17;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("EVENT_NETWORK_SCORE_CHANGED from unknown NetworkAgent");
+
+        goto label52;
+
+     label17:
+        $r55 = msg.<android.os.Message: java.lang.Object obj>;
+
+        oldLp#8 = (java.lang.Integer) $r55;
+
+        if oldLp#8 == null goto label52;
+
+        $r54 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $i9 = virtualinvoke oldLp#8.<java.lang.Integer: int intValue()>();
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1500(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo,int)>($r54, nai#7, $i9);
+
+        goto label52;
+
+     label18:
+        $r40 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r41 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r40);
+
+        $r42 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r50 = virtualinvoke $r41.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r42);
+
+        nai#9 = (com.android.server.connectivity.NetworkAgentInfo) $r50;
+
+        if nai#9 != null goto label19;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("EVENT_UID_RANGES_ADDED from unknown NetworkAgent");
+
+        goto label52;
+
+     label19:
+        $r51 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r52 = staticinvoke <com.android.server.ConnectivityService: android.os.INetworkManagementService access$1600(com.android.server.ConnectivityService)>($r51);
+
+        $r53 = nai#9.<com.android.server.connectivity.NetworkAgentInfo: android.net.Network network>;
+
+        $i8 = $r53.<android.net.Network: int netId>;
+
+        $r47 = msg.<android.os.Message: java.lang.Object obj>;
+
+        $r48 = (android.net.UidRange[]) $r47;
+
+        $r49 = (android.net.UidRange[]) $r48;
+
+        interfaceinvoke $r52.<android.os.INetworkManagementService: void addVpnUidRanges(int,android.net.UidRange[])>($i8, $r49);
+
+     label20:
+        goto label52;
+
+     label21:
+        $r120 := @caughtexception;
+
+        oldLp#10 = $r120;
+
+        $r121 = new java.lang.StringBuilder;
+
+        specialinvoke $r121.<java.lang.StringBuilder: void <init>()>();
+
+        $r122 = virtualinvoke $r121.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Exception in addVpnUidRanges: ");
+
+        $r108 = virtualinvoke $r122.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(oldLp#10);
+
+        $r109 = virtualinvoke $r108.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>($r109);
+
+        goto label52;
+
+     label22:
+        $r34 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r33 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r34);
+
+        $r39 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r38 = virtualinvoke $r33.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r39);
+
+        nai#11 = (com.android.server.connectivity.NetworkAgentInfo) $r38;
+
+        if nai#11 != null goto label23;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("EVENT_UID_RANGES_REMOVED from unknown NetworkAgent");
+
+        goto label52;
+
+     label23:
+        $r37 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r36 = staticinvoke <com.android.server.ConnectivityService: android.os.INetworkManagementService access$1600(com.android.server.ConnectivityService)>($r37);
+
+        $r43 = nai#11.<com.android.server.connectivity.NetworkAgentInfo: android.net.Network network>;
+
+        $i7 = $r43.<android.net.Network: int netId>;
+
+        $r44 = msg.<android.os.Message: java.lang.Object obj>;
+
+        $r45 = (android.net.UidRange[]) $r44;
+
+        $r46 = (android.net.UidRange[]) $r45;
+
+        interfaceinvoke $r36.<android.os.INetworkManagementService: void removeVpnUidRanges(int,android.net.UidRange[])>($i7, $r46);
+
+     label24:
+        goto label52;
+
+     label25:
+        $r111 := @caughtexception;
+
+        oldLp#12 = $r111;
+
+        $r112 = new java.lang.StringBuilder;
+
+        specialinvoke $r112.<java.lang.StringBuilder: void <init>()>();
+
+        $r113 = virtualinvoke $r112.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Exception in removeVpnUidRanges: ");
+
+        $r114 = virtualinvoke $r113.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(oldLp#12);
+
+        $r124 = virtualinvoke $r114.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>($r124);
+
+        goto label52;
+
+     label26:
+        $r28 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r27 = staticinvoke <com.android.server.ConnectivityService: java.util.HashMap access$1000(com.android.server.ConnectivityService)>($r28);
+
+        $r32 = msg.<android.os.Message: android.os.Messenger replyTo>;
+
+        $r31 = virtualinvoke $r27.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r32);
+
+        nai#13 = (com.android.server.connectivity.NetworkAgentInfo) $r31;
+
+        if nai#13 != null goto label27;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("EVENT_SET_EXPLICITLY_SELECTED from unknown NetworkAgent");
+
+        goto label52;
+
+     label27:
+        $z3 = nai#13.<com.android.server.connectivity.NetworkAgentInfo: boolean created>;
+
+        if $z3 == 0 goto label28;
+
+        $r35 = nai#13.<com.android.server.connectivity.NetworkAgentInfo: android.net.NetworkMisc networkMisc>;
+
+        $z4 = $r35.<android.net.NetworkMisc: boolean explicitlySelected>;
+
+        if $z4 != 0 goto label28;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("ERROR: created network explicitly selected.");
+
+     label28:
+        $r30 = nai#13.<com.android.server.connectivity.NetworkAgentInfo: android.net.NetworkMisc networkMisc>;
+
+        $r30.<android.net.NetworkMisc: boolean explicitlySelected> = 1;
+
+        goto label52;
+
+     label29:
+        $r15 = msg.<android.os.Message: java.lang.Object obj>;
+
+        nai#14 = (com.android.server.connectivity.NetworkAgentInfo) $r15;
+
+        $r16 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $z1 = staticinvoke <com.android.server.ConnectivityService: boolean access$1700(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo,java.lang.String)>($r16, nai#14, "EVENT_NETWORK_VALIDATED");
+
+        if $z1 == 0 goto label52;
+
+        $i6 = msg.<android.os.Message: int arg1>;
+
+        if $i6 != 0 goto label30;
+
+        $z7 = 1;
+
+        goto label31;
+
+     label30:
+        $z7 = 0;
+
+     label31:
+        oldLp#16 = $z7;
+
+        nai#14.<com.android.server.connectivity.NetworkAgentInfo: boolean lastValidated> = oldLp#16;
+
+        if oldLp#16 == 0 goto label32;
+
+        $r17 = new java.lang.StringBuilder;
+
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+
+        $r22 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Validated ");
+
+        $r23 = virtualinvoke nai#14.<com.android.server.connectivity.NetworkAgentInfo: java.lang.String name()>();
+
+        $r20 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r23);
+
+        $r21 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1800(java.lang.String)>($r21);
+
+        $z2 = nai#14.<com.android.server.connectivity.NetworkAgentInfo: boolean everValidated>;
+
+        if $z2 != 0 goto label32;
+
+        nai#14.<com.android.server.connectivity.NetworkAgentInfo: boolean everValidated> = 1;
+
+        $r25 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r24 = <com.android.server.ConnectivityService$NascentState: com.android.server.ConnectivityService$NascentState JUST_VALIDATED>;
+
+        $r26 = <com.android.server.ConnectivityService$ReapUnvalidatedNetworks: com.android.server.ConnectivityService$ReapUnvalidatedNetworks REAP>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1900(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo,com.android.server.ConnectivityService$NascentState,com.android.server.ConnectivityService$ReapUnvalidatedNetworks)>($r25, nai#14, $r24, $r26);
+
+        $r29 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$2000(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo)>($r29, nai#14);
+
+     label32:
+        $r18 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$2100(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo)>($r18, nai#14);
+
+        $r19 = nai#14.<com.android.server.connectivity.NetworkAgentInfo: com.android.internal.util.AsyncChannel asyncChannel>;
+
+        if oldLp#16 == 0 goto label33;
+
+        $b14 = 1;
+
+        goto label34;
+
+     label33:
+        $b14 = 2;
+
+     label34:
+        virtualinvoke $r19.<com.android.internal.util.AsyncChannel: void sendMessage(int,int,int,java.lang.Object)>(528391, $b14, 0, null);
+
+        goto label52;
+
+     label35:
+        $r13 = msg.<android.os.Message: java.lang.Object obj>;
+
+        nai#18 = (com.android.server.connectivity.NetworkAgentInfo) $r13;
+
+        $r12 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $z0 = staticinvoke <com.android.server.ConnectivityService: boolean access$1700(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo,java.lang.String)>($r12, nai#18, "EVENT_NETWORK_LINGER_COMPLETE");
+
+        if $z0 == 0 goto label52;
+
+        $r14 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$2200(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo)>($r14, nai#18);
+
+        goto label52;
+
+     label36:
+        $i1 = msg.<android.os.Message: int arg1>;
+
+        if $i1 != 0 goto label37;
+
+        $r11 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $i5 = msg.<android.os.Message: int arg2>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$2300(com.android.server.ConnectivityService,boolean,int,int,java.lang.String,android.app.PendingIntent)>($r11, 0, $i5, 0, null, null);
+
+        goto label52;
+
+     label37:
+        $r0 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r1 = staticinvoke <com.android.server.ConnectivityService: android.util.SparseArray access$2400(com.android.server.ConnectivityService)>($r0);
+
+        oldLp#20 = $r1;
+
+        entermonitor $r1;
+
+     label38:
+        $r2 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $r3 = staticinvoke <com.android.server.ConnectivityService: android.util.SparseArray access$2400(com.android.server.ConnectivityService)>($r2);
+
+        $i2 = msg.<android.os.Message: int arg2>;
+
+        $r4 = virtualinvoke $r3.<android.util.SparseArray: java.lang.Object get(int)>($i2);
+
+        nai#21 = (com.android.server.connectivity.NetworkAgentInfo) $r4;
+
+        exitmonitor oldLp#20;
+
+     label39:
+        goto label42;
+
+     label40:
+        $r123 := @caughtexception;
+
+        l7 = $r123;
+
+        exitmonitor oldLp#20;
+
+     label41:
+        throw l7;
+
+     label42:
+        if nai#21 != null goto label43;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$100(java.lang.String)>("EVENT_PROVISIONING_NOTIFICATION from unknown NetworkMonitor");
+
+        goto label52;
+
+     label43:
+        $r6 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $i4 = msg.<android.os.Message: int arg2>;
+
+        $r5 = nai#21.<com.android.server.connectivity.NetworkAgentInfo: android.net.NetworkInfo networkInfo>;
+
+        $i3 = virtualinvoke $r5.<android.net.NetworkInfo: int getType()>();
+
+        $r8 = nai#21.<com.android.server.connectivity.NetworkAgentInfo: android.net.NetworkInfo networkInfo>;
+
+        $r7 = virtualinvoke $r8.<android.net.NetworkInfo: java.lang.String getExtraInfo()>();
+
+        $r10 = msg.<android.os.Message: java.lang.Object obj>;
+
+        $r9 = (android.app.PendingIntent) $r10;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$2300(com.android.server.ConnectivityService,boolean,int,int,java.lang.String,android.app.PendingIntent)>($r6, 1, $i4, $i3, $r7, $r9);
+
+        goto label52;
+
+     label44:
+        $r76 = msg.<android.os.Message: java.lang.Object obj>;
+
+        info#22 = (android.net.NetworkInfo) $r76;
+
+        nai#23 = virtualinvoke info#22.<android.net.NetworkInfo: android.net.NetworkInfo$State getState()>();
+
+        $r89 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State CONNECTED>;
+
+        if nai#23 == $r89 goto label45;
+
+        $r100 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State DISCONNECTED>;
+
+        if nai#23 == $r100 goto label45;
+
+        $r99 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State SUSPENDED>;
+
+        if nai#23 != $r99 goto label46;
+
+     label45:
+        $r88 = new java.lang.StringBuilder;
+
+        specialinvoke $r88.<java.lang.StringBuilder: void <init>()>();
+
+        $r87 = virtualinvoke $r88.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ConnectivityChange for ");
+
+        $r86 = virtualinvoke info#22.<android.net.NetworkInfo: java.lang.String getTypeName()>();
+
+        $r85 = virtualinvoke $r87.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r86);
+
+        $r84 = virtualinvoke $r85.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r83 = virtualinvoke $r84.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(nai#23);
+
+        $r94 = virtualinvoke $r83.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $r93 = virtualinvoke info#22.<android.net.NetworkInfo: android.net.NetworkInfo$DetailedState getDetailedState()>();
+
+        $r92 = virtualinvoke $r94.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r93);
+
+        $r91 = virtualinvoke $r92.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1800(java.lang.String)>($r91);
+
+     label46:
+        $i12 = virtualinvoke info#22.<android.net.NetworkInfo: int getType()>();
+
+        $i11 = virtualinvoke info#22.<android.net.NetworkInfo: int getSubtype()>();
+
+        $r90 = virtualinvoke info#22.<android.net.NetworkInfo: android.net.NetworkInfo$DetailedState getDetailedState()>();
+
+        $i10 = virtualinvoke $r90.<android.net.NetworkInfo$DetailedState: int ordinal()>();
+
+        staticinvoke <com.android.server.EventLogTags: void writeConnectivityStateChanged(int,int,int)>($i12, $i11, $i10);
+
+        $z6 = virtualinvoke info#22.<android.net.NetworkInfo: boolean isConnectedToProvisioningNetwork()>();
+
+        if $z6 == 0 goto label47;
+
+        $r106 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        $i13 = virtualinvoke info#22.<android.net.NetworkInfo: int getType()>();
+
+        oldLp#24 = virtualinvoke $r106.<com.android.server.ConnectivityService: android.net.LinkProperties getLinkPropertiesForType(int)>($i13);
+
+        $r96 = new java.lang.StringBuilder;
+
+        specialinvoke $r96.<java.lang.StringBuilder: void <init>()>();
+
+        $r95 = virtualinvoke $r96.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("EVENT_STATE_CHANGED: connected to provisioning network, lp=");
+
+        $r98 = virtualinvoke $r95.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(oldLp#24);
+
+        $r97 = virtualinvoke $r98.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.ConnectivityService: void access$1800(java.lang.String)>($r97);
+
+        goto label50;
+
+     label47:
+        $r103 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State DISCONNECTED>;
+
+        if nai#23 != $r103 goto label48;
+
+        goto label50;
+
+     label48:
+        $r105 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State SUSPENDED>;
+
+        if nai#23 != $r105 goto label49;
+
+        goto label50;
+
+     label49:
+        $r104 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State CONNECTED>;
+
+        if nai#23 != $r104 goto label50;
+
+     label50:
+        $r107 = this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$2500(com.android.server.ConnectivityService,com.android.server.connectivity.NetworkAgentInfo)>($r107, null);
+
+        goto label52;
+
+     label51:
+        $r75 = msg.<android.os.Message: java.lang.Object obj>;
+
+        info#25 = (android.net.NetworkInfo) $r75;
+
+     label52:
+        return;
+
+        catch java.lang.Throwable from label08 to label09 with label10;
+        catch java.lang.Throwable from label10 to label11 with label10;
+        catch java.lang.Exception from label19 to label20 with label21;
+        catch java.lang.Exception from label23 to label24 with label25;
+        catch java.lang.Throwable from label38 to label39 with label40;
+        catch java.lang.Throwable from label40 to label41 with label40;
+    }
+
+    void dispatchMessage(android.os.Message)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message msg;
+        java.lang.Runnable $r0;
+        android.os.Handler$Callback $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $r0 = msg.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        staticinvoke <android.os.Handler: void handleCallback(android.os.Message)>(msg);
+
+        goto label3;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        if $r1 == null goto label2;
+
+        $r2 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        $z0 = interfaceinvoke $r2.<android.os.Handler$Callback: boolean handleMessage(android.os.Message)>(msg);
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void handleMessage(android.os.Message)>(msg);
+
+     label3:
+        return;
+    }
+
+    void <init>()
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        specialinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void <init>(android.os.Handler$Callback,boolean)>(null, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Handler$Callback)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Handler$Callback callback;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        specialinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void <init>(android.os.Handler$Callback,boolean)>(callback, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Looper)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Looper looper;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        looper := @parameter0: android.os.Looper;
+
+        specialinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, null, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Looper, android.os.Handler$Callback)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        specialinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, callback, 0);
+
+        return;
+    }
+
+    void <init>(boolean)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        boolean async;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        async := @parameter0: boolean;
+
+        specialinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void <init>(android.os.Handler$Callback,boolean)>(null, async);
+
+        return;
+    }
+
+    void <init>(android.os.Handler$Callback, boolean)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.Looper $r0, $r1, $r2;
+        android.os.MessageQueue $r3;
+        java.lang.RuntimeException $r4;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        async := @parameter1: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = $r0;
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r1 != null goto label1;
+
+        $r4 = new java.lang.RuntimeException;
+
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String)>("Can\'t create handler inside thread that has not called Looper.prepare()");
+
+        throw $r4;
+
+     label1:
+        $r2 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r3 = $r2.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r3;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = callback;
+
+        this.<android.os.Handler: boolean mAsynchronous> = async;
+
+        return;
+    }
+
+    void <init>(android.os.Looper, android.os.Handler$Callback, boolean)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        async := @parameter2: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = looper;
+
+        $r0 = looper.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r0;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = callback;
+
+        this.<android.os.Handler: boolean mAsynchronous> = async;
+
+        return;
+    }
+
+    java.lang.String getMessageName(android.os.Message)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message message;
+        java.lang.Runnable $r0, $r6;
+        java.lang.StringBuilder $r1, $r2, $r4;
+        int $i0;
+        java.lang.String $r3, $r5, $r8;
+        java.lang.Class $r7;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        $r6 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        $r7 = virtualinvoke $r6.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.Class: java.lang.String getName()>();
+
+        return $r8;
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0x");
+
+        $i0 = message.<android.os.Message: int what>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+    }
+
+    android.os.Message obtainMessage()
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler)>(this);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        android.os.Message result;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        result = new android.os.Message;
+
+        specialinvoke result.<android.os.Message: void <init>()>();
+
+        result.<android.os.Message: int what> = what;
+
+        result.<android.os.Message: android.os.Handler target> = this;
+
+        return result;
+    }
+
+    android.os.Message obtainMessage(int, java.lang.Object)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        obj := @parameter1: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,java.lang.Object)>(this, what, obj);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int, int, int)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what, arg1, arg2;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int)>(this, what, arg1, arg2);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int, int, int, java.lang.Object)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what, arg1, arg2;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        obj := @parameter3: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int,java.lang.Object)>(this, what, arg1, arg2, obj);
+
+        return $r0;
+    }
+
+    boolean post(java.lang.Runnable)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable param0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtTime(java.lang.Runnable, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtTime(java.lang.Runnable, java.lang.Object, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable param0;
+        java.lang.Object param1;
+        long param2;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: java.lang.Object;
+
+        param2 := @parameter2: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postDelayed(java.lang.Runnable, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtFrontOfQueue(java.lang.Runnable)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable param0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean runWithScissors(java.lang.Runnable, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable r;
+        long timeout;
+        android.os.Handler$BlockingRunnable br, $r2;
+        byte $b0;
+        android.os.Looper $r0, $r1;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r3, $r4;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        timeout := @parameter1: long;
+
+        if r != null goto label1;
+
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("runnable must not be null");
+
+        throw $r4;
+
+     label1:
+        $b0 = timeout cmp 0L;
+
+        if $b0 >= 0 goto label2;
+
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("timeout must be non-negative");
+
+        throw $r3;
+
+     label2:
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r0 != $r1 goto label3;
+
+        interfaceinvoke r.<java.lang.Runnable: void run()>();
+
+        return 1;
+
+     label3:
+        $r2 = new android.os.Handler$BlockingRunnable;
+
+        specialinvoke $r2.<android.os.Handler$BlockingRunnable: void <init>(java.lang.Runnable)>(r);
+
+        br = $r2;
+
+        $z0 = virtualinvoke br.<android.os.Handler$BlockingRunnable: boolean postAndWait(android.os.Handler,long)>(this, timeout);
+
+        return $z0;
+    }
+
+    void removeCallbacks(java.lang.Runnable)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return;
+    }
+
+    void removeCallbacks(java.lang.Runnable, java.lang.Object)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, token);
+
+        return;
+    }
+
+    boolean sendMessage(android.os.Message)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message msg;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendEmptyMessage(int)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        $z0 = virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: boolean sendEmptyMessageDelayed(int,long)>(what, 0L);
+
+        return $z0;
+    }
+
+    boolean sendEmptyMessageDelayed(int, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        long delayMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        delayMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: boolean sendMessageDelayed(android.os.Message,long)>(msg, delayMillis);
+
+        return $z0;
+    }
+
+    boolean sendEmptyMessageAtTime(int, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        long uptimeMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        uptimeMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: boolean sendMessageAtTime(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z0;
+    }
+
+    boolean sendMessageDelayed(android.os.Message, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message msg;
+        long param1;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        param1 := @parameter1: long;
+
+        virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendMessageAtTime(android.os.Message, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message msg;
+        long param1;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        param1 := @parameter1: long;
+
+        virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendMessageAtFrontOfQueue(android.os.Message)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Message msg;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        virtualinvoke this.<com.android.server.ConnectivityService$NetworkStateTrackerHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean enqueueMessage(android.os.MessageQueue, android.os.Message, long)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.MessageQueue queue;
+        android.os.Message msg;
+        long uptimeMillis;
+        boolean $z0, $z1;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        queue := @parameter0: android.os.MessageQueue;
+
+        msg := @parameter1: android.os.Message;
+
+        uptimeMillis := @parameter2: long;
+
+        msg.<android.os.Message: android.os.Handler target> = this;
+
+        $z0 = this.<android.os.Handler: boolean mAsynchronous>;
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke msg.<android.os.Message: void setAsynchronous(boolean)>(1);
+
+     label1:
+        $z1 = virtualinvoke queue.<android.os.MessageQueue: boolean enqueueMessage(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z1;
+    }
+
+    void removeMessages(int)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return;
+    }
+
+    void removeMessages(int, java.lang.Object)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return;
+    }
+
+    void removeCallbacksAndMessages(java.lang.Object)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        token := @parameter0: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeCallbacksAndMessages(android.os.Handler,java.lang.Object)>(this, token);
+
+        return;
+    }
+
+    boolean hasMessages(int)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return $z0;
+    }
+
+    boolean hasMessages(int, java.lang.Object)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return $z0;
+    }
+
+    boolean hasCallbacks(java.lang.Runnable)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return $z0;
+    }
+
+    android.os.Looper getLooper()
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.Looper $r0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        $r0 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        return $r0;
+    }
+
+    void dump(android.util.Printer, java.lang.String)
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.util.Printer pw;
+        java.lang.String prefix, $r5, $r11, $r14;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r15;
+        long $l0;
+        android.os.Looper $r6, $r8;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        pw := @parameter0: android.util.Printer;
+
+        prefix := @parameter1: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" @ ");
+
+        $l0 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r5);
+
+        $r6 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r6 != null goto label1;
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r14);
+
+        goto label2;
+
+     label1:
+        $r8 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<android.os.Looper: void dump(android.util.Printer,java.lang.String)>(pw, $r11);
+
+     label2:
+        return;
+    }
+
+    java.lang.String toString()
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        java.lang.StringBuilder $r0, $r1, $r4, $r5, $r7, $r8;
+        java.lang.Class $r2;
+        java.lang.String $r3, $r6, $r9;
+        int $i0;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Handler (");
+
+        $r2 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") {");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r9;
+    }
+
+    android.os.IMessenger getIMessenger()
+    {
+        com.android.server.ConnectivityService$NetworkStateTrackerHandler this;
+        android.os.MessageQueue l1, $r0;
+        java.lang.Throwable l2, $r5;
+        android.os.IMessenger $r1, $r3, $r4, tmp$1934686104;
+        android.os.Handler$MessengerImpl tmp$942519007;
+
+        this := @this: com.android.server.ConnectivityService$NetworkStateTrackerHandler;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        if $r1 == null goto label3;
+
+        $r4 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label2:
+        return $r4;
+
+     label3:
+        tmp$942519007 = new android.os.Handler$MessengerImpl;
+
+        specialinvoke tmp$942519007.<android.os.Handler$MessengerImpl: void <init>(android.os.Handler,android.os.Handler$1)>(this, null);
+
+        tmp$1934686104 = (android.os.IMessenger) tmp$942519007;
+
+        this.<android.os.Handler: android.os.IMessenger mMessenger> = tmp$1934686104;
+
+        $r3 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label4:
+        return $r3;
+
+     label5:
+        $r5 := @caughtexception;
+
+        l2 = $r5;
+
+        exitmonitor l1;
+
+     label6:
+        throw l2;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    android.os.Message getPostMessage(java.lang.Runnable)
+    {
+        java.lang.Runnable r;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    android.os.Message getPostMessage(java.lang.Runnable, java.lang.Object)
+    {
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Object obj> = token;
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    void handleCallback(android.os.Message)
+    {
+        android.os.Message message;
+        java.lang.Runnable $r0;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        interfaceinvoke $r0.<java.lang.Runnable: void run()>();
+
+        return;
+    }
+}

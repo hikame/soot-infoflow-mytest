@@ -1,0 +1,51 @@
+final class com.android.phone.PhoneInterfaceManager$IccAPDUArgument extends java.lang.Object
+{
+    public int channel;
+    public int cla;
+    public int command;
+    public int p1;
+    public int p2;
+    public int p3;
+    public java.lang.String data;
+
+    public void <init>(int, int, int, int, int, int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager$IccAPDUArgument this;
+        int channel, cla, command, p1, p2, p3;
+        java.lang.String data;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$IccAPDUArgument;
+
+        channel := @parameter0: int;
+
+        cla := @parameter1: int;
+
+        command := @parameter2: int;
+
+        p1 := @parameter3: int;
+
+        p2 := @parameter4: int;
+
+        p3 := @parameter5: int;
+
+        data := @parameter6: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int channel> = channel;
+
+        this.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int cla> = cla;
+
+        this.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int command> = command;
+
+        this.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p1> = p1;
+
+        this.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p2> = p2;
+
+        this.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p3> = p3;
+
+        this.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: java.lang.String data> = data;
+
+        return;
+    }
+}

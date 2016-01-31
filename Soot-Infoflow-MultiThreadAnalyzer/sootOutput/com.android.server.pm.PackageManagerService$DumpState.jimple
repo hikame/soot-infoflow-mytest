@@ -1,0 +1,239 @@
+class com.android.server.pm.PackageManagerService$DumpState extends java.lang.Object
+{
+    public static final int DUMP_LIBS;
+    public static final int DUMP_FEATURES;
+    public static final int DUMP_RESOLVERS;
+    public static final int DUMP_PERMISSIONS;
+    public static final int DUMP_PACKAGES;
+    public static final int DUMP_SHARED_USERS;
+    public static final int DUMP_MESSAGES;
+    public static final int DUMP_PROVIDERS;
+    public static final int DUMP_VERIFIERS;
+    public static final int DUMP_PREFERRED;
+    public static final int DUMP_PREFERRED_XML;
+    public static final int DUMP_KEYSETS;
+    public static final int DUMP_VERSION;
+    public static final int DUMP_INSTALLS;
+    public static final int DUMP_INTENT_FILTER_VERIFIERS;
+    public static final int DUMP_DOMAIN_PREFERRED;
+    public static final int OPTION_SHOW_FILTERS;
+    private int mTypes;
+    private int mOptions;
+    private boolean mTitlePrinted;
+    private com.android.server.pm.SharedUserSetting mSharedUser;
+
+    void <init>()
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean isDumping(int)
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        int type, $i0, $i1, $i2;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        type := @parameter0: int;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$DumpState: int mTypes>;
+
+        if $i0 != 0 goto label1;
+
+        if type == 1024 goto label1;
+
+        return 1;
+
+     label1:
+        $i1 = this.<com.android.server.pm.PackageManagerService$DumpState: int mTypes>;
+
+        $i2 = $i1 & type;
+
+        if $i2 == 0 goto label2;
+
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        return $z0;
+    }
+
+    public void setDump(int)
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        int type, $i0, $i1;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        type := @parameter0: int;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$DumpState: int mTypes>;
+
+        $i1 = $i0 | type;
+
+        this.<com.android.server.pm.PackageManagerService$DumpState: int mTypes> = $i1;
+
+        return;
+    }
+
+    public boolean isOptionEnabled(int)
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        int option, $i0, $i1;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        option := @parameter0: int;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$DumpState: int mOptions>;
+
+        $i1 = $i0 & option;
+
+        if $i1 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public void setOptionEnabled(int)
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        int option, $i0, $i1;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        option := @parameter0: int;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$DumpState: int mOptions>;
+
+        $i1 = $i0 | option;
+
+        this.<com.android.server.pm.PackageManagerService$DumpState: int mOptions> = $i1;
+
+        return;
+    }
+
+    public boolean onTitlePrinted()
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        boolean printed;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        printed = this.<com.android.server.pm.PackageManagerService$DumpState: boolean mTitlePrinted>;
+
+        this.<com.android.server.pm.PackageManagerService$DumpState: boolean mTitlePrinted> = 1;
+
+        return printed;
+    }
+
+    public boolean getTitlePrinted()
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        $z0 = this.<com.android.server.pm.PackageManagerService$DumpState: boolean mTitlePrinted>;
+
+        return $z0;
+    }
+
+    public void setTitlePrinted(boolean)
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        boolean enabled;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        enabled := @parameter0: boolean;
+
+        this.<com.android.server.pm.PackageManagerService$DumpState: boolean mTitlePrinted> = enabled;
+
+        return;
+    }
+
+    public com.android.server.pm.SharedUserSetting getSharedUser()
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        com.android.server.pm.SharedUserSetting $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$DumpState: com.android.server.pm.SharedUserSetting mSharedUser>;
+
+        return $r0;
+    }
+
+    public void setSharedUser(com.android.server.pm.SharedUserSetting)
+    {
+        com.android.server.pm.PackageManagerService$DumpState this;
+        com.android.server.pm.SharedUserSetting user;
+
+        this := @this: com.android.server.pm.PackageManagerService$DumpState;
+
+        user := @parameter0: com.android.server.pm.SharedUserSetting;
+
+        this.<com.android.server.pm.PackageManagerService$DumpState: com.android.server.pm.SharedUserSetting mSharedUser> = user;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.pm.PackageManagerService$DumpState: int OPTION_SHOW_FILTERS> = 1;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_DOMAIN_PREFERRED> = 32768;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_INTENT_FILTER_VERIFIERS> = 16384;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_INSTALLS> = 8192;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_VERSION> = 4096;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_KEYSETS> = 2048;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_PREFERRED_XML> = 1024;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_PREFERRED> = 512;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_VERIFIERS> = 256;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_PROVIDERS> = 128;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_MESSAGES> = 64;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_SHARED_USERS> = 32;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_PACKAGES> = 16;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_PERMISSIONS> = 8;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_RESOLVERS> = 4;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_FEATURES> = 2;
+
+        <com.android.server.pm.PackageManagerService$DumpState: int DUMP_LIBS> = 1;
+
+        return;
+    }
+}

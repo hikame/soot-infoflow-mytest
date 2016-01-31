@@ -487,13 +487,13 @@ public class InfoflowProblem extends AbstractInfoflowProblem {
 						if (source.getAccessPath().isStaticFieldRef()
 								&& !manager.getConfig().getEnableStaticFieldTracking())
 							return Collections.emptySet();
-						
+
 						// Map the source access path into the callee
 						Set<AccessPath> resMapping = mapAccessPathToCallee(dest, ie, paramLocals,
 								thisLocal, source.getAccessPath());
 						if (resMapping == null)
 							return res == null || res.isEmpty() ? Collections.<Abstraction>emptySet() : res;
-						
+
 						// Translate the access paths into abstractions
 						Set<Abstraction> resAbs = new HashSet<Abstraction>(resMapping.size());
 						if (res != null && !res.isEmpty())

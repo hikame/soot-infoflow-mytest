@@ -1,0 +1,1193 @@
+public abstract class com.android.internal.telephony.ISms$Stub extends android.os.Binder implements com.android.internal.telephony.ISms
+{
+    private static final java.lang.String DESCRIPTOR;
+    static final int TRANSACTION_getAllMessagesFromIccEf;
+    static final int TRANSACTION_getAllMessagesFromIccEfForSubscriber;
+    static final int TRANSACTION_updateMessageOnIccEf;
+    static final int TRANSACTION_updateMessageOnIccEfForSubscriber;
+    static final int TRANSACTION_copyMessageToIccEf;
+    static final int TRANSACTION_copyMessageToIccEfForSubscriber;
+    static final int TRANSACTION_sendData;
+    static final int TRANSACTION_sendDataForSubscriber;
+    static final int TRANSACTION_sendText;
+    static final int TRANSACTION_sendTextForSubscriber;
+    static final int TRANSACTION_injectSmsPdu;
+    static final int TRANSACTION_sendMultipartText;
+    static final int TRANSACTION_sendMultipartTextForSubscriber;
+    static final int TRANSACTION_enableCellBroadcast;
+    static final int TRANSACTION_enableCellBroadcastForSubscriber;
+    static final int TRANSACTION_disableCellBroadcast;
+    static final int TRANSACTION_disableCellBroadcastForSubscriber;
+    static final int TRANSACTION_enableCellBroadcastRange;
+    static final int TRANSACTION_enableCellBroadcastRangeForSubscriber;
+    static final int TRANSACTION_disableCellBroadcastRange;
+    static final int TRANSACTION_disableCellBroadcastRangeForSubscriber;
+    static final int TRANSACTION_getPremiumSmsPermission;
+    static final int TRANSACTION_getPremiumSmsPermissionForSubscriber;
+    static final int TRANSACTION_setPremiumSmsPermission;
+    static final int TRANSACTION_setPremiumSmsPermissionForSubscriber;
+    static final int TRANSACTION_isImsSmsSupported;
+    static final int TRANSACTION_isImsSmsSupportedForSubscriber;
+    static final int TRANSACTION_isSmsSimPickActivityNeeded;
+    static final int TRANSACTION_getPreferredSmsSubscription;
+    static final int TRANSACTION_getImsSmsFormat;
+    static final int TRANSACTION_getImsSmsFormatForSubscriber;
+    static final int TRANSACTION_isSMSPromptEnabled;
+    static final int TRANSACTION_sendStoredText;
+    static final int TRANSACTION_sendStoredMultipartText;
+
+    public void <init>()
+    {
+        com.android.internal.telephony.ISms$Stub this;
+
+        this := @this: com.android.internal.telephony.ISms$Stub;
+
+        specialinvoke this.<android.os.Binder: void <init>()>();
+
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void attachInterface(android.os.IInterface,java.lang.String)>(this, "com.android.internal.telephony.ISms");
+
+        return;
+    }
+
+    public static com.android.internal.telephony.ISms asInterface(android.os.IBinder)
+    {
+        android.os.IBinder obj;
+        android.os.IInterface iin;
+        com.android.internal.telephony.ISms$Stub$Proxy $r0;
+        boolean $z0;
+        com.android.internal.telephony.ISms $r1;
+
+        obj := @parameter0: android.os.IBinder;
+
+        if obj != null goto label1;
+
+        return null;
+
+     label1:
+        iin = interfaceinvoke obj.<android.os.IBinder: android.os.IInterface queryLocalInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        if iin == null goto label2;
+
+        $z0 = iin instanceof com.android.internal.telephony.ISms;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (com.android.internal.telephony.ISms) iin;
+
+        return $r1;
+
+     label2:
+        $r0 = new com.android.internal.telephony.ISms$Stub$Proxy;
+
+        specialinvoke $r0.<com.android.internal.telephony.ISms$Stub$Proxy: void <init>(android.os.IBinder)>(obj);
+
+        return $r0;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        com.android.internal.telephony.ISms$Stub this;
+
+        this := @this: com.android.internal.telephony.ISms$Stub;
+
+        return this;
+    }
+
+    public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.ISms$Stub this;
+        int code, flags, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, _arg0#3, _result#7, _result#8, _arg0#12, _result#14, _arg3#15, _result#20, _arg0#25, _result#27, _arg3#35, _arg0#39, _result#43, _arg0#53, _arg0#69, _arg0#76, _result#77, _arg0#80, _result#81, _result#82, _arg0#85, _result#86, _arg0#89, _result#90, _result#91, _arg0#94, _result#95, _result#96, _arg0#99, _result#100, _result#101, _arg3#102, _arg0#105, _result#106, _result#107, _arg0#110, _result#111, _result#112, _arg3#113, _result#117, _arg0#118, _result#120, _result#122, _arg0#123, _result#125, _arg0#128, _arg0#131, _arg0#134, _arg0#136, _arg0#140, _arg0#146;
+        android.os.Parcel data, reply;
+        android.os.Parcelable$Creator $r0, $r1, $r3, $r5, $r6, $r9, $r10, $r11, $r12, $r13, $r15, $r16, $r19, $r20, $r22, $r25, $r26, $r28, $r30;
+        java.lang.Object $r2, $r4, $r7, $r8, $r14, $r17, $r18, $r21, $r23, $r24, $r27, $r29, $r31;
+        boolean $z0, _result#10, _result#17, _result#23, _result#30, _result#78, _arg3#83, _result#87, _arg3#92, _arg3#97, _result#103, _arg3#108, _result#114, _arg0#126, _result#129, _result#132, _arg0#138;
+        java.lang.String _arg0#1, _result#4, _arg0#6, _result#13, _arg0#19, _result#26, _arg0#32, _result#33, _result#34, _result#40, _result#41, _arg3#42, _arg0#47, _result#48, _result#49, _arg3#50, _result#54, _result#55, _arg3#56, _result#57, _result#61, _arg0#63, _result#64, _result#65, _result#70, _result#71, _arg3#72, _arg0#116, _result#119, _arg0#121, _result#124, _arg0#135, _result#137, _result#141, _arg3#143, _result#147, _arg3#149;
+        java.util.List _result#2, _result#5, tmp$1395836413, tmp$806833439, tmp$2074478316, tmp$510242701, tmp$656560737, tmp$271929604, tmp$1376122750, tmp$1607372876;
+        byte[] _arg3#9, _result#16, _result#21, _arg3#22, _arg3#28, _result#29, _result#36, _result#44, _arg0#60;
+        byte $b13, $b14, $b15, $b16, $b17, $b18, $b19, $b20, $b21, $b22, $b23, $b24, $b25, $b26, $b27, $b28;
+        android.app.PendingIntent _result#37, _arg6#38, _arg6#45, _arg7#46, _result#51, _result#52, _result#58, _arg6#59, _result#62, _result#144, _result#145;
+        java.util.ArrayList _arg3#66, _result#67, _result#68, _result#73, _result#74, _arg6#75, _result#150, _result#151;
+        android.net.Uri _result#142, _result#148;
+
+        this := @this: com.android.internal.telephony.ISms$Stub;
+
+        code := @parameter0: int;
+
+        data := @parameter1: android.os.Parcel;
+
+        reply := @parameter2: android.os.Parcel;
+
+        flags := @parameter3: int;
+
+        lookupswitch(code)
+        {
+            case 1: goto label02;
+            case 2: goto label03;
+            case 3: goto label04;
+            case 4: goto label07;
+            case 5: goto label10;
+            case 6: goto label13;
+            case 7: goto label16;
+            case 8: goto label21;
+            case 9: goto label26;
+            case 10: goto label31;
+            case 11: goto label36;
+            case 12: goto label39;
+            case 13: goto label40;
+            case 14: goto label41;
+            case 15: goto label44;
+            case 16: goto label47;
+            case 17: goto label50;
+            case 18: goto label53;
+            case 19: goto label56;
+            case 20: goto label59;
+            case 21: goto label62;
+            case 22: goto label65;
+            case 23: goto label66;
+            case 24: goto label67;
+            case 25: goto label68;
+            case 26: goto label69;
+            case 27: goto label72;
+            case 28: goto label75;
+            case 29: goto label78;
+            case 30: goto label79;
+            case 31: goto label80;
+            case 32: goto label81;
+            case 33: goto label84;
+            case 34: goto label91;
+            case 1598968902: goto label01;
+            default: goto label94;
+        };
+
+     label01:
+        virtualinvoke reply.<android.os.Parcel: void writeString(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        return 1;
+
+     label02:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#1 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#2 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: java.util.List getAllMessagesFromIccEf(java.lang.String)>(_arg0#1);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeTypedList(java.util.List)>(_result#2);
+
+        return 1;
+
+     label03:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#3 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#4 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#5 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: java.util.List getAllMessagesFromIccEfForSubscriber(int,java.lang.String)>(_arg0#3, _result#4);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeTypedList(java.util.List)>(_result#5);
+
+        return 1;
+
+     label04:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#6 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#7 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#8 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#9 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        _result#10 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean updateMessageOnIccEf(java.lang.String,int,int,byte[])>(_arg0#6, _result#7, _result#8, _arg3#9);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#10 == 0 goto label05;
+
+        $b13 = 1;
+
+        goto label06;
+
+     label05:
+        $b13 = 0;
+
+     label06:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b13);
+
+        return 1;
+
+     label07:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#12 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#13 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#14 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#15 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#16 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        _result#17 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean updateMessageOnIccEfForSubscriber(int,java.lang.String,int,int,byte[])>(_arg0#12, _result#13, _result#14, _arg3#15, _result#16);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#17 == 0 goto label08;
+
+        $b14 = 1;
+
+        goto label09;
+
+     label08:
+        $b14 = 0;
+
+     label09:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b14);
+
+        return 1;
+
+     label10:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#19 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#20 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#21 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        _arg3#22 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        _result#23 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean copyMessageToIccEf(java.lang.String,int,byte[],byte[])>(_arg0#19, _result#20, _result#21, _arg3#22);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#23 == 0 goto label11;
+
+        $b15 = 1;
+
+        goto label12;
+
+     label11:
+        $b15 = 0;
+
+     label12:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b15);
+
+        return 1;
+
+     label13:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#25 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#26 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#27 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#28 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        _result#29 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        _result#30 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean copyMessageToIccEfForSubscriber(int,java.lang.String,int,byte[],byte[])>(_arg0#25, _result#26, _result#27, _arg3#28, _result#29);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#30 == 0 goto label14;
+
+        $b16 = 1;
+
+        goto label15;
+
+     label14:
+        $b16 = 0;
+
+     label15:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b16);
+
+        return 1;
+
+     label16:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#32 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#33 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#34 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg3#35 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#36 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        $i10 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i10 goto label17;
+
+        $r30 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r31 = interfaceinvoke $r30.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#37 = (android.app.PendingIntent) $r31;
+
+        goto label18;
+
+     label17:
+        _result#37 = null;
+
+     label18:
+        $i11 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i11 goto label19;
+
+        $r25 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r24 = interfaceinvoke $r25.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _arg6#38 = (android.app.PendingIntent) $r24;
+
+        goto label20;
+
+     label19:
+        _arg6#38 = null;
+
+     label20:
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendData(java.lang.String,java.lang.String,java.lang.String,int,byte[],android.app.PendingIntent,android.app.PendingIntent)>(_arg0#32, _result#33, _result#34, _arg3#35, _result#36, _result#37, _arg6#38);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label21:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#39 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#40 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#41 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg3#42 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#43 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#44 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        $i7 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i7 goto label22;
+
+        $r26 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r29 = interfaceinvoke $r26.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _arg6#45 = (android.app.PendingIntent) $r29;
+
+        goto label23;
+
+     label22:
+        _arg6#45 = null;
+
+     label23:
+        $i12 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i12 goto label24;
+
+        $r28 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r27 = interfaceinvoke $r28.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _arg7#46 = (android.app.PendingIntent) $r27;
+
+        goto label25;
+
+     label24:
+        _arg7#46 = null;
+
+     label25:
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendDataForSubscriber(int,java.lang.String,java.lang.String,java.lang.String,int,byte[],android.app.PendingIntent,android.app.PendingIntent)>(_arg0#39, _result#40, _result#41, _arg3#42, _result#43, _result#44, _arg6#45, _arg7#46);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label26:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#47 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#48 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#49 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg3#50 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        $i8 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i8 goto label27;
+
+        $r22 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r23 = interfaceinvoke $r22.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#51 = (android.app.PendingIntent) $r23;
+
+        goto label28;
+
+     label27:
+        _result#51 = null;
+
+     label28:
+        $i9 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i9 goto label29;
+
+        $r20 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r21 = interfaceinvoke $r20.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#52 = (android.app.PendingIntent) $r21;
+
+        goto label30;
+
+     label29:
+        _result#52 = null;
+
+     label30:
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendText(java.lang.String,java.lang.String,java.lang.String,java.lang.String,android.app.PendingIntent,android.app.PendingIntent)>(_arg0#47, _result#48, _result#49, _arg3#50, _result#51, _result#52);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label31:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#53 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#54 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#55 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg3#56 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#57 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        $i5 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i5 goto label32;
+
+        $r16 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r18 = interfaceinvoke $r16.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#58 = (android.app.PendingIntent) $r18;
+
+        goto label33;
+
+     label32:
+        _result#58 = null;
+
+     label33:
+        $i6 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i6 goto label34;
+
+        $r19 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r17 = interfaceinvoke $r19.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _arg6#59 = (android.app.PendingIntent) $r17;
+
+        goto label35;
+
+     label34:
+        _arg6#59 = null;
+
+     label35:
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendTextForSubscriber(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,android.app.PendingIntent,android.app.PendingIntent)>(_arg0#53, _result#54, _result#55, _arg3#56, _result#57, _result#58, _arg6#59);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label36:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#60 = virtualinvoke data.<android.os.Parcel: byte[] createByteArray()>();
+
+        _result#61 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        $i4 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i4 goto label37;
+
+        $r15 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r14 = interfaceinvoke $r15.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#62 = (android.app.PendingIntent) $r14;
+
+        goto label38;
+
+     label37:
+        _result#62 = null;
+
+     label38:
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void injectSmsPdu(byte[],java.lang.String,android.app.PendingIntent)>(_arg0#60, _result#61, _result#62);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label39:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#63 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#64 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#65 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg3#66 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createStringArrayList()>();
+
+        $r13 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        _result#67 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createTypedArrayList(android.os.Parcelable$Creator)>($r13);
+
+        $r12 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        _result#68 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createTypedArrayList(android.os.Parcelable$Creator)>($r12);
+
+        tmp$1395836413 = (java.util.List) _arg3#66;
+
+        tmp$806833439 = (java.util.List) _result#67;
+
+        tmp$2074478316 = (java.util.List) _result#68;
+
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendMultipartText(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List)>(_arg0#63, _result#64, _result#65, tmp$1395836413, tmp$806833439, tmp$2074478316);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label40:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#69 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#70 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#71 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _arg3#72 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#73 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createStringArrayList()>();
+
+        $r11 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        _result#74 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createTypedArrayList(android.os.Parcelable$Creator)>($r11);
+
+        $r10 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        _arg6#75 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createTypedArrayList(android.os.Parcelable$Creator)>($r10);
+
+        tmp$510242701 = (java.util.List) _result#73;
+
+        tmp$656560737 = (java.util.List) _result#74;
+
+        tmp$271929604 = (java.util.List) _arg6#75;
+
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendMultipartTextForSubscriber(int,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List)>(_arg0#69, _result#70, _result#71, _arg3#72, tmp$510242701, tmp$656560737, tmp$271929604);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label41:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#76 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#77 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#78 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean enableCellBroadcast(int,int)>(_arg0#76, _result#77);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#78 == 0 goto label42;
+
+        $b17 = 1;
+
+        goto label43;
+
+     label42:
+        $b17 = 0;
+
+     label43:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b17);
+
+        return 1;
+
+     label44:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#80 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#81 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#82 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#83 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean enableCellBroadcastForSubscriber(int,int,int)>(_arg0#80, _result#81, _result#82);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _arg3#83 == 0 goto label45;
+
+        $b18 = 1;
+
+        goto label46;
+
+     label45:
+        $b18 = 0;
+
+     label46:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b18);
+
+        return 1;
+
+     label47:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#85 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#86 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#87 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean disableCellBroadcast(int,int)>(_arg0#85, _result#86);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#87 == 0 goto label48;
+
+        $b19 = 1;
+
+        goto label49;
+
+     label48:
+        $b19 = 0;
+
+     label49:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b19);
+
+        return 1;
+
+     label50:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#89 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#90 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#91 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#92 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean disableCellBroadcastForSubscriber(int,int,int)>(_arg0#89, _result#90, _result#91);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _arg3#92 == 0 goto label51;
+
+        $b20 = 1;
+
+        goto label52;
+
+     label51:
+        $b20 = 0;
+
+     label52:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b20);
+
+        return 1;
+
+     label53:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#94 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#95 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#96 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#97 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean enableCellBroadcastRange(int,int,int)>(_arg0#94, _result#95, _result#96);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _arg3#97 == 0 goto label54;
+
+        $b21 = 1;
+
+        goto label55;
+
+     label54:
+        $b21 = 0;
+
+     label55:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b21);
+
+        return 1;
+
+     label56:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#99 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#100 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#101 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#102 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#103 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean enableCellBroadcastRangeForSubscriber(int,int,int,int)>(_arg0#99, _result#100, _result#101, _arg3#102);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#103 == 0 goto label57;
+
+        $b22 = 1;
+
+        goto label58;
+
+     label57:
+        $b22 = 0;
+
+     label58:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b22);
+
+        return 1;
+
+     label59:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#105 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#106 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#107 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#108 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean disableCellBroadcastRange(int,int,int)>(_arg0#105, _result#106, _result#107);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _arg3#108 == 0 goto label60;
+
+        $b23 = 1;
+
+        goto label61;
+
+     label60:
+        $b23 = 0;
+
+     label61:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b23);
+
+        return 1;
+
+     label62:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#110 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#111 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#112 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _arg3#113 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#114 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean disableCellBroadcastRangeForSubscriber(int,int,int,int)>(_arg0#110, _result#111, _result#112, _arg3#113);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#114 == 0 goto label63;
+
+        $b24 = 1;
+
+        goto label64;
+
+     label63:
+        $b24 = 0;
+
+     label64:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b24);
+
+        return 1;
+
+     label65:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#116 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#117 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: int getPremiumSmsPermission(java.lang.String)>(_arg0#116);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#117);
+
+        return 1;
+
+     label66:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#118 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#119 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#120 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: int getPremiumSmsPermissionForSubscriber(int,java.lang.String)>(_arg0#118, _result#119);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#120);
+
+        return 1;
+
+     label67:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#121 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#122 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void setPremiumSmsPermission(java.lang.String,int)>(_arg0#121, _result#122);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label68:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#123 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#124 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#125 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void setPremiumSmsPermissionForSubscriber(int,java.lang.String,int)>(_arg0#123, _result#124, _result#125);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label69:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#126 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean isImsSmsSupported()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _arg0#126 == 0 goto label70;
+
+        $b25 = 1;
+
+        goto label71;
+
+     label70:
+        $b25 = 0;
+
+     label71:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b25);
+
+        return 1;
+
+     label72:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#128 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#129 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean isImsSmsSupportedForSubscriber(int)>(_arg0#128);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#129 == 0 goto label73;
+
+        $b26 = 1;
+
+        goto label74;
+
+     label73:
+        $b26 = 0;
+
+     label74:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b26);
+
+        return 1;
+
+     label75:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#131 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#132 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean isSmsSimPickActivityNeeded(int)>(_arg0#131);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#132 == 0 goto label76;
+
+        $b27 = 1;
+
+        goto label77;
+
+     label76:
+        $b27 = 0;
+
+     label77:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b27);
+
+        return 1;
+
+     label78:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#134 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: int getPreferredSmsSubscription()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_arg0#134);
+
+        return 1;
+
+     label79:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#135 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: java.lang.String getImsSmsFormat()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeString(java.lang.String)>(_arg0#135);
+
+        return 1;
+
+     label80:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#136 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#137 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: java.lang.String getImsSmsFormatForSubscriber(int)>(_arg0#136);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeString(java.lang.String)>(_result#137);
+
+        return 1;
+
+     label81:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#138 = virtualinvoke this.<com.android.internal.telephony.ISms$Stub: boolean isSMSPromptEnabled()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _arg0#138 == 0 goto label82;
+
+        $b28 = 1;
+
+        goto label83;
+
+     label82:
+        $b28 = 0;
+
+     label83:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>($b28);
+
+        return 1;
+
+     label84:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#140 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#141 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        $i1 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i1 goto label85;
+
+        $r9 = <android.net.Uri: android.os.Parcelable$Creator CREATOR>;
+
+        $r7 = interfaceinvoke $r9.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#142 = (android.net.Uri) $r7;
+
+        goto label86;
+
+     label85:
+        _result#142 = null;
+
+     label86:
+        _arg3#143 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        $i2 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i2 goto label87;
+
+        $r5 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r8 = interfaceinvoke $r5.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#144 = (android.app.PendingIntent) $r8;
+
+        goto label88;
+
+     label87:
+        _result#144 = null;
+
+     label88:
+        $i3 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i3 goto label89;
+
+        $r6 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        $r4 = interfaceinvoke $r6.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#145 = (android.app.PendingIntent) $r4;
+
+        goto label90;
+
+     label89:
+        _result#145 = null;
+
+     label90:
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendStoredText(int,java.lang.String,android.net.Uri,java.lang.String,android.app.PendingIntent,android.app.PendingIntent)>(_arg0#140, _result#141, _result#142, _arg3#143, _result#144, _result#145);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label91:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISms");
+
+        _arg0#146 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#147 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        $i0 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        if 0 == $i0 goto label92;
+
+        $r3 = <android.net.Uri: android.os.Parcelable$Creator CREATOR>;
+
+        $r2 = interfaceinvoke $r3.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>(data);
+
+        _result#148 = (android.net.Uri) $r2;
+
+        goto label93;
+
+     label92:
+        _result#148 = null;
+
+     label93:
+        _arg3#149 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        $r0 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        _result#150 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createTypedArrayList(android.os.Parcelable$Creator)>($r0);
+
+        $r1 = <android.app.PendingIntent: android.os.Parcelable$Creator CREATOR>;
+
+        _result#151 = virtualinvoke data.<android.os.Parcel: java.util.ArrayList createTypedArrayList(android.os.Parcelable$Creator)>($r1);
+
+        tmp$1376122750 = (java.util.List) _result#150;
+
+        tmp$1607372876 = (java.util.List) _result#151;
+
+        virtualinvoke this.<com.android.internal.telephony.ISms$Stub: void sendStoredMultipartText(int,java.lang.String,android.net.Uri,java.lang.String,java.util.List,java.util.List)>(_arg0#146, _result#147, _result#148, _arg3#149, tmp$1376122750, tmp$1607372876);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label94:
+        $z0 = specialinvoke this.<android.os.Binder: boolean onTransact(int,android.os.Parcel,android.os.Parcel,int)>(code, data, reply, flags);
+
+        return $z0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendStoredMultipartText> = 34;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendStoredText> = 33;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_isSMSPromptEnabled> = 32;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_getImsSmsFormatForSubscriber> = 31;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_getImsSmsFormat> = 30;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_getPreferredSmsSubscription> = 29;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_isSmsSimPickActivityNeeded> = 28;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_isImsSmsSupportedForSubscriber> = 27;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_isImsSmsSupported> = 26;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_setPremiumSmsPermissionForSubscriber> = 25;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_setPremiumSmsPermission> = 24;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_getPremiumSmsPermissionForSubscriber> = 23;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_getPremiumSmsPermission> = 22;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_disableCellBroadcastRangeForSubscriber> = 21;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_disableCellBroadcastRange> = 20;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_enableCellBroadcastRangeForSubscriber> = 19;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_enableCellBroadcastRange> = 18;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_disableCellBroadcastForSubscriber> = 17;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_disableCellBroadcast> = 16;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_enableCellBroadcastForSubscriber> = 15;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_enableCellBroadcast> = 14;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendMultipartTextForSubscriber> = 13;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendMultipartText> = 12;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_injectSmsPdu> = 11;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendTextForSubscriber> = 10;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendText> = 9;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendDataForSubscriber> = 8;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_sendData> = 7;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_copyMessageToIccEfForSubscriber> = 6;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_copyMessageToIccEf> = 5;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_updateMessageOnIccEfForSubscriber> = 4;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_updateMessageOnIccEf> = 3;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_getAllMessagesFromIccEfForSubscriber> = 2;
+
+        <com.android.internal.telephony.ISms$Stub: int TRANSACTION_getAllMessagesFromIccEf> = 1;
+
+        <com.android.internal.telephony.ISms$Stub: java.lang.String DESCRIPTOR> = "com.android.internal.telephony.ISms";
+
+        return;
+    }
+}

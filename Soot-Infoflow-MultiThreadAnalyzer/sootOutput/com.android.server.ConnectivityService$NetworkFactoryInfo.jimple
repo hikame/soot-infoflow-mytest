@@ -1,0 +1,32 @@
+class com.android.server.ConnectivityService$NetworkFactoryInfo extends java.lang.Object
+{
+    public final java.lang.String name;
+    public final android.os.Messenger messenger;
+    public final com.android.internal.util.AsyncChannel asyncChannel;
+
+    public void <init>(java.lang.String, android.os.Messenger, com.android.internal.util.AsyncChannel)
+    {
+        com.android.server.ConnectivityService$NetworkFactoryInfo this;
+        java.lang.String name;
+        android.os.Messenger messenger;
+        com.android.internal.util.AsyncChannel asyncChannel;
+
+        this := @this: com.android.server.ConnectivityService$NetworkFactoryInfo;
+
+        name := @parameter0: java.lang.String;
+
+        messenger := @parameter1: android.os.Messenger;
+
+        asyncChannel := @parameter2: com.android.internal.util.AsyncChannel;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.ConnectivityService$NetworkFactoryInfo: java.lang.String name> = name;
+
+        this.<com.android.server.ConnectivityService$NetworkFactoryInfo: android.os.Messenger messenger> = messenger;
+
+        this.<com.android.server.ConnectivityService$NetworkFactoryInfo: com.android.internal.util.AsyncChannel asyncChannel> = asyncChannel;
+
+        return;
+    }
+}

@@ -1,0 +1,943 @@
+final class com.android.server.pm.PackageManagerService$ServiceIntentResolver extends com.android.server.IntentResolver
+{
+    private final android.util.ArrayMap mServices;
+    private int mFlags;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    private void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        com.android.server.pm.PackageManagerService l1;
+        android.util.ArrayMap $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<com.android.server.IntentResolver: void <init>()>();
+
+        $r0 = new android.util.ArrayMap;
+
+        specialinvoke $r0.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: android.util.ArrayMap mServices> = $r0;
+
+        return;
+    }
+
+    public java.util.List queryIntent(android.content.Intent, java.lang.String, boolean, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.Intent intent;
+        java.lang.String resolvedType;
+        boolean defaultOnly;
+        int userId, $i0;
+        java.util.List $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        intent := @parameter0: android.content.Intent;
+
+        resolvedType := @parameter1: java.lang.String;
+
+        defaultOnly := @parameter2: boolean;
+
+        userId := @parameter3: int;
+
+        if defaultOnly == 0 goto label1;
+
+        $i0 = 65536;
+
+        goto label2;
+
+     label1:
+        $i0 = 0;
+
+     label2:
+        this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: int mFlags> = $i0;
+
+        $r0 = specialinvoke this.<com.android.server.IntentResolver: java.util.List queryIntent(android.content.Intent,java.lang.String,boolean,int)>(intent, resolvedType, defaultOnly, userId);
+
+        return $r0;
+    }
+
+    public java.util.List queryIntent(android.content.Intent, java.lang.String, int, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.Intent intent;
+        java.lang.String resolvedType;
+        int flags, userId, $i0;
+        com.android.server.pm.UserManagerService $r0;
+        boolean $z0, $z1;
+        java.util.List $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        intent := @parameter0: android.content.Intent;
+
+        resolvedType := @parameter1: java.lang.String;
+
+        flags := @parameter2: int;
+
+        userId := @parameter3: int;
+
+        $r0 = <com.android.server.pm.PackageManagerService: com.android.server.pm.UserManagerService sUserManager>;
+
+        $z0 = virtualinvoke $r0.<com.android.server.pm.UserManagerService: boolean exists(int)>(userId);
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: int mFlags> = flags;
+
+        $i0 = flags & 65536;
+
+        if $i0 == 0 goto label2;
+
+        $z1 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = 0;
+
+     label3:
+        $r1 = specialinvoke this.<com.android.server.IntentResolver: java.util.List queryIntent(android.content.Intent,java.lang.String,boolean,int)>(intent, resolvedType, $z1, userId);
+
+        return $r1;
+    }
+
+    public java.util.List queryIntentForPackage(android.content.Intent, java.lang.String, int, java.util.ArrayList, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.Intent intent;
+        java.lang.String resolvedType;
+        int flags, userId, N, $i0, $i1, $i2, i#2;
+        java.util.ArrayList packageServices, listCut, intentFilters, $r2;
+        boolean defaultOnly, $z0, $z2;
+        android.content.pm.PackageParser$ServiceIntentInfo[] array;
+        com.android.server.pm.UserManagerService $r0;
+        java.util.List $r1;
+        android.content.pm.PackageParser$Service $r3;
+        java.lang.Object $r4;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        intent := @parameter0: android.content.Intent;
+
+        resolvedType := @parameter1: java.lang.String;
+
+        flags := @parameter2: int;
+
+        packageServices := @parameter3: java.util.ArrayList;
+
+        userId := @parameter4: int;
+
+        $r0 = <com.android.server.pm.PackageManagerService: com.android.server.pm.UserManagerService sUserManager>;
+
+        $z0 = virtualinvoke $r0.<com.android.server.pm.UserManagerService: boolean exists(int)>(userId);
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        if packageServices != null goto label2;
+
+        return null;
+
+     label2:
+        this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: int mFlags> = flags;
+
+        $i0 = flags & 65536;
+
+        if $i0 == 0 goto label3;
+
+        $z2 = 1;
+
+        goto label4;
+
+     label3:
+        $z2 = 0;
+
+     label4:
+        defaultOnly = $z2;
+
+        N = virtualinvoke packageServices.<java.util.ArrayList: int size()>();
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>(int)>(N);
+
+        listCut = $r2;
+
+        i#2 = 0;
+
+     label5:
+        if i#2 >= N goto label7;
+
+        $r4 = virtualinvoke packageServices.<java.util.ArrayList: java.lang.Object get(int)>(i#2);
+
+        $r3 = (android.content.pm.PackageParser$Service) $r4;
+
+        intentFilters = $r3.<android.content.pm.PackageParser$Service: java.util.ArrayList intents>;
+
+        if intentFilters == null goto label6;
+
+        $i2 = virtualinvoke intentFilters.<java.util.ArrayList: int size()>();
+
+        if $i2 <= 0 goto label6;
+
+        $i1 = virtualinvoke intentFilters.<java.util.ArrayList: int size()>();
+
+        array = newarray (android.content.pm.PackageParser$ServiceIntentInfo)[$i1];
+
+        virtualinvoke intentFilters.<java.util.ArrayList: java.lang.Object[] toArray(java.lang.Object[])>(array);
+
+        virtualinvoke listCut.<java.util.ArrayList: boolean add(java.lang.Object)>(array);
+
+     label6:
+        i#2 = i#2 + 1;
+
+        goto label5;
+
+     label7:
+        $r1 = specialinvoke this.<com.android.server.IntentResolver: java.util.List queryIntentFromList(android.content.Intent,java.lang.String,boolean,java.util.ArrayList,int)>(intent, resolvedType, defaultOnly, listCut, userId);
+
+        return $r1;
+    }
+
+    public final void addService(android.content.pm.PackageParser$Service)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.pm.PackageParser$Service s;
+        int NI, j#1;
+        android.content.pm.PackageParser$ServiceIntentInfo intent;
+        android.util.ArrayMap $r0;
+        android.content.ComponentName $r1;
+        java.util.ArrayList $r3, $r4;
+        java.lang.Object $r5;
+        boolean $z0;
+        java.lang.StringBuilder $r6, $r7, $r11;
+        java.lang.String $r8, $r10;
+        android.content.pm.ServiceInfo $r9;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        s := @parameter0: android.content.pm.PackageParser$Service;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: android.util.ArrayMap mServices>;
+
+        $r1 = virtualinvoke s.<android.content.pm.PackageParser$Service: android.content.ComponentName getComponentName()>();
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, s);
+
+        $r3 = s.<android.content.pm.PackageParser$Service: java.util.ArrayList intents>;
+
+        NI = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        j#1 = 0;
+
+     label1:
+        if j#1 >= NI goto label3;
+
+        $r4 = s.<android.content.pm.PackageParser$Service: java.util.ArrayList intents>;
+
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(j#1);
+
+        intent = (android.content.pm.PackageParser$ServiceIntentInfo) $r5;
+
+        $z0 = virtualinvoke intent.<android.content.pm.PackageParser$ServiceIntentInfo: boolean debugCheck()>();
+
+        if $z0 != 0 goto label2;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("==> For Service ");
+
+        $r9 = s.<android.content.pm.PackageParser$Service: android.content.pm.ServiceInfo info>;
+
+        $r8 = $r9.<android.content.pm.ServiceInfo: java.lang.String name>;
+
+        $r11 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("PackageManager", $r10);
+
+     label2:
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: void addFilter(android.content.IntentFilter)>(intent);
+
+        j#1 = j#1 + 1;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public final void removeService(android.content.pm.PackageParser$Service)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.pm.PackageParser$Service s;
+        int NI, j#1;
+        android.content.pm.PackageParser$ServiceIntentInfo intent;
+        android.util.ArrayMap $r0;
+        android.content.ComponentName $r1;
+        java.util.ArrayList $r3, $r4;
+        java.lang.Object $r5;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        s := @parameter0: android.content.pm.PackageParser$Service;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: android.util.ArrayMap mServices>;
+
+        $r1 = virtualinvoke s.<android.content.pm.PackageParser$Service: android.content.ComponentName getComponentName()>();
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object remove(java.lang.Object)>($r1);
+
+        $r3 = s.<android.content.pm.PackageParser$Service: java.util.ArrayList intents>;
+
+        NI = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        j#1 = 0;
+
+     label1:
+        if j#1 >= NI goto label2;
+
+        $r4 = s.<android.content.pm.PackageParser$Service: java.util.ArrayList intents>;
+
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(j#1);
+
+        intent = (android.content.pm.PackageParser$ServiceIntentInfo) $r5;
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: void removeFilter(android.content.IntentFilter)>(intent);
+
+        j#1 = j#1 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    protected boolean allowFilterResult(android.content.pm.PackageParser$ServiceIntentInfo, java.util.List)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.pm.PackageParser$ServiceIntentInfo filter;
+        java.util.List dest;
+        android.content.pm.ServiceInfo filterSi, destAi;
+        android.content.pm.PackageParser$Service $r0;
+        int $i0, i#1;
+        java.lang.Object $r1;
+        android.content.pm.ResolveInfo $r2;
+        java.lang.String $r3, $r4, $r5, $r6;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        filter := @parameter0: android.content.pm.PackageParser$ServiceIntentInfo;
+
+        dest := @parameter1: java.util.List;
+
+        $r0 = filter.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        filterSi = $r0.<android.content.pm.PackageParser$Service: android.content.pm.ServiceInfo info>;
+
+        $i0 = interfaceinvoke dest.<java.util.List: int size()>();
+
+        i#1 = $i0 - 1;
+
+     label1:
+        if i#1 < 0 goto label3;
+
+        $r1 = interfaceinvoke dest.<java.util.List: java.lang.Object get(int)>(i#1);
+
+        $r2 = (android.content.pm.ResolveInfo) $r1;
+
+        destAi = $r2.<android.content.pm.ResolveInfo: android.content.pm.ServiceInfo serviceInfo>;
+
+        $r4 = destAi.<android.content.pm.ServiceInfo: java.lang.String name>;
+
+        $r3 = filterSi.<android.content.pm.ServiceInfo: java.lang.String name>;
+
+        if $r4 != $r3 goto label2;
+
+        $r6 = destAi.<android.content.pm.ServiceInfo: java.lang.String packageName>;
+
+        $r5 = filterSi.<android.content.pm.ServiceInfo: java.lang.String packageName>;
+
+        if $r6 != $r5 goto label2;
+
+        return 0;
+
+     label2:
+        i#1 = i#1 + -1;
+
+        goto label1;
+
+     label3:
+        return 1;
+    }
+
+    protected android.content.pm.PackageParser$ServiceIntentInfo[] newArray(int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        int size;
+        android.content.pm.PackageParser$ServiceIntentInfo[] $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        size := @parameter0: int;
+
+        $r0 = newarray (android.content.pm.PackageParser$ServiceIntentInfo)[size];
+
+        return $r0;
+    }
+
+    protected boolean isFilterStopped(android.content.pm.PackageParser$ServiceIntentInfo, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.pm.PackageParser$ServiceIntentInfo filter;
+        int userId, $i0, $i1;
+        android.content.pm.PackageParser$Package p;
+        com.android.server.pm.PackageSetting ps;
+        com.android.server.pm.UserManagerService $r0;
+        boolean $z0, $z1, $z2;
+        android.content.pm.PackageParser$Service $r1;
+        java.lang.Object $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        filter := @parameter0: android.content.pm.PackageParser$ServiceIntentInfo;
+
+        userId := @parameter1: int;
+
+        $r0 = <com.android.server.pm.PackageManagerService: com.android.server.pm.UserManagerService sUserManager>;
+
+        $z0 = virtualinvoke $r0.<com.android.server.pm.UserManagerService: boolean exists(int)>(userId);
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        $r1 = filter.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        p = $r1.<android.content.pm.PackageParser$Service: android.content.pm.PackageParser$Package owner>;
+
+        if p == null goto label4;
+
+        $r2 = p.<android.content.pm.PackageParser$Package: java.lang.Object mExtras>;
+
+        ps = (com.android.server.pm.PackageSetting) $r2;
+
+        if ps == null goto label4;
+
+        $i0 = ps.<com.android.server.pm.PackageSetting: int pkgFlags>;
+
+        $i1 = $i0 & 1;
+
+        if $i1 != 0 goto label2;
+
+        $z1 = virtualinvoke ps.<com.android.server.pm.PackageSetting: boolean getStopped(int)>(userId);
+
+        if $z1 == 0 goto label2;
+
+        $z2 = 1;
+
+        goto label3;
+
+     label2:
+        $z2 = 0;
+
+     label3:
+        return $z2;
+
+     label4:
+        return 0;
+    }
+
+    protected boolean isPackageForFilter(java.lang.String, android.content.pm.PackageParser$ServiceIntentInfo)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        java.lang.String packageName, $r2;
+        android.content.pm.PackageParser$ServiceIntentInfo info;
+        android.content.pm.PackageParser$Service $r0;
+        android.content.pm.PackageParser$Package $r1;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        packageName := @parameter0: java.lang.String;
+
+        info := @parameter1: android.content.pm.PackageParser$ServiceIntentInfo;
+
+        $r0 = info.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        $r1 = $r0.<android.content.pm.PackageParser$Service: android.content.pm.PackageParser$Package owner>;
+
+        $r2 = $r1.<android.content.pm.PackageParser$Package: java.lang.String packageName>;
+
+        $z0 = virtualinvoke packageName.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        return $z0;
+    }
+
+    protected android.content.pm.ResolveInfo newResult(android.content.pm.PackageParser$ServiceIntentInfo, int, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.pm.PackageParser$ServiceIntentInfo filter, info;
+        int match, userId, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9;
+        android.content.pm.PackageParser$Service service, $r2;
+        com.android.server.pm.PackageSetting ps;
+        android.content.pm.ServiceInfo si, $r3, $r11, $r15;
+        android.content.pm.ResolveInfo res, tmp$947833425;
+        com.android.server.pm.UserManagerService $r0;
+        boolean $z0, $z1, $z2, $z3, $z4;
+        com.android.server.pm.PackageManagerService $r1, $r5;
+        com.android.server.pm.Settings $r4;
+        android.content.pm.PackageParser$Package $r6, $r10;
+        java.lang.Object $r7;
+        android.content.pm.PackageUserState $r8;
+        android.content.pm.ApplicationInfo $r12, $r14;
+        java.lang.CharSequence $r13;
+        android.content.IntentFilter tmp$1040126965;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        filter := @parameter0: android.content.pm.PackageParser$ServiceIntentInfo;
+
+        match := @parameter1: int;
+
+        userId := @parameter2: int;
+
+        $r0 = <com.android.server.pm.PackageManagerService: com.android.server.pm.UserManagerService sUserManager>;
+
+        $z0 = virtualinvoke $r0.<com.android.server.pm.UserManagerService: boolean exists(int)>(userId);
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        info = filter;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: com.android.server.pm.PackageManagerService this$0>;
+
+        $r4 = $r1.<com.android.server.pm.PackageManagerService: com.android.server.pm.Settings mSettings>;
+
+        $r2 = info.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        $r3 = $r2.<android.content.pm.PackageParser$Service: android.content.pm.ServiceInfo info>;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: int mFlags>;
+
+        $z1 = virtualinvoke $r4.<com.android.server.pm.Settings: boolean isEnabledLPr(android.content.pm.ComponentInfo,int,int)>($r3, $i0, userId);
+
+        if $z1 != 0 goto label2;
+
+        return null;
+
+     label2:
+        service = info.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: com.android.server.pm.PackageManagerService this$0>;
+
+        $z2 = $r5.<com.android.server.pm.PackageManagerService: boolean mSafeMode>;
+
+        if $z2 == 0 goto label3;
+
+        $r15 = service.<android.content.pm.PackageParser$Service: android.content.pm.ServiceInfo info>;
+
+        $r14 = $r15.<android.content.pm.ServiceInfo: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i8 = $r14.<android.content.pm.ApplicationInfo: int flags>;
+
+        $i9 = $i8 & 1;
+
+        if $i9 != 0 goto label3;
+
+        return null;
+
+     label3:
+        $r6 = service.<android.content.pm.PackageParser$Service: android.content.pm.PackageParser$Package owner>;
+
+        $r7 = $r6.<android.content.pm.PackageParser$Package: java.lang.Object mExtras>;
+
+        ps = (com.android.server.pm.PackageSetting) $r7;
+
+        if ps != null goto label4;
+
+        return null;
+
+     label4:
+        $i1 = this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: int mFlags>;
+
+        $r8 = virtualinvoke ps.<com.android.server.pm.PackageSetting: android.content.pm.PackageUserState readUserState(int)>(userId);
+
+        si = staticinvoke <android.content.pm.PackageParser: android.content.pm.ServiceInfo generateServiceInfo(android.content.pm.PackageParser$Service,int,android.content.pm.PackageUserState,int)>(service, $i1, $r8, userId);
+
+        if si != null goto label5;
+
+        return null;
+
+     label5:
+        tmp$947833425 = new android.content.pm.ResolveInfo;
+
+        specialinvoke tmp$947833425.<android.content.pm.ResolveInfo: void <init>()>();
+
+        res = tmp$947833425;
+
+        res.<android.content.pm.ResolveInfo: android.content.pm.ServiceInfo serviceInfo> = si;
+
+        $i2 = this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: int mFlags>;
+
+        $i4 = $i2 & 64;
+
+        if $i4 == 0 goto label6;
+
+        tmp$1040126965 = (android.content.IntentFilter) filter;
+
+        res.<android.content.pm.ResolveInfo: android.content.IntentFilter filter> = tmp$1040126965;
+
+     label6:
+        $i3 = virtualinvoke info.<android.content.pm.PackageParser$ServiceIntentInfo: int getPriority()>();
+
+        res.<android.content.pm.ResolveInfo: int priority> = $i3;
+
+        $r10 = service.<android.content.pm.PackageParser$Service: android.content.pm.PackageParser$Package owner>;
+
+        $i5 = $r10.<android.content.pm.PackageParser$Package: int mPreferredOrder>;
+
+        res.<android.content.pm.ResolveInfo: int preferredOrder> = $i5;
+
+        res.<android.content.pm.ResolveInfo: int match> = match;
+
+        $z3 = info.<android.content.pm.PackageParser$ServiceIntentInfo: boolean hasDefault>;
+
+        res.<android.content.pm.ResolveInfo: boolean isDefault> = $z3;
+
+        $i6 = info.<android.content.pm.PackageParser$ServiceIntentInfo: int labelRes>;
+
+        res.<android.content.pm.ResolveInfo: int labelRes> = $i6;
+
+        $r13 = info.<android.content.pm.PackageParser$ServiceIntentInfo: java.lang.CharSequence nonLocalizedLabel>;
+
+        res.<android.content.pm.ResolveInfo: java.lang.CharSequence nonLocalizedLabel> = $r13;
+
+        $i7 = info.<android.content.pm.PackageParser$ServiceIntentInfo: int icon>;
+
+        res.<android.content.pm.ResolveInfo: int icon> = $i7;
+
+        $r11 = res.<android.content.pm.ResolveInfo: android.content.pm.ServiceInfo serviceInfo>;
+
+        $r12 = $r11.<android.content.pm.ServiceInfo: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $z4 = virtualinvoke $r12.<android.content.pm.ApplicationInfo: boolean isSystemApp()>();
+
+        res.<android.content.pm.ResolveInfo: boolean system> = $z4;
+
+        return res;
+    }
+
+    protected void sortResults(java.util.List)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        java.util.List results;
+        java.util.Comparator $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        results := @parameter0: java.util.List;
+
+        $r0 = staticinvoke <com.android.server.pm.PackageManagerService: java.util.Comparator access$3200()>();
+
+        staticinvoke <java.util.Collections: void sort(java.util.List,java.util.Comparator)>(results, $r0);
+
+        return;
+    }
+
+    protected void dumpFilter(java.io.PrintWriter, java.lang.String, android.content.pm.PackageParser$ServiceIntentInfo)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        java.io.PrintWriter out;
+        java.lang.String prefix, $r1, $r3;
+        android.content.pm.PackageParser$ServiceIntentInfo filter;
+        android.content.pm.PackageParser$Service $r0, $r2;
+        int $i0, $i1;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        out := @parameter0: java.io.PrintWriter;
+
+        prefix := @parameter1: java.lang.String;
+
+        filter := @parameter2: android.content.pm.PackageParser$ServiceIntentInfo;
+
+        virtualinvoke out.<java.io.PrintWriter: void print(java.lang.String)>(prefix);
+
+        $r0 = filter.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>($r0);
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke out.<java.io.PrintWriter: void print(java.lang.String)>($r1);
+
+        virtualinvoke out.<java.io.PrintWriter: void print(char)>(32);
+
+        $r2 = filter.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        virtualinvoke $r2.<android.content.pm.PackageParser$Service: void printComponentShortName(java.io.PrintWriter)>(out);
+
+        virtualinvoke out.<java.io.PrintWriter: void print(java.lang.String)>(" filter ");
+
+        $i1 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(filter);
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i1);
+
+        virtualinvoke out.<java.io.PrintWriter: void println(java.lang.String)>($r3);
+
+        return;
+    }
+
+    protected java.lang.Object filterToLabel(android.content.pm.PackageParser$ServiceIntentInfo)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.pm.PackageParser$ServiceIntentInfo filter;
+        android.content.pm.PackageParser$Service $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        filter := @parameter0: android.content.pm.PackageParser$ServiceIntentInfo;
+
+        $r0 = filter.<android.content.pm.PackageParser$ServiceIntentInfo: android.content.pm.PackageParser$Service service>;
+
+        return $r0;
+    }
+
+    protected void dumpFilterLabel(java.io.PrintWriter, java.lang.String, java.lang.Object, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        java.io.PrintWriter out;
+        java.lang.String prefix, $r0;
+        java.lang.Object label;
+        int count, $i0;
+        android.content.pm.PackageParser$Service service;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        out := @parameter0: java.io.PrintWriter;
+
+        prefix := @parameter1: java.lang.String;
+
+        label := @parameter2: java.lang.Object;
+
+        count := @parameter3: int;
+
+        service = (android.content.pm.PackageParser$Service) label;
+
+        virtualinvoke out.<java.io.PrintWriter: void print(java.lang.String)>(prefix);
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(service);
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke out.<java.io.PrintWriter: void print(java.lang.String)>($r0);
+
+        virtualinvoke out.<java.io.PrintWriter: void print(char)>(32);
+
+        virtualinvoke service.<android.content.pm.PackageParser$Service: void printComponentShortName(java.io.PrintWriter)>(out);
+
+        if count <= 1 goto label1;
+
+        virtualinvoke out.<java.io.PrintWriter: void print(java.lang.String)>(" (");
+
+        virtualinvoke out.<java.io.PrintWriter: void print(int)>(count);
+
+        virtualinvoke out.<java.io.PrintWriter: void print(java.lang.String)>(" filters)");
+
+     label1:
+        virtualinvoke out.<java.io.PrintWriter: void println()>();
+
+        return;
+    }
+
+    protected volatile java.lang.Object filterToLabel(android.content.IntentFilter)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.IntentFilter l1;
+        android.content.pm.PackageParser$ServiceIntentInfo $r0;
+        java.lang.Object $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: android.content.IntentFilter;
+
+        $r0 = (android.content.pm.PackageParser$ServiceIntentInfo) l1;
+
+        $r1 = virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: java.lang.Object filterToLabel(android.content.pm.PackageParser$ServiceIntentInfo)>($r0);
+
+        return $r1;
+    }
+
+    protected volatile void dumpFilter(java.io.PrintWriter, java.lang.String, android.content.IntentFilter)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        java.io.PrintWriter l1;
+        java.lang.String l2;
+        android.content.IntentFilter l3;
+        android.content.pm.PackageParser$ServiceIntentInfo $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: java.io.PrintWriter;
+
+        l2 := @parameter1: java.lang.String;
+
+        l3 := @parameter2: android.content.IntentFilter;
+
+        $r0 = (android.content.pm.PackageParser$ServiceIntentInfo) l3;
+
+        virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: void dumpFilter(java.io.PrintWriter,java.lang.String,android.content.pm.PackageParser$ServiceIntentInfo)>(l1, l2, $r0);
+
+        return;
+    }
+
+    protected volatile java.lang.Object newResult(android.content.IntentFilter, int, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.IntentFilter l1;
+        int l2, l3;
+        android.content.pm.PackageParser$ServiceIntentInfo $r0;
+        android.content.pm.ResolveInfo $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: android.content.IntentFilter;
+
+        l2 := @parameter1: int;
+
+        l3 := @parameter2: int;
+
+        $r0 = (android.content.pm.PackageParser$ServiceIntentInfo) l1;
+
+        $r1 = virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: android.content.pm.ResolveInfo newResult(android.content.pm.PackageParser$ServiceIntentInfo,int,int)>($r0, l2, l3);
+
+        return $r1;
+    }
+
+    protected volatile android.content.IntentFilter[] newArray(int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        int l1;
+        android.content.pm.PackageParser$ServiceIntentInfo[] $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: int;
+
+        $r0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: android.content.pm.PackageParser$ServiceIntentInfo[] newArray(int)>(l1);
+
+        return $r0;
+    }
+
+    protected volatile boolean isPackageForFilter(java.lang.String, android.content.IntentFilter)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        java.lang.String l1;
+        android.content.IntentFilter l2;
+        android.content.pm.PackageParser$ServiceIntentInfo $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: java.lang.String;
+
+        l2 := @parameter1: android.content.IntentFilter;
+
+        $r0 = (android.content.pm.PackageParser$ServiceIntentInfo) l2;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: boolean isPackageForFilter(java.lang.String,android.content.pm.PackageParser$ServiceIntentInfo)>(l1, $r0);
+
+        return $z0;
+    }
+
+    protected volatile boolean isFilterStopped(android.content.IntentFilter, int)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.IntentFilter l1;
+        int l2;
+        android.content.pm.PackageParser$ServiceIntentInfo $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: android.content.IntentFilter;
+
+        l2 := @parameter1: int;
+
+        $r0 = (android.content.pm.PackageParser$ServiceIntentInfo) l1;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: boolean isFilterStopped(android.content.pm.PackageParser$ServiceIntentInfo,int)>($r0, l2);
+
+        return $z0;
+    }
+
+    protected volatile boolean allowFilterResult(android.content.IntentFilter, java.util.List)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        android.content.IntentFilter l1;
+        java.util.List l2;
+        android.content.pm.PackageParser$ServiceIntentInfo $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        l1 := @parameter0: android.content.IntentFilter;
+
+        l2 := @parameter1: java.util.List;
+
+        $r0 = (android.content.pm.PackageParser$ServiceIntentInfo) l1;
+
+        $z0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: boolean allowFilterResult(android.content.pm.PackageParser$ServiceIntentInfo,java.util.List)>($r0, l2);
+
+        return $z0;
+    }
+
+    void <init>(com.android.server.pm.PackageManagerService, com.android.server.pm.PackageManagerService$1)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver this;
+        com.android.server.pm.PackageManagerService x0;
+        com.android.server.pm.PackageManagerService$1 x1;
+
+        this := @this: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        x1 := @parameter1: com.android.server.pm.PackageManagerService$1;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: void <init>(com.android.server.pm.PackageManagerService)>(x0);
+
+        return;
+    }
+
+    static android.util.ArrayMap access$2700(com.android.server.pm.PackageManagerService$ServiceIntentResolver)
+    {
+        com.android.server.pm.PackageManagerService$ServiceIntentResolver x0;
+        android.util.ArrayMap $r0;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$ServiceIntentResolver;
+
+        $r0 = x0.<com.android.server.pm.PackageManagerService$ServiceIntentResolver: android.util.ArrayMap mServices>;
+
+        return $r0;
+    }
+}

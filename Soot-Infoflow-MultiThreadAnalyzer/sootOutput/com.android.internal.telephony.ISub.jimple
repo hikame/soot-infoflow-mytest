@@ -1,0 +1,59 @@
+public interface  com.android.internal.telephony.ISub extends java.lang.Object implements android.os.IInterface
+{
+
+    public abstract java.util.List getAllSubInfoList() throws android.os.RemoteException;
+
+    public abstract int getAllSubInfoCount() throws android.os.RemoteException;
+
+    public abstract android.telephony.SubscriptionInfo getActiveSubscriptionInfo(int) throws android.os.RemoteException;
+
+    public abstract android.telephony.SubscriptionInfo getActiveSubscriptionInfoForIccId(java.lang.String) throws android.os.RemoteException;
+
+    public abstract android.telephony.SubscriptionInfo getActiveSubscriptionInfoForSimSlotIndex(int) throws android.os.RemoteException;
+
+    public abstract java.util.List getActiveSubscriptionInfoList() throws android.os.RemoteException;
+
+    public abstract int getActiveSubInfoCount() throws android.os.RemoteException;
+
+    public abstract int getActiveSubInfoCountMax() throws android.os.RemoteException;
+
+    public abstract int addSubInfoRecord(java.lang.String, int) throws android.os.RemoteException;
+
+    public abstract int setIconTint(int, int) throws android.os.RemoteException;
+
+    public abstract int setDisplayName(java.lang.String, int) throws android.os.RemoteException;
+
+    public abstract int setDisplayNameUsingSrc(java.lang.String, int, long) throws android.os.RemoteException;
+
+    public abstract int setDisplayNumber(java.lang.String, int) throws android.os.RemoteException;
+
+    public abstract int setDataRoaming(int, int) throws android.os.RemoteException;
+
+    public abstract int getSlotId(int) throws android.os.RemoteException;
+
+    public abstract int[] getSubId(int) throws android.os.RemoteException;
+
+    public abstract int getDefaultSubId() throws android.os.RemoteException;
+
+    public abstract int clearSubInfo() throws android.os.RemoteException;
+
+    public abstract int getPhoneId(int) throws android.os.RemoteException;
+
+    public abstract int getDefaultDataSubId() throws android.os.RemoteException;
+
+    public abstract void setDefaultDataSubId(int) throws android.os.RemoteException;
+
+    public abstract int getDefaultVoiceSubId() throws android.os.RemoteException;
+
+    public abstract void setDefaultVoiceSubId(int) throws android.os.RemoteException;
+
+    public abstract int getDefaultSmsSubId() throws android.os.RemoteException;
+
+    public abstract void setDefaultSmsSubId(int) throws android.os.RemoteException;
+
+    public abstract void clearDefaultsForInactiveSubIds() throws android.os.RemoteException;
+
+    public abstract int[] getActiveSubIdList() throws android.os.RemoteException;
+
+    public abstract int getSimStateForSubscriber(int) throws android.os.RemoteException;
+}

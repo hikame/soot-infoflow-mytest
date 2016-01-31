@@ -364,7 +364,6 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 	protected void processExit(PathEdge<N,D> edge) {
 		final N n = edge.getTarget(); // an exit node; line 21...
 		M methodThatNeedsSummary = icfg.getMethodOf(n);
-		
 		final D d1 = edge.factAtSource();
 		final D d2 = edge.factAtTarget();
 		
@@ -466,7 +465,6 @@ public class IFDSSolver<N,D extends FastSolverLinkedNode<D, N>,M,I extends BiDiI
 		final N n = edge.getTarget(); 
 		final D d2 = edge.factAtTarget();
 		List<N> nlist = icfg.getSuccsOf(n);
-
 		for (N m : nlist) {
 			FlowFunction<D> flowFunction = flowFunctions.getNormalFlowFunction(n,m);
 			Set<D> res = computeNormalFlowFunction(flowFunction, d1, d2);
@@ -637,11 +635,12 @@ static List<SootMethod> outSMList = new ArrayList<SootMethod>();
 if(Options.v().debug()){
 	Stmt stmt = (Stmt) edge.getTarget();
 	SootMethod sm = null;
-	if(stmt.containsInvokeExpr())
+	if(stmt.containsInvokeExpr()){
 		sm = stmt.getInvokeExpr().getMethod();
-	if(sm != null && !outSMList.contains(sm) && sm.hasActiveBody()){
-		outSMList.add(sm);
-		System.out.println("[KM] " + edge.factAtTarget() + "\n" + sm.getActiveBody());
+		if(sm != null && sm.hasActiveBody())
+			System.out.println("[KM] " + edge.factAtTarget() + "\n" + sm.getActiveBody());
+		else 
+			System.out.println("[ER] Stmt from edges has no target method(or has no body.): " + edge);
 	}
 }
 			if(icfg.isCallStmt(edge.getTarget())) {

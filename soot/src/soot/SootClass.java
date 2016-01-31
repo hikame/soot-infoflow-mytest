@@ -84,6 +84,20 @@ public class SootClass extends AbstractHost implements Numberable
     
     public final static String INVOKEDYNAMIC_DUMMY_CLASS_NAME = "soot.dummy.InvokeDynamic";
     
+    /**Added by Kame. If this is private, it means that the SootClass will not be add to the Scene.*/
+    public SootClass(String name, int modifiers, boolean isPrivate){
+    	if(isPrivate){
+            if( name.charAt(0) == '[' ) throw new RuntimeException( "Attempt to make a class whose name starts with [" );
+            setName( name);
+            this.modifiers = modifiers;
+//            refType = RefType.v(name);
+//            refType.setSootClass(this);
+            if(Options.v().debug_resolver()) G.v().out.println("created "+name+" with modifiers "+modifiers);
+            setResolvingLevel(BODIES);
+    	}
+    	else
+    		throw new RuntimeException("isPrivate must be true to invoke this method.");
+    }
     
     /**
         Constructs an empty SootClass with the given name and modifiers.
@@ -92,7 +106,7 @@ public class SootClass extends AbstractHost implements Numberable
     public SootClass(String name, int modifiers)
     {
         if( name.charAt(0) == '[' ) throw new RuntimeException( "Attempt to make a class whose name starts with [" );
-	setName( name);
+        setName( name);
         this.modifiers = modifiers;
         refType = RefType.v(name);
         refType.setSootClass(this);

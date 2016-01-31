@@ -1,0 +1,58 @@
+class com.android.server.AppOpsService$1$1 extends android.os.AsyncTask
+{
+    final com.android.server.AppOpsService$1 this$1;
+
+    void <init>(com.android.server.AppOpsService$1)
+    {
+        com.android.server.AppOpsService$1$1 this;
+        com.android.server.AppOpsService$1 l1;
+
+        this := @this: com.android.server.AppOpsService$1$1;
+
+        l1 := @parameter0: com.android.server.AppOpsService$1;
+
+        this.<com.android.server.AppOpsService$1$1: com.android.server.AppOpsService$1 this$1> = l1;
+
+        specialinvoke this.<android.os.AsyncTask: void <init>()>();
+
+        return;
+    }
+
+    protected transient java.lang.Void doInBackground(java.lang.Void[])
+    {
+        com.android.server.AppOpsService$1$1 this;
+        java.lang.Void[] params;
+        com.android.server.AppOpsService$1 $r0;
+        com.android.server.AppOpsService $r1;
+
+        this := @this: com.android.server.AppOpsService$1$1;
+
+        params := @parameter0: java.lang.Void[];
+
+        $r0 = this.<com.android.server.AppOpsService$1$1: com.android.server.AppOpsService$1 this$1>;
+
+        $r1 = $r0.<com.android.server.AppOpsService$1: com.android.server.AppOpsService this$0>;
+
+        virtualinvoke $r1.<com.android.server.AppOpsService: void writeState()>();
+
+        return null;
+    }
+
+    protected volatile java.lang.Object doInBackground(java.lang.Object[])
+    {
+        com.android.server.AppOpsService$1$1 this;
+        java.lang.Object[] l1;
+        java.lang.Void[] $r0;
+        java.lang.Void $r1;
+
+        this := @this: com.android.server.AppOpsService$1$1;
+
+        l1 := @parameter0: java.lang.Object[];
+
+        $r0 = (java.lang.Void[]) l1;
+
+        $r1 = virtualinvoke this.<com.android.server.AppOpsService$1$1: java.lang.Void doInBackground(java.lang.Void[])>($r0);
+
+        return $r1;
+    }
+}

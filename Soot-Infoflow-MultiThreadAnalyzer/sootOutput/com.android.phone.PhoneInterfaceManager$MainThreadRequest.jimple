@@ -1,0 +1,43 @@
+final class com.android.phone.PhoneInterfaceManager$MainThreadRequest extends java.lang.Object
+{
+    public java.lang.Object argument;
+    public java.lang.Object result;
+    public java.lang.Integer subId;
+
+    public void <init>(java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest this;
+        java.lang.Object argument;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadRequest;
+
+        argument := @parameter0: java.lang.Object;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument> = argument;
+
+        return;
+    }
+
+    public void <init>(java.lang.Object, java.lang.Integer)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest this;
+        java.lang.Object argument;
+        java.lang.Integer subId;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadRequest;
+
+        argument := @parameter0: java.lang.Object;
+
+        subId := @parameter1: java.lang.Integer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument> = argument;
+
+        this.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Integer subId> = subId;
+
+        return;
+    }
+}

@@ -1,0 +1,52 @@
+class com.android.server.pm.PackageManagerService$25 extends java.lang.Object implements java.lang.Runnable
+{
+    final java.lang.String val$packageName;
+    final int val$userHandle;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, java.lang.String, int)
+    {
+        com.android.server.pm.PackageManagerService$25 this;
+        com.android.server.pm.PackageManagerService l1;
+        java.lang.String l2;
+        int l3;
+
+        this := @this: com.android.server.pm.PackageManagerService$25;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: java.lang.String;
+
+        l3 := @parameter2: int;
+
+        this.<com.android.server.pm.PackageManagerService$25: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$25: java.lang.String val$packageName> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$25: int val$userHandle> = l3;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$25 this;
+        int $i0;
+        java.lang.String $r0;
+        com.android.server.pm.PackageManagerService $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$25;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$25: com.android.server.pm.PackageManagerService this$0>;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$25: java.lang.String val$packageName>;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$25: int val$userHandle>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService: int access$5000(com.android.server.pm.PackageManagerService,java.lang.String,int,int)>($r1, $r0, $i0, 0);
+
+        return;
+    }
+}

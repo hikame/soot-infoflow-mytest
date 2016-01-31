@@ -242,7 +242,12 @@ public class MyTaintWrapper extends AbstractTaintWrapper implements Cloneable {
 			return taints;
 		
 		// Check for a cached wrap type，根据Method名，查知其WrapType
-		final MethodWrapType wrapType = methodWrapCache.getUnchecked(method);
+		MethodWrapType wrapType = null; 
+		try{
+			wrapType = methodWrapCache.getUnchecked(method);
+		}catch(Exception e){
+			wrapType = MethodWrapType.Exclude;
+		}
 		
 		//判定stmt是一个实例化对象的方法调用
 		if (stmt.getInvokeExpr() instanceof InstanceInvokeExpr) {	
@@ -573,7 +578,12 @@ public class MyTaintWrapper extends AbstractTaintWrapper implements Cloneable {
 		// We need a method that can create a taint
 		if (!aggressiveMode) {	//不是aggressive模式
 			// Check for a cached wrap type
-			final MethodWrapType wrapType = methodWrapCache.getUnchecked(method);
+			MethodWrapType wrapType = null;
+			try{
+				methodWrapCache.getUnchecked(method);
+			}catch(Exception e){
+				return false;
+			}
 			if (wrapType != MethodWrapType.CreateTaint)	//不会创造污点
 				return false;
 		}

@@ -1,0 +1,46 @@
+class com.android.server.ConnectivityService$2 extends com.android.server.net.BaseNetworkObserver
+{
+    final com.android.server.ConnectivityService this$0;
+
+    void <init>(com.android.server.ConnectivityService)
+    {
+        com.android.server.ConnectivityService$2 this;
+        com.android.server.ConnectivityService l1;
+
+        this := @this: com.android.server.ConnectivityService$2;
+
+        l1 := @parameter0: com.android.server.ConnectivityService;
+
+        this.<com.android.server.ConnectivityService$2: com.android.server.ConnectivityService this$0> = l1;
+
+        specialinvoke this.<com.android.server.net.BaseNetworkObserver: void <init>()>();
+
+        return;
+    }
+
+    public void interfaceClassDataActivityChanged(java.lang.String, boolean, long)
+    {
+        com.android.server.ConnectivityService$2 this;
+        java.lang.String label;
+        boolean active;
+        long tsNanos;
+        int deviceType;
+        com.android.server.ConnectivityService $r0;
+
+        this := @this: com.android.server.ConnectivityService$2;
+
+        label := @parameter0: java.lang.String;
+
+        active := @parameter1: boolean;
+
+        tsNanos := @parameter2: long;
+
+        deviceType = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(label);
+
+        $r0 = this.<com.android.server.ConnectivityService$2: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$400(com.android.server.ConnectivityService,int,boolean,long)>($r0, deviceType, active, tsNanos);
+
+        return;
+    }
+}

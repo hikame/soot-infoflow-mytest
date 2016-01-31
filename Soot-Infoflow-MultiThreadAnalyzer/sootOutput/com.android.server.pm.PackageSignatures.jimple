@@ -1,0 +1,602 @@
+class com.android.server.pm.PackageSignatures extends java.lang.Object
+{
+    android.content.pm.Signature[] mSignatures;
+
+    void <init>(com.android.server.pm.PackageSignatures)
+    {
+        com.android.server.pm.PackageSignatures this, orig;
+        android.content.pm.Signature[] $r0, $r1, $r3;
+        java.lang.Object $r2;
+
+        this := @this: com.android.server.pm.PackageSignatures;
+
+        orig := @parameter0: com.android.server.pm.PackageSignatures;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        if orig == null goto label1;
+
+        $r0 = orig.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        if $r0 == null goto label1;
+
+        $r1 = orig.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.Object clone()>();
+
+        $r3 = (android.content.pm.Signature[]) $r2;
+
+        this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures> = $r3;
+
+     label1:
+        return;
+    }
+
+    void <init>(android.content.pm.Signature[])
+    {
+        com.android.server.pm.PackageSignatures this;
+        android.content.pm.Signature[] sigs;
+
+        this := @this: com.android.server.pm.PackageSignatures;
+
+        sigs := @parameter0: android.content.pm.Signature[];
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        virtualinvoke this.<com.android.server.pm.PackageSignatures: void assignSignatures(android.content.pm.Signature[])>(sigs);
+
+        return;
+    }
+
+    void <init>()
+    {
+        com.android.server.pm.PackageSignatures this;
+
+        this := @this: com.android.server.pm.PackageSignatures;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void writeXml(org.xmlpull.v1.XmlSerializer, java.lang.String, java.util.ArrayList) throws java.io.IOException
+    {
+        com.android.server.pm.PackageSignatures this;
+        org.xmlpull.v1.XmlSerializer serializer;
+        java.lang.String tagName, $r4, $r10, $r14, $r15;
+        java.util.ArrayList pastSignatures;
+        android.content.pm.Signature sig, pastSig;
+        int sigHash, numPast, $i0, $i1, $i2, i#1, j#2;
+        android.content.pm.Signature[] $r0, $r2, $r5, $r8;
+        java.lang.Object $r13;
+        boolean $z1;
+
+        this := @this: com.android.server.pm.PackageSignatures;
+
+        serializer := @parameter0: org.xmlpull.v1.XmlSerializer;
+
+        tagName := @parameter1: java.lang.String;
+
+        pastSignatures := @parameter2: java.util.ArrayList;
+
+        $r0 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        if $r0 != null goto label1;
+
+        return;
+
+     label1:
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer startTag(java.lang.String,java.lang.String)>(null, tagName);
+
+        $r2 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $i0 = lengthof $r2;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "count", $r4);
+
+        i#1 = 0;
+
+     label2:
+        $r5 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $i1 = lengthof $r5;
+
+        if i#1 >= $i1 goto label7;
+
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer startTag(java.lang.String,java.lang.String)>(null, "cert");
+
+        $r8 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        sig = $r8[i#1];
+
+        sigHash = virtualinvoke sig.<android.content.pm.Signature: int hashCode()>();
+
+        numPast = virtualinvoke pastSignatures.<java.util.ArrayList: int size()>();
+
+        j#2 = 0;
+
+     label3:
+        if j#2 >= numPast goto label5;
+
+        $r13 = virtualinvoke pastSignatures.<java.util.ArrayList: java.lang.Object get(int)>(j#2);
+
+        pastSig = (android.content.pm.Signature) $r13;
+
+        $i2 = virtualinvoke pastSig.<android.content.pm.Signature: int hashCode()>();
+
+        if $i2 != sigHash goto label4;
+
+        $z1 = virtualinvoke pastSig.<android.content.pm.Signature: boolean equals(java.lang.Object)>(sig);
+
+        if $z1 == 0 goto label4;
+
+        $r15 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>(j#2);
+
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "index", $r15);
+
+        goto label5;
+
+     label4:
+        j#2 = j#2 + 1;
+
+        goto label3;
+
+     label5:
+        if j#2 < numPast goto label6;
+
+        virtualinvoke pastSignatures.<java.util.ArrayList: boolean add(java.lang.Object)>(sig);
+
+        $r10 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>(numPast);
+
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "index", $r10);
+
+        $r14 = virtualinvoke sig.<android.content.pm.Signature: java.lang.String toCharsString()>();
+
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "key", $r14);
+
+     label6:
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, "cert");
+
+        i#1 = i#1 + 1;
+
+        goto label2;
+
+     label7:
+        interfaceinvoke serializer.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, tagName);
+
+        return;
+    }
+
+    void readXml(org.xmlpull.v1.XmlPullParser, java.util.ArrayList) throws java.io.IOException, org.xmlpull.v1.XmlPullParserException
+    {
+        com.android.server.pm.PackageSignatures this;
+        org.xmlpull.v1.XmlPullParser parser;
+        java.util.ArrayList pastSignatures;
+        java.lang.String countStr, index, key, $r5, $r7, $r11, $r12, $r15, $r18, $r25, $r30, $r37, $r39, $r41, $r45, $r47, $r53, $r56, $r57, $r63, tagName#2;
+        int count, outerDepth, type, $i0, $i1, $i2, $i3, pos#1, idx#3;
+        android.content.pm.Signature[] $r0, $r1, $r20, $r40, tagName#8;
+        java.lang.StringBuilder $r2, $r3, $r4, $r6, $r8, $r9, $r10, $r13, $r14, $r16, $r17, $r22, $r23, $r24, $r26, $r27, $r28, $r31, $r32, $r33, $r36, $r38, $r43, $r44, $r46, $r48, $r49, $r51, $r52, $r54, $r55, $r58, $r59, $r60, $r61, $r62;
+        boolean $z0;
+        android.content.pm.Signature $r21, $r35, sig#4, sig#5;
+        java.lang.Object $r29, $r34;
+        java.lang.NumberFormatException $r42, idx#6;
+        java.lang.IllegalArgumentException $r50, idx#7;
+
+        this := @this: com.android.server.pm.PackageSignatures;
+
+        parser := @parameter0: org.xmlpull.v1.XmlPullParser;
+
+        pastSignatures := @parameter1: java.util.ArrayList;
+
+        countStr = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "count");
+
+        if countStr != null goto label01;
+
+        $r36 = new java.lang.StringBuilder;
+
+        specialinvoke $r36.<java.lang.StringBuilder: void <init>()>();
+
+        $r44 = virtualinvoke $r36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error in package manager settings: <signatures> has no count at ");
+
+        $r45 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getPositionDescription()>();
+
+        $r46 = virtualinvoke $r44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r45);
+
+        $r41 = virtualinvoke $r46.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r41);
+
+        staticinvoke <com.android.internal.util.XmlUtils: void skipCurrentTag(org.xmlpull.v1.XmlPullParser)>(parser);
+
+     label01:
+        count = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(countStr);
+
+        $r0 = newarray (android.content.pm.Signature)[count];
+
+        this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures> = $r0;
+
+        pos#1 = 0;
+
+        outerDepth = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+     label02:
+        $i0 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int next()>();
+
+        type = $i0;
+
+        if $i0 == 1 goto label19;
+
+        if type != 3 goto label03;
+
+        $i3 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+        if $i3 <= outerDepth goto label19;
+
+     label03:
+        if type == 3 goto label02;
+
+        if type != 4 goto label04;
+
+        goto label02;
+
+     label04:
+        tagName#2 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $z0 = virtualinvoke tagName#2.<java.lang.String: boolean equals(java.lang.Object)>("cert");
+
+        if $z0 == 0 goto label17;
+
+        if pos#1 >= count goto label16;
+
+        index = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "index");
+
+        if index == null goto label14;
+
+     label05:
+        idx#3 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(index);
+
+        key = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "key");
+
+        if key != null goto label09;
+
+        if idx#3 < 0 goto label08;
+
+        $i2 = virtualinvoke pastSignatures.<java.util.ArrayList: int size()>();
+
+        if idx#3 >= $i2 goto label08;
+
+        $r29 = virtualinvoke pastSignatures.<java.util.ArrayList: java.lang.Object get(int)>(idx#3);
+
+        sig#4 = (android.content.pm.Signature) $r29;
+
+        if sig#4 == null goto label06;
+
+        $r40 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $r34 = virtualinvoke pastSignatures.<java.util.ArrayList: java.lang.Object get(int)>(idx#3);
+
+        $r35 = (android.content.pm.Signature) $r34;
+
+        $r40[pos#1] = $r35;
+
+        pos#1 = pos#1 + 1;
+
+        goto label07;
+
+     label06:
+        $r28 = new java.lang.StringBuilder;
+
+        specialinvoke $r28.<java.lang.StringBuilder: void <init>()>();
+
+        $r33 = virtualinvoke $r28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error in package manager settings: <cert> index ");
+
+        $r32 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(index);
+
+        $r31 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is not defined at ");
+
+        $r37 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getPositionDescription()>();
+
+        $r38 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r37);
+
+        $r39 = virtualinvoke $r38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r39);
+
+     label07:
+        goto label11;
+
+     label08:
+        $r23 = new java.lang.StringBuilder;
+
+        specialinvoke $r23.<java.lang.StringBuilder: void <init>()>();
+
+        $r22 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error in package manager settings: <cert> index ");
+
+        $r27 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(index);
+
+        $r26 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is out of bounds at ");
+
+        $r25 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getPositionDescription()>();
+
+        $r24 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r25);
+
+        $r30 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r30);
+
+        goto label11;
+
+     label09:
+        $i1 = virtualinvoke pastSignatures.<java.util.ArrayList: int size()>();
+
+        if $i1 > idx#3 goto label10;
+
+        virtualinvoke pastSignatures.<java.util.ArrayList: boolean add(java.lang.Object)>(null);
+
+        goto label09;
+
+     label10:
+        $r21 = new android.content.pm.Signature;
+
+        specialinvoke $r21.<android.content.pm.Signature: void <init>(java.lang.String)>(key);
+
+        sig#5 = $r21;
+
+        virtualinvoke pastSignatures.<java.util.ArrayList: java.lang.Object set(int,java.lang.Object)>(idx#3, sig#5);
+
+        $r20 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $r20[pos#1] = sig#5;
+
+        pos#1 = pos#1 + 1;
+
+     label11:
+        goto label15;
+
+     label12:
+        $r42 := @caughtexception;
+
+        idx#6 = $r42;
+
+        $r43 = new java.lang.StringBuilder;
+
+        specialinvoke $r43.<java.lang.StringBuilder: void <init>()>();
+
+        $r52 = virtualinvoke $r43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error in package manager settings: <cert> index ");
+
+        $r51 = virtualinvoke $r52.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(index);
+
+        $r54 = virtualinvoke $r51.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is not a number at ");
+
+        $r53 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getPositionDescription()>();
+
+        $r48 = virtualinvoke $r54.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r53);
+
+        $r47 = virtualinvoke $r48.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r47);
+
+        goto label15;
+
+     label13:
+        $r50 := @caughtexception;
+
+        idx#7 = $r50;
+
+        $r49 = new java.lang.StringBuilder;
+
+        specialinvoke $r49.<java.lang.StringBuilder: void <init>()>();
+
+        $r59 = virtualinvoke $r49.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error in package manager settings: <cert> index ");
+
+        $r61 = virtualinvoke $r59.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(index);
+
+        $r60 = virtualinvoke $r61.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" has an invalid signature at ");
+
+        $r56 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getPositionDescription()>();
+
+        $r55 = virtualinvoke $r60.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r56);
+
+        $r58 = virtualinvoke $r55.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r57 = virtualinvoke idx#7.<java.lang.IllegalArgumentException: java.lang.String getMessage()>();
+
+        $r62 = virtualinvoke $r58.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r57);
+
+        $r63 = virtualinvoke $r62.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r63);
+
+        goto label15;
+
+     label14:
+        $r16 = new java.lang.StringBuilder;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        $r14 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error in package manager settings: <cert> has no index at ");
+
+        $r15 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getPositionDescription()>();
+
+        $r17 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+
+        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r18);
+
+     label15:
+        goto label18;
+
+     label16:
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error in package manager settings: too many <cert> tags, expected ");
+
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(count);
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at ");
+
+        $r12 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getPositionDescription()>();
+
+        $r13 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r12);
+
+        $r11 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r11);
+
+        goto label18;
+
+     label17:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown element under <cert>: ");
+
+        $r5 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void reportSettingsProblem(int,java.lang.String)>(5, $r7);
+
+     label18:
+        staticinvoke <com.android.internal.util.XmlUtils: void skipCurrentTag(org.xmlpull.v1.XmlPullParser)>(parser);
+
+        goto label02;
+
+     label19:
+        if pos#1 >= count goto label20;
+
+        tagName#8 = newarray (android.content.pm.Signature)[pos#1];
+
+        $r1 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, tagName#8, 0, pos#1);
+
+        this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures> = tagName#8;
+
+     label20:
+        return;
+
+        catch java.lang.NumberFormatException from label05 to label11 with label12;
+        catch java.lang.IllegalArgumentException from label05 to label11 with label13;
+    }
+
+    void assignSignatures(android.content.pm.Signature[])
+    {
+        com.android.server.pm.PackageSignatures this;
+        android.content.pm.Signature[] sigs, $r0, $r2;
+        int $i0, $i1, i#1;
+        android.content.pm.Signature $r1;
+
+        this := @this: com.android.server.pm.PackageSignatures;
+
+        sigs := @parameter0: android.content.pm.Signature[];
+
+        if sigs != null goto label1;
+
+        this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures> = null;
+
+        return;
+
+     label1:
+        $i0 = lengthof sigs;
+
+        $r0 = newarray (android.content.pm.Signature)[$i0];
+
+        this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures> = $r0;
+
+        i#1 = 0;
+
+     label2:
+        $i1 = lengthof sigs;
+
+        if i#1 >= $i1 goto label3;
+
+        $r2 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $r1 = sigs[i#1];
+
+        $r2[i#1] = $r1;
+
+        i#1 = i#1 + 1;
+
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        com.android.server.pm.PackageSignatures this;
+        java.lang.StringBuffer buf, $r0;
+        int $i0, $i1, $i2, i#1;
+        java.lang.String $r2, $r7, $r11;
+        android.content.pm.Signature[] $r5, $r8, $r9;
+        android.content.pm.Signature $r10;
+
+        this := @this: com.android.server.pm.PackageSignatures;
+
+        $r0 = new java.lang.StringBuffer;
+
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(128);
+
+        buf = $r0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("PackageSignatures{");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" [");
+
+        $r5 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        if $r5 == null goto label3;
+
+        i#1 = 0;
+
+     label1:
+        $r8 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $i1 = lengthof $r8;
+
+        if i#1 >= $i1 goto label3;
+
+        if i#1 <= 0 goto label2;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", ");
+
+     label2:
+        $r9 = this.<com.android.server.pm.PackageSignatures: android.content.pm.Signature[] mSignatures>;
+
+        $r10 = $r9[i#1];
+
+        $i2 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>($r10);
+
+        $r11 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i2);
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r11);
+
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label3:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("]}");
+
+        $r7 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $r7;
+    }
+}

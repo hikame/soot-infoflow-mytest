@@ -1,0 +1,5 @@
+interface  com.android.server.pm.PackageManagerService$BlobXmlRestorer extends java.lang.Object
+{
+
+    public abstract void apply(org.xmlpull.v1.XmlPullParser, int) throws java.io.IOException, org.xmlpull.v1.XmlPullParserException;
+}

@@ -1,0 +1,1012 @@
+class com.android.server.pm.PackageManagerService$InstallParams extends com.android.server.pm.PackageManagerService$HandlerParams
+{
+    final com.android.server.pm.PackageManagerService$OriginInfo origin;
+    final com.android.server.pm.PackageManagerService$MoveInfo move;
+    final android.content.pm.IPackageInstallObserver2 observer;
+    int installFlags;
+    final java.lang.String installerPackageName;
+    final java.lang.String volumeUuid;
+    final android.content.pm.VerificationParams verificationParams;
+    private com.android.server.pm.PackageManagerService$InstallArgs mArgs;
+    private int mRet;
+    final java.lang.String packageAbiOverride;
+    final java.lang.String[] grantedRuntimePermissions;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, com.android.server.pm.PackageManagerService$OriginInfo, com.android.server.pm.PackageManagerService$MoveInfo, android.content.pm.IPackageInstallObserver2, int, java.lang.String, java.lang.String, android.content.pm.VerificationParams, android.os.UserHandle, java.lang.String, java.lang.String[])
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        com.android.server.pm.PackageManagerService l1;
+        com.android.server.pm.PackageManagerService$OriginInfo origin;
+        com.android.server.pm.PackageManagerService$MoveInfo move;
+        android.content.pm.IPackageInstallObserver2 observer;
+        int installFlags;
+        java.lang.String installerPackageName, volumeUuid, packageAbiOverride;
+        android.content.pm.VerificationParams verificationParams;
+        android.os.UserHandle user;
+        java.lang.String[] grantedPermissions;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        origin := @parameter1: com.android.server.pm.PackageManagerService$OriginInfo;
+
+        move := @parameter2: com.android.server.pm.PackageManagerService$MoveInfo;
+
+        observer := @parameter3: android.content.pm.IPackageInstallObserver2;
+
+        installFlags := @parameter4: int;
+
+        installerPackageName := @parameter5: java.lang.String;
+
+        volumeUuid := @parameter6: java.lang.String;
+
+        verificationParams := @parameter7: android.content.pm.VerificationParams;
+
+        user := @parameter8: android.os.UserHandle;
+
+        packageAbiOverride := @parameter9: java.lang.String;
+
+        grantedPermissions := @parameter10: java.lang.String[];
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$HandlerParams: void <init>(com.android.server.pm.PackageManagerService,android.os.UserHandle)>(l1, user);
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin> = origin;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$MoveInfo move> = move;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.IPackageInstallObserver2 observer> = observer;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = installFlags;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String installerPackageName> = installerPackageName;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String volumeUuid> = volumeUuid;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams> = verificationParams;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String packageAbiOverride> = packageAbiOverride;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String[] grantedRuntimePermissions> = grantedPermissions;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        java.lang.StringBuilder $r0, $r1, $r3, $r4, $r7, $r8, $r11, $r12;
+        int $i0;
+        java.lang.String $r2, $r10, $r13;
+        com.android.server.pm.PackageManagerService$OriginInfo $r5, $r9;
+        java.io.File $r6;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("InstallParams{");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" file=");
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r6 = $r5.<com.android.server.pm.PackageManagerService$OriginInfo: java.io.File file>;
+
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r6);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" cid=");
+
+        $r9 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r10 = $r9.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String cid>;
+
+        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r13;
+    }
+
+    public android.content.pm.ManifestDigest getManifestDigest()
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        android.content.pm.VerificationParams $r0, $r1;
+        android.content.pm.ManifestDigest $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $r2 = virtualinvoke $r1.<android.content.pm.VerificationParams: android.content.pm.ManifestDigest getManifestDigest()>();
+
+        return $r2;
+    }
+
+    private int installLocationPolicy(android.content.pm.PackageInfoLite)
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        android.content.pm.PackageInfoLite pkgLite;
+        java.lang.String packageName, $r8, $r11;
+        int installLocation, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8;
+        boolean onSd, $z0, $z1;
+        android.util.ArrayMap l5, $r1, $r3;
+        android.content.pm.PackageParser$Package pkg;
+        com.android.server.pm.PackageManagerException e, $r6;
+        java.lang.Throwable l8, $r12;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        java.lang.Object $r4;
+        android.content.pm.ApplicationInfo $r5;
+        java.lang.StringBuilder $r7, $r9, $r10;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        pkgLite := @parameter0: android.content.pm.PackageInfoLite;
+
+        packageName = pkgLite.<android.content.pm.PackageInfoLite: java.lang.String packageName>;
+
+        installLocation = pkgLite.<android.content.pm.PackageInfoLite: int installLocation>;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i1 = $i0 & 8;
+
+        if $i1 == 0 goto label01;
+
+        $z1 = 1;
+
+        goto label02;
+
+     label01:
+        $z1 = 0;
+
+     label02:
+        onSd = $z1;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l5 = $r1;
+
+        entermonitor $r1;
+
+     label03:
+        $r2 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        $r4 = virtualinvoke $r3.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(packageName);
+
+        pkg = (android.content.pm.PackageParser$Package) $r4;
+
+        if pkg == null goto label23;
+
+        $i4 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i3 = $i4 & 2;
+
+        if $i3 == 0 goto label21;
+
+        $i5 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i6 = $i5 & 128;
+
+        if $i6 != 0 goto label08;
+
+     label04:
+        staticinvoke <com.android.server.pm.PackageManagerService: void access$3600(android.content.pm.PackageParser$Package,android.content.pm.PackageInfoLite)>(pkg, pkgLite);
+
+     label05:
+        goto label08;
+
+     label06:
+        $r6 := @caughtexception;
+
+        e = $r6;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Downgrade detected: ");
+
+        $r8 = virtualinvoke e.<com.android.server.pm.PackageManagerException: java.lang.String getMessage()>();
+
+        $r10 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", $r11);
+
+        exitmonitor l5;
+
+     label07:
+        return -7;
+
+     label08:
+        $r5 = pkg.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i8 = $r5.<android.content.pm.ApplicationInfo: int flags>;
+
+        $i7 = $i8 & 1;
+
+        if $i7 == 0 goto label12;
+
+        if onSd == 0 goto label10;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", "Cannot install update to system app on sdcard");
+
+        exitmonitor l5;
+
+     label09:
+        return -3;
+
+     label10:
+        exitmonitor l5;
+
+     label11:
+        return 1;
+
+     label12:
+        if onSd == 0 goto label14;
+
+        exitmonitor l5;
+
+     label13:
+        return 2;
+
+     label14:
+        if installLocation != 1 goto label16;
+
+        exitmonitor l5;
+
+     label15:
+        return 1;
+
+     label16:
+        if installLocation != 2 goto label17;
+
+        goto label23;
+
+     label17:
+        $z0 = staticinvoke <com.android.server.pm.PackageManagerService: boolean access$1000(android.content.pm.PackageParser$Package)>(pkg);
+
+        if $z0 == 0 goto label19;
+
+        exitmonitor l5;
+
+     label18:
+        return 2;
+
+     label19:
+        exitmonitor l5;
+
+     label20:
+        return 1;
+
+     label21:
+        exitmonitor l5;
+
+     label22:
+        return -4;
+
+     label23:
+        exitmonitor l5;
+
+     label24:
+        goto label27;
+
+     label25:
+        $r12 := @caughtexception;
+
+        l8 = $r12;
+
+        exitmonitor l5;
+
+     label26:
+        throw l8;
+
+     label27:
+        if onSd == 0 goto label28;
+
+        return 2;
+
+     label28:
+        $i2 = pkgLite.<android.content.pm.PackageInfoLite: int recommendedInstallLocation>;
+
+        return $i2;
+
+        catch com.android.server.pm.PackageManagerException from label04 to label05 with label06;
+        catch java.lang.Throwable from label03 to label07 with label25;
+        catch java.lang.Throwable from label08 to label09 with label25;
+        catch java.lang.Throwable from label10 to label11 with label25;
+        catch java.lang.Throwable from label12 to label13 with label25;
+        catch java.lang.Throwable from label14 to label15 with label25;
+        catch java.lang.Throwable from label16 to label18 with label25;
+        catch java.lang.Throwable from label19 to label20 with label25;
+        catch java.lang.Throwable from label21 to label22 with label25;
+        catch java.lang.Throwable from label23 to label24 with label25;
+        catch java.lang.Throwable from label25 to label26 with label25;
+    }
+
+    public void handleStartCopy() throws android.os.RemoteException
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        boolean onSd, onInt, $z0, $z1, $z2, $z3, $z4, $z5, $z6;
+        int requiredUid, verificationId, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i9, $i10, $i11, $i12, $i13, $i14, $i15, $i16, $i17, $i18, $i19, $i20, $i21, $i22, $i23, $i25, $i26, $i27, $i28, $i29, $i30, $i31, $i33, $i34, $i35, $i36, ret#1, storage#8, storage#9, lowThreshold#11, $i37, N#15, i#16;
+        java.util.List receivers, sufficientVerifiers;
+        com.android.server.pm.PackageVerificationState verificationState, $r38;
+        android.content.Intent sufficientIntent, $r17, $r48, sizeBytes#13;
+        android.content.ComponentName verifierComponent, N#17;
+        com.android.server.pm.PackageManagerService$OriginInfo $r0, $r4, $r6, $r12, $r20, $r83, $r86, $r91, $r95;
+        com.android.internal.app.IMediaContainerService $r1, $r15, $r82, $r85;
+        com.android.server.pm.PackageManagerService $r2, $r8, $r10, $r11, $r14, $r16, $r18, $r23, $r28, $r35, $r39, $r42, $r43, $r46, $r47, $r50, $r77, $r79, $r81, $r84;
+        java.lang.String $r3, $r5, $r9, $r13, $r19, $r29, $r32, $r41, $r45, $r87, $r88, $r90, $r93, $r94;
+        android.os.UserHandle $r7, $r36, verifierUser#14;
+        java.io.File $r21, $r78, $r92;
+        android.net.Uri $r26, $r55, $r57, $r59, $r66, $r71, $r74;
+        android.content.pm.VerificationParams $r37, $r54, $r56, $r58, $r62, $r63, $r64, $r67, $r69, $r72, $r75;
+        android.util.SparseArray $r40;
+        java.lang.Object $r49;
+        android.content.Context $r52, $r60, $r76;
+        com.android.server.pm.PackageManagerService$InstallParams$1 $r53;
+        long $l24, lowThreshold#6, sizeBytes#7;
+        com.android.server.pm.Installer $r80;
+        java.lang.IllegalStateException $r89;
+        android.content.pm.PackageInfoLite pkgLite#4;
+        android.os.storage.StorageManager storage#5;
+        com.android.server.pm.PackageManagerService$InstallArgs storage#10;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        ret#1 = 1;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $z0 = $r0.<com.android.server.pm.PackageManagerService$OriginInfo: boolean staged>;
+
+        if $z0 == 0 goto label03;
+
+        $r95 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r92 = $r95.<com.android.server.pm.PackageManagerService$OriginInfo: java.io.File file>;
+
+        if $r92 == null goto label01;
+
+        $i35 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i36 = $i35 | 16;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i36;
+
+        $i33 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i34 = $i33 & -9;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i34;
+
+        goto label03;
+
+     label01:
+        $r91 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r90 = $r91.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String cid>;
+
+        if $r90 == null goto label02;
+
+        $i30 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i29 = $i30 | 8;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i29;
+
+        $i28 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i27 = $i28 & -17;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i27;
+
+        goto label03;
+
+     label02:
+        $r89 = new java.lang.IllegalStateException;
+
+        specialinvoke $r89.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Invalid stage location");
+
+        throw $r89;
+
+     label03:
+        $i1 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i0 = $i1 & 8;
+
+        if $i0 == 0 goto label04;
+
+        $z5 = 1;
+
+        goto label05;
+
+     label04:
+        $z5 = 0;
+
+     label05:
+        onSd = $z5;
+
+        $i3 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i2 = $i3 & 16;
+
+        if $i2 == 0 goto label06;
+
+        $z6 = 1;
+
+        goto label07;
+
+     label06:
+        $z6 = 0;
+
+     label07:
+        onInt = $z6;
+
+        pkgLite#4 = null;
+
+        if onInt == 0 goto label08;
+
+        if onSd == 0 goto label08;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("PackageManager", "Conflicting flags specified for installing on both internal and external");
+
+        ret#1 = -19;
+
+        goto label10;
+
+     label08:
+        $r2 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r2);
+
+        $r4 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r5 = $r4.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath>;
+
+        $i4 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String packageAbiOverride>;
+
+        pkgLite#4 = interfaceinvoke $r1.<com.android.internal.app.IMediaContainerService: android.content.pm.PackageInfoLite getMinimalPackageInfo(java.lang.String,int,java.lang.String)>($r5, $i4, $r3);
+
+        $r6 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $z1 = $r6.<com.android.server.pm.PackageManagerService$OriginInfo: boolean staged>;
+
+        if $z1 != 0 goto label10;
+
+        $i15 = pkgLite#4.<android.content.pm.PackageInfoLite: int recommendedInstallLocation>;
+
+        if $i15 != -1 goto label10;
+
+        $r77 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r76 = $r77.<com.android.server.pm.PackageManagerService: android.content.Context mContext>;
+
+        storage#5 = staticinvoke <android.os.storage.StorageManager: android.os.storage.StorageManager 'from'(android.content.Context)>($r76);
+
+        $r78 = staticinvoke <android.os.Environment: java.io.File getDataDirectory()>();
+
+        lowThreshold#6 = virtualinvoke storage#5.<android.os.storage.StorageManager: long getStorageLowBytes(java.io.File)>($r78);
+
+        $r84 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r85 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r84);
+
+        $r86 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r87 = $r86.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath>;
+
+        $z4 = virtualinvoke this.<com.android.server.pm.PackageManagerService$InstallParams: boolean isForwardLocked()>();
+
+        $r88 = this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String packageAbiOverride>;
+
+        sizeBytes#7 = interfaceinvoke $r85.<com.android.internal.app.IMediaContainerService: long calculateInstalledSize(java.lang.String,boolean,java.lang.String)>($r87, $z4, $r88);
+
+        $r79 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r80 = $r79.<com.android.server.pm.PackageManagerService: com.android.server.pm.Installer mInstaller>;
+
+        $l24 = sizeBytes#7 + lowThreshold#6;
+
+        $i25 = virtualinvoke $r80.<com.android.server.pm.Installer: int freeCache(java.lang.String,long)>(null, $l24);
+
+        if $i25 < 0 goto label09;
+
+        $r81 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r82 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r81);
+
+        $r83 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r93 = $r83.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath>;
+
+        $i31 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $r94 = this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String packageAbiOverride>;
+
+        pkgLite#4 = interfaceinvoke $r82.<com.android.internal.app.IMediaContainerService: android.content.pm.PackageInfoLite getMinimalPackageInfo(java.lang.String,int,java.lang.String)>($r93, $i31, $r94);
+
+     label09:
+        $i26 = pkgLite#4.<android.content.pm.PackageInfoLite: int recommendedInstallLocation>;
+
+        if $i26 != -6 goto label10;
+
+        pkgLite#4.<android.content.pm.PackageInfoLite: int recommendedInstallLocation> = -1;
+
+     label10:
+        if ret#1 != 1 goto label19;
+
+        storage#8 = pkgLite#4.<android.content.pm.PackageInfoLite: int recommendedInstallLocation>;
+
+        if storage#8 != -3 goto label11;
+
+        ret#1 = -19;
+
+        goto label19;
+
+     label11:
+        if storage#8 != -4 goto label12;
+
+        ret#1 = -1;
+
+        goto label19;
+
+     label12:
+        if storage#8 != -1 goto label13;
+
+        ret#1 = -4;
+
+        goto label19;
+
+     label13:
+        if storage#8 != -2 goto label14;
+
+        ret#1 = -2;
+
+        goto label19;
+
+     label14:
+        if storage#8 != -6 goto label15;
+
+        ret#1 = -3;
+
+        goto label19;
+
+     label15:
+        if storage#8 != -5 goto label16;
+
+        ret#1 = -20;
+
+        goto label19;
+
+     label16:
+        storage#9 = specialinvoke this.<com.android.server.pm.PackageManagerService$InstallParams: int installLocationPolicy(android.content.pm.PackageInfoLite)>(pkgLite#4);
+
+        if storage#9 != -7 goto label17;
+
+        ret#1 = -25;
+
+        goto label19;
+
+     label17:
+        if onSd != 0 goto label19;
+
+        if onInt != 0 goto label19;
+
+        if storage#9 != 2 goto label18;
+
+        $i22 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i14 = $i22 | 8;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i14;
+
+        $i13 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i16 = $i13 & -17;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i16;
+
+        goto label19;
+
+     label18:
+        $i19 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i21 = $i19 | 16;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i21;
+
+        $i20 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i23 = $i20 & -9;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags> = $i23;
+
+     label19:
+        $r8 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        storage#10 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$InstallArgs access$3700(com.android.server.pm.PackageManagerService,com.android.server.pm.PackageManagerService$InstallParams)>($r8, this);
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$InstallArgs mArgs> = storage#10;
+
+        if ret#1 != 1 goto label34;
+
+        $r7 = virtualinvoke this.<com.android.server.pm.PackageManagerService$InstallParams: android.os.UserHandle getUser()>();
+
+        lowThreshold#11 = virtualinvoke $r7.<android.os.UserHandle: int getIdentifier()>();
+
+        if lowThreshold#11 != -1 goto label20;
+
+        $i18 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i17 = $i18 & 32;
+
+        if $i17 == 0 goto label20;
+
+        lowThreshold#11 = 0;
+
+     label20:
+        $r11 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r9 = $r11.<com.android.server.pm.PackageManagerService: java.lang.String mRequiredVerifierPackage>;
+
+        if $r9 != null goto label21;
+
+        $i37 = -1;
+
+        goto label22;
+
+     label21:
+        $r14 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r10 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r13 = $r10.<com.android.server.pm.PackageManagerService: java.lang.String mRequiredVerifierPackage>;
+
+        $i37 = virtualinvoke $r14.<com.android.server.pm.PackageManagerService: int getPackageUid(java.lang.String,int)>($r13, lowThreshold#11);
+
+     label22:
+        requiredUid = $i37;
+
+        $r12 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $z2 = $r12.<com.android.server.pm.PackageManagerService$OriginInfo: boolean existing>;
+
+        if $z2 != 0 goto label33;
+
+        if requiredUid == -1 goto label33;
+
+        $r18 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $i5 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $z3 = staticinvoke <com.android.server.pm.PackageManagerService: boolean access$3800(com.android.server.pm.PackageManagerService,int,int)>($r18, lowThreshold#11, $i5);
+
+        if $z3 == 0 goto label33;
+
+        $r17 = new android.content.Intent;
+
+        specialinvoke $r17.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.PACKAGE_NEEDS_VERIFICATION");
+
+        sizeBytes#13 = $r17;
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent addFlags(int)>(268435456);
+
+        $r21 = new java.io.File;
+
+        $r20 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$OriginInfo origin>;
+
+        $r19 = $r20.<com.android.server.pm.PackageManagerService$OriginInfo: java.lang.String resolvedPath>;
+
+        specialinvoke $r21.<java.io.File: void <init>(java.lang.String)>($r19);
+
+        $r26 = staticinvoke <android.net.Uri: android.net.Uri fromFile(java.io.File)>($r21);
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent setDataAndType(android.net.Uri,java.lang.String)>($r26, "application/vnd.android.package-archive");
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent addFlags(int)>(1);
+
+        $r23 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        receivers = virtualinvoke $r23.<com.android.server.pm.PackageManagerService: java.util.List queryIntentReceivers(android.content.Intent,java.lang.String,int,int)>(sizeBytes#13, "application/vnd.android.package-archive", 512, 0);
+
+        $r28 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        verificationId = staticinvoke <com.android.server.pm.PackageManagerService: int access$3908(com.android.server.pm.PackageManagerService)>($r28);
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.content.pm.extra.VERIFICATION_ID", verificationId);
+
+        $r32 = this.<com.android.server.pm.PackageManagerService$InstallParams: java.lang.String installerPackageName>;
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.pm.extra.VERIFICATION_INSTALLER_PACKAGE", $r32);
+
+        $i7 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.content.pm.extra.VERIFICATION_INSTALL_FLAGS", $i7);
+
+        $r29 = pkgLite#4.<android.content.pm.PackageInfoLite: java.lang.String packageName>;
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.pm.extra.VERIFICATION_PACKAGE_NAME", $r29);
+
+        $i6 = pkgLite#4.<android.content.pm.PackageInfoLite: int versionCode>;
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.content.pm.extra.VERIFICATION_VERSION_CODE", $i6);
+
+        $r37 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        if $r37 == null goto label27;
+
+        $r58 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $r59 = virtualinvoke $r58.<android.content.pm.VerificationParams: android.net.Uri getVerificationURI()>();
+
+        if $r59 == null goto label23;
+
+        $r72 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $r71 = virtualinvoke $r72.<android.content.pm.VerificationParams: android.net.Uri getVerificationURI()>();
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("android.content.pm.extra.VERIFICATION_URI", $r71);
+
+     label23:
+        $r56 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $r57 = virtualinvoke $r56.<android.content.pm.VerificationParams: android.net.Uri getOriginatingURI()>();
+
+        if $r57 == null goto label24;
+
+        $r75 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $r74 = virtualinvoke $r75.<android.content.pm.VerificationParams: android.net.Uri getOriginatingURI()>();
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("android.intent.extra.ORIGINATING_URI", $r74);
+
+     label24:
+        $r54 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $r55 = virtualinvoke $r54.<android.content.pm.VerificationParams: android.net.Uri getReferrer()>();
+
+        if $r55 == null goto label25;
+
+        $r67 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $r66 = virtualinvoke $r67.<android.content.pm.VerificationParams: android.net.Uri getReferrer()>();
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("android.intent.extra.REFERRER", $r66);
+
+     label25:
+        $r64 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $i11 = virtualinvoke $r64.<android.content.pm.VerificationParams: int getOriginatingUid()>();
+
+        if $i11 < 0 goto label26;
+
+        $r69 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $i12 = virtualinvoke $r69.<android.content.pm.VerificationParams: int getOriginatingUid()>();
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.intent.extra.ORIGINATING_UID", $i12);
+
+     label26:
+        $r63 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $i10 = virtualinvoke $r63.<android.content.pm.VerificationParams: int getInstallerUid()>();
+
+        if $i10 < 0 goto label27;
+
+        $r62 = this.<com.android.server.pm.PackageManagerService$InstallParams: android.content.pm.VerificationParams verificationParams>;
+
+        $i9 = virtualinvoke $r62.<android.content.pm.VerificationParams: int getInstallerUid()>();
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.content.pm.extra.VERIFICATION_INSTALLER_UID", $i9);
+
+     label27:
+        $r38 = new com.android.server.pm.PackageVerificationState;
+
+        specialinvoke $r38.<com.android.server.pm.PackageVerificationState: void <init>(int,com.android.server.pm.PackageManagerService$InstallArgs)>(requiredUid, storage#10);
+
+        verificationState = $r38;
+
+        $r39 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r40 = $r39.<com.android.server.pm.PackageManagerService: android.util.SparseArray mPendingVerification>;
+
+        virtualinvoke $r40.<android.util.SparseArray: void append(int,java.lang.Object)>(verificationId, verificationState);
+
+        $r35 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        sufficientVerifiers = staticinvoke <com.android.server.pm.PackageManagerService: java.util.List access$4000(com.android.server.pm.PackageManagerService,android.content.pm.PackageInfoLite,java.util.List,com.android.server.pm.PackageVerificationState)>($r35, pkgLite#4, receivers, verificationState);
+
+        verifierUser#14 = virtualinvoke this.<com.android.server.pm.PackageManagerService$InstallParams: android.os.UserHandle getUser()>();
+
+        $r36 = <android.os.UserHandle: android.os.UserHandle ALL>;
+
+        if verifierUser#14 != $r36 goto label28;
+
+        verifierUser#14 = <android.os.UserHandle: android.os.UserHandle OWNER>;
+
+     label28:
+        if sufficientVerifiers == null goto label31;
+
+        N#15 = interfaceinvoke sufficientVerifiers.<java.util.List: int size()>();
+
+        if N#15 != 0 goto label29;
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("PackageManager", "Additional verifiers required, but none installed.");
+
+        ret#1 = -22;
+
+        goto label31;
+
+     label29:
+        i#16 = 0;
+
+     label30:
+        if i#16 >= N#15 goto label31;
+
+        $r49 = interfaceinvoke sufficientVerifiers.<java.util.List: java.lang.Object get(int)>(i#16);
+
+        verifierComponent = (android.content.ComponentName) $r49;
+
+        $r48 = new android.content.Intent;
+
+        specialinvoke $r48.<android.content.Intent: void <init>(android.content.Intent)>(sizeBytes#13);
+
+        sufficientIntent = $r48;
+
+        virtualinvoke sufficientIntent.<android.content.Intent: android.content.Intent setComponent(android.content.ComponentName)>(verifierComponent);
+
+        $r50 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r60 = $r50.<com.android.server.pm.PackageManagerService: android.content.Context mContext>;
+
+        virtualinvoke $r60.<android.content.Context: void sendBroadcastAsUser(android.content.Intent,android.os.UserHandle)>(sufficientIntent, verifierUser#14);
+
+        i#16 = i#16 + 1;
+
+        goto label30;
+
+     label31:
+        $r47 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r46 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r45 = $r46.<com.android.server.pm.PackageManagerService: java.lang.String mRequiredVerifierPackage>;
+
+        N#17 = staticinvoke <com.android.server.pm.PackageManagerService: android.content.ComponentName access$4100(com.android.server.pm.PackageManagerService,java.lang.String,java.util.List)>($r47, $r45, receivers);
+
+        if ret#1 != 1 goto label32;
+
+        $r42 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r41 = $r42.<com.android.server.pm.PackageManagerService: java.lang.String mRequiredVerifierPackage>;
+
+        if $r41 == null goto label32;
+
+        virtualinvoke sizeBytes#13.<android.content.Intent: android.content.Intent setComponent(android.content.ComponentName)>(N#17);
+
+        $r43 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r52 = $r43.<com.android.server.pm.PackageManagerService: android.content.Context mContext>;
+
+        $r53 = new com.android.server.pm.PackageManagerService$InstallParams$1;
+
+        specialinvoke $r53.<com.android.server.pm.PackageManagerService$InstallParams$1: void <init>(com.android.server.pm.PackageManagerService$InstallParams,int)>(this, verificationId);
+
+        virtualinvoke $r52.<android.content.Context: void sendOrderedBroadcastAsUser(android.content.Intent,android.os.UserHandle,java.lang.String,android.content.BroadcastReceiver,android.os.Handler,int,java.lang.String,android.os.Bundle)>(sizeBytes#13, verifierUser#14, "android.permission.PACKAGE_VERIFICATION_AGENT", $r53, null, 0, null, null);
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$InstallArgs mArgs> = null;
+
+     label32:
+        goto label34;
+
+     label33:
+        $r16 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r15 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r16);
+
+        ret#1 = virtualinvoke storage#10.<com.android.server.pm.PackageManagerService$InstallArgs: int copyApk(com.android.internal.app.IMediaContainerService,boolean)>($r15, 1);
+
+     label34:
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int mRet> = ret#1;
+
+        return;
+    }
+
+    void handleReturnCode()
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        com.android.server.pm.PackageManagerService$InstallArgs $r0, $r1;
+        int $i0;
+        com.android.server.pm.PackageManagerService $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$InstallArgs mArgs>;
+
+        if $r0 == null goto label1;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$InstallArgs mArgs>;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$InstallParams: int mRet>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void access$1800(com.android.server.pm.PackageManagerService,com.android.server.pm.PackageManagerService$InstallArgs,int)>($r2, $r1, $i0);
+
+     label1:
+        return;
+    }
+
+    void handleServiceError()
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        com.android.server.pm.PackageManagerService $r0;
+        com.android.server.pm.PackageManagerService$InstallArgs $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$InstallArgs access$3700(com.android.server.pm.PackageManagerService,com.android.server.pm.PackageManagerService$InstallParams)>($r0, this);
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: com.android.server.pm.PackageManagerService$InstallArgs mArgs> = $r1;
+
+        this.<com.android.server.pm.PackageManagerService$InstallParams: int mRet> = -110;
+
+        return;
+    }
+
+    public boolean isForwardLocked()
+    {
+        com.android.server.pm.PackageManagerService$InstallParams this;
+        int $i0, $i1;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$InstallParams;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$InstallParams: int installFlags>;
+
+        $i1 = $i0 & 1;
+
+        if $i1 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+}

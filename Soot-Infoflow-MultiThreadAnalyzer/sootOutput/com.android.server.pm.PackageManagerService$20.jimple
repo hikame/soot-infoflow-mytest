@@ -1,0 +1,50 @@
+class com.android.server.pm.PackageManagerService$20 extends java.lang.Object implements java.lang.Runnable
+{
+    final boolean val$mediaStatus;
+    final boolean val$reportStatus;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, boolean, boolean)
+    {
+        com.android.server.pm.PackageManagerService$20 this;
+        com.android.server.pm.PackageManagerService l1;
+        boolean l2, l3;
+
+        this := @this: com.android.server.pm.PackageManagerService$20;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: boolean;
+
+        l3 := @parameter2: boolean;
+
+        this.<com.android.server.pm.PackageManagerService$20: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$20: boolean val$mediaStatus> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$20: boolean val$reportStatus> = l3;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$20 this;
+        boolean $z0, $z1;
+        com.android.server.pm.PackageManagerService $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$20;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$20: com.android.server.pm.PackageManagerService this$0>;
+
+        $z1 = this.<com.android.server.pm.PackageManagerService$20: boolean val$mediaStatus>;
+
+        $z0 = this.<com.android.server.pm.PackageManagerService$20: boolean val$reportStatus>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void access$5600(com.android.server.pm.PackageManagerService,boolean,boolean,boolean)>($r0, $z1, $z0, 1);
+
+        return;
+    }
+}

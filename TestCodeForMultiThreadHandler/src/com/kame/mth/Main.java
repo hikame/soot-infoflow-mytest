@@ -2,7 +2,10 @@ package com.kame.mth;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**对于Thread：R表示原本soot-info可以识别，W表示我们做了扩展之后可以识别*/
@@ -27,6 +30,9 @@ public class Main {
 	}
 	
 	public static void main(String[] arg) {
+		test(arg);
+		
+		
 		Main main = new Main();
 		main.simpleTest("Simple Test");
 		
@@ -43,6 +49,25 @@ public class Main {
 		}
 	}
 	
+	private static void test(String[] arg) {
+		int[] inta = {1,2};
+		List<Integer> list = Arrays.asList(1);
+		Class[] classes = {
+				int[].class, 
+				boolean[].class, 
+				String[].class, 
+				long[].class, 
+				byte[].class, 
+				boolean[].class, 
+				ArrayList.class,
+				list.getClass()};
+		for(Class cls : classes){
+			cls.isPrimitive();
+			System.out.println(cls.getName() + ": " + cls.isArray());
+		}
+		return;
+	}
+
 	public void simpleTest(String s){
 		
 		System.out.println(this.getClass().getName());

@@ -1,0 +1,63 @@
+class com.android.server.pm.PackageManagerService$5 extends java.lang.Object implements java.util.Comparator
+{
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.PackageManagerService$5 this;
+        com.android.server.pm.PackageManagerService l1;
+
+        this := @this: com.android.server.pm.PackageManagerService$5;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        this.<com.android.server.pm.PackageManagerService$5: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public int compare(android.content.pm.PackageParser$Package, android.content.pm.PackageParser$Package)
+    {
+        com.android.server.pm.PackageManagerService$5 this;
+        android.content.pm.PackageParser$Package p1, p2;
+        int $i0, $i1, $i2;
+
+        this := @this: com.android.server.pm.PackageManagerService$5;
+
+        p1 := @parameter0: android.content.pm.PackageParser$Package;
+
+        p2 := @parameter1: android.content.pm.PackageParser$Package;
+
+        $i1 = p1.<android.content.pm.PackageParser$Package: int mOverlayPriority>;
+
+        $i0 = p2.<android.content.pm.PackageParser$Package: int mOverlayPriority>;
+
+        $i2 = $i1 - $i0;
+
+        return $i2;
+    }
+
+    public volatile int compare(java.lang.Object, java.lang.Object)
+    {
+        com.android.server.pm.PackageManagerService$5 this;
+        java.lang.Object l1, l2;
+        android.content.pm.PackageParser$Package $r0, $r1;
+        int $i0;
+
+        this := @this: com.android.server.pm.PackageManagerService$5;
+
+        l1 := @parameter0: java.lang.Object;
+
+        l2 := @parameter1: java.lang.Object;
+
+        $r1 = (android.content.pm.PackageParser$Package) l1;
+
+        $r0 = (android.content.pm.PackageParser$Package) l2;
+
+        $i0 = virtualinvoke this.<com.android.server.pm.PackageManagerService$5: int compare(android.content.pm.PackageParser$Package,android.content.pm.PackageParser$Package)>($r1, $r0);
+
+        return $i0;
+    }
+}

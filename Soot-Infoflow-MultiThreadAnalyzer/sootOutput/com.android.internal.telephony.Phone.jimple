@@ -1,0 +1,680 @@
+public interface  com.android.internal.telephony.Phone extends java.lang.Object
+{
+    public static final boolean DEBUG_PHONE;
+    public static final java.lang.String FEATURE_ENABLE_MMS;
+    public static final java.lang.String FEATURE_ENABLE_SUPL;
+    public static final java.lang.String FEATURE_ENABLE_DUN;
+    public static final java.lang.String FEATURE_ENABLE_HIPRI;
+    public static final java.lang.String FEATURE_ENABLE_DUN_ALWAYS;
+    public static final java.lang.String FEATURE_ENABLE_FOTA;
+    public static final java.lang.String FEATURE_ENABLE_IMS;
+    public static final java.lang.String FEATURE_ENABLE_CBS;
+    public static final java.lang.String FEATURE_ENABLE_EMERGENCY;
+    public static final java.lang.String REASON_ROAMING_ON;
+    public static final java.lang.String REASON_ROAMING_OFF;
+    public static final java.lang.String REASON_DATA_DISABLED;
+    public static final java.lang.String REASON_DATA_ENABLED;
+    public static final java.lang.String REASON_DATA_ATTACHED;
+    public static final java.lang.String REASON_DATA_DETACHED;
+    public static final java.lang.String REASON_CDMA_DATA_ATTACHED;
+    public static final java.lang.String REASON_CDMA_DATA_DETACHED;
+    public static final java.lang.String REASON_APN_CHANGED;
+    public static final java.lang.String REASON_APN_SWITCHED;
+    public static final java.lang.String REASON_APN_FAILED;
+    public static final java.lang.String REASON_RESTORE_DEFAULT_APN;
+    public static final java.lang.String REASON_RADIO_TURNED_OFF;
+    public static final java.lang.String REASON_PDP_RESET;
+    public static final java.lang.String REASON_VOICE_CALL_ENDED;
+    public static final java.lang.String REASON_VOICE_CALL_STARTED;
+    public static final java.lang.String REASON_PS_RESTRICT_ENABLED;
+    public static final java.lang.String REASON_PS_RESTRICT_DISABLED;
+    public static final java.lang.String REASON_SIM_LOADED;
+    public static final java.lang.String REASON_NW_TYPE_CHANGED;
+    public static final java.lang.String REASON_DATA_DEPENDENCY_MET;
+    public static final java.lang.String REASON_DATA_DEPENDENCY_UNMET;
+    public static final java.lang.String REASON_LOST_DATA_CONNECTION;
+    public static final java.lang.String REASON_CONNECTED;
+    public static final java.lang.String REASON_SINGLE_PDN_ARBITRATION;
+    public static final java.lang.String REASON_DATA_SPECIFIC_DISABLED;
+    public static final int BM_UNSPECIFIED;
+    public static final int BM_EURO_BAND;
+    public static final int BM_US_BAND;
+    public static final int BM_JPN_BAND;
+    public static final int BM_AUS_BAND;
+    public static final int BM_AUS2_BAND;
+    public static final int BM_BOUNDARY;
+    public static final int NT_MODE_WCDMA_PREF;
+    public static final int NT_MODE_GSM_ONLY;
+    public static final int NT_MODE_WCDMA_ONLY;
+    public static final int NT_MODE_GSM_UMTS;
+    public static final int NT_MODE_CDMA;
+    public static final int NT_MODE_CDMA_NO_EVDO;
+    public static final int NT_MODE_EVDO_NO_CDMA;
+    public static final int NT_MODE_GLOBAL;
+    public static final int NT_MODE_LTE_CDMA_AND_EVDO;
+    public static final int NT_MODE_LTE_GSM_WCDMA;
+    public static final int NT_MODE_LTE_CDMA_EVDO_GSM_WCDMA;
+    public static final int NT_MODE_LTE_ONLY;
+    public static final int NT_MODE_LTE_WCDMA;
+    public static final int PREFERRED_NT_MODE;
+    public static final int CDMA_RM_HOME;
+    public static final int CDMA_RM_AFFILIATED;
+    public static final int CDMA_RM_ANY;
+    public static final int CDMA_SUBSCRIPTION_UNKNOWN;
+    public static final int CDMA_SUBSCRIPTION_RUIM_SIM;
+    public static final int CDMA_SUBSCRIPTION_NV;
+    public static final int PREFERRED_CDMA_SUBSCRIPTION;
+    public static final int TTY_MODE_OFF;
+    public static final int TTY_MODE_FULL;
+    public static final int TTY_MODE_HCO;
+    public static final int TTY_MODE_VCO;
+    public static final int CDMA_OTA_PROVISION_STATUS_SPL_UNLOCKED;
+    public static final int CDMA_OTA_PROVISION_STATUS_SPC_RETRIES_EXCEEDED;
+    public static final int CDMA_OTA_PROVISION_STATUS_A_KEY_EXCHANGED;
+    public static final int CDMA_OTA_PROVISION_STATUS_SSD_UPDATED;
+    public static final int CDMA_OTA_PROVISION_STATUS_NAM_DOWNLOADED;
+    public static final int CDMA_OTA_PROVISION_STATUS_MDN_DOWNLOADED;
+    public static final int CDMA_OTA_PROVISION_STATUS_IMSI_DOWNLOADED;
+    public static final int CDMA_OTA_PROVISION_STATUS_PRL_DOWNLOADED;
+    public static final int CDMA_OTA_PROVISION_STATUS_COMMITTED;
+    public static final int CDMA_OTA_PROVISION_STATUS_OTAPA_STARTED;
+    public static final int CDMA_OTA_PROVISION_STATUS_OTAPA_STOPPED;
+    public static final int CDMA_OTA_PROVISION_STATUS_OTAPA_ABORTED;
+
+    public abstract android.telephony.ServiceState getServiceState();
+
+    public abstract android.telephony.CellLocation getCellLocation();
+
+    public abstract java.util.List getAllCellInfo();
+
+    public abstract void setCellInfoListRate(int);
+
+    public abstract com.android.internal.telephony.PhoneConstants$DataState getDataConnectionState();
+
+    public abstract com.android.internal.telephony.PhoneConstants$DataState getDataConnectionState(java.lang.String);
+
+    public abstract com.android.internal.telephony.Phone$DataActivityState getDataActivityState();
+
+    public abstract android.content.Context getContext();
+
+    public abstract void disableDnsCheck(boolean);
+
+    public abstract boolean isDnsCheckDisabled();
+
+    public abstract com.android.internal.telephony.PhoneConstants$State getState();
+
+    public abstract java.lang.String getPhoneName();
+
+    public abstract int getPhoneType();
+
+    public abstract java.lang.String[] getActiveApnTypes();
+
+    public abstract boolean hasMatchedTetherApnSetting();
+
+    public abstract java.lang.String getActiveApnHost(java.lang.String);
+
+    public abstract android.net.LinkProperties getLinkProperties(java.lang.String);
+
+    public abstract android.net.NetworkCapabilities getNetworkCapabilities(java.lang.String);
+
+    public abstract android.telephony.SignalStrength getSignalStrength();
+
+    public abstract void registerForUnknownConnection(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForUnknownConnection(android.os.Handler);
+
+    public abstract void registerForHandoverStateChanged(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForHandoverStateChanged(android.os.Handler);
+
+    public abstract void registerForPreciseCallStateChanged(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForPreciseCallStateChanged(android.os.Handler);
+
+    public abstract void registerForNewRingingConnection(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForNewRingingConnection(android.os.Handler);
+
+    public abstract void registerForIncomingRing(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForIncomingRing(android.os.Handler);
+
+    public abstract void registerForRingbackTone(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForRingbackTone(android.os.Handler);
+
+    public abstract void registerForOnHoldTone(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForOnHoldTone(android.os.Handler);
+
+    public abstract void registerForResendIncallMute(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForResendIncallMute(android.os.Handler);
+
+    public abstract void registerForDisconnect(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForDisconnect(android.os.Handler);
+
+    public abstract void registerForMmiInitiate(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForMmiInitiate(android.os.Handler);
+
+    public abstract void registerForMmiComplete(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForMmiComplete(android.os.Handler);
+
+    public abstract void registerForEcmTimerReset(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForEcmTimerReset(android.os.Handler);
+
+    public abstract java.util.List getPendingMmiCodes();
+
+    public abstract void sendUssdResponse(java.lang.String);
+
+    public abstract void registerForServiceStateChanged(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForServiceStateChanged(android.os.Handler);
+
+    public abstract void registerForSuppServiceNotification(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForSuppServiceNotification(android.os.Handler);
+
+    public abstract void registerForSuppServiceFailed(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForSuppServiceFailed(android.os.Handler);
+
+    public abstract void registerForInCallVoicePrivacyOn(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForInCallVoicePrivacyOn(android.os.Handler);
+
+    public abstract void registerForInCallVoicePrivacyOff(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForInCallVoicePrivacyOff(android.os.Handler);
+
+    public abstract void registerForCdmaOtaStatusChange(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForCdmaOtaStatusChange(android.os.Handler);
+
+    public abstract void registerForSubscriptionInfoReady(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForSubscriptionInfoReady(android.os.Handler);
+
+    public abstract void registerForSimRecordsLoaded(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForSimRecordsLoaded(android.os.Handler);
+
+    public abstract void registerForTtyModeReceived(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForTtyModeReceived(android.os.Handler);
+
+    public abstract boolean getIccRecordsLoaded();
+
+    public abstract com.android.internal.telephony.IccCard getIccCard();
+
+    public abstract void acceptCall(int) throws com.android.internal.telephony.CallStateException;
+
+    public abstract void rejectCall() throws com.android.internal.telephony.CallStateException;
+
+    public abstract void switchHoldingAndActive() throws com.android.internal.telephony.CallStateException;
+
+    public abstract boolean canConference();
+
+    public abstract void conference() throws com.android.internal.telephony.CallStateException;
+
+    public abstract void enableEnhancedVoicePrivacy(boolean, android.os.Message);
+
+    public abstract void getEnhancedVoicePrivacy(android.os.Message);
+
+    public abstract boolean canTransfer();
+
+    public abstract void explicitCallTransfer() throws com.android.internal.telephony.CallStateException;
+
+    public abstract void clearDisconnected();
+
+    public abstract com.android.internal.telephony.Call getForegroundCall();
+
+    public abstract com.android.internal.telephony.Call getBackgroundCall();
+
+    public abstract com.android.internal.telephony.Call getRingingCall();
+
+    public abstract com.android.internal.telephony.Connection dial(java.lang.String, int) throws com.android.internal.telephony.CallStateException;
+
+    public abstract com.android.internal.telephony.Connection dial(java.lang.String, com.android.internal.telephony.UUSInfo, int) throws com.android.internal.telephony.CallStateException;
+
+    public abstract boolean handlePinMmi(java.lang.String);
+
+    public abstract boolean handleInCallMmiCommands(java.lang.String) throws com.android.internal.telephony.CallStateException;
+
+    public abstract void sendDtmf(char);
+
+    public abstract void startDtmf(char);
+
+    public abstract void stopDtmf();
+
+    public abstract void sendBurstDtmf(java.lang.String, int, int, android.os.Message);
+
+    public abstract void setRadioPower(boolean);
+
+    public abstract boolean getMessageWaitingIndicator();
+
+    public abstract boolean getCallForwardingIndicator();
+
+    public abstract java.lang.String getLine1Number();
+
+    public abstract java.lang.String getLine1AlphaTag();
+
+    public abstract boolean setLine1Number(java.lang.String, java.lang.String, android.os.Message);
+
+    public abstract java.lang.String getVoiceMailNumber();
+
+    public abstract int getVoiceMessageCount();
+
+    public abstract java.lang.String getVoiceMailAlphaTag();
+
+    public abstract void setVoiceMailNumber(java.lang.String, java.lang.String, android.os.Message);
+
+    public abstract void getCallForwardingOption(int, android.os.Message);
+
+    public abstract void setCallForwardingOption(int, int, java.lang.String, int, android.os.Message);
+
+    public abstract void getOutgoingCallerIdDisplay(android.os.Message);
+
+    public abstract void setOutgoingCallerIdDisplay(int, android.os.Message);
+
+    public abstract void getCallWaiting(android.os.Message);
+
+    public abstract void setCallWaiting(boolean, android.os.Message);
+
+    public abstract void getAvailableNetworks(android.os.Message);
+
+    public abstract void setNetworkSelectionModeAutomatic(android.os.Message);
+
+    public abstract void selectNetworkManually(com.android.internal.telephony.OperatorInfo, android.os.Message);
+
+    public abstract void getNetworkSelectionMode(android.os.Message);
+
+    public abstract void setPreferredNetworkType(int, android.os.Message);
+
+    public abstract void getPreferredNetworkType(android.os.Message);
+
+    public abstract void getSmscAddress(android.os.Message);
+
+    public abstract void setSmscAddress(java.lang.String, android.os.Message);
+
+    public abstract void getNeighboringCids(android.os.Message);
+
+    public abstract void setOnPostDialCharacter(android.os.Handler, int, java.lang.Object);
+
+    public abstract void setMute(boolean);
+
+    public abstract boolean getMute();
+
+    public abstract void setEchoSuppressionEnabled();
+
+    public abstract void invokeOemRilRequestRaw(byte[], android.os.Message);
+
+    public abstract void invokeOemRilRequestStrings(java.lang.String[], android.os.Message);
+
+    public abstract void getDataCallList(android.os.Message);
+
+    public abstract void updateServiceLocation();
+
+    public abstract void enableLocationUpdates();
+
+    public abstract void disableLocationUpdates();
+
+    public abstract void setUnitTestMode(boolean);
+
+    public abstract boolean getUnitTestMode();
+
+    public abstract void setBandMode(int, android.os.Message);
+
+    public abstract void queryAvailableBandMode(android.os.Message);
+
+    public abstract boolean getDataRoamingEnabled();
+
+    public abstract void setDataRoamingEnabled(boolean);
+
+    public abstract boolean getDataEnabled();
+
+    public abstract void setDataEnabled(boolean);
+
+    public abstract void queryCdmaRoamingPreference(android.os.Message);
+
+    public abstract void setCdmaRoamingPreference(int, android.os.Message);
+
+    public abstract void setCdmaSubscription(int, android.os.Message);
+
+    public abstract com.android.internal.telephony.test.SimulatedRadioControl getSimulatedRadioControl();
+
+    public abstract boolean isDataConnectivityPossible();
+
+    public abstract boolean isDataConnectivityPossible(java.lang.String);
+
+    public abstract java.lang.String getDeviceId();
+
+    public abstract java.lang.String getDeviceSvn();
+
+    public abstract java.lang.String getSubscriberId();
+
+    public abstract java.lang.String getGroupIdLevel1();
+
+    public abstract java.lang.String getIccSerialNumber();
+
+    public abstract java.lang.String getCdmaMin();
+
+    public abstract boolean isMinInfoReady();
+
+    public abstract java.lang.String getCdmaPrlVersion();
+
+    public abstract java.lang.String getEsn();
+
+    public abstract java.lang.String getMeid();
+
+    public abstract java.lang.String getMsisdn();
+
+    public abstract java.lang.String getImei();
+
+    public abstract java.lang.String getNai();
+
+    public abstract com.android.internal.telephony.PhoneSubInfo getPhoneSubInfo();
+
+    public abstract com.android.internal.telephony.IccPhoneBookInterfaceManager getIccPhoneBookInterfaceManager();
+
+    public abstract void setTTYMode(int, android.os.Message);
+
+    public abstract void setUiTTYMode(int, android.os.Message);
+
+    public abstract void queryTTYMode(android.os.Message);
+
+    public abstract void activateCellBroadcastSms(int, android.os.Message);
+
+    public abstract void getCellBroadcastSmsConfig(android.os.Message);
+
+    public abstract void setCellBroadcastSmsConfig(int[], android.os.Message);
+
+    public abstract void notifyDataActivity();
+
+    public abstract int getCdmaEriIconIndex();
+
+    public abstract int getCdmaEriIconMode();
+
+    public abstract java.lang.String getCdmaEriText();
+
+    public abstract void exitEmergencyCallbackMode();
+
+    public abstract boolean isOtaSpNumber(java.lang.String);
+
+    public abstract boolean needsOtaServiceProvisioning();
+
+    public abstract void registerForCallWaiting(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForCallWaiting(android.os.Handler);
+
+    public abstract void registerForSignalInfo(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForSignalInfo(android.os.Handler);
+
+    public abstract void registerForDisplayInfo(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForDisplayInfo(android.os.Handler);
+
+    public abstract void registerForNumberInfo(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForNumberInfo(android.os.Handler);
+
+    public abstract void registerForRedirectedNumberInfo(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForRedirectedNumberInfo(android.os.Handler);
+
+    public abstract void registerForLineControlInfo(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForLineControlInfo(android.os.Handler);
+
+    public abstract void registerFoT53ClirlInfo(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForT53ClirInfo(android.os.Handler);
+
+    public abstract void registerForT53AudioControlInfo(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForT53AudioControlInfo(android.os.Handler);
+
+    public abstract void registerForRadioOffOrNotAvailable(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForRadioOffOrNotAvailable(android.os.Handler);
+
+    public abstract void setOnEcbModeExitResponse(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unsetOnEcbModeExitResponse(android.os.Handler);
+
+    public abstract int getLteOnCdmaMode();
+
+    public abstract boolean isCspPlmnEnabled();
+
+    public abstract com.android.internal.telephony.uicc.IsimRecords getIsimRecords();
+
+    public abstract void setVoiceMessageWaiting(int, int);
+
+    public abstract com.android.internal.telephony.uicc.UsimServiceTable getUsimServiceTable();
+
+    public abstract com.android.internal.telephony.uicc.UiccCard getUiccCard();
+
+    public abstract void dispose();
+
+    public abstract void removeReferences();
+
+    public abstract void updatePhoneObject(int);
+
+    public abstract void nvReadItem(int, android.os.Message);
+
+    public abstract void nvWriteItem(int, java.lang.String, android.os.Message);
+
+    public abstract void nvWriteCdmaPrl(byte[], android.os.Message);
+
+    public abstract void nvResetConfig(int, android.os.Message);
+
+    public abstract int getSubId();
+
+    public abstract int getPhoneId();
+
+    public abstract java.lang.String[] getPcscfAddress(java.lang.String);
+
+    public abstract void setImsRegistrationState(boolean);
+
+    public abstract com.android.internal.telephony.Phone getImsPhone();
+
+    public abstract com.android.internal.telephony.imsphone.ImsPhone relinquishOwnershipOfImsPhone();
+
+    public abstract void acquireOwnershipOfImsPhone(com.android.internal.telephony.imsphone.ImsPhone);
+
+    public abstract int getVoicePhoneServiceState();
+
+    public abstract boolean setOperatorBrandOverride(java.lang.String);
+
+    public abstract boolean setRoamingOverride(java.util.List, java.util.List, java.util.List, java.util.List);
+
+    public abstract boolean isRadioAvailable();
+
+    public abstract void shutdownRadio();
+
+    public abstract void setRadioCapability(com.android.internal.telephony.RadioCapability, android.os.Message);
+
+    public abstract int getRadioAccessFamily();
+
+    public abstract int getSupportedRadioAccessFamily();
+
+    public abstract void registerForRadioCapabilityChanged(android.os.Handler, int, java.lang.Object);
+
+    public abstract void unregisterForRadioCapabilityChanged(android.os.Handler);
+
+    public abstract boolean isImsRegistered();
+
+    static void <clinit>()
+    {
+        int $i0;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_OTAPA_ABORTED> = 11;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_OTAPA_STOPPED> = 10;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_OTAPA_STARTED> = 9;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_COMMITTED> = 8;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_PRL_DOWNLOADED> = 7;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_IMSI_DOWNLOADED> = 6;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_MDN_DOWNLOADED> = 5;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_NAM_DOWNLOADED> = 4;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_SSD_UPDATED> = 3;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_A_KEY_EXCHANGED> = 2;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_SPC_RETRIES_EXCEEDED> = 1;
+
+        <com.android.internal.telephony.Phone: int CDMA_OTA_PROVISION_STATUS_SPL_UNLOCKED> = 0;
+
+        <com.android.internal.telephony.Phone: int TTY_MODE_VCO> = 3;
+
+        <com.android.internal.telephony.Phone: int TTY_MODE_HCO> = 2;
+
+        <com.android.internal.telephony.Phone: int TTY_MODE_FULL> = 1;
+
+        <com.android.internal.telephony.Phone: int TTY_MODE_OFF> = 0;
+
+        <com.android.internal.telephony.Phone: int PREFERRED_CDMA_SUBSCRIPTION> = 1;
+
+        <com.android.internal.telephony.Phone: int CDMA_SUBSCRIPTION_NV> = 1;
+
+        <com.android.internal.telephony.Phone: int CDMA_SUBSCRIPTION_RUIM_SIM> = 0;
+
+        <com.android.internal.telephony.Phone: int CDMA_SUBSCRIPTION_UNKNOWN> = -1;
+
+        <com.android.internal.telephony.Phone: int CDMA_RM_ANY> = 2;
+
+        <com.android.internal.telephony.Phone: int CDMA_RM_AFFILIATED> = 1;
+
+        <com.android.internal.telephony.Phone: int CDMA_RM_HOME> = 0;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_LTE_WCDMA> = 12;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_LTE_ONLY> = 11;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_LTE_CDMA_EVDO_GSM_WCDMA> = 10;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_LTE_GSM_WCDMA> = 9;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_LTE_CDMA_AND_EVDO> = 8;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_GLOBAL> = 7;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_EVDO_NO_CDMA> = 6;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_CDMA_NO_EVDO> = 5;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_CDMA> = 4;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_GSM_UMTS> = 3;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_WCDMA_ONLY> = 2;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_GSM_ONLY> = 1;
+
+        <com.android.internal.telephony.Phone: int NT_MODE_WCDMA_PREF> = 0;
+
+        <com.android.internal.telephony.Phone: int BM_BOUNDARY> = 6;
+
+        <com.android.internal.telephony.Phone: int BM_AUS2_BAND> = 5;
+
+        <com.android.internal.telephony.Phone: int BM_AUS_BAND> = 4;
+
+        <com.android.internal.telephony.Phone: int BM_JPN_BAND> = 3;
+
+        <com.android.internal.telephony.Phone: int BM_US_BAND> = 2;
+
+        <com.android.internal.telephony.Phone: int BM_EURO_BAND> = 1;
+
+        <com.android.internal.telephony.Phone: int BM_UNSPECIFIED> = 0;
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_DATA_SPECIFIC_DISABLED> = "specificDisabled";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_SINGLE_PDN_ARBITRATION> = "SinglePdnArbitration";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_CONNECTED> = "connected";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_LOST_DATA_CONNECTION> = "lostDataConnection";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_DATA_DEPENDENCY_UNMET> = "dependencyUnmet";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_DATA_DEPENDENCY_MET> = "dependencyMet";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_NW_TYPE_CHANGED> = "nwTypeChanged";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_SIM_LOADED> = "simLoaded";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_PS_RESTRICT_DISABLED> = "psRestrictDisabled";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_PS_RESTRICT_ENABLED> = "psRestrictEnabled";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_VOICE_CALL_STARTED> = "2GVoiceCallStarted";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_VOICE_CALL_ENDED> = "2GVoiceCallEnded";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_PDP_RESET> = "pdpReset";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_RADIO_TURNED_OFF> = "radioTurnedOff";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_RESTORE_DEFAULT_APN> = "restoreDefaultApn";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_APN_FAILED> = "apnFailed";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_APN_SWITCHED> = "apnSwitched";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_APN_CHANGED> = "apnChanged";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_CDMA_DATA_DETACHED> = "cdmaDataDetached";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_CDMA_DATA_ATTACHED> = "cdmaDataAttached";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_DATA_DETACHED> = "dataDetached";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_DATA_ATTACHED> = "dataAttached";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_DATA_ENABLED> = "dataEnabled";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_DATA_DISABLED> = "dataDisabled";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_ROAMING_OFF> = "roamingOff";
+
+        <com.android.internal.telephony.Phone: java.lang.String REASON_ROAMING_ON> = "roamingOn";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_EMERGENCY> = "enableEmergency";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_CBS> = "enableCBS";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_IMS> = "enableIMS";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_FOTA> = "enableFOTA";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_DUN_ALWAYS> = "enableDUNAlways";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_HIPRI> = "enableHIPRI";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_DUN> = "enableDUN";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_SUPL> = "enableSUPL";
+
+        <com.android.internal.telephony.Phone: java.lang.String FEATURE_ENABLE_MMS> = "enableMMS";
+
+        <com.android.internal.telephony.Phone: boolean DEBUG_PHONE> = 1;
+
+        $i0 = <com.android.internal.telephony.RILConstants: int PREFERRED_NETWORK_MODE>;
+
+        <com.android.internal.telephony.Phone: int PREFERRED_NT_MODE> = $i0;
+
+        return;
+    }
+}

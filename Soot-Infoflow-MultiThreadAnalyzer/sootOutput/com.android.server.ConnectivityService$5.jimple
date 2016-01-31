@@ -1,0 +1,72 @@
+class com.android.server.ConnectivityService$5 extends android.content.BroadcastReceiver
+{
+    final com.android.server.ConnectivityService this$0;
+
+    void <init>(com.android.server.ConnectivityService)
+    {
+        com.android.server.ConnectivityService$5 this;
+        com.android.server.ConnectivityService l1;
+
+        this := @this: com.android.server.ConnectivityService$5;
+
+        l1 := @parameter0: com.android.server.ConnectivityService;
+
+        this.<com.android.server.ConnectivityService$5: com.android.server.ConnectivityService this$0> = l1;
+
+        specialinvoke this.<android.content.BroadcastReceiver: void <init>()>();
+
+        return;
+    }
+
+    public void onReceive(android.content.Context, android.content.Intent)
+    {
+        com.android.server.ConnectivityService$5 this;
+        android.content.Context context;
+        android.content.Intent intent;
+        java.lang.String action, $r0, $r1;
+        int userId;
+        boolean $z0, $z1;
+        com.android.server.ConnectivityService $r2, $r3;
+
+        this := @this: com.android.server.ConnectivityService$5;
+
+        context := @parameter0: android.content.Context;
+
+        intent := @parameter1: android.content.Intent;
+
+        action = virtualinvoke intent.<android.content.Intent: java.lang.String getAction()>();
+
+        userId = virtualinvoke intent.<android.content.Intent: int getIntExtra(java.lang.String,int)>("android.intent.extra.user_handle", -10000);
+
+        if userId != -10000 goto label1;
+
+        return;
+
+     label1:
+        $r0 = "android.intent.action.USER_STARTING";
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(action);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = this.<com.android.server.ConnectivityService$5: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$4300(com.android.server.ConnectivityService,int)>($r3, userId);
+
+        goto label3;
+
+     label2:
+        $r1 = "android.intent.action.USER_STOPPING";
+
+        $z1 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(action);
+
+        if $z1 == 0 goto label3;
+
+        $r2 = this.<com.android.server.ConnectivityService$5: com.android.server.ConnectivityService this$0>;
+
+        staticinvoke <com.android.server.ConnectivityService: void access$4400(com.android.server.ConnectivityService,int)>($r2, userId);
+
+     label3:
+        return;
+    }
+}

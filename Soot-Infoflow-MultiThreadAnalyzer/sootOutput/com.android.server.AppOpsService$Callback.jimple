@@ -1,0 +1,80 @@
+public final class com.android.server.AppOpsService$Callback extends java.lang.Object implements android.os.IBinder$DeathRecipient
+{
+    final com.android.internal.app.IAppOpsCallback mCallback;
+    final com.android.server.AppOpsService this$0;
+
+    public void <init>(com.android.server.AppOpsService, com.android.internal.app.IAppOpsCallback)
+    {
+        com.android.server.AppOpsService$Callback this;
+        com.android.server.AppOpsService l1;
+        com.android.internal.app.IAppOpsCallback callback, $r0;
+        android.os.RemoteException l3, $r2;
+        android.os.IBinder $r1;
+
+        this := @this: com.android.server.AppOpsService$Callback;
+
+        l1 := @parameter0: com.android.server.AppOpsService;
+
+        callback := @parameter1: com.android.internal.app.IAppOpsCallback;
+
+        this.<com.android.server.AppOpsService$Callback: com.android.server.AppOpsService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.AppOpsService$Callback: com.android.internal.app.IAppOpsCallback mCallback> = callback;
+
+     label1:
+        $r0 = this.<com.android.server.AppOpsService$Callback: com.android.internal.app.IAppOpsCallback mCallback>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.app.IAppOpsCallback: android.os.IBinder asBinder()>();
+
+        interfaceinvoke $r1.<android.os.IBinder: void linkToDeath(android.os.IBinder$DeathRecipient,int)>(this, 0);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r2 := @caughtexception;
+
+        l3 = $r2;
+
+     label4:
+        return;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+
+    public void unlinkToDeath()
+    {
+        com.android.server.AppOpsService$Callback this;
+        com.android.internal.app.IAppOpsCallback $r0;
+        android.os.IBinder $r1;
+
+        this := @this: com.android.server.AppOpsService$Callback;
+
+        $r0 = this.<com.android.server.AppOpsService$Callback: com.android.internal.app.IAppOpsCallback mCallback>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.app.IAppOpsCallback: android.os.IBinder asBinder()>();
+
+        interfaceinvoke $r1.<android.os.IBinder: boolean unlinkToDeath(android.os.IBinder$DeathRecipient,int)>(this, 0);
+
+        return;
+    }
+
+    public void binderDied()
+    {
+        com.android.server.AppOpsService$Callback this;
+        com.android.internal.app.IAppOpsCallback $r0;
+        com.android.server.AppOpsService $r1;
+
+        this := @this: com.android.server.AppOpsService$Callback;
+
+        $r1 = this.<com.android.server.AppOpsService$Callback: com.android.server.AppOpsService this$0>;
+
+        $r0 = this.<com.android.server.AppOpsService$Callback: com.android.internal.app.IAppOpsCallback mCallback>;
+
+        virtualinvoke $r1.<com.android.server.AppOpsService: void stopWatchingMode(com.android.internal.app.IAppOpsCallback)>($r0);
+
+        return;
+    }
+}

@@ -1,0 +1,50 @@
+class com.android.server.pm.PackageManagerService$4 extends java.lang.Object implements java.lang.Runnable
+{
+    final int val$appId;
+    final int val$userId;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, int, int)
+    {
+        com.android.server.pm.PackageManagerService$4 this;
+        com.android.server.pm.PackageManagerService l1;
+        int l2, l3;
+
+        this := @this: com.android.server.pm.PackageManagerService$4;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: int;
+
+        l3 := @parameter2: int;
+
+        this.<com.android.server.pm.PackageManagerService$4: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$4: int val$appId> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$4: int val$userId> = l3;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$4 this;
+        int $i0, $i1;
+        com.android.server.pm.PackageManagerService $r0;
+
+        this := @this: com.android.server.pm.PackageManagerService$4;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$4: com.android.server.pm.PackageManagerService this$0>;
+
+        $i1 = this.<com.android.server.pm.PackageManagerService$4: int val$appId>;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$4: int val$userId>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void access$2900(com.android.server.pm.PackageManagerService,int,int,java.lang.String)>($r0, $i1, $i0, "permission grant or revoke changed gids");
+
+        return;
+    }
+}

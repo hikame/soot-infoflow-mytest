@@ -1,0 +1,98 @@
+class com.android.server.pm.PackageManagerService$11 extends java.lang.Object implements java.lang.Runnable
+{
+    final java.lang.String val$packageName;
+    final int val$userId;
+    final int val$flags;
+    final android.content.pm.IPackageDeleteObserver2 val$observer;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, java.lang.String, int, int, android.content.pm.IPackageDeleteObserver2)
+    {
+        com.android.server.pm.PackageManagerService$11 this;
+        com.android.server.pm.PackageManagerService l1;
+        java.lang.String l2;
+        int l3, l4;
+        android.content.pm.IPackageDeleteObserver2 l5;
+
+        this := @this: com.android.server.pm.PackageManagerService$11;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: java.lang.String;
+
+        l3 := @parameter2: int;
+
+        l4 := @parameter3: int;
+
+        l5 := @parameter4: android.content.pm.IPackageDeleteObserver2;
+
+        this.<com.android.server.pm.PackageManagerService$11: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$11: java.lang.String val$packageName> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$11: int val$userId> = l3;
+
+        this.<com.android.server.pm.PackageManagerService$11: int val$flags> = l4;
+
+        this.<com.android.server.pm.PackageManagerService$11: android.content.pm.IPackageDeleteObserver2 val$observer> = l5;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$11 this;
+        int returnCode, $i0, $i1;
+        android.os.RemoteException e, $r7;
+        com.android.server.pm.PackageManagerService $r0, $r3;
+        com.android.server.pm.PackageManagerService$PackageHandler $r1;
+        java.lang.String $r2, $r5;
+        android.content.pm.IPackageDeleteObserver2 $r4, $r6;
+
+        this := @this: com.android.server.pm.PackageManagerService$11;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$11: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        virtualinvoke $r1.<com.android.server.pm.PackageManagerService$PackageHandler: void removeCallbacks(java.lang.Runnable)>(this);
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$11: com.android.server.pm.PackageManagerService this$0>;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$11: java.lang.String val$packageName>;
+
+        $i1 = this.<com.android.server.pm.PackageManagerService$11: int val$userId>;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$11: int val$flags>;
+
+        returnCode = staticinvoke <com.android.server.pm.PackageManagerService: int access$5000(com.android.server.pm.PackageManagerService,java.lang.String,int,int)>($r3, $r2, $i1, $i0);
+
+        $r4 = this.<com.android.server.pm.PackageManagerService$11: android.content.pm.IPackageDeleteObserver2 val$observer>;
+
+        if $r4 == null goto label4;
+
+     label1:
+        $r6 = this.<com.android.server.pm.PackageManagerService$11: android.content.pm.IPackageDeleteObserver2 val$observer>;
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$11: java.lang.String val$packageName>;
+
+        interfaceinvoke $r6.<android.content.pm.IPackageDeleteObserver2: void onPackageDeleted(java.lang.String,int,java.lang.String)>($r5, returnCode, null);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r7 := @caughtexception;
+
+        e = $r7;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("PackageManager", "Observer no longer exists.");
+
+     label4:
+        return;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+}

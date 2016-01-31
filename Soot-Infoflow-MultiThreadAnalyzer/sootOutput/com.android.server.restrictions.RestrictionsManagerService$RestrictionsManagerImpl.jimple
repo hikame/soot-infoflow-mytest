@@ -1,0 +1,481 @@
+class com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl extends android.content.IRestrictionsManager$Stub
+{
+    final android.content.Context mContext;
+    private final android.os.IUserManager mUm;
+    private final android.app.admin.IDevicePolicyManager mDpm;
+    final com.android.server.restrictions.RestrictionsManagerService this$0;
+
+    public void <init>(com.android.server.restrictions.RestrictionsManagerService, android.content.Context)
+    {
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl this;
+        com.android.server.restrictions.RestrictionsManagerService l1;
+        android.content.Context context;
+        android.os.IBinder $r0, $r2;
+        android.os.IUserManager $r1;
+        android.app.admin.IDevicePolicyManager $r3;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        l1 := @parameter0: com.android.server.restrictions.RestrictionsManagerService;
+
+        context := @parameter1: android.content.Context;
+
+        this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: com.android.server.restrictions.RestrictionsManagerService this$0> = l1;
+
+        specialinvoke this.<android.content.IRestrictionsManager$Stub: void <init>()>();
+
+        this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.content.Context mContext> = context;
+
+        $r0 = staticinvoke <com.android.server.restrictions.RestrictionsManagerService: android.os.IBinder access$000(com.android.server.restrictions.RestrictionsManagerService,java.lang.String)>(l1, "user");
+
+        $r1 = (android.os.IUserManager) $r0;
+
+        this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.os.IUserManager mUm> = $r1;
+
+        $r2 = staticinvoke <com.android.server.restrictions.RestrictionsManagerService: android.os.IBinder access$100(com.android.server.restrictions.RestrictionsManagerService,java.lang.String)>(l1, "device_policy");
+
+        $r3 = (android.app.admin.IDevicePolicyManager) $r2;
+
+        this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm> = $r3;
+
+        return;
+    }
+
+    public android.os.Bundle getApplicationRestrictions(java.lang.String) throws android.os.RemoteException
+    {
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl this;
+        java.lang.String packageName;
+        android.os.IUserManager $r0;
+        android.os.Bundle $r1;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        packageName := @parameter0: java.lang.String;
+
+        $r0 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.os.IUserManager mUm>;
+
+        $r1 = interfaceinvoke $r0.<android.os.IUserManager: android.os.Bundle getApplicationRestrictions(java.lang.String)>(packageName);
+
+        return $r1;
+    }
+
+    public boolean hasRestrictionsProvider() throws android.os.RemoteException
+    {
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl this;
+        int userHandle;
+        long ident;
+        boolean l4, $z0;
+        java.lang.Throwable l5, $r3;
+        android.app.admin.IDevicePolicyManager $r0, $r1;
+        android.content.ComponentName $r2;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        userHandle = staticinvoke <android.os.UserHandle: int getCallingUserId()>();
+
+        $r0 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        if $r0 == null goto label7;
+
+        ident = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
+
+     label1:
+        $r1 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        $r2 = interfaceinvoke $r1.<android.app.admin.IDevicePolicyManager: android.content.ComponentName getRestrictionsProvider(int)>(userHandle);
+
+        if $r2 == null goto label2;
+
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        l4 = $z0;
+
+     label4:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        return l4;
+
+     label5:
+        $r3 := @caughtexception;
+
+        l5 = $r3;
+
+     label6:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        throw l5;
+
+     label7:
+        return 0;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void requestPermission(java.lang.String, java.lang.String, java.lang.String, android.os.PersistableBundle) throws android.os.RemoteException
+    {
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl this;
+        java.lang.String packageName, requestType, requestId;
+        android.os.PersistableBundle requestData;
+        int callingUid, userHandle;
+        long ident;
+        android.content.ComponentName restrictionsProvider;
+        android.content.Intent intent, tmp$480813947;
+        java.lang.Throwable l11, $r10;
+        android.app.admin.IDevicePolicyManager $r0, $r1;
+        android.content.Context $r8;
+        java.lang.IllegalStateException tmp$828513173;
+        android.os.UserHandle tmp$207802462;
+        android.os.Parcelable tmp$542091764;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        packageName := @parameter0: java.lang.String;
+
+        requestType := @parameter1: java.lang.String;
+
+        requestId := @parameter2: java.lang.String;
+
+        requestData := @parameter3: android.os.PersistableBundle;
+
+        callingUid = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        userHandle = staticinvoke <android.os.UserHandle: int getUserId(int)>(callingUid);
+
+        $r0 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        if $r0 == null goto label6;
+
+        ident = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
+
+     label1:
+        $r1 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        restrictionsProvider = interfaceinvoke $r1.<android.app.admin.IDevicePolicyManager: android.content.ComponentName getRestrictionsProvider(int)>(userHandle);
+
+        if restrictionsProvider != null goto label2;
+
+        tmp$828513173 = new java.lang.IllegalStateException;
+
+        specialinvoke tmp$828513173.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Cannot request permission without a restrictions provider registered");
+
+        throw tmp$828513173;
+
+     label2:
+        specialinvoke this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: void enforceCallerMatchesPackage(int,java.lang.String,java.lang.String)>(callingUid, packageName, "Package name does not match caller ");
+
+        tmp$480813947 = new android.content.Intent;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        specialinvoke tmp$480813947.<android.content.Intent: void <init>(java.lang.String)>("android.content.action.REQUEST_PERMISSION");
+
+        intent = tmp$480813947;
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent setComponent(android.content.ComponentName)>(restrictionsProvider);
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.extra.PACKAGE_NAME", packageName);
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.extra.REQUEST_TYPE", requestType);
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.content.extra.REQUEST_ID", requestId);
+
+        tmp$542091764 = (android.os.Parcelable) requestData;
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("android.content.extra.REQUEST_BUNDLE", tmp$542091764);
+
+        $r8 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.content.Context mContext>;
+
+        tmp$207802462 = new android.os.UserHandle;
+
+        specialinvoke tmp$207802462.<android.os.UserHandle: void <init>(int)>(userHandle);
+
+        virtualinvoke $r8.<android.content.Context: void sendBroadcastAsUser(android.content.Intent,android.os.UserHandle)>(intent, tmp$207802462);
+
+     label3:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        goto label6;
+
+     label4:
+        $r10 := @caughtexception;
+
+        l11 = $r10;
+
+     label5:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        throw l11;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public android.content.Intent createLocalApprovalIntent() throws android.os.RemoteException
+    {
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl this;
+        int userHandle;
+        long ident;
+        android.content.ComponentName restrictionsProvider, $r7;
+        java.lang.String providerPackageName, $r10, $r11;
+        android.content.Intent intent, l8, $r3;
+        android.content.pm.ResolveInfo ri;
+        java.lang.Throwable l9, $r14;
+        android.app.admin.IDevicePolicyManager $r0, $r1;
+        android.content.pm.IPackageManager $r4;
+        android.content.pm.ActivityInfo $r5, $r6, $r8, $r9;
+        boolean $z0;
+        java.lang.IllegalStateException $r12;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        userHandle = staticinvoke <android.os.UserHandle: int getCallingUserId()>();
+
+        $r0 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        if $r0 == null goto label7;
+
+        ident = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
+
+     label1:
+        $r1 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        restrictionsProvider = interfaceinvoke $r1.<android.app.admin.IDevicePolicyManager: android.content.ComponentName getRestrictionsProvider(int)>(userHandle);
+
+        if restrictionsProvider != null goto label2;
+
+        $r12 = new java.lang.IllegalStateException;
+
+        specialinvoke $r12.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Cannot request permission without a restrictions provider registered");
+
+        throw $r12;
+
+     label2:
+        providerPackageName = virtualinvoke restrictionsProvider.<android.content.ComponentName: java.lang.String getPackageName()>();
+
+        $r3 = new android.content.Intent;
+
+        specialinvoke $r3.<android.content.Intent: void <init>(java.lang.String)>("android.content.action.REQUEST_LOCAL_APPROVAL");
+
+        intent = $r3;
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>(providerPackageName);
+
+        $r4 = staticinvoke <android.app.AppGlobals: android.content.pm.IPackageManager getPackageManager()>();
+
+        ri = interfaceinvoke $r4.<android.content.pm.IPackageManager: android.content.pm.ResolveInfo resolveIntent(android.content.Intent,java.lang.String,int,int)>(intent, null, 0, userHandle);
+
+        if ri == null goto label4;
+
+        $r6 = ri.<android.content.pm.ResolveInfo: android.content.pm.ActivityInfo activityInfo>;
+
+        if $r6 == null goto label4;
+
+        $r5 = ri.<android.content.pm.ResolveInfo: android.content.pm.ActivityInfo activityInfo>;
+
+        $z0 = $r5.<android.content.pm.ActivityInfo: boolean exported>;
+
+        if $z0 == 0 goto label4;
+
+        $r7 = new android.content.ComponentName;
+
+        $r9 = ri.<android.content.pm.ResolveInfo: android.content.pm.ActivityInfo activityInfo>;
+
+        $r10 = $r9.<android.content.pm.ActivityInfo: java.lang.String packageName>;
+
+        $r8 = ri.<android.content.pm.ResolveInfo: android.content.pm.ActivityInfo activityInfo>;
+
+        $r11 = $r8.<android.content.pm.ActivityInfo: java.lang.String name>;
+
+        specialinvoke $r7.<android.content.ComponentName: void <init>(java.lang.String,java.lang.String)>($r10, $r11);
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent setComponent(android.content.ComponentName)>($r7);
+
+        l8 = intent;
+
+     label3:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        return l8;
+
+     label4:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        goto label7;
+
+     label5:
+        $r14 := @caughtexception;
+
+        l9 = $r14;
+
+     label6:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        throw l9;
+
+     label7:
+        return null;
+
+        catch java.lang.Throwable from label1 to label3 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void notifyPermissionResponse(java.lang.String, android.os.PersistableBundle) throws android.os.RemoteException
+    {
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl this;
+        java.lang.String packageName, $r3;
+        android.os.PersistableBundle response;
+        int callingUid, userHandle;
+        long ident;
+        android.content.ComponentName permProvider;
+        android.content.Intent responseIntent, $r2;
+        java.lang.Throwable l9, $r8;
+        android.app.admin.IDevicePolicyManager $r0, $r1;
+        android.content.Context $r6;
+        android.os.UserHandle $r7;
+        java.lang.SecurityException $r9;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        packageName := @parameter0: java.lang.String;
+
+        response := @parameter1: android.os.PersistableBundle;
+
+        callingUid = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        userHandle = staticinvoke <android.os.UserHandle: int getUserId(int)>(callingUid);
+
+        $r0 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        if $r0 == null goto label6;
+
+        ident = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
+
+     label1:
+        $r1 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.app.admin.IDevicePolicyManager mDpm>;
+
+        permProvider = interfaceinvoke $r1.<android.app.admin.IDevicePolicyManager: android.content.ComponentName getRestrictionsProvider(int)>(userHandle);
+
+        if permProvider != null goto label2;
+
+        $r9 = new java.lang.SecurityException;
+
+        specialinvoke $r9.<java.lang.SecurityException: void <init>(java.lang.String)>("No restrictions provider registered for user");
+
+        throw $r9;
+
+     label2:
+        $r3 = virtualinvoke permProvider.<android.content.ComponentName: java.lang.String getPackageName()>();
+
+        specialinvoke this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: void enforceCallerMatchesPackage(int,java.lang.String,java.lang.String)>(callingUid, $r3, "Restrictions provider does not match caller ");
+
+        $r2 = new android.content.Intent;
+
+        specialinvoke $r2.<android.content.Intent: void <init>(java.lang.String)>("android.content.action.PERMISSION_RESPONSE_RECEIVED");
+
+        responseIntent = $r2;
+
+        virtualinvoke responseIntent.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>(packageName);
+
+        virtualinvoke responseIntent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("android.content.extra.RESPONSE_BUNDLE", response);
+
+        $r6 = this.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: android.content.Context mContext>;
+
+        $r7 = new android.os.UserHandle;
+
+        specialinvoke $r7.<android.os.UserHandle: void <init>(int)>(userHandle);
+
+        virtualinvoke $r6.<android.content.Context: void sendBroadcastAsUser(android.content.Intent,android.os.UserHandle)>(responseIntent, $r7);
+
+     label3:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        goto label6;
+
+     label4:
+        $r8 := @caughtexception;
+
+        l9 = $r8;
+
+     label5:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        throw l9;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    private void enforceCallerMatchesPackage(int, java.lang.String, java.lang.String)
+    {
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl this;
+        int callingUid;
+        java.lang.String packageName, message, $r5;
+        android.content.pm.IPackageManager $r0;
+        boolean $z0;
+        java.lang.SecurityException $r1;
+        java.lang.StringBuilder $r2, $r3, $r4;
+        android.os.RemoteException $r6, pkgs#2;
+        java.lang.String[] pkgs#1;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        callingUid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        message := @parameter2: java.lang.String;
+
+     label1:
+        $r0 = staticinvoke <android.app.AppGlobals: android.content.pm.IPackageManager getPackageManager()>();
+
+        pkgs#1 = interfaceinvoke $r0.<android.content.pm.IPackageManager: java.lang.String[] getPackagesForUid(int)>(callingUid);
+
+        if pkgs#1 == null goto label2;
+
+        $z0 = staticinvoke <com.android.internal.util.ArrayUtils: boolean contains(java.lang.Object[],java.lang.Object)>(pkgs#1, packageName);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = new java.lang.SecurityException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Package name does not match caller ");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(callingUid);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.lang.SecurityException: void <init>(java.lang.String)>($r5);
+
+        throw $r1;
+
+     label2:
+        goto label4;
+
+     label3:
+        $r6 := @caughtexception;
+
+     label4:
+        return;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+}

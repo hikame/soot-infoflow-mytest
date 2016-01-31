@@ -209,8 +209,9 @@ public class SootMethod
         if (value) {
             if (!Scene.v().allowsPhantomRefs())
                 throw new RuntimeException("Phantom refs not allowed");
-            if (declaringClass != null && !declaringClass.isPhantom())
-                throw new RuntimeException("Declaring class would have to be phantom");
+//Changed by Kame Wang, 20160128            
+//            if (declaringClass != null && !declaringClass.isPhantom())
+//                throw new RuntimeException("Declaring class would have to be phantom");
         }
         isPhantom = value;
     }
@@ -346,6 +347,9 @@ public class SootMethod
 
     /** Returns true if this method has an active body. */
     public boolean hasActiveBody() {
+    	//Changed by Kame Wang, 20160128
+    	if(isPhantom)
+    		return false;
         return activeBody != null;
     }
 

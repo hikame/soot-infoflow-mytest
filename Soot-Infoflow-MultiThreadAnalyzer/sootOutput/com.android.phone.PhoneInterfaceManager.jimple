@@ -1,0 +1,4672 @@
+public class com.android.phone.PhoneInterfaceManager extends com.android.internal.telephony.ITelephony$Stub
+{
+    private static final java.lang.String LOG_TAG;
+    private static final boolean DBG;
+    private static final boolean DBG_LOC;
+    private static final boolean DBG_MERGE;
+    private static final int CMD_HANDLE_PIN_MMI;
+    private static final int CMD_HANDLE_NEIGHBORING_CELL;
+    private static final int EVENT_NEIGHBORING_CELL_DONE;
+    private static final int CMD_ANSWER_RINGING_CALL;
+    private static final int CMD_END_CALL;
+    private static final int CMD_TRANSMIT_APDU_LOGICAL_CHANNEL;
+    private static final int EVENT_TRANSMIT_APDU_LOGICAL_CHANNEL_DONE;
+    private static final int CMD_OPEN_CHANNEL;
+    private static final int EVENT_OPEN_CHANNEL_DONE;
+    private static final int CMD_CLOSE_CHANNEL;
+    private static final int EVENT_CLOSE_CHANNEL_DONE;
+    private static final int CMD_NV_READ_ITEM;
+    private static final int EVENT_NV_READ_ITEM_DONE;
+    private static final int CMD_NV_WRITE_ITEM;
+    private static final int EVENT_NV_WRITE_ITEM_DONE;
+    private static final int CMD_NV_WRITE_CDMA_PRL;
+    private static final int EVENT_NV_WRITE_CDMA_PRL_DONE;
+    private static final int CMD_NV_RESET_CONFIG;
+    private static final int EVENT_NV_RESET_CONFIG_DONE;
+    private static final int CMD_GET_PREFERRED_NETWORK_TYPE;
+    private static final int EVENT_GET_PREFERRED_NETWORK_TYPE_DONE;
+    private static final int CMD_SET_PREFERRED_NETWORK_TYPE;
+    private static final int EVENT_SET_PREFERRED_NETWORK_TYPE_DONE;
+    private static final int CMD_SEND_ENVELOPE;
+    private static final int EVENT_SEND_ENVELOPE_DONE;
+    private static final int CMD_INVOKE_OEM_RIL_REQUEST_RAW;
+    private static final int EVENT_INVOKE_OEM_RIL_REQUEST_RAW_DONE;
+    private static final int CMD_TRANSMIT_APDU_BASIC_CHANNEL;
+    private static final int EVENT_TRANSMIT_APDU_BASIC_CHANNEL_DONE;
+    private static final int CMD_EXCHANGE_SIM_IO;
+    private static final int EVENT_EXCHANGE_SIM_IO_DONE;
+    private static final int CMD_SET_VOICEMAIL_NUMBER;
+    private static final int EVENT_SET_VOICEMAIL_NUMBER_DONE;
+    private static com.android.phone.PhoneInterfaceManager sInstance;
+    private com.android.phone.PhoneGlobals mApp;
+    private com.android.internal.telephony.Phone mPhone;
+    private com.android.internal.telephony.CallManager mCM;
+    private android.app.AppOpsManager mAppOps;
+    private com.android.phone.PhoneInterfaceManager$MainThreadHandler mMainThreadHandler;
+    private com.android.internal.telephony.SubscriptionController mSubscriptionController;
+    private android.content.SharedPreferences mTelephonySharedPreferences;
+    private static final java.lang.String PREF_CARRIERS_ALPHATAG_PREFIX;
+    private static final java.lang.String PREF_CARRIERS_NUMBER_PREFIX;
+    private static final java.lang.String PREF_CARRIERS_SUBSCRIBER_PREFIX;
+    private static final java.lang.String PREF_ENABLE_VIDEO_CALLING;
+
+    private java.lang.Object sendRequest(int, java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int command;
+        java.lang.Object argument, $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        command := @parameter0: int;
+
+        argument := @parameter1: java.lang.Object;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object,java.lang.Integer)>(command, argument, null);
+
+        return $r0;
+    }
+
+    private java.lang.Object sendRequest(int, java.lang.Object, java.lang.Integer)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int command;
+        java.lang.Object argument, $r6, $r8;
+        java.lang.Integer subId;
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest request, l6, $r3;
+        android.os.Message msg;
+        java.lang.InterruptedException l7, $r10;
+        java.lang.Throwable l8, $r9;
+        android.os.Looper $r0, $r2;
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler $r1, $r4;
+        java.lang.RuntimeException $r7;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        command := @parameter0: int;
+
+        argument := @parameter1: java.lang.Object;
+
+        subId := @parameter2: java.lang.Integer;
+
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager$MainThreadHandler mMainThreadHandler>;
+
+        $r2 = virtualinvoke $r1.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Looper getLooper()>();
+
+        if $r0 != $r2 goto label01;
+
+        $r7 = new java.lang.RuntimeException;
+
+        specialinvoke $r7.<java.lang.RuntimeException: void <init>(java.lang.String)>("This method will deadlock if called from the main thread.");
+
+        throw $r7;
+
+     label01:
+        $r3 = new com.android.phone.PhoneInterfaceManager$MainThreadRequest;
+
+        specialinvoke $r3.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: void <init>(java.lang.Object,java.lang.Integer)>(argument, subId);
+
+        request = $r3;
+
+        $r4 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager$MainThreadHandler mMainThreadHandler>;
+
+        msg = virtualinvoke $r4.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(command, request);
+
+        virtualinvoke msg.<android.os.Message: void sendToTarget()>();
+
+        l6 = request;
+
+        entermonitor request;
+
+     label02:
+        $r6 = request.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result>;
+
+        if $r6 != null goto label06;
+
+     label03:
+        virtualinvoke request.<java.lang.Object: void wait()>();
+
+     label04:
+        goto label02;
+
+     label05:
+        $r10 := @caughtexception;
+
+        l7 = $r10;
+
+        goto label02;
+
+     label06:
+        exitmonitor l6;
+
+     label07:
+        goto label10;
+
+     label08:
+        $r9 := @caughtexception;
+
+        l8 = $r9;
+
+        exitmonitor l6;
+
+     label09:
+        throw l8;
+
+     label10:
+        $r8 = request.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result>;
+
+        return $r8;
+
+        catch java.lang.InterruptedException from label03 to label04 with label05;
+        catch java.lang.Throwable from label02 to label07 with label08;
+        catch java.lang.Throwable from label08 to label09 with label08;
+    }
+
+    private void sendRequestAsync(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int command;
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        command := @parameter0: int;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager$MainThreadHandler mMainThreadHandler>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: boolean sendEmptyMessage(int)>(command);
+
+        return;
+    }
+
+    private void sendRequestAsync(int, java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int command;
+        java.lang.Object argument;
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest request, $r0;
+        android.os.Message msg;
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        command := @parameter0: int;
+
+        argument := @parameter1: java.lang.Object;
+
+        $r0 = new com.android.phone.PhoneInterfaceManager$MainThreadRequest;
+
+        specialinvoke $r0.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: void <init>(java.lang.Object)>(argument);
+
+        request = $r0;
+
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager$MainThreadHandler mMainThreadHandler>;
+
+        msg = virtualinvoke $r1.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(command, request);
+
+        virtualinvoke msg.<android.os.Message: void sendToTarget()>();
+
+        return;
+    }
+
+    static com.android.phone.PhoneInterfaceManager init(com.android.phone.PhoneGlobals, com.android.internal.telephony.Phone)
+    {
+        com.android.phone.PhoneGlobals app;
+        com.android.internal.telephony.Phone phone;
+        java.lang.Class l2;
+        java.lang.Throwable l3, $r8;
+        com.android.phone.PhoneInterfaceManager $r0, $r3, $r6, $r7;
+        java.lang.StringBuilder $r1, $r2, $r4;
+        java.lang.String $r5;
+
+        app := @parameter0: com.android.phone.PhoneGlobals;
+
+        phone := @parameter1: com.android.internal.telephony.Phone;
+
+        l2 = class "com/android/phone/PhoneInterfaceManager";
+
+        entermonitor class "com/android/phone/PhoneInterfaceManager";
+
+     label1:
+        $r0 = <com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager sInstance>;
+
+        if $r0 != null goto label2;
+
+        $r7 = new com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke $r7.<com.android.phone.PhoneInterfaceManager: void <init>(com.android.phone.PhoneGlobals,com.android.internal.telephony.Phone)>(app, phone);
+
+        <com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager sInstance> = $r7;
+
+        goto label3;
+
+     label2:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("init() called multiple times!  sInstance = ");
+
+        $r3 = <com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager sInstance>;
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int wtf(java.lang.String,java.lang.String)>("PhoneInterfaceManager", $r5);
+
+     label3:
+        $r6 = <com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager sInstance>;
+
+        exitmonitor l2;
+
+     label4:
+        return $r6;
+
+     label5:
+        $r8 := @caughtexception;
+
+        l3 = $r8;
+
+        exitmonitor l2;
+
+     label6:
+        throw l3;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    private void <init>(com.android.phone.PhoneGlobals, com.android.internal.telephony.Phone)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.phone.PhoneGlobals app, $r0;
+        com.android.internal.telephony.Phone phone, $r5;
+        com.android.internal.telephony.CallManager $r1;
+        java.lang.Object $r2;
+        android.app.AppOpsManager $r3;
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler $r4;
+        android.content.Context $r6;
+        android.content.SharedPreferences $r7;
+        com.android.internal.telephony.SubscriptionController $r8;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        app := @parameter0: com.android.phone.PhoneGlobals;
+
+        phone := @parameter1: com.android.internal.telephony.Phone;
+
+        specialinvoke this.<com.android.internal.telephony.ITelephony$Stub: void <init>()>();
+
+        this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp> = app;
+
+        this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone> = phone;
+
+        $r0 = staticinvoke <com.android.phone.PhoneGlobals: com.android.phone.PhoneGlobals getInstance()>();
+
+        $r1 = $r0.<com.android.phone.PhoneGlobals: com.android.internal.telephony.CallManager mCM>;
+
+        this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.CallManager mCM> = $r1;
+
+        $r2 = virtualinvoke app.<com.android.phone.PhoneGlobals: java.lang.Object getSystemService(java.lang.String)>("appops");
+
+        $r3 = (android.app.AppOpsManager) $r2;
+
+        this.<com.android.phone.PhoneInterfaceManager: android.app.AppOpsManager mAppOps> = $r3;
+
+        $r4 = new com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        specialinvoke $r4.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void <init>(com.android.phone.PhoneInterfaceManager,com.android.phone.PhoneInterfaceManager$1)>(this, null);
+
+        this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneInterfaceManager$MainThreadHandler mMainThreadHandler> = $r4;
+
+        $r5 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r6 = interfaceinvoke $r5.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r7 = staticinvoke <android.preference.PreferenceManager: android.content.SharedPreferences getDefaultSharedPreferences(android.content.Context)>($r6);
+
+        this.<com.android.phone.PhoneInterfaceManager: android.content.SharedPreferences mTelephonySharedPreferences> = $r7;
+
+        $r8 = staticinvoke <com.android.internal.telephony.SubscriptionController: com.android.internal.telephony.SubscriptionController getInstance()>();
+
+        this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController> = $r8;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void publish()>();
+
+        return;
+    }
+
+    private void publish()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        android.os.IBinder tmp$2035225563;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        tmp$2035225563 = (android.os.IBinder) this;
+
+        staticinvoke <android.os.ServiceManager: void addService(java.lang.String,android.os.IBinder)>("phone", tmp$2035225563);
+
+        return;
+    }
+
+    private com.android.internal.telephony.Phone getPhoneFromRequest(com.android.phone.PhoneInterfaceManager$MainThreadRequest)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest request;
+        java.lang.Integer $r0, $r1;
+        int $i0;
+        com.android.internal.telephony.Phone $r2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        request := @parameter0: com.android.phone.PhoneInterfaceManager$MainThreadRequest;
+
+        $r0 = request.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Integer subId>;
+
+        if $r0 != null goto label1;
+
+        $r2 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        goto label2;
+
+     label1:
+        $r1 = request.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Integer subId>;
+
+        $i0 = virtualinvoke $r1.<java.lang.Integer: int intValue()>();
+
+        $r2 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>($i0);
+
+     label2:
+        return $r2;
+    }
+
+    private com.android.internal.telephony.Phone getPhone(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.SubscriptionController $r0;
+        com.android.internal.telephony.Phone $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getPhoneId(int)>(subId);
+
+        $r1 = staticinvoke <com.android.internal.telephony.PhoneFactory: com.android.internal.telephony.Phone getPhone(int)>($i0);
+
+        return $r1;
+    }
+
+    public void dial(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String number;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        number := @parameter0: java.lang.String;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getPreferredVoiceSubscription()>();
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void dialForSubscriber(int,java.lang.String)>($i0, number);
+
+        return;
+    }
+
+    public void dialForSubscriber(int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String number, url;
+        com.android.internal.telephony.PhoneConstants$State state, $r1, $r2;
+        android.content.Intent intent, $r3;
+        com.android.internal.telephony.CallManager $r0;
+        android.net.Uri $r4;
+        com.android.phone.PhoneGlobals $r6;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        number := @parameter1: java.lang.String;
+
+        url = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.String createTelUrl(java.lang.String)>(number);
+
+        if url != null goto label1;
+
+        return;
+
+     label1:
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.CallManager mCM>;
+
+        state = virtualinvoke $r0.<com.android.internal.telephony.CallManager: com.android.internal.telephony.PhoneConstants$State getState(int)>(subId);
+
+        $r1 = <com.android.internal.telephony.PhoneConstants$State: com.android.internal.telephony.PhoneConstants$State OFFHOOK>;
+
+        if state == $r1 goto label2;
+
+        $r2 = <com.android.internal.telephony.PhoneConstants$State: com.android.internal.telephony.PhoneConstants$State RINGING>;
+
+        if state == $r2 goto label2;
+
+        $r3 = new android.content.Intent;
+
+        $r4 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>(url);
+
+        specialinvoke $r3.<android.content.Intent: void <init>(java.lang.String,android.net.Uri)>("android.intent.action.DIAL", $r4);
+
+        intent = $r3;
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent addFlags(int)>(268435456);
+
+        $r6 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r6.<com.android.phone.PhoneGlobals: void startActivity(android.content.Intent)>(intent);
+
+     label2:
+        return;
+    }
+
+    public void call(java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String callingPackage, number;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        number := @parameter1: java.lang.String;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getPreferredVoiceSubscription()>();
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void callForSubscriber(int,java.lang.String,java.lang.String)>($i0, callingPackage, number);
+
+        return;
+    }
+
+    public void callForSubscriber(int, java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0, $i1, $i2;
+        java.lang.String callingPackage, number, url;
+        java.util.List slist;
+        android.telephony.SubscriptionInfo subInfoRecord;
+        android.app.AppOpsManager $r0;
+        com.android.internal.telephony.SubscriptionController $r1;
+        android.content.Intent $r2, i$#3;
+        android.net.Uri $r4;
+        com.android.phone.PhoneGlobals $r5;
+        boolean $z0, isValid#1;
+        java.lang.Object $r7;
+        java.util.Iterator i$#2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        callingPackage := @parameter1: java.lang.String;
+
+        number := @parameter2: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceCallPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = virtualinvoke $r0.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(13, $i0, callingPackage);
+
+        if $i1 == 0 goto label1;
+
+        return;
+
+     label1:
+        url = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.String createTelUrl(java.lang.String)>(number);
+
+        if url != null goto label2;
+
+        return;
+
+     label2:
+        isValid#1 = 0;
+
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        slist = virtualinvoke $r1.<com.android.internal.telephony.SubscriptionController: java.util.List getActiveSubscriptionInfoList()>();
+
+        if slist == null goto label5;
+
+        i$#2 = interfaceinvoke slist.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke i$#2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r7 = interfaceinvoke i$#2.<java.util.Iterator: java.lang.Object next()>();
+
+        subInfoRecord = (android.telephony.SubscriptionInfo) $r7;
+
+        $i2 = virtualinvoke subInfoRecord.<android.telephony.SubscriptionInfo: int getSubscriptionId()>();
+
+        if $i2 != subId goto label4;
+
+        isValid#1 = 1;
+
+        goto label5;
+
+     label4:
+        goto label3;
+
+     label5:
+        if isValid#1 != 0 goto label6;
+
+        return;
+
+     label6:
+        $r2 = new android.content.Intent;
+
+        $r4 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>(url);
+
+        specialinvoke $r2.<android.content.Intent: void <init>(java.lang.String,android.net.Uri)>("android.intent.action.CALL", $r4);
+
+        i$#3 = $r2;
+
+        virtualinvoke i$#3.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("subscription", subId);
+
+        virtualinvoke i$#3.<android.content.Intent: android.content.Intent addFlags(int)>(268435456);
+
+        $r5 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r5.<com.android.phone.PhoneGlobals: void startActivity(android.content.Intent)>(i$#3);
+
+        return;
+    }
+
+    public boolean endCall()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean endCallForSubscriber(int)>($i0);
+
+        return $z0;
+    }
+
+    public boolean endCallForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.Integer $r0;
+        java.lang.Object $r1;
+        java.lang.Boolean $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceCallPermission()>();
+
+        $r0 = new java.lang.Integer;
+
+        specialinvoke $r0.<java.lang.Integer: void <init>(int)>(subId);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object,java.lang.Integer)>(5, null, $r0);
+
+        $r2 = (java.lang.Boolean) $r1;
+
+        $z0 = virtualinvoke $r2.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public void answerRingingCall()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void answerRingingCallForSubscriber(int)>($i0);
+
+        return;
+    }
+
+    public void answerRingingCallForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.Integer $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = new java.lang.Integer;
+
+        specialinvoke $r0.<java.lang.Integer: void <init>(int)>(subId);
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object,java.lang.Integer)>(4, null, $r0);
+
+        return;
+    }
+
+    private void answerRingingCallInternal(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        boolean hasRingingCall, hasActiveCall, hasHoldingCall, $z0, $z1, $z2, $z5, $z6, $z7;
+        com.android.internal.telephony.Phone $r0, $r2, $r4;
+        com.android.internal.telephony.Call $r1, $r3, $r5, $r7, $r9;
+        com.android.internal.telephony.CallManager $r6, $r8, $r10;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: com.android.internal.telephony.Call getRingingCall()>();
+
+        $z0 = virtualinvoke $r1.<com.android.internal.telephony.Call: boolean isIdle()>();
+
+        if $z0 != 0 goto label1;
+
+        $z5 = 1;
+
+        goto label2;
+
+     label1:
+        $z5 = 0;
+
+     label2:
+        hasRingingCall = $z5;
+
+        if hasRingingCall == 0 goto label8;
+
+        $r2 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r3 = interfaceinvoke $r2.<com.android.internal.telephony.Phone: com.android.internal.telephony.Call getForegroundCall()>();
+
+        $z1 = virtualinvoke $r3.<com.android.internal.telephony.Call: boolean isIdle()>();
+
+        if $z1 != 0 goto label3;
+
+        $z6 = 1;
+
+        goto label4;
+
+     label3:
+        $z6 = 0;
+
+     label4:
+        hasActiveCall = $z6;
+
+        $r4 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r5 = interfaceinvoke $r4.<com.android.internal.telephony.Phone: com.android.internal.telephony.Call getBackgroundCall()>();
+
+        $z2 = virtualinvoke $r5.<com.android.internal.telephony.Call: boolean isIdle()>();
+
+        if $z2 != 0 goto label5;
+
+        $z7 = 1;
+
+        goto label6;
+
+     label5:
+        $z7 = 0;
+
+     label6:
+        hasHoldingCall = $z7;
+
+        if hasActiveCall == 0 goto label7;
+
+        if hasHoldingCall == 0 goto label7;
+
+        $r10 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.CallManager mCM>;
+
+        $r8 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.CallManager mCM>;
+
+        $r9 = virtualinvoke $r8.<com.android.internal.telephony.CallManager: com.android.internal.telephony.Call getFirstActiveRingingCall()>();
+
+        staticinvoke <com.android.phone.PhoneUtils: boolean answerAndEndActive(com.android.internal.telephony.CallManager,com.android.internal.telephony.Call)>($r10, $r9);
+
+        return;
+
+     label7:
+        $r6 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.CallManager mCM>;
+
+        $r7 = virtualinvoke $r6.<com.android.internal.telephony.CallManager: com.android.internal.telephony.Call getFirstActiveRingingCall()>();
+
+        staticinvoke <com.android.phone.PhoneUtils: boolean answerCall(com.android.internal.telephony.Call)>($r7);
+
+        return;
+
+     label8:
+        return;
+    }
+
+    public void silenceRinger()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("PhoneInterfaceManager", "silenseRinger not supported");
+
+        return;
+    }
+
+    public boolean isOffhook()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean isOffhookForSubscriber(int)>($i0);
+
+        return $z0;
+    }
+
+    public boolean isOffhookForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.Phone $r0;
+        com.android.internal.telephony.PhoneConstants$State $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: com.android.internal.telephony.PhoneConstants$State getState()>();
+
+        $r2 = <com.android.internal.telephony.PhoneConstants$State: com.android.internal.telephony.PhoneConstants$State OFFHOOK>;
+
+        if $r1 != $r2 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean isRinging()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean isRingingForSubscriber(int)>($i0);
+
+        return $z0;
+    }
+
+    public boolean isRingingForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.Phone $r0;
+        com.android.internal.telephony.PhoneConstants$State $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: com.android.internal.telephony.PhoneConstants$State getState()>();
+
+        $r2 = <com.android.internal.telephony.PhoneConstants$State: com.android.internal.telephony.PhoneConstants$State RINGING>;
+
+        if $r1 != $r2 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean isIdle()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean isIdleForSubscriber(int)>($i0);
+
+        return $z0;
+    }
+
+    public boolean isIdleForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.Phone $r0;
+        com.android.internal.telephony.PhoneConstants$State $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: com.android.internal.telephony.PhoneConstants$State getState()>();
+
+        $r2 = <com.android.internal.telephony.PhoneConstants$State: com.android.internal.telephony.PhoneConstants$State IDLE>;
+
+        if $r1 != $r2 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean isSimPinEnabled()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.phone.PhoneGlobals $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceReadPermission()>();
+
+        $r0 = staticinvoke <com.android.phone.PhoneGlobals: com.android.phone.PhoneGlobals getInstance()>();
+
+        $z0 = virtualinvoke $r0.<com.android.phone.PhoneGlobals: boolean isSimPinEnabled()>();
+
+        return $z0;
+    }
+
+    public boolean supplyPin(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String pin;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        pin := @parameter0: java.lang.String;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean supplyPinForSubscriber(int,java.lang.String)>($i0, pin);
+
+        return $z0;
+    }
+
+    public boolean supplyPinForSubscriber(int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        java.lang.String pin;
+        int[] resultArray;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        pin := @parameter1: java.lang.String;
+
+        resultArray = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int[] supplyPinReportResultForSubscriber(int,java.lang.String)>(subId, pin);
+
+        $i0 = resultArray[0];
+
+        if $i0 != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean supplyPuk(java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String puk, pin;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        puk := @parameter0: java.lang.String;
+
+        pin := @parameter1: java.lang.String;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean supplyPukForSubscriber(int,java.lang.String,java.lang.String)>($i0, puk, pin);
+
+        return $z0;
+    }
+
+    public boolean supplyPukForSubscriber(int, java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        java.lang.String puk, pin;
+        int[] resultArray;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        puk := @parameter1: java.lang.String;
+
+        pin := @parameter2: java.lang.String;
+
+        resultArray = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int[] supplyPukReportResultForSubscriber(int,java.lang.String,java.lang.String)>(subId, puk, pin);
+
+        $i0 = resultArray[0];
+
+        if $i0 != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public int[] supplyPinReportResult(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String pin;
+        int $i0;
+        int[] $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        pin := @parameter0: java.lang.String;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $r0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int[] supplyPinReportResultForSubscriber(int,java.lang.String)>($i0, pin);
+
+        return $r0;
+    }
+
+    public int[] supplyPinReportResultForSubscriber(int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String pin;
+        com.android.phone.PhoneInterfaceManager$UnlockSim checkSimPin, $r0;
+        com.android.internal.telephony.Phone $r1;
+        com.android.internal.telephony.IccCard $r2;
+        int[] $r3;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        pin := @parameter1: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = new com.android.phone.PhoneInterfaceManager$UnlockSim;
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r2 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: com.android.internal.telephony.IccCard getIccCard()>();
+
+        specialinvoke $r0.<com.android.phone.PhoneInterfaceManager$UnlockSim: void <init>(com.android.internal.telephony.IccCard)>($r2);
+
+        checkSimPin = $r0;
+
+        virtualinvoke checkSimPin.<com.android.phone.PhoneInterfaceManager$UnlockSim: void start()>();
+
+        $r3 = virtualinvoke checkSimPin.<com.android.phone.PhoneInterfaceManager$UnlockSim: int[] unlockSim(java.lang.String,java.lang.String)>(null, pin);
+
+        return $r3;
+    }
+
+    public int[] supplyPukReportResult(java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String puk, pin;
+        int $i0;
+        int[] $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        puk := @parameter0: java.lang.String;
+
+        pin := @parameter1: java.lang.String;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $r0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int[] supplyPukReportResultForSubscriber(int,java.lang.String,java.lang.String)>($i0, puk, pin);
+
+        return $r0;
+    }
+
+    public int[] supplyPukReportResultForSubscriber(int, java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String puk, pin;
+        com.android.phone.PhoneInterfaceManager$UnlockSim checkSimPuk, $r0;
+        com.android.internal.telephony.Phone $r1;
+        com.android.internal.telephony.IccCard $r2;
+        int[] $r3;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        puk := @parameter1: java.lang.String;
+
+        pin := @parameter2: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = new com.android.phone.PhoneInterfaceManager$UnlockSim;
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r2 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: com.android.internal.telephony.IccCard getIccCard()>();
+
+        specialinvoke $r0.<com.android.phone.PhoneInterfaceManager$UnlockSim: void <init>(com.android.internal.telephony.IccCard)>($r2);
+
+        checkSimPuk = $r0;
+
+        virtualinvoke checkSimPuk.<com.android.phone.PhoneInterfaceManager$UnlockSim: void start()>();
+
+        $r3 = virtualinvoke checkSimPuk.<com.android.phone.PhoneInterfaceManager$UnlockSim: int[] unlockSim(java.lang.String,java.lang.String)>(puk, pin);
+
+        return $r3;
+    }
+
+    public void updateServiceLocation()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void updateServiceLocationForSubscriber(int)>($i0);
+
+        return;
+    }
+
+    public void updateServiceLocationForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        interfaceinvoke $r0.<com.android.internal.telephony.Phone: void updateServiceLocation()>();
+
+        return;
+    }
+
+    public boolean isRadioOn()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean isRadioOnForSubscriber(int)>($i0);
+
+        return $z0;
+    }
+
+    public boolean isRadioOnForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+        android.telephony.ServiceState $r1;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.telephony.ServiceState getServiceState()>();
+
+        $i0 = virtualinvoke $r1.<android.telephony.ServiceState: int getState()>();
+
+        if $i0 == 3 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public void toggleRadioOnOff()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void toggleRadioOnOffForSubscriber(int)>($i0);
+
+        return;
+    }
+
+    public void toggleRadioOnOffForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.Phone $r0;
+        boolean $z0, $z1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean isRadioOnForSubscriber(int)>(subId);
+
+        if $z0 != 0 goto label1;
+
+        $z1 = 1;
+
+        goto label2;
+
+     label1:
+        $z1 = 0;
+
+     label2:
+        interfaceinvoke $r0.<com.android.internal.telephony.Phone: void setRadioPower(boolean)>($z1);
+
+        return;
+    }
+
+    public boolean setRadio(boolean)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        boolean turnOn, $z0;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        turnOn := @parameter0: boolean;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean setRadioForSubscriber(int,boolean)>($i0, turnOn);
+
+        return $z0;
+    }
+
+    public boolean setRadioForSubscriber(int, boolean)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        boolean turnOn, $z0;
+        com.android.internal.telephony.Phone $r0;
+        android.telephony.ServiceState $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        turnOn := @parameter1: boolean;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.telephony.ServiceState getServiceState()>();
+
+        $i0 = virtualinvoke $r1.<android.telephony.ServiceState: int getState()>();
+
+        if $i0 == 3 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        if $z0 == turnOn goto label3;
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void toggleRadioOnOffForSubscriber(int)>(subId);
+
+     label3:
+        return 1;
+    }
+
+    public boolean needMobileRadioShutdown()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone phone;
+        android.telephony.TelephonyManager $r0, $r2;
+        int $i0, $i1, i#1;
+        java.lang.StringBuilder $r1, $r3, $r4;
+        java.lang.String $r5;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        i#1 = 0;
+
+     label1:
+        $r0 = staticinvoke <android.telephony.TelephonyManager: android.telephony.TelephonyManager getDefault()>();
+
+        $i0 = virtualinvoke $r0.<android.telephony.TelephonyManager: int getPhoneCount()>();
+
+        if i#1 >= $i0 goto label3;
+
+        phone = staticinvoke <com.android.internal.telephony.PhoneFactory: com.android.internal.telephony.Phone getPhone(int)>(i#1);
+
+        if phone == null goto label2;
+
+        $z0 = interfaceinvoke phone.<com.android.internal.telephony.Phone: boolean isRadioAvailable()>();
+
+        if $z0 == 0 goto label2;
+
+        return 1;
+
+     label2:
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label3:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = staticinvoke <android.telephony.TelephonyManager: android.telephony.TelephonyManager getDefault()>();
+
+        $i1 = virtualinvoke $r2.<android.telephony.TelephonyManager: int getPhoneCount()>();
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Phones are shutdown.");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void logv(java.lang.String)>($r5);
+
+        return 0;
+    }
+
+    public void shutdownMobileRadios()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        android.telephony.TelephonyManager $r0;
+        int $i0, i#1;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        java.lang.String $r4;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        i#1 = 0;
+
+     label1:
+        $r0 = staticinvoke <android.telephony.TelephonyManager: android.telephony.TelephonyManager getDefault()>();
+
+        $i0 = virtualinvoke $r0.<android.telephony.TelephonyManager: int getPhoneCount()>();
+
+        if i#1 >= $i0 goto label2;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Shutting down Phone ");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i#1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void logv(java.lang.String)>($r4);
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void shutdownRadioUsingPhoneId(int)>(i#1);
+
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private void shutdownRadioUsingPhoneId(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int phoneId;
+        com.android.internal.telephony.Phone phone;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        phoneId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        phone = staticinvoke <com.android.internal.telephony.PhoneFactory: com.android.internal.telephony.Phone getPhone(int)>(phoneId);
+
+        if phone == null goto label1;
+
+        $z0 = interfaceinvoke phone.<com.android.internal.telephony.Phone: boolean isRadioAvailable()>();
+
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke phone.<com.android.internal.telephony.Phone: void shutdownRadio()>();
+
+     label1:
+        return;
+    }
+
+    public boolean setRadioPower(boolean)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        boolean turnOn, $z0;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        turnOn := @parameter0: boolean;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean setRadioPowerForSubscriber(int,boolean)>($i0, turnOn);
+
+        return $z0;
+    }
+
+    public boolean setRadioPowerForSubscriber(int, boolean)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        boolean turnOn;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        turnOn := @parameter1: boolean;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        interfaceinvoke $r0.<com.android.internal.telephony.Phone: void setRadioPower(boolean)>(turnOn);
+
+        return 1;
+    }
+
+    public boolean enableDataConnectivity()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.SubscriptionController $r0;
+        com.android.internal.telephony.Phone $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        subId = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultDataSubId()>();
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        interfaceinvoke $r1.<com.android.internal.telephony.Phone: void setDataEnabled(boolean)>(1);
+
+        return 1;
+    }
+
+    public boolean disableDataConnectivity()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.SubscriptionController $r0;
+        com.android.internal.telephony.Phone $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        subId = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultDataSubId()>();
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        interfaceinvoke $r1.<com.android.internal.telephony.Phone: void setDataEnabled(boolean)>(0);
+
+        return 1;
+    }
+
+    public boolean isDataConnectivityPossible()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.SubscriptionController $r0;
+        com.android.internal.telephony.Phone $r1;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        subId = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultDataSubId()>();
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $z0 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: boolean isDataConnectivityPossible()>();
+
+        return $z0;
+    }
+
+    public boolean handlePinMmi(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String dialString;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        dialString := @parameter0: java.lang.String;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean handlePinMmiForSubscriber(int,java.lang.String)>($i0, dialString);
+
+        return $z0;
+    }
+
+    public boolean handlePinMmiForSubscriber(int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String dialString;
+        java.lang.Integer $r0;
+        java.lang.Object $r1;
+        java.lang.Boolean $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        dialString := @parameter1: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(subId);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object,java.lang.Integer)>(1, dialString, $r0);
+
+        $r2 = (java.lang.Boolean) $r1;
+
+        $z0 = virtualinvoke $r2.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public int getCallState()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getCallStateForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getCallStateForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+        com.android.internal.telephony.PhoneConstants$State $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: com.android.internal.telephony.PhoneConstants$State getState()>();
+
+        $i0 = staticinvoke <com.android.internal.telephony.DefaultPhoneNotifier: int convertCallState(com.android.internal.telephony.PhoneConstants$State)>($r1);
+
+        return $i0;
+    }
+
+    public int getDataState()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone phone;
+        com.android.internal.telephony.SubscriptionController $r0;
+        int $i0, $i1;
+        com.android.internal.telephony.PhoneConstants$DataState $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultDataSubId()>();
+
+        phone = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>($i0);
+
+        $r1 = interfaceinvoke phone.<com.android.internal.telephony.Phone: com.android.internal.telephony.PhoneConstants$DataState getDataConnectionState()>();
+
+        $i1 = staticinvoke <com.android.internal.telephony.DefaultPhoneNotifier: int convertDataState(com.android.internal.telephony.PhoneConstants$DataState)>($r1);
+
+        return $i1;
+    }
+
+    public int getDataActivity()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone phone;
+        com.android.internal.telephony.SubscriptionController $r0;
+        int $i0, $i1;
+        com.android.internal.telephony.Phone$DataActivityState $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultDataSubId()>();
+
+        phone = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>($i0);
+
+        $r1 = interfaceinvoke phone.<com.android.internal.telephony.Phone: com.android.internal.telephony.Phone$DataActivityState getDataActivityState()>();
+
+        $i1 = staticinvoke <com.android.internal.telephony.DefaultPhoneNotifier: int convertDataActivityState(com.android.internal.telephony.Phone$DataActivityState)>($r1);
+
+        return $i1;
+    }
+
+    public android.os.Bundle getCellLocation()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone phone;
+        com.android.phone.PhoneGlobals $r0, $r5;
+        boolean $z0;
+        android.os.Bundle $r1, e#2;
+        com.android.internal.telephony.SubscriptionController $r2;
+        int $i0;
+        android.telephony.CellLocation $r3;
+        java.lang.SecurityException $r4, e#1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+     label1:
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.ACCESS_FINE_LOCATION", null);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r4 := @caughtexception;
+
+        e#1 = $r4;
+
+        $r5 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r5.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.ACCESS_COARSE_LOCATION", null);
+
+     label4:
+        $z0 = staticinvoke <com.android.phone.PhoneInterfaceManager: boolean checkIfCallerIsSelfOrForegroundUser()>();
+
+        if $z0 == 0 goto label5;
+
+        $r1 = new android.os.Bundle;
+
+        specialinvoke $r1.<android.os.Bundle: void <init>()>();
+
+        e#2 = $r1;
+
+        $r2 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        $i0 = virtualinvoke $r2.<com.android.internal.telephony.SubscriptionController: int getDefaultDataSubId()>();
+
+        phone = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>($i0);
+
+        $r3 = interfaceinvoke phone.<com.android.internal.telephony.Phone: android.telephony.CellLocation getCellLocation()>();
+
+        virtualinvoke $r3.<android.telephony.CellLocation: void fillInNotifierBundle(android.os.Bundle)>(e#2);
+
+        return e#2;
+
+     label5:
+        return null;
+
+        catch java.lang.SecurityException from label1 to label2 with label3;
+    }
+
+    public void enableLocationUpdates()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void enableLocationUpdatesForSubscriber(int)>($i0);
+
+        return;
+    }
+
+    public void enableLocationUpdatesForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.phone.PhoneGlobals $r0;
+        com.android.internal.telephony.Phone $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.CONTROL_LOCATION_UPDATES", null);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        interfaceinvoke $r1.<com.android.internal.telephony.Phone: void enableLocationUpdates()>();
+
+        return;
+    }
+
+    public void disableLocationUpdates()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager: void disableLocationUpdatesForSubscriber(int)>($i0);
+
+        return;
+    }
+
+    public void disableLocationUpdatesForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.phone.PhoneGlobals $r0;
+        com.android.internal.telephony.Phone $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.CONTROL_LOCATION_UPDATES", null);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        interfaceinvoke $r1.<com.android.internal.telephony.Phone: void disableLocationUpdates()>();
+
+        return;
+    }
+
+    public java.util.List getNeighboringCellInfo(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String callingPackage, $r9;
+        java.lang.RuntimeException e, $r5;
+        com.android.phone.PhoneGlobals $r0, $r4;
+        android.app.AppOpsManager $r1;
+        int $i0, $i1;
+        boolean $z0;
+        java.lang.Object $r2;
+        java.lang.SecurityException $r3, e#1;
+        java.lang.StringBuilder $r6, $r7, $r8;
+        java.util.ArrayList e#2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+     label01:
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.ACCESS_FINE_LOCATION", null);
+
+     label02:
+        goto label04;
+
+     label03:
+        $r3 := @caughtexception;
+
+        e#1 = $r3;
+
+        $r4 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r4.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.ACCESS_COARSE_LOCATION", null);
+
+     label04:
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = virtualinvoke $r1.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(12, $i0, callingPackage);
+
+        if $i1 == 0 goto label05;
+
+        return null;
+
+     label05:
+        $z0 = staticinvoke <com.android.phone.PhoneInterfaceManager: boolean checkIfCallerIsSelfOrForegroundUser()>();
+
+        if $z0 == 0 goto label10;
+
+        e#2 = null;
+
+     label06:
+        $r2 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object,java.lang.Integer)>(2, null, null);
+
+        e#2 = (java.util.ArrayList) $r2;
+
+     label07:
+        goto label09;
+
+     label08:
+        $r5 := @caughtexception;
+
+        e = $r5;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("getNeighboringCellInfo ");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("PhoneInterfaceManager", $r9);
+
+     label09:
+        return e#2;
+
+     label10:
+        return null;
+
+        catch java.lang.SecurityException from label01 to label02 with label03;
+        catch java.lang.RuntimeException from label06 to label07 with label08;
+    }
+
+    public java.util.List getAllCellInfo()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone[] arr$;
+        int len$, i$#3;
+        com.android.internal.telephony.Phone phone;
+        com.android.phone.PhoneGlobals $r0, $r4;
+        boolean $z0;
+        java.util.ArrayList $r1, e#2;
+        java.util.List $r2;
+        java.lang.SecurityException $r3, e#1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+     label1:
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.ACCESS_FINE_LOCATION", null);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r3 := @caughtexception;
+
+        e#1 = $r3;
+
+        $r4 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r4.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.ACCESS_COARSE_LOCATION", null);
+
+     label4:
+        $z0 = staticinvoke <com.android.phone.PhoneInterfaceManager: boolean checkIfCallerIsSelfOrForegroundUser()>();
+
+        if $z0 == 0 goto label7;
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        e#2 = $r1;
+
+        arr$ = staticinvoke <com.android.internal.telephony.PhoneFactory: com.android.internal.telephony.Phone[] getPhones()>();
+
+        len$ = lengthof arr$;
+
+        i$#3 = 0;
+
+     label5:
+        if i$#3 >= len$ goto label6;
+
+        phone = arr$[i$#3];
+
+        $r2 = interfaceinvoke phone.<com.android.internal.telephony.Phone: java.util.List getAllCellInfo()>();
+
+        interfaceinvoke e#2.<java.util.List: boolean addAll(java.util.Collection)>($r2);
+
+        i$#3 = i$#3 + 1;
+
+        goto label5;
+
+     label6:
+        return e#2;
+
+     label7:
+        return null;
+
+        catch java.lang.SecurityException from label1 to label2 with label3;
+    }
+
+    public void setCellInfoListRate(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int rateInMillis;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        rateInMillis := @parameter0: int;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        interfaceinvoke $r0.<com.android.internal.telephony.Phone: void setCellInfoListRate(int)>(rateInMillis);
+
+        return;
+    }
+
+    private static boolean checkIfCallerIsSelfOrForegroundUser()
+    {
+        boolean self, $z0, $z1, ok#4;
+        int callingUser, $i0, $i1, foregroundUser#2;
+        long ident;
+        java.lang.Throwable l6, $r0;
+        java.lang.Exception $r1, foregroundUser#5;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = staticinvoke <android.os.Process: int myUid()>();
+
+        if $i0 != $i1 goto label01;
+
+        $z0 = 1;
+
+        goto label02;
+
+     label01:
+        $z0 = 0;
+
+     label02:
+        self = $z0;
+
+        if self != 0 goto label12;
+
+        callingUser = staticinvoke <android.os.UserHandle: int getCallingUserId()>();
+
+        ident = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
+
+     label03:
+        foregroundUser#2 = staticinvoke <android.app.ActivityManager: int getCurrentUser()>();
+
+        if foregroundUser#2 != callingUser goto label04;
+
+        $z1 = 1;
+
+        goto label05;
+
+     label04:
+        $z1 = 0;
+
+     label05:
+        ok#4 = $z1;
+
+     label06:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        goto label11;
+
+     label07:
+        $r1 := @caughtexception;
+
+        foregroundUser#5 = $r1;
+
+        ok#4 = 0;
+
+     label08:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        goto label11;
+
+     label09:
+        $r0 := @caughtexception;
+
+        l6 = $r0;
+
+     label10:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        throw l6;
+
+     label11:
+        goto label13;
+
+     label12:
+        ok#4 = 1;
+
+     label13:
+        return ok#4;
+
+        catch java.lang.Exception from label03 to label06 with label07;
+        catch java.lang.Throwable from label03 to label06 with label09;
+        catch java.lang.Throwable from label07 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    private void enforceReadPermission()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.phone.PhoneGlobals $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.READ_PHONE_STATE", null);
+
+        return;
+    }
+
+    private void enforceModifyPermission()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.phone.PhoneGlobals $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.MODIFY_PHONE_STATE", null);
+
+        return;
+    }
+
+    private void enforceModifyPermissionOrCarrierPrivilege()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int permission, $i0;
+        com.android.phone.PhoneGlobals $r0;
+        java.lang.SecurityException $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        permission = virtualinvoke $r0.<com.android.phone.PhoneGlobals: int checkCallingOrSelfPermission(java.lang.String)>("android.permission.MODIFY_PHONE_STATE");
+
+        if permission != 0 goto label1;
+
+        return;
+
+     label1:
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void log(java.lang.String)>("No modify permission, check carrier privilege next.");
+
+        $i0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getCarrierPrivilegeStatus()>();
+
+        if $i0 == 1 goto label2;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>("No Carrier Privilege.");
+
+        $r1 = new java.lang.SecurityException;
+
+        specialinvoke $r1.<java.lang.SecurityException: void <init>(java.lang.String)>("No modify permission or carrier privilege.");
+
+        throw $r1;
+
+     label2:
+        return;
+    }
+
+    private void enforceCarrierPrivilege()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+        java.lang.SecurityException $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getCarrierPrivilegeStatus()>();
+
+        if $i0 == 1 goto label1;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>("No Carrier Privilege.");
+
+        $r0 = new java.lang.SecurityException;
+
+        specialinvoke $r0.<java.lang.SecurityException: void <init>(java.lang.String)>("No Carrier Privilege.");
+
+        throw $r0;
+
+     label1:
+        return;
+    }
+
+    private void enforceCallPermission()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.phone.PhoneGlobals $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.CALL_PHONE", null);
+
+        return;
+    }
+
+    private void enforcePrivilegedPhoneStatePermission()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.phone.PhoneGlobals $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.READ_PRIVILEGED_PHONE_STATE", null);
+
+        return;
+    }
+
+    private java.lang.String createTelUrl(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String number, $r3;
+        boolean $z0;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        number := @parameter0: java.lang.String;
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>(number);
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("tel:");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(number);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    private static void log(java.lang.String)
+    {
+        java.lang.String msg, $r3;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        msg := @parameter0: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[PhoneIntfMgr] ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("PhoneInterfaceManager", $r3);
+
+        return;
+    }
+
+    private static void logv(java.lang.String)
+    {
+        java.lang.String msg, $r3;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        msg := @parameter0: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[PhoneIntfMgr] ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int v(java.lang.String,java.lang.String)>("PhoneInterfaceManager", $r3);
+
+        return;
+    }
+
+    private static void loge(java.lang.String)
+    {
+        java.lang.String msg, $r3;
+        java.lang.StringBuilder $r0, $r1, $r2;
+
+        msg := @parameter0: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[PhoneIntfMgr] ");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("PhoneInterfaceManager", $r3);
+
+        return;
+    }
+
+    public int getActivePhoneType()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getActivePhoneTypeForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getActivePhoneTypeForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $i0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getPhoneType()>();
+
+        return $i0;
+    }
+
+    public int getCdmaEriIconIndex()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getCdmaEriIconIndexForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getCdmaEriIconIndexForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $i0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getCdmaEriIconIndex()>();
+
+        return $i0;
+    }
+
+    public int getCdmaEriIconMode()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getCdmaEriIconModeForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getCdmaEriIconModeForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $i0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getCdmaEriIconMode()>();
+
+        return $i0;
+    }
+
+    public java.lang.String getCdmaEriText()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0;
+        java.lang.String $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $r0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.String getCdmaEriTextForSubscriber(int)>($i0);
+
+        return $r0;
+    }
+
+    public java.lang.String getCdmaEriTextForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.Phone $r0;
+        java.lang.String $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: java.lang.String getCdmaEriText()>();
+
+        return $r1;
+    }
+
+    public java.lang.String getCdmaMdn(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0, $r1;
+        java.lang.String $r2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $i0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getPhoneType()>();
+
+        if $i0 != 2 goto label1;
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r2 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: java.lang.String getLine1Number()>();
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+
+    public java.lang.String getCdmaMin(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0, $r1;
+        java.lang.String $r2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $i0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getPhoneType()>();
+
+        if $i0 != 2 goto label1;
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r2 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: java.lang.String getCdmaMin()>();
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+
+    public boolean needsOtaServiceProvisioning()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $z0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: boolean needsOtaServiceProvisioning()>();
+
+        return $z0;
+    }
+
+    public boolean setVoiceMailNumber(int, java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String alphaTag, number;
+        java.lang.Boolean success;
+        android.util.Pair $r0;
+        java.lang.Integer $r1;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        alphaTag := @parameter1: java.lang.String;
+
+        number := @parameter2: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceCarrierPrivilege()>();
+
+        $r0 = new android.util.Pair;
+
+        specialinvoke $r0.<android.util.Pair: void <init>(java.lang.Object,java.lang.Object)>(alphaTag, number);
+
+        $r1 = new java.lang.Integer;
+
+        specialinvoke $r1.<java.lang.Integer: void <init>(int)>(subId);
+
+        $r2 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object,java.lang.Integer)>(33, $r0, $r1);
+
+        success = (java.lang.Boolean) $r2;
+
+        $z0 = virtualinvoke success.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public int getVoiceMessageCount()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getVoiceMessageCountForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getVoiceMessageCountForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $i0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getVoiceMessageCount()>();
+
+        return $i0;
+    }
+
+    public int getNetworkType()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getNetworkTypeForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getNetworkTypeForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+        android.telephony.ServiceState $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.telephony.ServiceState getServiceState()>();
+
+        $i0 = virtualinvoke $r1.<android.telephony.ServiceState: int getDataNetworkType()>();
+
+        return $i0;
+    }
+
+    public int getDataNetworkType()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getDataNetworkTypeForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getDataNetworkTypeForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+        android.telephony.ServiceState $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.telephony.ServiceState getServiceState()>();
+
+        $i0 = virtualinvoke $r1.<android.telephony.ServiceState: int getDataNetworkType()>();
+
+        return $i0;
+    }
+
+    public int getVoiceNetworkType()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getVoiceNetworkTypeForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getVoiceNetworkTypeForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+        android.telephony.ServiceState $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.telephony.ServiceState getServiceState()>();
+
+        $i0 = virtualinvoke $r1.<android.telephony.ServiceState: int getVoiceNetworkType()>();
+
+        return $i0;
+    }
+
+    public boolean hasIccCard()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.SubscriptionController $r0;
+        int $i0, $i1;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getSlotId(int)>($i0);
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: boolean hasIccCardUsingSlotId(int)>($i1);
+
+        return $z0;
+    }
+
+    public boolean hasIccCardUsingSlotId(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int slotId, $i0;
+        int[] subId;
+        com.android.internal.telephony.SubscriptionController $r0;
+        com.android.internal.telephony.Phone $r1;
+        com.android.internal.telephony.IccCard $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        slotId := @parameter0: int;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        subId = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int[] getSubIdUsingSlotId(int)>(slotId);
+
+        if subId == null goto label1;
+
+        $i0 = subId[0];
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>($i0);
+
+        $r2 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: com.android.internal.telephony.IccCard getIccCard()>();
+
+        $z0 = interfaceinvoke $r2.<com.android.internal.telephony.IccCard: boolean hasIccCard()>();
+
+        return $z0;
+
+     label1:
+        return 0;
+    }
+
+    public int getLteOnCdmaMode()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $i0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: int getDefaultSubscription()>();
+
+        $i1 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager: int getLteOnCdmaModeForSubscriber(int)>($i0);
+
+        return $i1;
+    }
+
+    public int getLteOnCdmaModeForSubscriber(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, $i0;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        $i0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getLteOnCdmaMode()>();
+
+        return $i0;
+    }
+
+    public void setPhone(com.android.internal.telephony.Phone)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone phone;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        phone := @parameter0: com.android.internal.telephony.Phone;
+
+        this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone> = phone;
+
+        return;
+    }
+
+    private int getDefaultSubscription()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.SubscriptionController $r0;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultSubId()>();
+
+        return $i0;
+    }
+
+    private int getPreferredVoiceSubscription()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.SubscriptionController $r0;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getDefaultVoiceSubId()>();
+
+        return $i0;
+    }
+
+    public int getWhenToMakeWifiCalls()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone $r0;
+        android.content.Context $r1;
+        android.content.ContentResolver $r2;
+        int $i0, $i1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        $i0 = staticinvoke <com.android.phone.PhoneInterfaceManager: int getWhenToMakeWifiCallsDefaultPreference()>();
+
+        $i1 = staticinvoke <android.provider.Settings$System: int getInt(android.content.ContentResolver,java.lang.String,int)>($r2, "when_to_make_wifi_calls", $i0);
+
+        return $i1;
+    }
+
+    public void setWhenToMakeWifiCalls(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int preference;
+        com.android.internal.telephony.Phone $r0;
+        android.content.Context $r1;
+        android.content.ContentResolver $r2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        preference := @parameter0: int;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        staticinvoke <android.provider.Settings$System: boolean putInt(android.content.ContentResolver,java.lang.String,int)>($r2, "when_to_make_wifi_calls", preference);
+
+        return;
+    }
+
+    private static int getWhenToMakeWifiCallsDefaultPreference()
+    {
+        return 0;
+    }
+
+    public android.telephony.IccOpenLogicalChannelResponse iccOpenLogicalChannel(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String AID;
+        android.telephony.IccOpenLogicalChannelResponse response;
+        java.lang.Object $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        AID := @parameter0: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(9, AID);
+
+        response = (android.telephony.IccOpenLogicalChannelResponse) $r0;
+
+        return response;
+    }
+
+    public boolean iccCloseLogicalChannel(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int channel;
+        java.lang.Boolean success;
+        java.lang.Integer $r0;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        channel := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        if channel >= 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(channel);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(11, $r0);
+
+        success = (java.lang.Boolean) $r1;
+
+        $z0 = virtualinvoke success.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public java.lang.String iccTransmitApduLogicalChannel(int, int, int, int, int, int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int channel, cla, command, p1, p2, p3, $i0, $i1, $i2, $i3, $i4;
+        java.lang.String data, $r2, $r5, s#1;
+        com.android.internal.telephony.uicc.IccIoResult response;
+        com.android.phone.PhoneInterfaceManager$IccAPDUArgument $r0;
+        java.lang.Object $r1;
+        java.lang.StringBuilder $r3, $r7, $r8;
+        byte[] $r4, $r6;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        channel := @parameter0: int;
+
+        cla := @parameter1: int;
+
+        command := @parameter2: int;
+
+        p1 := @parameter3: int;
+
+        p2 := @parameter4: int;
+
+        p3 := @parameter5: int;
+
+        data := @parameter6: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        if channel >= 0 goto label1;
+
+        return "";
+
+     label1:
+        $r0 = new com.android.phone.PhoneInterfaceManager$IccAPDUArgument;
+
+        specialinvoke $r0.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: void <init>(int,int,int,int,int,int,java.lang.String)>(channel, cla, command, p1, p2, p3, data);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(7, $r0);
+
+        response = (com.android.internal.telephony.uicc.IccIoResult) $r1;
+
+        $i0 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw1>;
+
+        $i2 = $i0 << 8;
+
+        $i1 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw2>;
+
+        $i4 = $i2 + $i1;
+
+        $i3 = $i4 + 65536;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i3);
+
+        s#1 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>(1);
+
+        $r4 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        if $r4 == null goto label2;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        $r5 = staticinvoke <com.android.internal.telephony.uicc.IccUtils: java.lang.String bytesToHexString(byte[])>($r6);
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s#1);
+
+        s#1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label2:
+        return s#1;
+    }
+
+    public java.lang.String iccTransmitApduBasicChannel(int, int, int, int, int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int cla, command, p1, p2, p3, $i0, $i1, $i2, $i3, $i4;
+        java.lang.String data, $r2, $r7, s#1;
+        com.android.internal.telephony.uicc.IccIoResult response;
+        com.android.phone.PhoneInterfaceManager$IccAPDUArgument $r0;
+        java.lang.Object $r1;
+        byte[] $r3, $r4;
+        java.lang.StringBuilder $r5, $r6, $r8;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        cla := @parameter0: int;
+
+        command := @parameter1: int;
+
+        p1 := @parameter2: int;
+
+        p2 := @parameter3: int;
+
+        p3 := @parameter4: int;
+
+        data := @parameter5: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = new com.android.phone.PhoneInterfaceManager$IccAPDUArgument;
+
+        specialinvoke $r0.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: void <init>(int,int,int,int,int,int,java.lang.String)>(0, cla, command, p1, p2, p3, data);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(29, $r0);
+
+        response = (com.android.internal.telephony.uicc.IccIoResult) $r1;
+
+        $i0 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw1>;
+
+        $i2 = $i0 << 8;
+
+        $i1 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw2>;
+
+        $i3 = $i2 + $i1;
+
+        $i4 = $i3 + 65536;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i4);
+
+        s#1 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>(1);
+
+        $r3 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        if $r3 == null goto label1;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        $r7 = staticinvoke <com.android.internal.telephony.uicc.IccUtils: java.lang.String bytesToHexString(byte[])>($r4);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s#1);
+
+        s#1 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        return s#1;
+    }
+
+    public byte[] iccExchangeSimIO(int, int, int, int, int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int fileID, command, p1, p2, p3, $i0, $i2, $i3, $i4, $i6, $i7, length#2;
+        java.lang.String filePath;
+        com.android.internal.telephony.uicc.IccIoResult response;
+        com.android.phone.PhoneInterfaceManager$IccAPDUArgument $r0;
+        java.lang.Object $r1;
+        byte[] $r2, $r3, $r4, $r5, result#3;
+        byte $b1, $b5;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        fileID := @parameter0: int;
+
+        command := @parameter1: int;
+
+        p1 := @parameter2: int;
+
+        p2 := @parameter3: int;
+
+        p3 := @parameter4: int;
+
+        filePath := @parameter5: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = new com.android.phone.PhoneInterfaceManager$IccAPDUArgument;
+
+        specialinvoke $r0.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: void <init>(int,int,int,int,int,int,java.lang.String)>(-1, fileID, command, p1, p2, p3, filePath);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(31, $r0);
+
+        response = (com.android.internal.telephony.uicc.IccIoResult) $r1;
+
+        length#2 = 2;
+
+        $r2 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        if $r2 == null goto label1;
+
+        $r3 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        $i6 = lengthof $r3;
+
+        length#2 = 2 + $i6;
+
+        result#3 = newarray (byte)[length#2];
+
+        $r5 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        $r4 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        $i7 = lengthof $r4;
+
+        staticinvoke <java.lang.System: void arraycopy(byte[],int,byte[],int,int)>($r5, 0, result#3, 0, $i7);
+
+        goto label2;
+
+     label1:
+        result#3 = newarray (byte)[2];
+
+     label2:
+        $i3 = length#2 - 1;
+
+        $i0 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw2>;
+
+        $b1 = (byte) $i0;
+
+        result#3[$i3] = $b1;
+
+        $i4 = length#2 - 2;
+
+        $i2 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw1>;
+
+        $b5 = (byte) $i2;
+
+        result#3[$i4] = $b5;
+
+        return result#3;
+    }
+
+    public java.lang.String sendEnvelopeWithStatus(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String content, $r2, $r5, s#1, s#2;
+        com.android.internal.telephony.uicc.IccIoResult response;
+        java.lang.Object $r0;
+        byte[] $r1, $r4;
+        int $i0, $i1, $i2, $i3, $i4;
+        java.lang.StringBuilder $r3, $r6, $r7;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        content := @parameter0: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(25, content);
+
+        response = (com.android.internal.telephony.uicc.IccIoResult) $r0;
+
+        $r1 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        if $r1 != null goto label1;
+
+        return "";
+
+     label1:
+        $i0 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw1>;
+
+        $i2 = $i0 << 8;
+
+        $i1 = response.<com.android.internal.telephony.uicc.IccIoResult: int sw2>;
+
+        $i3 = $i2 + $i1;
+
+        $i4 = $i3 + 65536;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i4);
+
+        s#1 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>(1);
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = response.<com.android.internal.telephony.uicc.IccIoResult: byte[] payload>;
+
+        $r5 = staticinvoke <com.android.internal.telephony.uicc.IccUtils: java.lang.String bytesToHexString(byte[])>($r4);
+
+        $r7 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s#1);
+
+        s#2 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return s#2;
+    }
+
+    public java.lang.String nvReadItem(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int itemID;
+        java.lang.String value;
+        java.lang.Integer $r0;
+        java.lang.Object $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        itemID := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(itemID);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(13, $r0);
+
+        value = (java.lang.String) $r1;
+
+        return value;
+    }
+
+    public boolean nvWriteItem(int, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int itemID;
+        java.lang.String itemValue;
+        java.lang.Boolean success;
+        android.util.Pair $r0;
+        java.lang.Integer $r1;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        itemID := @parameter0: int;
+
+        itemValue := @parameter1: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = new android.util.Pair;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(itemID);
+
+        specialinvoke $r0.<android.util.Pair: void <init>(java.lang.Object,java.lang.Object)>($r1, itemValue);
+
+        $r2 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(15, $r0);
+
+        success = (java.lang.Boolean) $r2;
+
+        $z0 = virtualinvoke success.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public boolean nvWriteCdmaPrl(byte[])
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        byte[] preferredRoamingList;
+        java.lang.Boolean success;
+        java.lang.Object $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        preferredRoamingList := @parameter0: byte[];
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(17, preferredRoamingList);
+
+        success = (java.lang.Boolean) $r0;
+
+        $z0 = virtualinvoke success.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public boolean nvResetConfig(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int resetType;
+        java.lang.Boolean success;
+        java.lang.Integer $r0;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        resetType := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(resetType);
+
+        $r1 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(19, $r0);
+
+        success = (java.lang.Boolean) $r1;
+
+        $z0 = virtualinvoke success.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public int getDefaultSim()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        return 0;
+    }
+
+    public java.lang.String[] getPcscfAddress(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String apnType;
+        com.android.internal.telephony.Phone $r0;
+        java.lang.String[] $r1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        apnType := @parameter0: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceReadPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: java.lang.String[] getPcscfAddress(java.lang.String)>(apnType);
+
+        return $r1;
+    }
+
+    public void setImsRegistrationState(boolean)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        boolean registered;
+        com.android.internal.telephony.Phone $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        registered := @parameter0: boolean;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        interfaceinvoke $r0.<com.android.internal.telephony.Phone: void setImsRegistrationState(boolean)>(registered);
+
+        return;
+    }
+
+    public int getCalculatedPreferredNetworkType()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone $r0;
+        android.content.Context $r1;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceReadPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $i0 = staticinvoke <com.android.internal.telephony.PhoneFactory: int calculatePreferredNetworkType(android.content.Context,int)>($r1, 0);
+
+        return $i0;
+    }
+
+    public int getPreferredNetworkType()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int[] result, $r1;
+        int networkType, $i0;
+        java.lang.Object $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(21, null);
+
+        $r1 = (int[]) $r0;
+
+        result = (int[]) $r1;
+
+        if result == null goto label1;
+
+        $i0 = result[0];
+
+        goto label2;
+
+     label1:
+        $i0 = -1;
+
+     label2:
+        networkType = $i0;
+
+        return networkType;
+    }
+
+    public boolean setPreferredNetworkType(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int networkType, phoneSubId;
+        java.lang.Boolean success;
+        com.android.internal.telephony.Phone $r0, $r3;
+        java.lang.Integer $r1;
+        java.lang.Object $r2;
+        boolean $z0, $z1;
+        android.content.Context $r4;
+        android.content.ContentResolver $r5;
+        java.lang.StringBuilder $r6, $r7, $r9;
+        java.lang.String $r8;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        networkType := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        phoneSubId = interfaceinvoke $r0.<com.android.internal.telephony.Phone: int getSubId()>();
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(networkType);
+
+        $r2 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(23, $r1);
+
+        success = (java.lang.Boolean) $r2;
+
+        $z0 = virtualinvoke success.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r4 = interfaceinvoke $r3.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r5 = virtualinvoke $r4.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("preferred_network_mode");
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(phoneSubId);
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.provider.Settings$Global: boolean putInt(android.content.ContentResolver,java.lang.String,int)>($r5, $r8, networkType);
+
+     label1:
+        $z1 = virtualinvoke success.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z1;
+    }
+
+    public int getTetherApnRequired()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone $r0, $r3;
+        android.content.Context $r1;
+        android.content.ContentResolver $r2;
+        boolean $z0;
+        int dunRequired#1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermissionOrCarrierPrivilege()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        dunRequired#1 = staticinvoke <android.provider.Settings$Global: int getInt(android.content.ContentResolver,java.lang.String,int)>($r2, "tether_dun_required", 2);
+
+        if dunRequired#1 != 2 goto label1;
+
+        $r3 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $z0 = interfaceinvoke $r3.<com.android.internal.telephony.Phone: boolean hasMatchedTetherApnSetting()>();
+
+        if $z0 == 0 goto label1;
+
+        dunRequired#1 = 1;
+
+     label1:
+        return dunRequired#1;
+    }
+
+    public void setDataEnabled(int, boolean)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, phoneId;
+        boolean enable;
+        com.android.internal.telephony.Phone phone;
+        com.android.internal.telephony.SubscriptionController $r0;
+        java.lang.StringBuilder $r1, $r2, $r3, $r4, $r5, $r7, $r8, $r10, $r11, $r12, $r13, $r14, $r16;
+        java.lang.String $r6, $r9, $r15;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        enable := @parameter1: boolean;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        phoneId = virtualinvoke $r0.<com.android.internal.telephony.SubscriptionController: int getPhoneId(int)>(subId);
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("getDataEnabled: subId=");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" phoneId=");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(phoneId);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void log(java.lang.String)>($r6);
+
+        phone = staticinvoke <com.android.internal.telephony.PhoneFactory: com.android.internal.telephony.Phone getPhone(int)>(phoneId);
+
+        if phone == null goto label1;
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("setDataEnabled: subId=");
+
+        $r14 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r13 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" enable=");
+
+        $r16 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(enable);
+
+        $r15 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void log(java.lang.String)>($r15);
+
+        interfaceinvoke phone.<com.android.internal.telephony.Phone: void setDataEnabled(boolean)>(enable);
+
+        goto label2;
+
+     label1:
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("setDataEnabled: no phone for subId=");
+
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>($r9);
+
+     label2:
+        return;
+    }
+
+    public boolean getDataEnabled(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId, e#2;
+        com.android.internal.telephony.Phone phone;
+        boolean retVal;
+        com.android.phone.PhoneGlobals $r0, $r20;
+        com.android.internal.telephony.SubscriptionController $r1;
+        java.lang.StringBuilder $r2, $r3, $r4, $r5, $r6, $r8, $r9, $r10, $r12, $r13, $r14, $r15, $r16, $r17;
+        java.lang.String $r7, $r11, $r19;
+        java.lang.Exception $r18, e#1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+     label1:
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r0.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.ACCESS_NETWORK_STATE", null);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r18 := @caughtexception;
+
+        e#1 = $r18;
+
+        $r20 = this.<com.android.phone.PhoneInterfaceManager: com.android.phone.PhoneGlobals mApp>;
+
+        virtualinvoke $r20.<com.android.phone.PhoneGlobals: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.MODIFY_PHONE_STATE", null);
+
+     label4:
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.SubscriptionController mSubscriptionController>;
+
+        e#2 = virtualinvoke $r1.<com.android.internal.telephony.SubscriptionController: int getPhoneId(int)>(subId);
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("getDataEnabled: subId=");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" phoneId=");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(e#2);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void log(java.lang.String)>($r7);
+
+        phone = staticinvoke <com.android.internal.telephony.PhoneFactory: com.android.internal.telephony.Phone getPhone(int)>(e#2);
+
+        if phone == null goto label5;
+
+        retVal = interfaceinvoke phone.<com.android.internal.telephony.Phone: boolean getDataEnabled()>();
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r15 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("getDataEnabled: subId=");
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r17 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" retVal=");
+
+        $r16 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(retVal);
+
+        $r19 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void log(java.lang.String)>($r19);
+
+        return retVal;
+
+     label5:
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("getDataEnabled: no phone subId=");
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(subId);
+
+        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" retVal=false");
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>($r11);
+
+        return 0;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public int getCarrierPrivilegeStatus()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.uicc.UiccCard card;
+        com.android.internal.telephony.uicc.UiccController $r0;
+        com.android.internal.telephony.Phone $r1, $r2;
+        int $i0, $i1;
+        android.content.Context $r3;
+        android.content.pm.PackageManager $r4;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = staticinvoke <com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccController getInstance()>();
+
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $i0 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: int getPhoneId()>();
+
+        card = virtualinvoke $r0.<com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccCard getUiccCard(int)>($i0);
+
+        if card != null goto label1;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>("getCarrierPrivilegeStatus: No UICC");
+
+        return -1;
+
+     label1:
+        $r2 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r3 = interfaceinvoke $r2.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r4 = virtualinvoke $r3.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $i1 = virtualinvoke card.<com.android.internal.telephony.uicc.UiccCard: int getCarrierPrivilegeStatusForCurrentTransaction(android.content.pm.PackageManager)>($r4);
+
+        return $i1;
+    }
+
+    public int checkCarrierPrivilegesForPackage(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String pkgname;
+        com.android.internal.telephony.uicc.UiccCard card;
+        com.android.internal.telephony.uicc.UiccController $r0;
+        com.android.internal.telephony.Phone $r1, $r2;
+        int $i0, $i1;
+        android.content.Context $r3;
+        android.content.pm.PackageManager $r4;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        pkgname := @parameter0: java.lang.String;
+
+        $r0 = staticinvoke <com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccController getInstance()>();
+
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $i0 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: int getPhoneId()>();
+
+        card = virtualinvoke $r0.<com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccCard getUiccCard(int)>($i0);
+
+        if card != null goto label1;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>("checkCarrierPrivilegesForPackage: No UICC");
+
+        return -1;
+
+     label1:
+        $r2 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r3 = interfaceinvoke $r2.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r4 = virtualinvoke $r3.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $i1 = virtualinvoke card.<com.android.internal.telephony.uicc.UiccCard: int getCarrierPrivilegeStatus(android.content.pm.PackageManager,java.lang.String)>($r4, pkgname);
+
+        return $i1;
+    }
+
+    public java.util.List getCarrierPackageNamesForIntent(android.content.Intent)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        android.content.Intent intent;
+        com.android.internal.telephony.uicc.UiccCard card;
+        com.android.internal.telephony.uicc.UiccController $r0;
+        com.android.internal.telephony.Phone $r1, $r2;
+        int $i0;
+        android.content.Context $r3;
+        android.content.pm.PackageManager $r4;
+        java.util.List $r5;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        intent := @parameter0: android.content.Intent;
+
+        $r0 = staticinvoke <com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccController getInstance()>();
+
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $i0 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: int getPhoneId()>();
+
+        card = virtualinvoke $r0.<com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccCard getUiccCard(int)>($i0);
+
+        if card != null goto label1;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>("getCarrierPackageNamesForIntent: No UICC");
+
+        return null;
+
+     label1:
+        $r2 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r3 = interfaceinvoke $r2.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $r4 = virtualinvoke $r3.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r5 = virtualinvoke card.<com.android.internal.telephony.uicc.UiccCard: java.util.List getCarrierPackageNamesForIntent(android.content.pm.PackageManager,android.content.Intent)>($r4, intent);
+
+        return $r5;
+    }
+
+    private java.lang.String getIccId(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        com.android.internal.telephony.uicc.UiccCard card;
+        java.lang.String iccId;
+        com.android.internal.telephony.Phone $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        card = interfaceinvoke $r0.<com.android.internal.telephony.Phone: com.android.internal.telephony.uicc.UiccCard getUiccCard()>();
+
+        if card != null goto label1;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>("getIccId: No UICC");
+
+        return null;
+
+     label1:
+        iccId = virtualinvoke card.<com.android.internal.telephony.uicc.UiccCard: java.lang.String getIccId()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>(iccId);
+
+        if $z0 == 0 goto label2;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>("getIccId: ICC ID is null or empty.");
+
+        return null;
+
+     label2:
+        return iccId;
+    }
+
+    public boolean setLine1NumberForDisplayForSubscriber(int, java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String alphaTag, number, iccId, subscriberId, alphaTagPrefKey, numberPrefKey, subscriberPrefKey;
+        android.content.SharedPreferences$Editor editor;
+        com.android.internal.telephony.Phone $r0;
+        boolean $z0;
+        android.content.SharedPreferences $r1;
+        java.lang.StringBuilder $r2, $r3, $r4, $r5, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        alphaTag := @parameter1: java.lang.String;
+
+        number := @parameter2: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceCarrierPrivilege()>();
+
+        iccId = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.String getIccId(int)>(subId);
+
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(subId);
+
+        subscriberId = interfaceinvoke $r0.<com.android.internal.telephony.Phone: java.lang.String getSubscriberId()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>(iccId);
+
+        if $z0 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r1 = this.<com.android.phone.PhoneInterfaceManager: android.content.SharedPreferences mTelephonySharedPreferences>;
+
+        editor = interfaceinvoke $r1.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("carrier_alphtag_");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(iccId);
+
+        alphaTagPrefKey = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        if alphaTag != null goto label2;
+
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor remove(java.lang.String)>(alphaTagPrefKey);
+
+        goto label3;
+
+     label2:
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>(alphaTagPrefKey, alphaTag);
+
+     label3:
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("carrier_number_");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(iccId);
+
+        numberPrefKey = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("carrier_subscriber_");
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(iccId);
+
+        subscriberPrefKey = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        if number != null goto label4;
+
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor remove(java.lang.String)>(numberPrefKey);
+
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor remove(java.lang.String)>(subscriberPrefKey);
+
+        goto label5;
+
+     label4:
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>(numberPrefKey, number);
+
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>(subscriberPrefKey, subscriberId);
+
+     label5:
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        return 1;
+    }
+
+    public java.lang.String getLine1NumberForDisplay(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String iccId, numberPrefKey, $r4;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        android.content.SharedPreferences $r3;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceReadPermission()>();
+
+        iccId = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.String getIccId(int)>(subId);
+
+        if iccId == null goto label1;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("carrier_number_");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(iccId);
+
+        numberPrefKey = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = this.<com.android.phone.PhoneInterfaceManager: android.content.SharedPreferences mTelephonySharedPreferences>;
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>(numberPrefKey, null);
+
+        return $r4;
+
+     label1:
+        return null;
+    }
+
+    public java.lang.String getLine1AlphaTagForDisplay(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int subId;
+        java.lang.String iccId, alphaTagPrefKey, $r4;
+        java.lang.StringBuilder $r0, $r1, $r2;
+        android.content.SharedPreferences $r3;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        subId := @parameter0: int;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceReadPermission()>();
+
+        iccId = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.String getIccId(int)>(subId);
+
+        if iccId == null goto label1;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("carrier_alphtag_");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(iccId);
+
+        alphaTagPrefKey = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = this.<com.android.phone.PhoneInterfaceManager: android.content.SharedPreferences mTelephonySharedPreferences>;
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>(alphaTagPrefKey, null);
+
+        return $r4;
+
+     label1:
+        return null;
+    }
+
+    public java.lang.String[] getMergedSubscriberIds()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        android.content.Context context;
+        android.telephony.TelephonyManager tele;
+        android.telephony.SubscriptionManager sub;
+        android.util.ArraySet activeSubscriberIds, $r1, $r4, i$#12;
+        int[] subIds, arr$#1;
+        java.lang.String subscriberKey, subscriberId, $r9, $r18, $r22, arr$#5, subId#8, subscriberId#9, iccId#10, numberKey#11, subscriberId#14, iccId#15, numberKey#16;
+        com.android.internal.telephony.Phone $r0;
+        android.content.SharedPreferences $r2;
+        java.util.Set $r3, $r5;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5, $z7, $z8, $z10;
+        int $i0, $i1, $i2, len$#2, i$#3, subId#4;
+        java.lang.Object $r6, $r10, $r14, $r15, $r16, $r19;
+        java.lang.String[] $r7, subId#17;
+        java.lang.Object[] $r8;
+        java.lang.StringBuilder $r11, $r12, $r13, $r17, $r20, $r21;
+        java.util.Map len$#6;
+        java.util.Iterator i$#7, subId#13;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        context = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        tele = staticinvoke <android.telephony.TelephonyManager: android.telephony.TelephonyManager 'from'(android.content.Context)>(context);
+
+        sub = staticinvoke <android.telephony.SubscriptionManager: android.telephony.SubscriptionManager 'from'(android.content.Context)>(context);
+
+        $r1 = new android.util.ArraySet;
+
+        specialinvoke $r1.<android.util.ArraySet: void <init>()>();
+
+        activeSubscriberIds = $r1;
+
+        subIds = virtualinvoke sub.<android.telephony.SubscriptionManager: int[] getActiveSubscriptionIdList()>();
+
+        arr$#1 = subIds;
+
+        len$#2 = lengthof arr$#1;
+
+        i$#3 = 0;
+
+     label1:
+        if i$#3 >= len$#2 goto label2;
+
+        subId#4 = arr$#1[i$#3];
+
+        $r22 = virtualinvoke tele.<android.telephony.TelephonyManager: java.lang.String getSubscriberId(int)>(subId#4);
+
+        virtualinvoke activeSubscriberIds.<android.util.ArraySet: boolean add(java.lang.Object)>($r22);
+
+        i$#3 = i$#3 + 1;
+
+        goto label1;
+
+     label2:
+        arr$#5 = null;
+
+        $r2 = this.<com.android.phone.PhoneInterfaceManager: android.content.SharedPreferences mTelephonySharedPreferences>;
+
+        len$#6 = interfaceinvoke $r2.<android.content.SharedPreferences: java.util.Map getAll()>();
+
+        $r3 = interfaceinvoke len$#6.<java.util.Map: java.util.Set keySet()>();
+
+        i$#7 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke i$#7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r16 = interfaceinvoke i$#7.<java.util.Iterator: java.lang.Object next()>();
+
+        subId#8 = (java.lang.String) $r16;
+
+        $z8 = virtualinvoke subId#8.<java.lang.String: boolean startsWith(java.lang.String)>("carrier_subscriber_");
+
+        if $z8 == 0 goto label4;
+
+        $r15 = interfaceinvoke len$#6.<java.util.Map: java.lang.Object get(java.lang.Object)>(subId#8);
+
+        subscriberId#9 = (java.lang.String) $r15;
+
+        $z7 = virtualinvoke activeSubscriberIds.<android.util.ArraySet: boolean contains(java.lang.Object)>(subscriberId#9);
+
+        if $z7 == 0 goto label4;
+
+        $r18 = "carrier_subscriber_";
+
+        $i2 = virtualinvoke $r18.<java.lang.String: int length()>();
+
+        iccId#10 = virtualinvoke subId#8.<java.lang.String: java.lang.String substring(int)>($i2);
+
+        $r17 = new java.lang.StringBuilder;
+
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+
+        $r21 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("carrier_number_");
+
+        $r20 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(iccId#10);
+
+        numberKey#11 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r19 = interfaceinvoke len$#6.<java.util.Map: java.lang.Object get(java.lang.Object)>(numberKey#11);
+
+        arr$#5 = (java.lang.String) $r19;
+
+        $z10 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>(arr$#5);
+
+        if $z10 != 0 goto label4;
+
+        goto label5;
+
+     label4:
+        goto label3;
+
+     label5:
+        $z1 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>(arr$#5);
+
+        if $z1 == 0 goto label6;
+
+        return null;
+
+     label6:
+        $r4 = new android.util.ArraySet;
+
+        specialinvoke $r4.<android.util.ArraySet: void <init>()>();
+
+        i$#12 = $r4;
+
+        $r5 = interfaceinvoke len$#6.<java.util.Map: java.util.Set keySet()>();
+
+        subId#13 = interfaceinvoke $r5.<java.util.Set: java.util.Iterator iterator()>();
+
+     label7:
+        $z2 = interfaceinvoke subId#13.<java.util.Iterator: boolean hasNext()>();
+
+        if $z2 == 0 goto label9;
+
+        $r6 = interfaceinvoke subId#13.<java.util.Iterator: java.lang.Object next()>();
+
+        subscriberId#14 = (java.lang.String) $r6;
+
+        $z3 = virtualinvoke subscriberId#14.<java.lang.String: boolean startsWith(java.lang.String)>("carrier_number_");
+
+        if $z3 == 0 goto label8;
+
+        $r10 = interfaceinvoke len$#6.<java.util.Map: java.lang.Object get(java.lang.Object)>(subscriberId#14);
+
+        iccId#15 = (java.lang.String) $r10;
+
+        $z4 = virtualinvoke arr$#5.<java.lang.String: boolean equals(java.lang.Object)>(iccId#15);
+
+        if $z4 == 0 goto label8;
+
+        $r9 = "carrier_number_";
+
+        $i1 = virtualinvoke $r9.<java.lang.String: int length()>();
+
+        numberKey#16 = virtualinvoke subscriberId#14.<java.lang.String: java.lang.String substring(int)>($i1);
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("carrier_subscriber_");
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(numberKey#16);
+
+        subscriberKey = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r14 = interfaceinvoke len$#6.<java.util.Map: java.lang.Object get(java.lang.Object)>(subscriberKey);
+
+        subscriberId = (java.lang.String) $r14;
+
+        $z5 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>(subscriberId);
+
+        if $z5 != 0 goto label8;
+
+        virtualinvoke i$#12.<android.util.ArraySet: boolean add(java.lang.Object)>(subscriberId);
+
+     label8:
+        goto label7;
+
+     label9:
+        $i0 = virtualinvoke i$#12.<android.util.ArraySet: int size()>();
+
+        $r7 = newarray (java.lang.String)[$i0];
+
+        $r8 = virtualinvoke i$#12.<android.util.ArraySet: java.lang.Object[] toArray(java.lang.Object[])>($r7);
+
+        subId#17 = (java.lang.String[]) $r8;
+
+        staticinvoke <java.util.Arrays: void sort(java.lang.Object[])>(subId#17);
+
+        return subId#17;
+    }
+
+    public boolean setOperatorBrandOverride(java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.lang.String brand;
+        com.android.internal.telephony.Phone $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        brand := @parameter0: java.lang.String;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceCarrierPrivilege()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $z0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: boolean setOperatorBrandOverride(java.lang.String)>(brand);
+
+        return $z0;
+    }
+
+    public boolean setRoamingOverride(java.util.List, java.util.List, java.util.List, java.util.List)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        java.util.List gsmRoamingList, gsmNonRoamingList, cdmaRoamingList, cdmaNonRoamingList;
+        com.android.internal.telephony.Phone $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        gsmRoamingList := @parameter0: java.util.List;
+
+        gsmNonRoamingList := @parameter1: java.util.List;
+
+        cdmaRoamingList := @parameter2: java.util.List;
+
+        cdmaNonRoamingList := @parameter3: java.util.List;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceCarrierPrivilege()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $z0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: boolean setRoamingOverride(java.util.List,java.util.List,java.util.List,java.util.List)>(gsmRoamingList, gsmNonRoamingList, cdmaRoamingList, cdmaNonRoamingList);
+
+        return $z0;
+    }
+
+    public int invokeOemRilRequestRaw(byte[], byte[])
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        byte[] oemReq, oemResp, $r6, responseData#3;
+        java.lang.Object $r0, $r4, $r5;
+        java.lang.Throwable $r1, $r2;
+        com.android.internal.telephony.CommandException$Error $r3, $r15;
+        int $i0, $i1, $i2, $i3, $i4, returnValue#1;
+        java.lang.StringBuilder $r7, $r8, $r9, $r10, $r11, $r12;
+        java.lang.String $r13;
+        java.lang.RuntimeException $r14, result#5;
+        android.os.AsyncResult result#2;
+        com.android.internal.telephony.CommandException responseData#4;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        oemReq := @parameter0: byte[];
+
+        oemResp := @parameter1: byte[];
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        returnValue#1 = 0;
+
+     label1:
+        $r0 = specialinvoke this.<com.android.phone.PhoneInterfaceManager: java.lang.Object sendRequest(int,java.lang.Object)>(27, oemReq);
+
+        result#2 = (android.os.AsyncResult) $r0;
+
+        $r1 = result#2.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r1 != null goto label3;
+
+        $r4 = result#2.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r4 == null goto label4;
+
+        $r5 = result#2.<android.os.AsyncResult: java.lang.Object result>;
+
+        $r6 = (byte[]) $r5;
+
+        responseData#3 = (byte[]) $r6;
+
+        $i1 = lengthof responseData#3;
+
+        $i0 = lengthof oemResp;
+
+        if $i1 <= $i0 goto label2;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Buffer to copy response too small: Response length is ");
+
+        $i3 = lengthof responseData#3;
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("bytes. Buffer Size is ");
+
+        $i4 = lengthof oemResp;
+
+        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i4);
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("bytes.");
+
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("PhoneInterfaceManager", $r13);
+
+     label2:
+        $i2 = lengthof responseData#3;
+
+        staticinvoke <java.lang.System: void arraycopy(byte[],int,byte[],int,int)>(responseData#3, 0, oemResp, 0, $i2);
+
+        returnValue#1 = lengthof responseData#3;
+
+        goto label4;
+
+     label3:
+        $r2 = result#2.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        responseData#4 = (com.android.internal.telephony.CommandException) $r2;
+
+        $r3 = virtualinvoke responseData#4.<com.android.internal.telephony.CommandException: com.android.internal.telephony.CommandException$Error getCommandError()>();
+
+        returnValue#1 = virtualinvoke $r3.<com.android.internal.telephony.CommandException$Error: int ordinal()>();
+
+        if returnValue#1 <= 0 goto label4;
+
+        returnValue#1 = returnValue#1 * -1;
+
+     label4:
+        goto label6;
+
+     label5:
+        $r14 := @caughtexception;
+
+        result#5 = $r14;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("PhoneInterfaceManager", "sendOemRilRequestRaw: Runtime Exception");
+
+        $r15 = <com.android.internal.telephony.CommandException$Error: com.android.internal.telephony.CommandException$Error GENERIC_FAILURE>;
+
+        returnValue#1 = virtualinvoke $r15.<com.android.internal.telephony.CommandException$Error: int ordinal()>();
+
+        if returnValue#1 <= 0 goto label6;
+
+        returnValue#1 = returnValue#1 * -1;
+
+     label6:
+        return returnValue#1;
+
+        catch java.lang.RuntimeException from label1 to label4 with label5;
+    }
+
+    public void setRadioCapability(android.telephony.RadioAccessFamily[])
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        android.telephony.RadioAccessFamily[] rafs;
+        java.lang.RuntimeException e, $r1;
+        com.android.internal.telephony.ProxyController $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        rafs := @parameter0: android.telephony.RadioAccessFamily[];
+
+     label1:
+        $r0 = staticinvoke <com.android.internal.telephony.ProxyController: com.android.internal.telephony.ProxyController getInstance()>();
+
+        virtualinvoke $r0.<com.android.internal.telephony.ProxyController: boolean setRadioCapability(android.telephony.RadioAccessFamily[])>(rafs);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+
+        e = $r1;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("PhoneInterfaceManager", "setRadioCapability: Runtime Exception");
+
+     label4:
+        return;
+
+        catch java.lang.RuntimeException from label1 to label2 with label3;
+    }
+
+    public int getRadioAccessFamily(int)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        int phoneId, $i0;
+        com.android.internal.telephony.ProxyController $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        phoneId := @parameter0: int;
+
+        $r0 = staticinvoke <com.android.internal.telephony.ProxyController: com.android.internal.telephony.ProxyController getInstance()>();
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.ProxyController: int getRadioAccessFamily(int)>(phoneId);
+
+        return $i0;
+    }
+
+    public void enableVideoCalling(boolean)
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        boolean enable;
+        android.content.SharedPreferences$Editor editor;
+        android.content.SharedPreferences $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        enable := @parameter0: boolean;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceModifyPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: android.content.SharedPreferences mTelephonySharedPreferences>;
+
+        editor = interfaceinvoke $r0.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("enable_video_calling", enable);
+
+        interfaceinvoke editor.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        return;
+    }
+
+    public boolean isVideoCallingEnabled()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone $r0, $r2;
+        android.content.Context $r1, $r3;
+        boolean $z0, $z1, $z2, $z3;
+        android.content.SharedPreferences $r4;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceReadPermission()>();
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r1 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $z0 = staticinvoke <com.android.ims.ImsManager: boolean isVtEnabledByPlatform(android.content.Context)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r2 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $r3 = interfaceinvoke $r2.<com.android.internal.telephony.Phone: android.content.Context getContext()>();
+
+        $z1 = staticinvoke <com.android.ims.ImsManager: boolean isEnhanced4gLteModeSettingEnabledByUser(android.content.Context)>($r3);
+
+        if $z1 == 0 goto label1;
+
+        $r4 = this.<com.android.phone.PhoneInterfaceManager: android.content.SharedPreferences mTelephonySharedPreferences>;
+
+        $z2 = interfaceinvoke $r4.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("enable_video_calling", 1);
+
+        if $z2 == 0 goto label1;
+
+        $z3 = 1;
+
+        goto label2;
+
+     label1:
+        $z3 = 0;
+
+     label2:
+        return $z3;
+    }
+
+    public java.lang.String getDeviceId()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone phone;
+        java.lang.String $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager: void enforceReadPermission()>();
+
+        phone = staticinvoke <com.android.internal.telephony.PhoneFactory: com.android.internal.telephony.Phone getPhone(int)>(0);
+
+        if phone == null goto label1;
+
+        $r0 = interfaceinvoke phone.<com.android.internal.telephony.Phone: java.lang.String getDeviceId()>();
+
+        return $r0;
+
+     label1:
+        return null;
+    }
+
+    public boolean isImsRegistered()
+    {
+        com.android.phone.PhoneInterfaceManager this;
+        com.android.internal.telephony.Phone $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = this.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        $z0 = interfaceinvoke $r0.<com.android.internal.telephony.Phone: boolean isImsRegistered()>();
+
+        return $z0;
+    }
+
+    static com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)
+    {
+        com.android.phone.PhoneInterfaceManager x0;
+        com.android.internal.telephony.Phone $r0;
+
+        x0 := @parameter0: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = x0.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone mPhone>;
+
+        return $r0;
+    }
+
+    static com.android.internal.telephony.Phone access$100(com.android.phone.PhoneInterfaceManager, com.android.phone.PhoneInterfaceManager$MainThreadRequest)
+    {
+        com.android.phone.PhoneInterfaceManager x0;
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest x1;
+        com.android.internal.telephony.Phone $r0;
+
+        x0 := @parameter0: com.android.phone.PhoneInterfaceManager;
+
+        x1 := @parameter1: com.android.phone.PhoneInterfaceManager$MainThreadRequest;
+
+        $r0 = specialinvoke x0.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhoneFromRequest(com.android.phone.PhoneInterfaceManager$MainThreadRequest)>(x1);
+
+        return $r0;
+    }
+
+    static void access$200(com.android.phone.PhoneInterfaceManager, int)
+    {
+        com.android.phone.PhoneInterfaceManager x0;
+        int x1;
+
+        x0 := @parameter0: com.android.phone.PhoneInterfaceManager;
+
+        x1 := @parameter1: int;
+
+        specialinvoke x0.<com.android.phone.PhoneInterfaceManager: void answerRingingCallInternal(int)>(x1);
+
+        return;
+    }
+
+    static com.android.internal.telephony.Phone access$300(com.android.phone.PhoneInterfaceManager, int)
+    {
+        com.android.phone.PhoneInterfaceManager x0;
+        int x1;
+        com.android.internal.telephony.Phone $r0;
+
+        x0 := @parameter0: com.android.phone.PhoneInterfaceManager;
+
+        x1 := @parameter1: int;
+
+        $r0 = specialinvoke x0.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone getPhone(int)>(x1);
+
+        return $r0;
+    }
+
+    static com.android.internal.telephony.CallManager access$400(com.android.phone.PhoneInterfaceManager)
+    {
+        com.android.phone.PhoneInterfaceManager x0;
+        com.android.internal.telephony.CallManager $r0;
+
+        x0 := @parameter0: com.android.phone.PhoneInterfaceManager;
+
+        $r0 = x0.<com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.CallManager mCM>;
+
+        return $r0;
+    }
+
+    static void access$500(java.lang.String)
+    {
+        java.lang.String x0;
+
+        x0 := @parameter0: java.lang.String;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void loge(java.lang.String)>(x0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.phone.PhoneInterfaceManager: java.lang.String PREF_ENABLE_VIDEO_CALLING> = "enable_video_calling";
+
+        <com.android.phone.PhoneInterfaceManager: java.lang.String PREF_CARRIERS_SUBSCRIBER_PREFIX> = "carrier_subscriber_";
+
+        <com.android.phone.PhoneInterfaceManager: java.lang.String PREF_CARRIERS_NUMBER_PREFIX> = "carrier_number_";
+
+        <com.android.phone.PhoneInterfaceManager: java.lang.String PREF_CARRIERS_ALPHATAG_PREFIX> = "carrier_alphtag_";
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_SET_VOICEMAIL_NUMBER_DONE> = 34;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_SET_VOICEMAIL_NUMBER> = 33;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_EXCHANGE_SIM_IO_DONE> = 32;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_EXCHANGE_SIM_IO> = 31;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_TRANSMIT_APDU_BASIC_CHANNEL_DONE> = 30;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_TRANSMIT_APDU_BASIC_CHANNEL> = 29;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_INVOKE_OEM_RIL_REQUEST_RAW_DONE> = 28;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_INVOKE_OEM_RIL_REQUEST_RAW> = 27;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_SEND_ENVELOPE_DONE> = 26;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_SEND_ENVELOPE> = 25;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_SET_PREFERRED_NETWORK_TYPE_DONE> = 24;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_SET_PREFERRED_NETWORK_TYPE> = 23;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_GET_PREFERRED_NETWORK_TYPE_DONE> = 22;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_GET_PREFERRED_NETWORK_TYPE> = 21;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_NV_RESET_CONFIG_DONE> = 20;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_NV_RESET_CONFIG> = 19;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_NV_WRITE_CDMA_PRL_DONE> = 18;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_NV_WRITE_CDMA_PRL> = 17;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_NV_WRITE_ITEM_DONE> = 16;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_NV_WRITE_ITEM> = 15;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_NV_READ_ITEM_DONE> = 14;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_NV_READ_ITEM> = 13;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_CLOSE_CHANNEL_DONE> = 12;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_CLOSE_CHANNEL> = 11;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_OPEN_CHANNEL_DONE> = 10;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_OPEN_CHANNEL> = 9;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_TRANSMIT_APDU_LOGICAL_CHANNEL_DONE> = 8;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_TRANSMIT_APDU_LOGICAL_CHANNEL> = 7;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_END_CALL> = 5;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_ANSWER_RINGING_CALL> = 4;
+
+        <com.android.phone.PhoneInterfaceManager: int EVENT_NEIGHBORING_CELL_DONE> = 3;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_HANDLE_NEIGHBORING_CELL> = 2;
+
+        <com.android.phone.PhoneInterfaceManager: int CMD_HANDLE_PIN_MMI> = 1;
+
+        <com.android.phone.PhoneInterfaceManager: boolean DBG_MERGE> = 0;
+
+        <com.android.phone.PhoneInterfaceManager: boolean DBG_LOC> = 0;
+
+        <com.android.phone.PhoneInterfaceManager: boolean DBG> = 0;
+
+        <com.android.phone.PhoneInterfaceManager: java.lang.String LOG_TAG> = "PhoneInterfaceManager";
+
+        return;
+    }
+}

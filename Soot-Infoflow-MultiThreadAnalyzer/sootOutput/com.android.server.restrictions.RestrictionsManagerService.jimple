@@ -1,0 +1,80 @@
+public final class com.android.server.restrictions.RestrictionsManagerService extends com.android.server.SystemService
+{
+    static final java.lang.String LOG_TAG;
+    static final boolean DEBUG;
+    private final com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl mRestrictionsManagerImpl;
+
+    public void <init>(android.content.Context)
+    {
+        com.android.server.restrictions.RestrictionsManagerService this;
+        android.content.Context context;
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl $r0;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService;
+
+        context := @parameter0: android.content.Context;
+
+        specialinvoke this.<com.android.server.SystemService: void <init>(android.content.Context)>(context);
+
+        $r0 = new com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl;
+
+        specialinvoke $r0.<com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl: void <init>(com.android.server.restrictions.RestrictionsManagerService,android.content.Context)>(this, context);
+
+        this.<com.android.server.restrictions.RestrictionsManagerService: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl mRestrictionsManagerImpl> = $r0;
+
+        return;
+    }
+
+    public void onStart()
+    {
+        com.android.server.restrictions.RestrictionsManagerService this;
+        com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl $r0;
+
+        this := @this: com.android.server.restrictions.RestrictionsManagerService;
+
+        $r0 = this.<com.android.server.restrictions.RestrictionsManagerService: com.android.server.restrictions.RestrictionsManagerService$RestrictionsManagerImpl mRestrictionsManagerImpl>;
+
+        virtualinvoke this.<com.android.server.restrictions.RestrictionsManagerService: void publishBinderService(java.lang.String,android.os.IBinder)>("restrictions", $r0);
+
+        return;
+    }
+
+    static android.os.IBinder access$000(com.android.server.restrictions.RestrictionsManagerService, java.lang.String)
+    {
+        com.android.server.restrictions.RestrictionsManagerService x0;
+        java.lang.String x1;
+        android.os.IBinder $r0;
+
+        x0 := @parameter0: com.android.server.restrictions.RestrictionsManagerService;
+
+        x1 := @parameter1: java.lang.String;
+
+        $r0 = virtualinvoke x0.<com.android.server.restrictions.RestrictionsManagerService: android.os.IBinder getBinderService(java.lang.String)>(x1);
+
+        return $r0;
+    }
+
+    static android.os.IBinder access$100(com.android.server.restrictions.RestrictionsManagerService, java.lang.String)
+    {
+        com.android.server.restrictions.RestrictionsManagerService x0;
+        java.lang.String x1;
+        android.os.IBinder $r0;
+
+        x0 := @parameter0: com.android.server.restrictions.RestrictionsManagerService;
+
+        x1 := @parameter1: java.lang.String;
+
+        $r0 = virtualinvoke x0.<com.android.server.restrictions.RestrictionsManagerService: android.os.IBinder getBinderService(java.lang.String)>(x1);
+
+        return $r0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.restrictions.RestrictionsManagerService: boolean DEBUG> = 0;
+
+        <com.android.server.restrictions.RestrictionsManagerService: java.lang.String LOG_TAG> = "RestrictionsManagerService";
+
+        return;
+    }
+}

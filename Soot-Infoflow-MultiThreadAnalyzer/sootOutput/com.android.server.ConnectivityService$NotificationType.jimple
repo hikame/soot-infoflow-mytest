@@ -1,0 +1,84 @@
+final enum class com.android.server.ConnectivityService$NotificationType extends java.lang.Enum
+{
+    public static final enum com.android.server.ConnectivityService$NotificationType SIGN_IN;
+    public static final enum com.android.server.ConnectivityService$NotificationType NO_INTERNET;
+    private static final com.android.server.ConnectivityService$NotificationType[] $VALUES;
+
+    public static com.android.server.ConnectivityService$NotificationType[] values()
+    {
+        com.android.server.ConnectivityService$NotificationType[] $r0, $r2;
+        java.lang.Object $r1;
+
+        $r0 = <com.android.server.ConnectivityService$NotificationType: com.android.server.ConnectivityService$NotificationType[] $VALUES>;
+
+        $r1 = virtualinvoke $r0.<java.lang.Object: java.lang.Object clone()>();
+
+        $r2 = (com.android.server.ConnectivityService$NotificationType[]) $r1;
+
+        return $r2;
+    }
+
+    public static com.android.server.ConnectivityService$NotificationType valueOf(java.lang.String)
+    {
+        java.lang.String name;
+        java.lang.Enum $r0;
+        com.android.server.ConnectivityService$NotificationType $r1;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = staticinvoke <java.lang.Enum: java.lang.Enum valueOf(java.lang.Class,java.lang.String)>(class "com/android/server/ConnectivityService$NotificationType", name);
+
+        $r1 = (com.android.server.ConnectivityService$NotificationType) $r0;
+
+        return $r1;
+    }
+
+    private void <init>(java.lang.String, int)
+    {
+        com.android.server.ConnectivityService$NotificationType this;
+        java.lang.String l1;
+        int l2;
+
+        this := @this: com.android.server.ConnectivityService$NotificationType;
+
+        l1 := @parameter0: java.lang.String;
+
+        l2 := @parameter1: int;
+
+        specialinvoke this.<java.lang.Enum: void <init>(java.lang.String,int)>(l1, l2);
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        com.android.server.ConnectivityService$NotificationType $r0, $r1, $r3, $r4;
+        com.android.server.ConnectivityService$NotificationType[] $r2;
+
+        $r0 = new com.android.server.ConnectivityService$NotificationType;
+
+        specialinvoke $r0.<com.android.server.ConnectivityService$NotificationType: void <init>(java.lang.String,int)>("SIGN_IN", 0);
+
+        <com.android.server.ConnectivityService$NotificationType: com.android.server.ConnectivityService$NotificationType SIGN_IN> = $r0;
+
+        $r1 = new com.android.server.ConnectivityService$NotificationType;
+
+        specialinvoke $r1.<com.android.server.ConnectivityService$NotificationType: void <init>(java.lang.String,int)>("NO_INTERNET", 1);
+
+        <com.android.server.ConnectivityService$NotificationType: com.android.server.ConnectivityService$NotificationType NO_INTERNET> = $r1;
+
+        $r2 = newarray (com.android.server.ConnectivityService$NotificationType)[2];
+
+        $r3 = <com.android.server.ConnectivityService$NotificationType: com.android.server.ConnectivityService$NotificationType SIGN_IN>;
+
+        $r2[0] = $r3;
+
+        $r4 = <com.android.server.ConnectivityService$NotificationType: com.android.server.ConnectivityService$NotificationType NO_INTERNET>;
+
+        $r2[1] = $r4;
+
+        <com.android.server.ConnectivityService$NotificationType: com.android.server.ConnectivityService$NotificationType[] $VALUES> = $r2;
+
+        return;
+    }
+}

@@ -1,0 +1,4961 @@
+public class com.android.server.AppOpsService extends com.android.internal.app.IAppOpsService$Stub
+{
+    static final java.lang.String TAG;
+    static final boolean DEBUG;
+    static final long WRITE_DELAY;
+    android.content.Context mContext;
+    final android.util.AtomicFile mFile;
+    final android.os.Handler mHandler;
+    boolean mWriteScheduled;
+    boolean mFastWriteScheduled;
+    final java.lang.Runnable mWriteRunner;
+    final android.util.SparseArray mUidOps;
+    private final android.util.SparseArray mOpRestrictions;
+    final android.util.SparseArray mOpModeWatchers;
+    final android.util.ArrayMap mPackageModeWatchers;
+    final android.util.ArrayMap mModeWatchers;
+    final android.util.SparseArray mAudioRestrictions;
+    final android.util.ArrayMap mClients;
+
+    public void <init>(java.io.File, android.os.Handler)
+    {
+        com.android.server.AppOpsService this;
+        java.io.File storagePath;
+        android.os.Handler handler;
+        com.android.server.AppOpsService$1 $r0;
+        android.util.SparseArray $r1, $r2, $r3, $r6;
+        android.util.ArrayMap $r4, $r5, $r7;
+        android.util.AtomicFile $r8;
+
+        this := @this: com.android.server.AppOpsService;
+
+        storagePath := @parameter0: java.io.File;
+
+        handler := @parameter1: android.os.Handler;
+
+        specialinvoke this.<com.android.internal.app.IAppOpsService$Stub: void <init>()>();
+
+        $r0 = new com.android.server.AppOpsService$1;
+
+        specialinvoke $r0.<com.android.server.AppOpsService$1: void <init>(com.android.server.AppOpsService)>(this);
+
+        this.<com.android.server.AppOpsService: java.lang.Runnable mWriteRunner> = $r0;
+
+        $r1 = new android.util.SparseArray;
+
+        specialinvoke $r1.<android.util.SparseArray: void <init>()>();
+
+        this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps> = $r1;
+
+        $r2 = new android.util.SparseArray;
+
+        specialinvoke $r2.<android.util.SparseArray: void <init>()>();
+
+        this.<com.android.server.AppOpsService: android.util.SparseArray mOpRestrictions> = $r2;
+
+        $r3 = new android.util.SparseArray;
+
+        specialinvoke $r3.<android.util.SparseArray: void <init>()>();
+
+        this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers> = $r3;
+
+        $r4 = new android.util.ArrayMap;
+
+        specialinvoke $r4.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers> = $r4;
+
+        $r5 = new android.util.ArrayMap;
+
+        specialinvoke $r5.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers> = $r5;
+
+        $r6 = new android.util.SparseArray;
+
+        specialinvoke $r6.<android.util.SparseArray: void <init>()>();
+
+        this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions> = $r6;
+
+        $r7 = new android.util.ArrayMap;
+
+        specialinvoke $r7.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.AppOpsService: android.util.ArrayMap mClients> = $r7;
+
+        $r8 = new android.util.AtomicFile;
+
+        specialinvoke $r8.<android.util.AtomicFile: void <init>(java.io.File)>(storagePath);
+
+        this.<com.android.server.AppOpsService: android.util.AtomicFile mFile> = $r8;
+
+        this.<com.android.server.AppOpsService: android.os.Handler mHandler> = handler;
+
+        virtualinvoke this.<com.android.server.AppOpsService: void readState()>();
+
+        return;
+    }
+
+    public void publish(android.content.Context)
+    {
+        com.android.server.AppOpsService this;
+        android.content.Context context;
+        android.os.IBinder $r0;
+
+        this := @this: com.android.server.AppOpsService;
+
+        context := @parameter0: android.content.Context;
+
+        this.<com.android.server.AppOpsService: android.content.Context mContext> = context;
+
+        $r0 = virtualinvoke this.<com.android.server.AppOpsService: android.os.IBinder asBinder()>();
+
+        staticinvoke <android.os.ServiceManager: void addService(java.lang.String,android.os.IBinder)>("appops", $r0);
+
+        return;
+    }
+
+    public void systemReady()
+    {
+        com.android.server.AppOpsService this, l1;
+        java.util.HashMap pkgs;
+        java.util.Iterator it;
+        com.android.server.AppOpsService$Ops ops;
+        android.content.pm.PackageManager$NameNotFoundException e, $r19;
+        java.lang.Throwable l9, $r20;
+        android.util.SparseArray $r1, $r2, $r6;
+        int $i0, $i1, $i2, $i3, $i4, $i5, i#2, curUid#3;
+        java.lang.Object $r3, $r5;
+        java.util.Collection $r4;
+        boolean $z0, changed#1;
+        android.content.pm.PackageManager $r7;
+        android.content.Context $r8;
+        java.lang.String $r9, $r13, $r16;
+        java.lang.StringBuilder $r10, $r11, $r12, $r14, $r15, $r17, $r18;
+
+        this := @this: com.android.server.AppOpsService;
+
+        l1 = this;
+
+        entermonitor this;
+
+     label01:
+        changed#1 = 0;
+
+        i#2 = 0;
+
+     label02:
+        $r1 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $i0 = virtualinvoke $r1.<android.util.SparseArray: int size()>();
+
+        if i#2 >= $i0 goto label11;
+
+        $r2 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r3 = virtualinvoke $r2.<android.util.SparseArray: java.lang.Object valueAt(int)>(i#2);
+
+        pkgs = (java.util.HashMap) $r3;
+
+        $r4 = virtualinvoke pkgs.<java.util.HashMap: java.util.Collection values()>();
+
+        it = interfaceinvoke $r4.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label03:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label09;
+
+        $r5 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+
+        ops = (com.android.server.AppOpsService$Ops) $r5;
+
+     label04:
+        $r8 = this.<com.android.server.AppOpsService: android.content.Context mContext>;
+
+        $r7 = virtualinvoke $r8.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r9 = ops.<com.android.server.AppOpsService$Ops: java.lang.String packageName>;
+
+        $i2 = ops.<com.android.server.AppOpsService$Ops: int uid>;
+
+        $i3 = staticinvoke <android.os.UserHandle: int getUserId(int)>($i2);
+
+        curUid#3 = virtualinvoke $r7.<android.content.pm.PackageManager: int getPackageUid(java.lang.String,int)>($r9, $i3);
+
+     label05:
+        goto label07;
+
+     label06:
+        $r19 := @caughtexception;
+
+        e = $r19;
+
+        curUid#3 = -1;
+
+     label07:
+        $i4 = ops.<com.android.server.AppOpsService$Ops: int uid>;
+
+        if curUid#3 == $i4 goto label08;
+
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Pruning old package ");
+
+        $r13 = ops.<com.android.server.AppOpsService$Ops: java.lang.String packageName>;
+
+        $r14 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+
+        $r12 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $i5 = ops.<com.android.server.AppOpsService$Ops: int uid>;
+
+        $r17 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+
+        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": new uid=");
+
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(curUid#3);
+
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("AppOps", $r16);
+
+        interfaceinvoke it.<java.util.Iterator: void remove()>();
+
+        changed#1 = 1;
+
+     label08:
+        goto label03;
+
+     label09:
+        $i1 = virtualinvoke pkgs.<java.util.HashMap: int size()>();
+
+        if $i1 > 0 goto label10;
+
+        $r6 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r6.<android.util.SparseArray: void removeAt(int)>(i#2);
+
+     label10:
+        i#2 = i#2 + 1;
+
+        goto label02;
+
+     label11:
+        if changed#1 == 0 goto label12;
+
+        specialinvoke this.<com.android.server.AppOpsService: void scheduleFastWriteLocked()>();
+
+     label12:
+        exitmonitor l1;
+
+     label13:
+        goto label16;
+
+     label14:
+        $r20 := @caughtexception;
+
+        l9 = $r20;
+
+        exitmonitor l1;
+
+     label15:
+        throw l9;
+
+     label16:
+        return;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label04 to label05 with label06;
+        catch java.lang.Throwable from label01 to label13 with label14;
+        catch java.lang.Throwable from label14 to label15 with label14;
+    }
+
+    public void packageRemoved(int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l3;
+        int uid, $i0;
+        java.lang.String packageName;
+        java.util.HashMap pkgs;
+        java.lang.Throwable l5, $r5;
+        android.util.SparseArray $r1, $r4;
+        java.lang.Object $r2, $r3;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        l3 = this;
+
+        entermonitor this;
+
+     label1:
+        $r1 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r2 = virtualinvoke $r1.<android.util.SparseArray: java.lang.Object get(int)>(uid);
+
+        pkgs = (java.util.HashMap) $r2;
+
+        if pkgs == null goto label3;
+
+        $r3 = virtualinvoke pkgs.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>(packageName);
+
+        if $r3 == null goto label3;
+
+        $i0 = virtualinvoke pkgs.<java.util.HashMap: int size()>();
+
+        if $i0 > 0 goto label2;
+
+        $r4 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r4.<android.util.SparseArray: void remove(int)>(uid);
+
+     label2:
+        specialinvoke this.<com.android.server.AppOpsService: void scheduleFastWriteLocked()>();
+
+     label3:
+        exitmonitor l3;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r5 := @caughtexception;
+
+        l5 = $r5;
+
+        exitmonitor l3;
+
+     label6:
+        throw l5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void uidRemoved(int)
+    {
+        com.android.server.AppOpsService this, l2;
+        int uid, $i0;
+        java.lang.Throwable l3, $r3;
+        android.util.SparseArray $r1, $r2;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        l2 = this;
+
+        entermonitor this;
+
+     label1:
+        $r1 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $i0 = virtualinvoke $r1.<android.util.SparseArray: int indexOfKey(int)>(uid);
+
+        if $i0 < 0 goto label2;
+
+        $r2 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r2.<android.util.SparseArray: void remove(int)>(uid);
+
+        specialinvoke this.<com.android.server.AppOpsService: void scheduleFastWriteLocked()>();
+
+     label2:
+        exitmonitor l2;
+
+     label3:
+        goto label6;
+
+     label4:
+        $r3 := @caughtexception;
+
+        l3 = $r3;
+
+        exitmonitor l2;
+
+     label5:
+        throw l3;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void shutdown()
+    {
+        com.android.server.AppOpsService this, l2;
+        java.lang.Throwable l3, $r1;
+        boolean $z0, doWrite#1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", "Writing app ops before shutdown...");
+
+        doWrite#1 = 0;
+
+        l2 = this;
+
+        entermonitor this;
+
+     label1:
+        $z0 = this.<com.android.server.AppOpsService: boolean mWriteScheduled>;
+
+        if $z0 == 0 goto label2;
+
+        this.<com.android.server.AppOpsService: boolean mWriteScheduled> = 0;
+
+        doWrite#1 = 1;
+
+     label2:
+        exitmonitor l2;
+
+     label3:
+        goto label6;
+
+     label4:
+        $r1 := @caughtexception;
+
+        l3 = $r1;
+
+        exitmonitor l2;
+
+     label5:
+        throw l3;
+
+     label6:
+        if doWrite#1 == 0 goto label7;
+
+        virtualinvoke this.<com.android.server.AppOpsService: void writeState()>();
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    private java.util.ArrayList collectOps(com.android.server.AppOpsService$Ops, int[])
+    {
+        com.android.server.AppOpsService this;
+        com.android.server.AppOpsService$Ops pkgOps;
+        int[] ops;
+        int $i0, $i1, $i2, $i5, $i6, $i7, $i8, $i11, $i12, j#2, j#4;
+        java.lang.Object $r0, $r4;
+        android.app.AppOpsManager$OpEntry $r1, $r5;
+        long $l3, $l4, $l9, $l10;
+        java.util.ArrayList $r2, $r3, resOps#1;
+        com.android.server.AppOpsService$Op curOp#3, curOp#5;
+
+        this := @this: com.android.server.AppOpsService;
+
+        pkgOps := @parameter0: com.android.server.AppOpsService$Ops;
+
+        ops := @parameter1: int[];
+
+        resOps#1 = null;
+
+        if ops != null goto label3;
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        resOps#1 = $r2;
+
+        j#2 = 0;
+
+     label1:
+        $i7 = virtualinvoke pkgOps.<com.android.server.AppOpsService$Ops: int size()>();
+
+        if j#2 >= $i7 goto label2;
+
+        $r4 = virtualinvoke pkgOps.<com.android.server.AppOpsService$Ops: java.lang.Object valueAt(int)>(j#2);
+
+        curOp#3 = (com.android.server.AppOpsService$Op) $r4;
+
+        $r5 = new android.app.AppOpsManager$OpEntry;
+
+        $i11 = curOp#3.<com.android.server.AppOpsService$Op: int op>;
+
+        $i12 = curOp#3.<com.android.server.AppOpsService$Op: int mode>;
+
+        $l9 = curOp#3.<com.android.server.AppOpsService$Op: long time>;
+
+        $l10 = curOp#3.<com.android.server.AppOpsService$Op: long rejectTime>;
+
+        $i8 = curOp#3.<com.android.server.AppOpsService$Op: int duration>;
+
+        specialinvoke $r5.<android.app.AppOpsManager$OpEntry: void <init>(int,int,long,long,int)>($i11, $i12, $l9, $l10, $i8);
+
+        virtualinvoke resOps#1.<java.util.ArrayList: boolean add(java.lang.Object)>($r5);
+
+        j#2 = j#2 + 1;
+
+        goto label1;
+
+     label2:
+        goto label7;
+
+     label3:
+        j#4 = 0;
+
+     label4:
+        $i0 = lengthof ops;
+
+        if j#4 >= $i0 goto label7;
+
+        $i1 = ops[j#4];
+
+        $r0 = virtualinvoke pkgOps.<com.android.server.AppOpsService$Ops: java.lang.Object get(int)>($i1);
+
+        curOp#5 = (com.android.server.AppOpsService$Op) $r0;
+
+        if curOp#5 == null goto label6;
+
+        if resOps#1 != null goto label5;
+
+        $r3 = new java.util.ArrayList;
+
+        specialinvoke $r3.<java.util.ArrayList: void <init>()>();
+
+        resOps#1 = $r3;
+
+     label5:
+        $r1 = new android.app.AppOpsManager$OpEntry;
+
+        $i6 = curOp#5.<com.android.server.AppOpsService$Op: int op>;
+
+        $i5 = curOp#5.<com.android.server.AppOpsService$Op: int mode>;
+
+        $l4 = curOp#5.<com.android.server.AppOpsService$Op: long time>;
+
+        $l3 = curOp#5.<com.android.server.AppOpsService$Op: long rejectTime>;
+
+        $i2 = curOp#5.<com.android.server.AppOpsService$Op: int duration>;
+
+        specialinvoke $r1.<android.app.AppOpsManager$OpEntry: void <init>(int,int,long,long,int)>($i6, $i5, $l4, $l3, $i2);
+
+        virtualinvoke resOps#1.<java.util.ArrayList: boolean add(java.lang.Object)>($r1);
+
+     label6:
+        j#4 = j#4 + 1;
+
+        goto label4;
+
+     label7:
+        return resOps#1;
+    }
+
+    public java.util.List getPackagesForOps(int[])
+    {
+        com.android.server.AppOpsService this, l3;
+        int[] ops;
+        java.util.HashMap packages;
+        java.util.Iterator i$;
+        com.android.server.AppOpsService$Ops pkgOps;
+        java.util.ArrayList resOps, $r10, res#1;
+        android.app.AppOpsManager$PackageOps resPackage, $r7;
+        java.lang.Throwable l10, $r9;
+        android.content.Context $r0;
+        int $i0, $i1, $i2, $i3, i#2;
+        android.util.SparseArray $r2, $r3;
+        java.util.Collection $r4;
+        java.lang.Object $r5, $r6;
+        boolean $z0;
+        java.lang.String $r8;
+
+        this := @this: com.android.server.AppOpsService;
+
+        ops := @parameter0: int[];
+
+        $r0 = this.<com.android.server.AppOpsService: android.content.Context mContext>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        $i1 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        virtualinvoke $r0.<android.content.Context: void enforcePermission(java.lang.String,int,int,java.lang.String)>("android.permission.GET_APP_OPS_STATS", $i0, $i1, null);
+
+        res#1 = null;
+
+        l3 = this;
+
+        entermonitor this;
+
+     label01:
+        i#2 = 0;
+
+     label02:
+        $r2 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $i2 = virtualinvoke $r2.<android.util.SparseArray: int size()>();
+
+        if i#2 >= $i2 goto label07;
+
+        $r3 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r5 = virtualinvoke $r3.<android.util.SparseArray: java.lang.Object valueAt(int)>(i#2);
+
+        packages = (java.util.HashMap) $r5;
+
+        $r4 = virtualinvoke packages.<java.util.HashMap: java.util.Collection values()>();
+
+        i$ = interfaceinvoke $r4.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label03:
+        $z0 = interfaceinvoke i$.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label06;
+
+        $r6 = interfaceinvoke i$.<java.util.Iterator: java.lang.Object next()>();
+
+        pkgOps = (com.android.server.AppOpsService$Ops) $r6;
+
+        resOps = specialinvoke this.<com.android.server.AppOpsService: java.util.ArrayList collectOps(com.android.server.AppOpsService$Ops,int[])>(pkgOps, ops);
+
+        if resOps == null goto label05;
+
+        if res#1 != null goto label04;
+
+        $r10 = new java.util.ArrayList;
+
+        specialinvoke $r10.<java.util.ArrayList: void <init>()>();
+
+        res#1 = $r10;
+
+     label04:
+        $r7 = new android.app.AppOpsManager$PackageOps;
+
+        $r8 = pkgOps.<com.android.server.AppOpsService$Ops: java.lang.String packageName>;
+
+        $i3 = pkgOps.<com.android.server.AppOpsService$Ops: int uid>;
+
+        specialinvoke $r7.<android.app.AppOpsManager$PackageOps: void <init>(java.lang.String,int,java.util.List)>($r8, $i3, resOps);
+
+        resPackage = $r7;
+
+        virtualinvoke res#1.<java.util.ArrayList: boolean add(java.lang.Object)>(resPackage);
+
+     label05:
+        goto label03;
+
+     label06:
+        i#2 = i#2 + 1;
+
+        goto label02;
+
+     label07:
+        exitmonitor l3;
+
+     label08:
+        goto label11;
+
+     label09:
+        $r9 := @caughtexception;
+
+        l10 = $r9;
+
+        exitmonitor l3;
+
+     label10:
+        throw l10;
+
+     label11:
+        return res#1;
+
+        catch java.lang.Throwable from label01 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public java.util.List getOpsForPackage(int, java.lang.String, int[])
+    {
+        com.android.server.AppOpsService this, l4;
+        int uid, $i0, $i1, $i2;
+        java.lang.String packageName, $r4;
+        int[] ops;
+        com.android.server.AppOpsService$Ops pkgOps;
+        java.util.ArrayList resOps, res, $r2;
+        android.app.AppOpsManager$PackageOps resPackage, $r3;
+        java.lang.Throwable l9, $r5;
+        android.content.Context $r0;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        ops := @parameter2: int[];
+
+        $r0 = this.<com.android.server.AppOpsService: android.content.Context mContext>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        $i1 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        virtualinvoke $r0.<android.content.Context: void enforcePermission(java.lang.String,int,int,java.lang.String)>("android.permission.GET_APP_OPS_STATS", $i0, $i1, null);
+
+        l4 = this;
+
+        entermonitor this;
+
+     label1:
+        pkgOps = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsLocked(int,java.lang.String,boolean)>(uid, packageName, 0);
+
+        if pkgOps != null goto label3;
+
+        exitmonitor l4;
+
+     label2:
+        return null;
+
+     label3:
+        resOps = specialinvoke this.<com.android.server.AppOpsService: java.util.ArrayList collectOps(com.android.server.AppOpsService$Ops,int[])>(pkgOps, ops);
+
+        if resOps != null goto label5;
+
+        exitmonitor l4;
+
+     label4:
+        return null;
+
+     label5:
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        res = $r2;
+
+        $r3 = new android.app.AppOpsManager$PackageOps;
+
+        $r4 = pkgOps.<com.android.server.AppOpsService$Ops: java.lang.String packageName>;
+
+        $i2 = pkgOps.<com.android.server.AppOpsService$Ops: int uid>;
+
+        specialinvoke $r3.<android.app.AppOpsManager$PackageOps: void <init>(java.lang.String,int,java.util.List)>($r4, $i2, resOps);
+
+        resPackage = $r3;
+
+        virtualinvoke res.<java.util.ArrayList: boolean add(java.lang.Object)>(resPackage);
+
+        exitmonitor l4;
+
+     label6:
+        return res;
+
+     label7:
+        $r5 := @caughtexception;
+
+        l9 = $r5;
+
+        exitmonitor l4;
+
+     label8:
+        throw l9;
+
+        catch java.lang.Throwable from label1 to label2 with label7;
+        catch java.lang.Throwable from label3 to label4 with label7;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    private void pruneOp(com.android.server.AppOpsService$Op, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this;
+        com.android.server.AppOpsService$Op op;
+        int uid, $i4, $i5, $i6;
+        java.lang.String packageName, $r2;
+        com.android.server.AppOpsService$Ops ops;
+        java.util.HashMap pkgOps;
+        long $l0, $l2;
+        byte $b1, $b3;
+        android.util.SparseArray $r0, $r4;
+        java.lang.Object $r1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        op := @parameter0: com.android.server.AppOpsService$Op;
+
+        uid := @parameter1: int;
+
+        packageName := @parameter2: java.lang.String;
+
+        $l0 = op.<com.android.server.AppOpsService$Op: long time>;
+
+        $b1 = $l0 cmp 0L;
+
+        if $b1 != 0 goto label1;
+
+        $l2 = op.<com.android.server.AppOpsService$Op: long rejectTime>;
+
+        $b3 = $l2 cmp 0L;
+
+        if $b3 != 0 goto label1;
+
+        ops = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsLocked(int,java.lang.String,boolean)>(uid, packageName, 0);
+
+        if ops == null goto label1;
+
+        $i4 = op.<com.android.server.AppOpsService$Op: int op>;
+
+        virtualinvoke ops.<com.android.server.AppOpsService$Ops: void remove(int)>($i4);
+
+        $i5 = virtualinvoke ops.<com.android.server.AppOpsService$Ops: int size()>();
+
+        if $i5 > 0 goto label1;
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r1 = virtualinvoke $r0.<android.util.SparseArray: java.lang.Object get(int)>(uid);
+
+        pkgOps = (java.util.HashMap) $r1;
+
+        if pkgOps == null goto label1;
+
+        $r2 = ops.<com.android.server.AppOpsService$Ops: java.lang.String packageName>;
+
+        virtualinvoke pkgOps.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($r2);
+
+        $i6 = virtualinvoke pkgOps.<java.util.HashMap: int size()>();
+
+        if $i6 > 0 goto label1;
+
+        $r4 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r4.<android.util.SparseArray: void remove(int)>(uid);
+
+     label1:
+        return;
+    }
+
+    public void setMode(int, int, java.lang.String, int)
+    {
+        com.android.server.AppOpsService this, i#4;
+        int uid, mode, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, code#1, code#3, i#8;
+        java.lang.String packageName;
+        java.lang.Throwable l9, $r12;
+        java.lang.Object $r1, $r6, $r7;
+        com.android.internal.app.IAppOpsCallback $r2;
+        com.android.server.AppOpsService$Callback $r3;
+        android.util.SparseArray $r4;
+        android.util.ArrayMap $r5;
+        java.util.ArrayList $r8, $r10, repCbs#2, cbs#6, cbs#7;
+        android.content.Context $r9;
+        android.os.RemoteException $r11, op#9;
+        com.android.server.AppOpsService$Op op#5;
+
+        this := @this: com.android.server.AppOpsService;
+
+        code#1 := @parameter0: int;
+
+        uid := @parameter1: int;
+
+        packageName := @parameter2: java.lang.String;
+
+        mode := @parameter3: int;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        $i1 = staticinvoke <android.os.Process: int myPid()>();
+
+        if $i0 == $i1 goto label01;
+
+        $r9 = this.<com.android.server.AppOpsService: android.content.Context mContext>;
+
+        $i7 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        $i6 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        virtualinvoke $r9.<android.content.Context: void enforcePermission(java.lang.String,int,int,java.lang.String)>("android.permission.UPDATE_APP_OPS_STATS", $i7, $i6, null);
+
+     label01:
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingOp(int)>(code#1);
+
+        repCbs#2 = null;
+
+        code#3 = staticinvoke <android.app.AppOpsManager: int opToSwitch(int)>(code#1);
+
+        i#4 = this;
+
+        entermonitor this;
+
+     label02:
+        op#5 = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(int,int,java.lang.String,boolean)>(code#3, uid, packageName, 1);
+
+        if op#5 == null goto label08;
+
+        $i3 = op#5.<com.android.server.AppOpsService$Op: int mode>;
+
+        if $i3 == mode goto label08;
+
+        op#5.<com.android.server.AppOpsService$Op: int mode> = mode;
+
+        $r4 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $r6 = virtualinvoke $r4.<android.util.SparseArray: java.lang.Object get(int)>(code#3);
+
+        cbs#6 = (java.util.ArrayList) $r6;
+
+        if cbs#6 == null goto label04;
+
+        if repCbs#2 != null goto label03;
+
+        $r10 = new java.util.ArrayList;
+
+        specialinvoke $r10.<java.util.ArrayList: void <init>()>();
+
+        repCbs#2 = $r10;
+
+     label03:
+        virtualinvoke repCbs#2.<java.util.ArrayList: boolean addAll(java.util.Collection)>(cbs#6);
+
+     label04:
+        $r5 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $r7 = virtualinvoke $r5.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(packageName);
+
+        cbs#7 = (java.util.ArrayList) $r7;
+
+        if cbs#7 == null goto label06;
+
+        if repCbs#2 != null goto label05;
+
+        $r8 = new java.util.ArrayList;
+
+        specialinvoke $r8.<java.util.ArrayList: void <init>()>();
+
+        repCbs#2 = $r8;
+
+     label05:
+        virtualinvoke repCbs#2.<java.util.ArrayList: boolean addAll(java.util.Collection)>(cbs#7);
+
+     label06:
+        $i4 = op#5.<com.android.server.AppOpsService$Op: int op>;
+
+        $i5 = staticinvoke <android.app.AppOpsManager: int opToDefaultMode(int)>($i4);
+
+        if mode != $i5 goto label07;
+
+        specialinvoke this.<com.android.server.AppOpsService: void pruneOp(com.android.server.AppOpsService$Op,int,java.lang.String)>(op#5, uid, packageName);
+
+     label07:
+        specialinvoke this.<com.android.server.AppOpsService: void scheduleFastWriteLocked()>();
+
+     label08:
+        exitmonitor i#4;
+
+     label09:
+        goto label12;
+
+     label10:
+        $r12 := @caughtexception;
+
+        l9 = $r12;
+
+        exitmonitor i#4;
+
+     label11:
+        throw l9;
+
+     label12:
+        if repCbs#2 == null goto label18;
+
+        i#8 = 0;
+
+     label13:
+        $i2 = virtualinvoke repCbs#2.<java.util.ArrayList: int size()>();
+
+        if i#8 >= $i2 goto label18;
+
+     label14:
+        $r1 = virtualinvoke repCbs#2.<java.util.ArrayList: java.lang.Object get(int)>(i#8);
+
+        $r3 = (com.android.server.AppOpsService$Callback) $r1;
+
+        $r2 = $r3.<com.android.server.AppOpsService$Callback: com.android.internal.app.IAppOpsCallback mCallback>;
+
+        interfaceinvoke $r2.<com.android.internal.app.IAppOpsCallback: void opChanged(int,java.lang.String)>(code#3, packageName);
+
+     label15:
+        goto label17;
+
+     label16:
+        $r11 := @caughtexception;
+
+        op#9 = $r11;
+
+     label17:
+        i#8 = i#8 + 1;
+
+        goto label13;
+
+     label18:
+        return;
+
+        catch java.lang.Throwable from label02 to label09 with label10;
+        catch java.lang.Throwable from label10 to label11 with label10;
+        catch android.os.RemoteException from label14 to label15 with label16;
+    }
+
+    private static java.util.HashMap addCallbacks(java.util.HashMap, java.lang.String, int, java.util.ArrayList)
+    {
+        java.lang.String packageName;
+        int op, $i0, i#2;
+        java.util.ArrayList cbs, $r4, reports#3;
+        com.android.server.AppOpsService$Callback cb;
+        java.lang.Object $r0, $r1;
+        android.util.Pair $r2;
+        java.lang.Integer $r3;
+        java.util.HashMap $r6, callbacks#1;
+
+        callbacks#1 := @parameter0: java.util.HashMap;
+
+        packageName := @parameter1: java.lang.String;
+
+        op := @parameter2: int;
+
+        cbs := @parameter3: java.util.ArrayList;
+
+        if cbs != null goto label1;
+
+        return callbacks#1;
+
+     label1:
+        if callbacks#1 != null goto label2;
+
+        $r6 = new java.util.HashMap;
+
+        specialinvoke $r6.<java.util.HashMap: void <init>()>();
+
+        callbacks#1 = $r6;
+
+     label2:
+        i#2 = 0;
+
+     label3:
+        $i0 = virtualinvoke cbs.<java.util.ArrayList: int size()>();
+
+        if i#2 >= $i0 goto label5;
+
+        $r0 = virtualinvoke cbs.<java.util.ArrayList: java.lang.Object get(int)>(i#2);
+
+        cb = (com.android.server.AppOpsService$Callback) $r0;
+
+        $r1 = virtualinvoke callbacks#1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(cb);
+
+        reports#3 = (java.util.ArrayList) $r1;
+
+        if reports#3 != null goto label4;
+
+        $r4 = new java.util.ArrayList;
+
+        specialinvoke $r4.<java.util.ArrayList: void <init>()>();
+
+        reports#3 = $r4;
+
+        virtualinvoke callbacks#1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(cb, reports#3);
+
+     label4:
+        $r2 = new android.util.Pair;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(op);
+
+        specialinvoke $r2.<android.util.Pair: void <init>(java.lang.Object,java.lang.Object)>(packageName, $r3);
+
+        virtualinvoke reports#3.<java.util.ArrayList: boolean add(java.lang.Object)>($r2);
+
+        i#2 = i#2 + 1;
+
+        goto label3;
+
+     label5:
+        return callbacks#1;
+    }
+
+    public void resetAllModes(int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, i$#4;
+        java.lang.String reqPackageName, $r11, packageName#10;
+        int callingPid, callingUid, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, $i13, $i16, $i17, $i18, reqUserId#1, reqUserId#2, i#6, j#11, it#17;
+        com.android.server.AppOpsService$Ops pkgOps;
+        com.android.server.AppOpsService$Op curOp;
+        java.lang.Throwable l16, $r27;
+        android.content.Context $r0;
+        android.util.SparseArray $r2, $r12, $r18, $r23, $r28;
+        java.util.Set $r3, $r15;
+        boolean $z0, $z1, $z2, $z3, changed#5;
+        java.lang.Object $r4, $r5, $r6, $r9, $r10, $r13, $r14, $r16, $r17, $r19, $r20, $r22, $r26;
+        java.lang.Integer $r7;
+        com.android.internal.app.IAppOpsCallback $r8;
+        java.util.ArrayList $r21, $r24, packages#16;
+        long $l14, $l19;
+        byte $b15, $b20;
+        android.util.ArrayMap $r25;
+        android.os.RemoteException $r29, packageName#19;
+        java.util.HashMap callbacks#3, packages#7, callbacks#12;
+        java.util.Iterator it#8, i$#13;
+        java.util.Map$Entry ent#9, changed#14;
+        com.android.server.AppOpsService$Callback i#15;
+        android.util.Pair ent#18;
+
+        this := @this: com.android.server.AppOpsService;
+
+        reqUserId#1 := @parameter0: int;
+
+        reqPackageName := @parameter1: java.lang.String;
+
+        callingPid = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        callingUid = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $r0 = this.<com.android.server.AppOpsService: android.content.Context mContext>;
+
+        virtualinvoke $r0.<android.content.Context: void enforcePermission(java.lang.String,int,int,java.lang.String)>("android.permission.UPDATE_APP_OPS_STATS", callingPid, callingUid, null);
+
+        reqUserId#2 = staticinvoke <android.app.ActivityManager: int handleIncomingUser(int,int,int,boolean,boolean,java.lang.String,java.lang.String)>(callingPid, callingUid, reqUserId#1, 1, 1, "resetAllModes", null);
+
+        callbacks#3 = null;
+
+        i$#4 = this;
+
+        entermonitor this;
+
+     label01:
+        changed#5 = 0;
+
+        $r2 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $i0 = virtualinvoke $r2.<android.util.SparseArray: int size()>();
+
+        i#6 = $i0 - 1;
+
+     label02:
+        if i#6 < 0 goto label12;
+
+        $r12 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r14 = virtualinvoke $r12.<android.util.SparseArray: java.lang.Object valueAt(int)>(i#6);
+
+        packages#7 = (java.util.HashMap) $r14;
+
+        if reqUserId#2 == -1 goto label03;
+
+        $r28 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $i17 = virtualinvoke $r28.<android.util.SparseArray: int keyAt(int)>(i#6);
+
+        $i18 = staticinvoke <android.os.UserHandle: int getUserId(int)>($i17);
+
+        if reqUserId#2 == $i18 goto label03;
+
+        goto label11;
+
+     label03:
+        $r15 = virtualinvoke packages#7.<java.util.HashMap: java.util.Set entrySet()>();
+
+        it#8 = interfaceinvoke $r15.<java.util.Set: java.util.Iterator iterator()>();
+
+     label04:
+        $z1 = interfaceinvoke it#8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label10;
+
+        $r16 = interfaceinvoke it#8.<java.util.Iterator: java.lang.Object next()>();
+
+        ent#9 = (java.util.Map$Entry) $r16;
+
+        $r17 = interfaceinvoke ent#9.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        packageName#10 = (java.lang.String) $r17;
+
+        if reqPackageName == null goto label05;
+
+        $z3 = virtualinvoke reqPackageName.<java.lang.String: boolean equals(java.lang.Object)>(packageName#10);
+
+        if $z3 != 0 goto label05;
+
+        goto label04;
+
+     label05:
+        $r20 = interfaceinvoke ent#9.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        pkgOps = (com.android.server.AppOpsService$Ops) $r20;
+
+        $i5 = virtualinvoke pkgOps.<com.android.server.AppOpsService$Ops: int size()>();
+
+        j#11 = $i5 - 1;
+
+     label06:
+        if j#11 < 0 goto label08;
+
+        $r19 = virtualinvoke pkgOps.<com.android.server.AppOpsService$Ops: java.lang.Object valueAt(int)>(j#11);
+
+        curOp = (com.android.server.AppOpsService$Op) $r19;
+
+        $i8 = curOp.<com.android.server.AppOpsService$Op: int op>;
+
+        $z2 = staticinvoke <android.app.AppOpsManager: boolean opAllowsReset(int)>($i8);
+
+        if $z2 == 0 goto label07;
+
+        $i6 = curOp.<com.android.server.AppOpsService$Op: int mode>;
+
+        $i7 = curOp.<com.android.server.AppOpsService$Op: int op>;
+
+        $i12 = staticinvoke <android.app.AppOpsManager: int opToDefaultMode(int)>($i7);
+
+        if $i6 == $i12 goto label07;
+
+        $i11 = curOp.<com.android.server.AppOpsService$Op: int op>;
+
+        $i10 = staticinvoke <android.app.AppOpsManager: int opToDefaultMode(int)>($i11);
+
+        curOp.<com.android.server.AppOpsService$Op: int mode> = $i10;
+
+        changed#5 = 1;
+
+        $i13 = curOp.<com.android.server.AppOpsService$Op: int op>;
+
+        $r23 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $i9 = curOp.<com.android.server.AppOpsService$Op: int op>;
+
+        $r22 = virtualinvoke $r23.<android.util.SparseArray: java.lang.Object get(int)>($i9);
+
+        $r21 = (java.util.ArrayList) $r22;
+
+        callbacks#12 = staticinvoke <com.android.server.AppOpsService: java.util.HashMap addCallbacks(java.util.HashMap,java.lang.String,int,java.util.ArrayList)>(callbacks#3, packageName#10, $i13, $r21);
+
+        $i16 = curOp.<com.android.server.AppOpsService$Op: int op>;
+
+        $r25 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $r26 = virtualinvoke $r25.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(packageName#10);
+
+        $r24 = (java.util.ArrayList) $r26;
+
+        callbacks#3 = staticinvoke <com.android.server.AppOpsService: java.util.HashMap addCallbacks(java.util.HashMap,java.lang.String,int,java.util.ArrayList)>(callbacks#12, packageName#10, $i16, $r24);
+
+        $l14 = curOp.<com.android.server.AppOpsService$Op: long time>;
+
+        $b15 = $l14 cmp 0L;
+
+        if $b15 != 0 goto label07;
+
+        $l19 = curOp.<com.android.server.AppOpsService$Op: long rejectTime>;
+
+        $b20 = $l19 cmp 0L;
+
+        if $b20 != 0 goto label07;
+
+        virtualinvoke pkgOps.<com.android.server.AppOpsService$Ops: void removeAt(int)>(j#11);
+
+     label07:
+        j#11 = j#11 + -1;
+
+        goto label06;
+
+     label08:
+        $i4 = virtualinvoke pkgOps.<com.android.server.AppOpsService$Ops: int size()>();
+
+        if $i4 != 0 goto label09;
+
+        interfaceinvoke it#8.<java.util.Iterator: void remove()>();
+
+     label09:
+        goto label04;
+
+     label10:
+        $i3 = virtualinvoke packages#7.<java.util.HashMap: int size()>();
+
+        if $i3 != 0 goto label11;
+
+        $r18 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r18.<android.util.SparseArray: void removeAt(int)>(i#6);
+
+     label11:
+        i#6 = i#6 + -1;
+
+        goto label02;
+
+     label12:
+        if changed#5 == 0 goto label13;
+
+        specialinvoke this.<com.android.server.AppOpsService: void scheduleFastWriteLocked()>();
+
+     label13:
+        exitmonitor i$#4;
+
+     label14:
+        goto label17;
+
+     label15:
+        $r27 := @caughtexception;
+
+        l16 = $r27;
+
+        exitmonitor i$#4;
+
+     label16:
+        throw l16;
+
+     label17:
+        if callbacks#3 == null goto label25;
+
+        $r3 = virtualinvoke callbacks#3.<java.util.HashMap: java.util.Set entrySet()>();
+
+        i$#13 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label18:
+        $z0 = interfaceinvoke i$#13.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label25;
+
+        $r5 = interfaceinvoke i$#13.<java.util.Iterator: java.lang.Object next()>();
+
+        changed#14 = (java.util.Map$Entry) $r5;
+
+        $r4 = interfaceinvoke changed#14.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        i#15 = (com.android.server.AppOpsService$Callback) $r4;
+
+        $r6 = interfaceinvoke changed#14.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        packages#16 = (java.util.ArrayList) $r6;
+
+        it#17 = 0;
+
+     label19:
+        $i1 = virtualinvoke packages#16.<java.util.ArrayList: int size()>();
+
+        if it#17 >= $i1 goto label24;
+
+        $r9 = virtualinvoke packages#16.<java.util.ArrayList: java.lang.Object get(int)>(it#17);
+
+        ent#18 = (android.util.Pair) $r9;
+
+     label20:
+        $r8 = i#15.<com.android.server.AppOpsService$Callback: com.android.internal.app.IAppOpsCallback mCallback>;
+
+        $r10 = ent#18.<android.util.Pair: java.lang.Object second>;
+
+        $r7 = (java.lang.Integer) $r10;
+
+        $i2 = virtualinvoke $r7.<java.lang.Integer: int intValue()>();
+
+        $r13 = ent#18.<android.util.Pair: java.lang.Object first>;
+
+        $r11 = (java.lang.String) $r13;
+
+        interfaceinvoke $r8.<com.android.internal.app.IAppOpsCallback: void opChanged(int,java.lang.String)>($i2, $r11);
+
+     label21:
+        goto label23;
+
+     label22:
+        $r29 := @caughtexception;
+
+        packageName#19 = $r29;
+
+     label23:
+        it#17 = it#17 + 1;
+
+        goto label19;
+
+     label24:
+        goto label18;
+
+     label25:
+        return;
+
+        catch java.lang.Throwable from label01 to label14 with label15;
+        catch java.lang.Throwable from label15 to label16 with label15;
+        catch android.os.RemoteException from label20 to label21 with label22;
+    }
+
+    public void startWatchingMode(int, java.lang.String, com.android.internal.app.IAppOpsCallback)
+    {
+        com.android.server.AppOpsService this, l4;
+        java.lang.String packageName;
+        com.android.internal.app.IAppOpsCallback callback;
+        java.lang.Throwable l7, $r16;
+        android.util.ArrayMap $r1, $r4, $r8, $r15;
+        android.os.IBinder $r2, $r14;
+        java.lang.Object $r3, $r5, $r9;
+        java.util.ArrayList $r6, $r11, cbs#4, cbs#5;
+        android.util.SparseArray $r10, $r13;
+        com.android.server.AppOpsService$Callback $r12, cb#3;
+        int op#1, op#2;
+
+        this := @this: com.android.server.AppOpsService;
+
+        op#1 := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        callback := @parameter2: com.android.internal.app.IAppOpsCallback;
+
+        l4 = this;
+
+        entermonitor this;
+
+     label01:
+        op#2 = staticinvoke <android.app.AppOpsManager: int opToSwitch(int)>(op#1);
+
+        $r1 = this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers>;
+
+        $r2 = interfaceinvoke callback.<com.android.internal.app.IAppOpsCallback: android.os.IBinder asBinder()>();
+
+        $r3 = virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>($r2);
+
+        cb#3 = (com.android.server.AppOpsService$Callback) $r3;
+
+        if cb#3 != null goto label02;
+
+        $r12 = new com.android.server.AppOpsService$Callback;
+
+        specialinvoke $r12.<com.android.server.AppOpsService$Callback: void <init>(com.android.server.AppOpsService,com.android.internal.app.IAppOpsCallback)>(this, callback);
+
+        cb#3 = $r12;
+
+        $r15 = this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers>;
+
+        $r14 = interfaceinvoke callback.<com.android.internal.app.IAppOpsCallback: android.os.IBinder asBinder()>();
+
+        virtualinvoke $r15.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r14, cb#3);
+
+     label02:
+        if op#2 == -1 goto label04;
+
+        $r10 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $r9 = virtualinvoke $r10.<android.util.SparseArray: java.lang.Object get(int)>(op#2);
+
+        cbs#4 = (java.util.ArrayList) $r9;
+
+        if cbs#4 != null goto label03;
+
+        $r11 = new java.util.ArrayList;
+
+        specialinvoke $r11.<java.util.ArrayList: void <init>()>();
+
+        cbs#4 = $r11;
+
+        $r13 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        virtualinvoke $r13.<android.util.SparseArray: void put(int,java.lang.Object)>(op#2, cbs#4);
+
+     label03:
+        virtualinvoke cbs#4.<java.util.ArrayList: boolean add(java.lang.Object)>(cb#3);
+
+     label04:
+        if packageName == null goto label06;
+
+        $r4 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $r5 = virtualinvoke $r4.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(packageName);
+
+        cbs#5 = (java.util.ArrayList) $r5;
+
+        if cbs#5 != null goto label05;
+
+        $r6 = new java.util.ArrayList;
+
+        specialinvoke $r6.<java.util.ArrayList: void <init>()>();
+
+        cbs#5 = $r6;
+
+        $r8 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        virtualinvoke $r8.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(packageName, cbs#5);
+
+     label05:
+        virtualinvoke cbs#5.<java.util.ArrayList: boolean add(java.lang.Object)>(cb#3);
+
+     label06:
+        exitmonitor l4;
+
+     label07:
+        goto label10;
+
+     label08:
+        $r16 := @caughtexception;
+
+        l7 = $r16;
+
+        exitmonitor l4;
+
+     label09:
+        throw l7;
+
+     label10:
+        return;
+
+        catch java.lang.Throwable from label01 to label07 with label08;
+        catch java.lang.Throwable from label08 to label09 with label08;
+    }
+
+    public void stopWatchingMode(com.android.internal.app.IAppOpsCallback)
+    {
+        com.android.server.AppOpsService this, l2;
+        com.android.internal.app.IAppOpsCallback callback;
+        com.android.server.AppOpsService$Callback cb;
+        java.lang.Throwable l6, $r12;
+        android.util.ArrayMap $r1, $r5, $r7, $r9;
+        android.os.IBinder $r2;
+        java.lang.Object $r3, $r6, $r10;
+        android.util.SparseArray $r4, $r11, $r13;
+        int $i0, $i1, $i2, $i3, i#1, i#3;
+        java.util.ArrayList cbs#2, cbs#4;
+
+        this := @this: com.android.server.AppOpsService;
+
+        callback := @parameter0: com.android.internal.app.IAppOpsCallback;
+
+        l2 = this;
+
+        entermonitor this;
+
+     label01:
+        $r1 = this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers>;
+
+        $r2 = interfaceinvoke callback.<com.android.internal.app.IAppOpsCallback: android.os.IBinder asBinder()>();
+
+        $r3 = virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object remove(java.lang.Object)>($r2);
+
+        cb = (com.android.server.AppOpsService$Callback) $r3;
+
+        if cb == null goto label07;
+
+        virtualinvoke cb.<com.android.server.AppOpsService$Callback: void unlinkToDeath()>();
+
+        $r4 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $i0 = virtualinvoke $r4.<android.util.SparseArray: int size()>();
+
+        i#1 = $i0 - 1;
+
+     label02:
+        if i#1 < 0 goto label04;
+
+        $r11 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $r10 = virtualinvoke $r11.<android.util.SparseArray: java.lang.Object valueAt(int)>(i#1);
+
+        cbs#2 = (java.util.ArrayList) $r10;
+
+        virtualinvoke cbs#2.<java.util.ArrayList: boolean remove(java.lang.Object)>(cb);
+
+        $i3 = virtualinvoke cbs#2.<java.util.ArrayList: int size()>();
+
+        if $i3 > 0 goto label03;
+
+        $r13 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        virtualinvoke $r13.<android.util.SparseArray: void removeAt(int)>(i#1);
+
+     label03:
+        i#1 = i#1 + -1;
+
+        goto label02;
+
+     label04:
+        $r5 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $i1 = virtualinvoke $r5.<android.util.ArrayMap: int size()>();
+
+        i#3 = $i1 - 1;
+
+     label05:
+        if i#3 < 0 goto label07;
+
+        $r7 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $r6 = virtualinvoke $r7.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#3);
+
+        cbs#4 = (java.util.ArrayList) $r6;
+
+        virtualinvoke cbs#4.<java.util.ArrayList: boolean remove(java.lang.Object)>(cb);
+
+        $i2 = virtualinvoke cbs#4.<java.util.ArrayList: int size()>();
+
+        if $i2 > 0 goto label06;
+
+        $r9 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        virtualinvoke $r9.<android.util.ArrayMap: java.lang.Object removeAt(int)>(i#3);
+
+     label06:
+        i#3 = i#3 + -1;
+
+        goto label05;
+
+     label07:
+        exitmonitor l2;
+
+     label08:
+        goto label11;
+
+     label09:
+        $r12 := @caughtexception;
+
+        l6 = $r12;
+
+        exitmonitor l2;
+
+     label10:
+        throw l6;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label01 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public android.os.IBinder getToken(android.os.IBinder)
+    {
+        com.android.server.AppOpsService this, l2;
+        android.os.IBinder clientToken;
+        java.lang.Throwable l4, $r6;
+        android.util.ArrayMap $r1, $r4;
+        java.lang.Object $r2;
+        com.android.server.AppOpsService$ClientState $r3, cs#1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        clientToken := @parameter0: android.os.IBinder;
+
+        l2 = this;
+
+        entermonitor this;
+
+     label1:
+        $r1 = this.<com.android.server.AppOpsService: android.util.ArrayMap mClients>;
+
+        $r2 = virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(clientToken);
+
+        cs#1 = (com.android.server.AppOpsService$ClientState) $r2;
+
+        if cs#1 != null goto label2;
+
+        $r3 = new com.android.server.AppOpsService$ClientState;
+
+        specialinvoke $r3.<com.android.server.AppOpsService$ClientState: void <init>(com.android.server.AppOpsService,android.os.IBinder)>(this, clientToken);
+
+        cs#1 = $r3;
+
+        $r4 = this.<com.android.server.AppOpsService: android.util.ArrayMap mClients>;
+
+        virtualinvoke $r4.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(clientToken, cs#1);
+
+     label2:
+        exitmonitor l2;
+
+     label3:
+        return cs#1;
+
+     label4:
+        $r6 := @caughtexception;
+
+        l4 = $r6;
+
+        exitmonitor l2;
+
+     label5:
+        throw l4;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public int checkOperation(int, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l4;
+        int code, uid, $i0, $i1, $i2;
+        java.lang.String packageName;
+        com.android.server.AppOpsService$Op op;
+        java.lang.Throwable l6, $r1;
+        boolean $z0;
+
+        this := @this: com.android.server.AppOpsService;
+
+        code := @parameter0: int;
+
+        uid := @parameter1: int;
+
+        packageName := @parameter2: java.lang.String;
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingUid(int)>(uid);
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingOp(int)>(code);
+
+        l4 = this;
+
+        entermonitor this;
+
+     label1:
+        $z0 = specialinvoke this.<com.android.server.AppOpsService: boolean isOpRestricted(int,int,java.lang.String)>(uid, code, packageName);
+
+        if $z0 == 0 goto label3;
+
+        exitmonitor l4;
+
+     label2:
+        return 1;
+
+     label3:
+        $i0 = staticinvoke <android.app.AppOpsManager: int opToSwitch(int)>(code);
+
+        op = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(int,int,java.lang.String,boolean)>($i0, uid, packageName, 0);
+
+        if op != null goto label5;
+
+        $i2 = staticinvoke <android.app.AppOpsManager: int opToDefaultMode(int)>(code);
+
+        exitmonitor l4;
+
+     label4:
+        return $i2;
+
+     label5:
+        $i1 = op.<com.android.server.AppOpsService$Op: int mode>;
+
+        exitmonitor l4;
+
+     label6:
+        return $i1;
+
+     label7:
+        $r1 := @caughtexception;
+
+        l6 = $r1;
+
+        exitmonitor l4;
+
+     label8:
+        throw l6;
+
+        catch java.lang.Throwable from label1 to label2 with label7;
+        catch java.lang.Throwable from label3 to label4 with label7;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    public int checkAudioOperation(int, int, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l5;
+        int code, usage, uid, mode, $i0;
+        java.lang.String packageName;
+        java.lang.Throwable l7, $r1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        code := @parameter0: int;
+
+        usage := @parameter1: int;
+
+        uid := @parameter2: int;
+
+        packageName := @parameter3: java.lang.String;
+
+        l5 = this;
+
+        entermonitor this;
+
+     label1:
+        mode = specialinvoke this.<com.android.server.AppOpsService: int checkRestrictionLocked(int,int,int,java.lang.String)>(code, usage, uid, packageName);
+
+        if mode == 0 goto label3;
+
+        exitmonitor l5;
+
+     label2:
+        return mode;
+
+     label3:
+        exitmonitor l5;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r1 := @caughtexception;
+
+        l7 = $r1;
+
+        exitmonitor l5;
+
+     label6:
+        throw l7;
+
+     label7:
+        $i0 = virtualinvoke this.<com.android.server.AppOpsService: int checkOperation(int,int,java.lang.String)>(code, uid, packageName);
+
+        return $i0;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    private int checkRestrictionLocked(int, int, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this;
+        int code, usage, uid, $i0;
+        java.lang.String packageName;
+        android.util.SparseArray usageRestrictions, $r0;
+        com.android.server.AppOpsService$Restriction r;
+        java.lang.Object $r1, $r2;
+        android.util.ArraySet $r3;
+        boolean $z0;
+
+        this := @this: com.android.server.AppOpsService;
+
+        code := @parameter0: int;
+
+        usage := @parameter1: int;
+
+        uid := @parameter2: int;
+
+        packageName := @parameter3: java.lang.String;
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions>;
+
+        $r1 = virtualinvoke $r0.<android.util.SparseArray: java.lang.Object get(int)>(code);
+
+        usageRestrictions = (android.util.SparseArray) $r1;
+
+        if usageRestrictions == null goto label1;
+
+        $r2 = virtualinvoke usageRestrictions.<android.util.SparseArray: java.lang.Object get(int)>(usage);
+
+        r = (com.android.server.AppOpsService$Restriction) $r2;
+
+        if r == null goto label1;
+
+        $r3 = r.<com.android.server.AppOpsService$Restriction: android.util.ArraySet exceptionPackages>;
+
+        $z0 = virtualinvoke $r3.<android.util.ArraySet: boolean contains(java.lang.Object)>(packageName);
+
+        if $z0 != 0 goto label1;
+
+        $i0 = r.<com.android.server.AppOpsService$Restriction: int mode>;
+
+        return $i0;
+
+     label1:
+        return 0;
+    }
+
+    public void setAudioRestriction(int, int, int, int, java.lang.String[])
+    {
+        com.android.server.AppOpsService this, l6;
+        int code, usage, uid, mode, N, i#2;
+        java.lang.String[] exceptionPackages;
+        com.android.server.AppOpsService$Restriction r, $r3;
+        java.lang.String pkg, $r6;
+        java.lang.Throwable l12, $r9;
+        android.util.SparseArray $r1, $r7, $r8, usageRestrictions#1;
+        java.lang.Object $r2;
+        android.util.ArraySet $r4, $r5;
+
+        this := @this: com.android.server.AppOpsService;
+
+        code := @parameter0: int;
+
+        usage := @parameter1: int;
+
+        uid := @parameter2: int;
+
+        mode := @parameter3: int;
+
+        exceptionPackages := @parameter4: java.lang.String[];
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingUid(int)>(uid);
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingOp(int)>(code);
+
+        l6 = this;
+
+        entermonitor this;
+
+     label01:
+        $r1 = this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions>;
+
+        $r2 = virtualinvoke $r1.<android.util.SparseArray: java.lang.Object get(int)>(code);
+
+        usageRestrictions#1 = (android.util.SparseArray) $r2;
+
+        if usageRestrictions#1 != null goto label02;
+
+        $r8 = new android.util.SparseArray;
+
+        specialinvoke $r8.<android.util.SparseArray: void <init>()>();
+
+        usageRestrictions#1 = $r8;
+
+        $r7 = this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions>;
+
+        virtualinvoke $r7.<android.util.SparseArray: void put(int,java.lang.Object)>(code, usageRestrictions#1);
+
+     label02:
+        virtualinvoke usageRestrictions#1.<android.util.SparseArray: void remove(int)>(usage);
+
+        if mode == 0 goto label06;
+
+        $r3 = new com.android.server.AppOpsService$Restriction;
+
+        specialinvoke $r3.<com.android.server.AppOpsService$Restriction: void <init>(com.android.server.AppOpsService$1)>(null);
+
+        r = $r3;
+
+        r.<com.android.server.AppOpsService$Restriction: int mode> = mode;
+
+        if exceptionPackages == null goto label05;
+
+        N = lengthof exceptionPackages;
+
+        $r5 = new android.util.ArraySet;
+
+        specialinvoke $r5.<android.util.ArraySet: void <init>(int)>(N);
+
+        r.<com.android.server.AppOpsService$Restriction: android.util.ArraySet exceptionPackages> = $r5;
+
+        i#2 = 0;
+
+     label03:
+        if i#2 >= N goto label05;
+
+        pkg = exceptionPackages[i#2];
+
+        if pkg == null goto label04;
+
+        $r4 = r.<com.android.server.AppOpsService$Restriction: android.util.ArraySet exceptionPackages>;
+
+        $r6 = virtualinvoke pkg.<java.lang.String: java.lang.String trim()>();
+
+        virtualinvoke $r4.<android.util.ArraySet: boolean add(java.lang.Object)>($r6);
+
+     label04:
+        i#2 = i#2 + 1;
+
+        goto label03;
+
+     label05:
+        virtualinvoke usageRestrictions#1.<android.util.SparseArray: void put(int,java.lang.Object)>(usage, r);
+
+     label06:
+        exitmonitor l6;
+
+     label07:
+        goto label10;
+
+     label08:
+        $r9 := @caughtexception;
+
+        l12 = $r9;
+
+        exitmonitor l6;
+
+     label09:
+        throw l12;
+
+     label10:
+        return;
+
+        catch java.lang.Throwable from label01 to label07 with label08;
+        catch java.lang.Throwable from label08 to label09 with label08;
+    }
+
+    public int checkPackage(int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l3;
+        int uid;
+        java.lang.String packageName;
+        java.lang.Throwable l4, $r2;
+        com.android.server.AppOpsService$Ops $r1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        l3 = this;
+
+        entermonitor this;
+
+     label1:
+        $r1 = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsRawLocked(int,java.lang.String,boolean)>(uid, packageName, 1);
+
+        if $r1 == null goto label3;
+
+        exitmonitor l3;
+
+     label2:
+        return 0;
+
+     label3:
+        exitmonitor l3;
+
+     label4:
+        return 2;
+
+     label5:
+        $r2 := @caughtexception;
+
+        l4 = $r2;
+
+        exitmonitor l3;
+
+     label6:
+        throw l4;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public int noteOperation(int, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l4;
+        int code, uid, switchCode, $i0, $i2, $i4, $i5;
+        java.lang.String packageName, $r12;
+        com.android.server.AppOpsService$Ops ops;
+        com.android.server.AppOpsService$Op op, switchOp, $r14;
+        java.lang.Throwable l9, $r13;
+        boolean $z0;
+        long $l1, $l3, $l6;
+        java.lang.StringBuilder $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: com.android.server.AppOpsService;
+
+        code := @parameter0: int;
+
+        uid := @parameter1: int;
+
+        packageName := @parameter2: java.lang.String;
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingUid(int)>(uid);
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingOp(int)>(code);
+
+        l4 = this;
+
+        entermonitor this;
+
+     label01:
+        ops = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsLocked(int,java.lang.String,boolean)>(uid, packageName, 1);
+
+        if ops != null goto label03;
+
+        exitmonitor l4;
+
+     label02:
+        return 2;
+
+     label03:
+        op = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(com.android.server.AppOpsService$Ops,int,boolean)>(ops, code, 1);
+
+        $z0 = specialinvoke this.<com.android.server.AppOpsService: boolean isOpRestricted(int,int,java.lang.String)>(uid, code, packageName);
+
+        if $z0 == 0 goto label05;
+
+        exitmonitor l4;
+
+     label04:
+        return 1;
+
+     label05:
+        $i0 = op.<com.android.server.AppOpsService$Op: int duration>;
+
+        if $i0 != -1 goto label06;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Noting op not finished: uid ");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" pkg ");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(packageName);
+
+        $r5 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" code ");
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(code);
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" time=");
+
+        $l6 = op.<com.android.server.AppOpsService$Op: long time>;
+
+        $r10 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l6);
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" duration=");
+
+        $i5 = op.<com.android.server.AppOpsService$Op: int duration>;
+
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r12);
+
+     label06:
+        op.<com.android.server.AppOpsService$Op: int duration> = 0;
+
+        switchCode = staticinvoke <android.app.AppOpsManager: int opToSwitch(int)>(code);
+
+        if switchCode == code goto label07;
+
+        $r14 = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(com.android.server.AppOpsService$Ops,int,boolean)>(ops, switchCode, 1);
+
+        goto label08;
+
+     label07:
+        $r14 = op;
+
+     label08:
+        switchOp = $r14;
+
+        $i2 = switchOp.<com.android.server.AppOpsService$Op: int mode>;
+
+        if $i2 == 0 goto label10;
+
+        $l3 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        op.<com.android.server.AppOpsService$Op: long rejectTime> = $l3;
+
+        $i4 = switchOp.<com.android.server.AppOpsService$Op: int mode>;
+
+        exitmonitor l4;
+
+     label09:
+        return $i4;
+
+     label10:
+        $l1 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        op.<com.android.server.AppOpsService$Op: long time> = $l1;
+
+        op.<com.android.server.AppOpsService$Op: long rejectTime> = 0L;
+
+        exitmonitor l4;
+
+     label11:
+        return 0;
+
+     label12:
+        $r13 := @caughtexception;
+
+        l9 = $r13;
+
+        exitmonitor l4;
+
+     label13:
+        throw l9;
+
+        catch java.lang.Throwable from label01 to label02 with label12;
+        catch java.lang.Throwable from label03 to label04 with label12;
+        catch java.lang.Throwable from label05 to label09 with label12;
+        catch java.lang.Throwable from label10 to label11 with label12;
+        catch java.lang.Throwable from label12 to label13 with label12;
+    }
+
+    public int startOperation(android.os.IBinder, int, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l6;
+        android.os.IBinder token;
+        int code, uid, switchCode, $i0, $i1, $i2, $i3, $i6;
+        java.lang.String packageName;
+        com.android.server.AppOpsService$ClientState client;
+        com.android.server.AppOpsService$Ops ops;
+        com.android.server.AppOpsService$Op op, switchOp, $r4;
+        java.lang.Throwable l11, $r3;
+        boolean $z0;
+        java.util.ArrayList $r1, $r2;
+        long $l4, $l5;
+
+        this := @this: com.android.server.AppOpsService;
+
+        token := @parameter0: android.os.IBinder;
+
+        code := @parameter1: int;
+
+        uid := @parameter2: int;
+
+        packageName := @parameter3: java.lang.String;
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingUid(int)>(uid);
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingOp(int)>(code);
+
+        client = (com.android.server.AppOpsService$ClientState) token;
+
+        l6 = this;
+
+        entermonitor this;
+
+     label01:
+        ops = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsLocked(int,java.lang.String,boolean)>(uid, packageName, 1);
+
+        if ops != null goto label03;
+
+        exitmonitor l6;
+
+     label02:
+        return 2;
+
+     label03:
+        op = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(com.android.server.AppOpsService$Ops,int,boolean)>(ops, code, 1);
+
+        $z0 = specialinvoke this.<com.android.server.AppOpsService: boolean isOpRestricted(int,int,java.lang.String)>(uid, code, packageName);
+
+        if $z0 == 0 goto label05;
+
+        exitmonitor l6;
+
+     label04:
+        return 1;
+
+     label05:
+        switchCode = staticinvoke <android.app.AppOpsManager: int opToSwitch(int)>(code);
+
+        if switchCode == code goto label06;
+
+        $r4 = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(com.android.server.AppOpsService$Ops,int,boolean)>(ops, switchCode, 1);
+
+        goto label07;
+
+     label06:
+        $r4 = op;
+
+     label07:
+        switchOp = $r4;
+
+        $i0 = switchOp.<com.android.server.AppOpsService$Op: int mode>;
+
+        if $i0 == 0 goto label09;
+
+        $l5 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        op.<com.android.server.AppOpsService$Op: long rejectTime> = $l5;
+
+        $i6 = switchOp.<com.android.server.AppOpsService$Op: int mode>;
+
+        exitmonitor l6;
+
+     label08:
+        return $i6;
+
+     label09:
+        $i2 = op.<com.android.server.AppOpsService$Op: int nesting>;
+
+        if $i2 != 0 goto label10;
+
+        $l4 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        op.<com.android.server.AppOpsService$Op: long time> = $l4;
+
+        op.<com.android.server.AppOpsService$Op: long rejectTime> = 0L;
+
+        op.<com.android.server.AppOpsService$Op: int duration> = -1;
+
+     label10:
+        $i1 = op.<com.android.server.AppOpsService$Op: int nesting>;
+
+        $i3 = $i1 + 1;
+
+        op.<com.android.server.AppOpsService$Op: int nesting> = $i3;
+
+        $r1 = client.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        if $r1 == null goto label11;
+
+        $r2 = client.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>(op);
+
+     label11:
+        exitmonitor l6;
+
+     label12:
+        return 0;
+
+     label13:
+        $r3 := @caughtexception;
+
+        l11 = $r3;
+
+        exitmonitor l6;
+
+     label14:
+        throw l11;
+
+        catch java.lang.Throwable from label01 to label02 with label13;
+        catch java.lang.Throwable from label03 to label04 with label13;
+        catch java.lang.Throwable from label05 to label08 with label13;
+        catch java.lang.Throwable from label09 to label12 with label13;
+        catch java.lang.Throwable from label13 to label14 with label13;
+    }
+
+    public void finishOperation(android.os.IBinder, int, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l6;
+        android.os.IBinder token;
+        int code, uid, $i0, $i1;
+        java.lang.String packageName, $r7, $r12;
+        com.android.server.AppOpsService$ClientState client;
+        com.android.server.AppOpsService$Op op;
+        java.lang.Throwable l8, $r13;
+        java.util.ArrayList $r1, $r2;
+        boolean $z0;
+        java.lang.IllegalStateException $r3;
+        java.lang.StringBuilder $r4, $r5, $r6, $r8, $r9, $r10, $r11;
+
+        this := @this: com.android.server.AppOpsService;
+
+        token := @parameter0: android.os.IBinder;
+
+        code := @parameter1: int;
+
+        uid := @parameter2: int;
+
+        packageName := @parameter3: java.lang.String;
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingUid(int)>(uid);
+
+        specialinvoke this.<com.android.server.AppOpsService: void verifyIncomingOp(int)>(code);
+
+        client = (com.android.server.AppOpsService$ClientState) token;
+
+        l6 = this;
+
+        entermonitor this;
+
+     label1:
+        op = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(int,int,java.lang.String,boolean)>(code, uid, packageName, 1);
+
+        if op != null goto label3;
+
+        exitmonitor l6;
+
+     label2:
+        return;
+
+     label3:
+        $r1 = client.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        if $r1 == null goto label4;
+
+        $r2 = client.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        $z0 = virtualinvoke $r2.<java.util.ArrayList: boolean remove(java.lang.Object)>(op);
+
+        if $z0 != 0 goto label4;
+
+        $r3 = new java.lang.IllegalStateException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Operation not started: uid");
+
+        $i0 = op.<com.android.server.AppOpsService$Op: int uid>;
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" pkg=");
+
+        $r7 = op.<com.android.server.AppOpsService$Op: java.lang.String packageName>;
+
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" op=");
+
+        $i1 = op.<com.android.server.AppOpsService$Op: int op>;
+
+        $r11 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r12);
+
+        throw $r3;
+
+     label4:
+        virtualinvoke this.<com.android.server.AppOpsService: void finishOperationLocked(com.android.server.AppOpsService$Op)>(op);
+
+        exitmonitor l6;
+
+     label5:
+        goto label8;
+
+     label6:
+        $r13 := @caughtexception;
+
+        l8 = $r13;
+
+        exitmonitor l6;
+
+     label7:
+        throw l8;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label6;
+        catch java.lang.Throwable from label3 to label5 with label6;
+        catch java.lang.Throwable from label6 to label7 with label6;
+    }
+
+    void finishOperationLocked(com.android.server.AppOpsService$Op)
+    {
+        com.android.server.AppOpsService this;
+        com.android.server.AppOpsService$Op op;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i7, $i8, $i12, $i16;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13;
+        java.lang.String $r4, $r14;
+        long $l6, $l10, $l11, $l13, $l14, $l15, $l17;
+
+        this := @this: com.android.server.AppOpsService;
+
+        op := @parameter0: com.android.server.AppOpsService$Op;
+
+        $i0 = op.<com.android.server.AppOpsService$Op: int nesting>;
+
+        if $i0 > 1 goto label3;
+
+        $i3 = op.<com.android.server.AppOpsService$Op: int nesting>;
+
+        if $i3 != 1 goto label1;
+
+        $l11 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $l10 = op.<com.android.server.AppOpsService$Op: long time>;
+
+        $l13 = $l11 - $l10;
+
+        $i12 = (int) $l13;
+
+        op.<com.android.server.AppOpsService$Op: int duration> = $i12;
+
+        $l14 = op.<com.android.server.AppOpsService$Op: long time>;
+
+        $i16 = op.<com.android.server.AppOpsService$Op: int duration>;
+
+        $l17 = (long) $i16;
+
+        $l15 = $l14 + $l17;
+
+        op.<com.android.server.AppOpsService$Op: long time> = $l15;
+
+        goto label2;
+
+     label1:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Finishing op nesting under-run: uid ");
+
+        $i4 = op.<com.android.server.AppOpsService$Op: int uid>;
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i4);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" pkg ");
+
+        $r4 = op.<com.android.server.AppOpsService$Op: java.lang.String packageName>;
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" code ");
+
+        $i5 = op.<com.android.server.AppOpsService$Op: int op>;
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" time=");
+
+        $l6 = op.<com.android.server.AppOpsService$Op: long time>;
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l6);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" duration=");
+
+        $i7 = op.<com.android.server.AppOpsService$Op: int duration>;
+
+        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" nesting=");
+
+        $i8 = op.<com.android.server.AppOpsService$Op: int nesting>;
+
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i8);
+
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r14);
+
+     label2:
+        op.<com.android.server.AppOpsService$Op: int nesting> = 0;
+
+        goto label4;
+
+     label3:
+        $i1 = op.<com.android.server.AppOpsService$Op: int nesting>;
+
+        $i2 = $i1 - 1;
+
+        op.<com.android.server.AppOpsService$Op: int nesting> = $i2;
+
+     label4:
+        return;
+    }
+
+    private void verifyIncomingUid(int)
+    {
+        com.android.server.AppOpsService this;
+        int uid, $i0, $i1, $i2, $i3, $i4;
+        android.content.Context $r0;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        if uid != $i0 goto label1;
+
+        return;
+
+     label1:
+        $i1 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        $i2 = staticinvoke <android.os.Process: int myPid()>();
+
+        if $i1 != $i2 goto label2;
+
+        return;
+
+     label2:
+        $r0 = this.<com.android.server.AppOpsService: android.content.Context mContext>;
+
+        $i3 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        $i4 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        virtualinvoke $r0.<android.content.Context: void enforcePermission(java.lang.String,int,int,java.lang.String)>("android.permission.UPDATE_APP_OPS_STATS", $i3, $i4, null);
+
+        return;
+    }
+
+    private void verifyIncomingOp(int)
+    {
+        com.android.server.AppOpsService this;
+        int op;
+        java.lang.IllegalArgumentException $r0;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        java.lang.String $r4;
+
+        this := @this: com.android.server.AppOpsService;
+
+        op := @parameter0: int;
+
+        if op < 0 goto label1;
+
+        if op >= 48 goto label1;
+
+        return;
+
+     label1:
+        $r0 = new java.lang.IllegalArgumentException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bad operation #");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(op);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+
+        throw $r0;
+    }
+
+    private com.android.server.AppOpsService$Ops getOpsLocked(int, java.lang.String, boolean)
+    {
+        com.android.server.AppOpsService this;
+        int uid;
+        boolean edit;
+        com.android.server.AppOpsService$Ops $r0;
+        java.lang.String packageName#1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        packageName#1 := @parameter1: java.lang.String;
+
+        edit := @parameter2: boolean;
+
+        if uid != 0 goto label1;
+
+        packageName#1 = "root";
+
+        goto label2;
+
+     label1:
+        if uid != 2000 goto label2;
+
+        packageName#1 = "com.android.shell";
+
+     label2:
+        $r0 = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsRawLocked(int,java.lang.String,boolean)>(uid, packageName#1, edit);
+
+        return $r0;
+    }
+
+    private com.android.server.AppOpsService$Ops getOpsRawLocked(int, java.lang.String, boolean)
+    {
+        com.android.server.AppOpsService this;
+        int uid, $i0, $i1, $i2, pkgUid#4;
+        java.lang.String packageName, $r5, $r13;
+        boolean edit, $z0, isPrivileged#3, $z1;
+        long ident;
+        java.lang.Throwable l11, $r15;
+        android.util.SparseArray $r0, $r14;
+        java.lang.Object $r1, $r2;
+        com.android.server.AppOpsService$Ops $r3, ops#2;
+        android.content.pm.IPackageManager $r4;
+        java.lang.StringBuilder $r6, $r7, $r8, $r9, $r10, $r11, $r12;
+        java.util.HashMap $r16, pkgOps#1;
+        android.os.RemoteException $r17, appInfo#7;
+        android.content.pm.ApplicationInfo appInfo#5;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        edit := @parameter2: boolean;
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r1 = virtualinvoke $r0.<android.util.SparseArray: java.lang.Object get(int)>(uid);
+
+        pkgOps#1 = (java.util.HashMap) $r1;
+
+        if pkgOps#1 != null goto label02;
+
+        if edit != 0 goto label01;
+
+        return null;
+
+     label01:
+        $r16 = new java.util.HashMap;
+
+        specialinvoke $r16.<java.util.HashMap: void <init>()>();
+
+        pkgOps#1 = $r16;
+
+        $r14 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r14.<android.util.SparseArray: void put(int,java.lang.Object)>(uid, pkgOps#1);
+
+     label02:
+        $r2 = virtualinvoke pkgOps#1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(packageName);
+
+        ops#2 = (com.android.server.AppOpsService$Ops) $r2;
+
+        if ops#2 != null goto label17;
+
+        if edit != 0 goto label03;
+
+        return null;
+
+     label03:
+        isPrivileged#3 = 0;
+
+        if uid == 0 goto label16;
+
+        ident = staticinvoke <android.os.Binder: long clearCallingIdentity()>();
+
+     label04:
+        pkgUid#4 = -1;
+
+     label05:
+        $r4 = staticinvoke <android.app.ActivityThread: android.content.pm.IPackageManager getPackageManager()>();
+
+        $i0 = staticinvoke <android.os.UserHandle: int getUserId(int)>(uid);
+
+        appInfo#5 = interfaceinvoke $r4.<android.content.pm.IPackageManager: android.content.pm.ApplicationInfo getApplicationInfo(java.lang.String,int,int)>(packageName, 0, $i0);
+
+        if appInfo#5 == null goto label08;
+
+        pkgUid#4 = appInfo#5.<android.content.pm.ApplicationInfo: int uid>;
+
+        $i1 = appInfo#5.<android.content.pm.ApplicationInfo: int flags>;
+
+        $i2 = $i1 & 1073741824;
+
+        if $i2 == 0 goto label06;
+
+        $z1 = 1;
+
+        goto label07;
+
+     label06:
+        $z1 = 0;
+
+     label07:
+        isPrivileged#3 = $z1;
+
+        goto label09;
+
+     label08:
+        $r5 = "media";
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>(packageName);
+
+        if $z0 == 0 goto label09;
+
+        pkgUid#4 = 1013;
+
+        isPrivileged#3 = 0;
+
+     label09:
+        goto label11;
+
+     label10:
+        $r17 := @caughtexception;
+
+        appInfo#7 = $r17;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("AppOps", "Could not contact PackageManager", appInfo#7);
+
+     label11:
+        if pkgUid#4 == uid goto label13;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bad call: specified package ");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(packageName);
+
+        $r10 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" under uid ");
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(uid);
+
+        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" but it is really ");
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(pkgUid#4);
+
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r13);
+
+     label12:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        return null;
+
+     label13:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        goto label16;
+
+     label14:
+        $r15 := @caughtexception;
+
+        l11 = $r15;
+
+     label15:
+        staticinvoke <android.os.Binder: void restoreCallingIdentity(long)>(ident);
+
+        throw l11;
+
+     label16:
+        $r3 = new com.android.server.AppOpsService$Ops;
+
+        specialinvoke $r3.<com.android.server.AppOpsService$Ops: void <init>(java.lang.String,int,boolean)>(packageName, uid, isPrivileged#3);
+
+        ops#2 = $r3;
+
+        virtualinvoke pkgOps#1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(packageName, ops#2);
+
+     label17:
+        return ops#2;
+
+        catch android.os.RemoteException from label05 to label09 with label10;
+        catch java.lang.Throwable from label04 to label12 with label14;
+        catch java.lang.Throwable from label14 to label15 with label14;
+    }
+
+    private void scheduleWriteLocked()
+    {
+        com.android.server.AppOpsService this;
+        boolean $z0;
+        java.lang.Runnable $r0;
+        android.os.Handler $r1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        $z0 = this.<com.android.server.AppOpsService: boolean mWriteScheduled>;
+
+        if $z0 != 0 goto label1;
+
+        this.<com.android.server.AppOpsService: boolean mWriteScheduled> = 1;
+
+        $r1 = this.<com.android.server.AppOpsService: android.os.Handler mHandler>;
+
+        $r0 = this.<com.android.server.AppOpsService: java.lang.Runnable mWriteRunner>;
+
+        virtualinvoke $r1.<android.os.Handler: boolean postDelayed(java.lang.Runnable,long)>($r0, 1800000L);
+
+     label1:
+        return;
+    }
+
+    private void scheduleFastWriteLocked()
+    {
+        com.android.server.AppOpsService this;
+        boolean $z0;
+        java.lang.Runnable $r0, $r2;
+        android.os.Handler $r1, $r3;
+
+        this := @this: com.android.server.AppOpsService;
+
+        $z0 = this.<com.android.server.AppOpsService: boolean mFastWriteScheduled>;
+
+        if $z0 != 0 goto label1;
+
+        this.<com.android.server.AppOpsService: boolean mWriteScheduled> = 1;
+
+        this.<com.android.server.AppOpsService: boolean mFastWriteScheduled> = 1;
+
+        $r1 = this.<com.android.server.AppOpsService: android.os.Handler mHandler>;
+
+        $r0 = this.<com.android.server.AppOpsService: java.lang.Runnable mWriteRunner>;
+
+        virtualinvoke $r1.<android.os.Handler: void removeCallbacks(java.lang.Runnable)>($r0);
+
+        $r3 = this.<com.android.server.AppOpsService: android.os.Handler mHandler>;
+
+        $r2 = this.<com.android.server.AppOpsService: java.lang.Runnable mWriteRunner>;
+
+        virtualinvoke $r3.<android.os.Handler: boolean postDelayed(java.lang.Runnable,long)>($r2, 10000L);
+
+     label1:
+        return;
+    }
+
+    private com.android.server.AppOpsService$Op getOpLocked(int, int, java.lang.String, boolean)
+    {
+        com.android.server.AppOpsService this;
+        int code, uid;
+        java.lang.String packageName;
+        boolean edit;
+        com.android.server.AppOpsService$Ops ops;
+        com.android.server.AppOpsService$Op $r0;
+
+        this := @this: com.android.server.AppOpsService;
+
+        code := @parameter0: int;
+
+        uid := @parameter1: int;
+
+        packageName := @parameter2: java.lang.String;
+
+        edit := @parameter3: boolean;
+
+        ops = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsLocked(int,java.lang.String,boolean)>(uid, packageName, edit);
+
+        if ops != null goto label1;
+
+        return null;
+
+     label1:
+        $r0 = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Op getOpLocked(com.android.server.AppOpsService$Ops,int,boolean)>(ops, code, edit);
+
+        return $r0;
+    }
+
+    private com.android.server.AppOpsService$Op getOpLocked(com.android.server.AppOpsService$Ops, int, boolean)
+    {
+        com.android.server.AppOpsService this;
+        com.android.server.AppOpsService$Ops ops;
+        int code, $i0;
+        boolean edit;
+        java.lang.Object $r0;
+        com.android.server.AppOpsService$Op $r1, op#1;
+        java.lang.String $r2;
+
+        this := @this: com.android.server.AppOpsService;
+
+        ops := @parameter0: com.android.server.AppOpsService$Ops;
+
+        code := @parameter1: int;
+
+        edit := @parameter2: boolean;
+
+        $r0 = virtualinvoke ops.<com.android.server.AppOpsService$Ops: java.lang.Object get(int)>(code);
+
+        op#1 = (com.android.server.AppOpsService$Op) $r0;
+
+        if op#1 != null goto label2;
+
+        if edit != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r1 = new com.android.server.AppOpsService$Op;
+
+        $i0 = ops.<com.android.server.AppOpsService$Ops: int uid>;
+
+        $r2 = ops.<com.android.server.AppOpsService$Ops: java.lang.String packageName>;
+
+        specialinvoke $r1.<com.android.server.AppOpsService$Op: void <init>(int,java.lang.String,int)>($i0, $r2, code);
+
+        op#1 = $r1;
+
+        virtualinvoke ops.<com.android.server.AppOpsService$Ops: void put(int,java.lang.Object)>(code, op#1);
+
+     label2:
+        if edit == 0 goto label3;
+
+        specialinvoke this.<com.android.server.AppOpsService: void scheduleWriteLocked()>();
+
+     label3:
+        return op#1;
+    }
+
+    private boolean isOpRestricted(int, int, java.lang.String)
+    {
+        com.android.server.AppOpsService this, l6;
+        int uid, code, userHandle;
+        java.lang.String packageName;
+        boolean[] opRestrictions;
+        com.android.server.AppOpsService$Ops ops;
+        java.lang.Throwable l8, $r3;
+        android.util.SparseArray $r0;
+        java.lang.Object $r1;
+        boolean $z0, $z1, $z2;
+
+        this := @this: com.android.server.AppOpsService;
+
+        uid := @parameter0: int;
+
+        code := @parameter1: int;
+
+        packageName := @parameter2: java.lang.String;
+
+        userHandle = staticinvoke <android.os.UserHandle: int getUserId(int)>(uid);
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpRestrictions>;
+
+        $r1 = virtualinvoke $r0.<android.util.SparseArray: java.lang.Object get(int)>(userHandle);
+
+        opRestrictions = (boolean[]) $r1;
+
+        if opRestrictions == null goto label8;
+
+        $z0 = opRestrictions[code];
+
+        if $z0 == 0 goto label8;
+
+        $z1 = staticinvoke <android.app.AppOpsManager: boolean opAllowSystemBypassRestriction(int)>(code);
+
+        if $z1 == 0 goto label7;
+
+        l6 = this;
+
+        entermonitor this;
+
+     label1:
+        ops = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsLocked(int,java.lang.String,boolean)>(uid, packageName, 1);
+
+        if ops == null goto label3;
+
+        $z2 = ops.<com.android.server.AppOpsService$Ops: boolean isPrivileged>;
+
+        if $z2 == 0 goto label3;
+
+        exitmonitor l6;
+
+     label2:
+        return 0;
+
+     label3:
+        exitmonitor l6;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r3 := @caughtexception;
+
+        l8 = $r3;
+
+        exitmonitor l6;
+
+     label6:
+        throw l8;
+
+     label7:
+        return 1;
+
+     label8:
+        return 0;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    void readState()
+    {
+        com.android.server.AppOpsService this, l2;
+        android.util.AtomicFile l1, $r0, $r2, $r53;
+        java.io.FileInputStream stream;
+        int outerDepth, $i0, $i1, $i3, type#4, type#5;
+        java.lang.String tagName, $r5, $r7, $r16, $r24, $r30, $r42, $r50, $r51, $r63;
+        java.lang.Throwable l9, l11, l12, $r10, $r23, $r60;
+        java.io.IOException l10, $r14, $r18, $r19, $r37, $r38, $r39, $r44, $r59, $r61, parser#7, parser#9, parser#11, parser#13, parser#15, parser#16, parser#17, parser#19;
+        android.util.SparseArray $r3, $r13, $r20, $r29, $r36, $r43, $r46, $r62;
+        boolean $z0, e#2, e#6;
+        java.lang.StringBuilder $r4, $r6, $r8, $r12, $r15, $r17, $r21, $r25, $r26, $r27, $r31, $r32, $r33, $r34, $r35, $r41, $r47, $r48, $r49, $r52, $r54, $r55, $r57, $r64, $r65;
+        java.lang.IllegalStateException $r9, $r58, parser#8;
+        java.lang.NullPointerException $r11, parser#10;
+        java.lang.NumberFormatException $r22, parser#12;
+        org.xmlpull.v1.XmlPullParserException $r28, parser#14;
+        java.lang.IndexOutOfBoundsException $r40, parser#18;
+        java.io.FileNotFoundException $r45, e#1;
+        java.io.File $r56;
+        org.xmlpull.v1.XmlPullParser parser#3;
+
+        this := @this: com.android.server.AppOpsService;
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.AtomicFile mFile>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label01:
+        l2 = this;
+
+        entermonitor this;
+
+     label02:
+        $r2 = this.<com.android.server.AppOpsService: android.util.AtomicFile mFile>;
+
+        stream = virtualinvoke $r2.<android.util.AtomicFile: java.io.FileInputStream openRead()>();
+
+     label03:
+        goto label07;
+
+     label04:
+        $r45 := @caughtexception;
+
+        $r47 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r47.<java.lang.StringBuilder: void <init>()>();
+
+        $r54 = virtualinvoke $r47.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("No existing app ops ");
+
+        $r53 = this.<com.android.server.AppOpsService: android.util.AtomicFile mFile>;
+
+        $r56 = virtualinvoke $r53.<android.util.AtomicFile: java.io.File getBaseFile()>();
+
+        $r55 = virtualinvoke $r54.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r56);
+
+        $r52 = virtualinvoke $r55.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; starting empty");
+
+        $r51 = virtualinvoke $r52.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("AppOps", $r51);
+
+        exitmonitor l2;
+
+     label05:
+        exitmonitor l1;
+
+     label06:
+        return;
+
+     label07:
+        parser#3 = staticinvoke <android.util.Xml: org.xmlpull.v1.XmlPullParser newPullParser()>();
+
+        interfaceinvoke parser#3.<org.xmlpull.v1.XmlPullParser: void setInput(java.io.InputStream,java.lang.String)>(stream, null);
+
+     label08:
+        $i0 = interfaceinvoke parser#3.<org.xmlpull.v1.XmlPullParser: int next()>();
+
+        type#4 = $i0;
+
+        if $i0 == 2 goto label09;
+
+        if type#4 == 1 goto label09;
+
+        goto label08;
+
+     label09:
+        if type#4 == 2 goto label10;
+
+        $r9 = new java.lang.IllegalStateException;
+
+        specialinvoke $r9.<java.lang.IllegalStateException: void <init>(java.lang.String)>("no start tag found");
+
+        throw $r9;
+
+     label10:
+        outerDepth = interfaceinvoke parser#3.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+     label11:
+        $i1 = interfaceinvoke parser#3.<org.xmlpull.v1.XmlPullParser: int next()>();
+
+        type#5 = $i1;
+
+        if $i1 == 1 goto label16;
+
+        if type#5 != 3 goto label12;
+
+        $i3 = interfaceinvoke parser#3.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+        if $i3 <= outerDepth goto label16;
+
+     label12:
+        if type#5 == 3 goto label11;
+
+        if type#5 != 4 goto label13;
+
+        goto label11;
+
+     label13:
+        tagName = interfaceinvoke parser#3.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $z0 = virtualinvoke tagName.<java.lang.String: boolean equals(java.lang.Object)>("pkg");
+
+        if $z0 == 0 goto label14;
+
+        virtualinvoke this.<com.android.server.AppOpsService: void readPackage(org.xmlpull.v1.XmlPullParser)>(parser#3);
+
+        goto label15;
+
+     label14:
+        $r4 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown element under <app-ops>: ");
+
+        $r5 = interfaceinvoke parser#3.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r7);
+
+        staticinvoke <com.android.internal.util.XmlUtils: void skipCurrentTag(org.xmlpull.v1.XmlPullParser)>(parser#3);
+
+     label15:
+        goto label11;
+
+     label16:
+        goto label17;
+
+     label17:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label18:
+        goto label56;
+
+     label19:
+        $r37 := @caughtexception;
+
+        goto label56;
+
+     label20:
+        $r58 := @caughtexception;
+
+        parser#8 = $r58;
+
+        $r57 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r57.<java.lang.StringBuilder: void <init>()>();
+
+        $r64 = virtualinvoke $r57.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed parsing ");
+
+        $r65 = virtualinvoke $r64.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(parser#8);
+
+        $r63 = virtualinvoke $r65.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r63);
+
+     label21:
+        $r62 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r62.<android.util.SparseArray: void clear()>();
+
+     label22:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label23:
+        goto label56;
+
+     label24:
+        $r18 := @caughtexception;
+
+        goto label56;
+
+     label25:
+        $r11 := @caughtexception;
+
+        parser#10 = $r11;
+
+        $r12 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r17 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed parsing ");
+
+        $r15 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(parser#10);
+
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r16);
+
+     label26:
+        $r20 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r20.<android.util.SparseArray: void clear()>();
+
+     label27:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label28:
+        goto label56;
+
+     label29:
+        $r14 := @caughtexception;
+
+        goto label56;
+
+     label30:
+        $r22 := @caughtexception;
+
+        parser#12 = $r22;
+
+        $r21 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r21.<java.lang.StringBuilder: void <init>()>();
+
+        $r26 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed parsing ");
+
+        $r25 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(parser#12);
+
+        $r24 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r24);
+
+     label31:
+        $r29 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r29.<android.util.SparseArray: void clear()>();
+
+     label32:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label33:
+        goto label56;
+
+     label34:
+        $r61 := @caughtexception;
+
+        goto label56;
+
+     label35:
+        $r28 := @caughtexception;
+
+        parser#14 = $r28;
+
+        $r27 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
+
+        $r32 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed parsing ");
+
+        $r31 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(parser#14);
+
+        $r30 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r30);
+
+     label36:
+        $r36 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r36.<android.util.SparseArray: void clear()>();
+
+     label37:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label38:
+        goto label56;
+
+     label39:
+        $r39 := @caughtexception;
+
+        goto label56;
+
+     label40:
+        $r38 := @caughtexception;
+
+        parser#16 = $r38;
+
+        $r33 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r33.<java.lang.StringBuilder: void <init>()>();
+
+        $r34 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed parsing ");
+
+        $r35 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(parser#16);
+
+        $r42 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r42);
+
+     label41:
+        $r43 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r43.<android.util.SparseArray: void clear()>();
+
+     label42:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label43:
+        goto label56;
+
+     label44:
+        $r19 := @caughtexception;
+
+        goto label56;
+
+     label45:
+        $r40 := @caughtexception;
+
+        parser#18 = $r40;
+
+        $r41 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw4()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw5()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw7()>();
+
+        specialinvoke $r41.<java.lang.StringBuilder: void <init>()>();
+
+        $r49 = virtualinvoke $r41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed parsing ");
+
+        $r48 = virtualinvoke $r49.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(parser#18);
+
+        $r50 = virtualinvoke $r48.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r50);
+
+     label46:
+        $r46 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r46.<android.util.SparseArray: void clear()>();
+
+     label47:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label48:
+        goto label56;
+
+     label49:
+        $r59 := @caughtexception;
+
+        goto label56;
+
+     label50:
+        $r10 := @caughtexception;
+
+        l9 = $r10;
+
+     label51:
+        $r13 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r13.<android.util.SparseArray: void clear()>();
+
+     label52:
+        virtualinvoke stream.<java.io.FileInputStream: void close()>();
+
+     label53:
+        goto label55;
+
+     label54:
+        $r44 := @caughtexception;
+
+     label55:
+        throw l9;
+
+     label56:
+        exitmonitor l2;
+
+     label57:
+        goto label60;
+
+     label58:
+        $r23 := @caughtexception;
+
+        l11 = $r23;
+
+        exitmonitor l2;
+
+     label59:
+        throw l11;
+
+     label60:
+        exitmonitor l1;
+
+     label61:
+        goto label64;
+
+     label62:
+        $r60 := @caughtexception;
+
+        l12 = $r60;
+
+        exitmonitor l1;
+
+     label63:
+        throw l12;
+
+     label64:
+        return;
+
+        catch java.io.FileNotFoundException from label02 to label03 with label04;
+        catch java.io.IOException from label17 to label18 with label19;
+        catch java.lang.IllegalStateException from label07 to label16 with label20;
+        catch java.io.IOException from label22 to label23 with label24;
+        catch java.lang.NullPointerException from label07 to label16 with label25;
+        catch java.io.IOException from label27 to label28 with label29;
+        catch java.lang.NumberFormatException from label07 to label16 with label30;
+        catch java.io.IOException from label32 to label33 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label07 to label16 with label35;
+        catch java.io.IOException from label37 to label38 with label39;
+        catch java.io.IOException from label07 to label16 with label40;
+        catch java.io.IOException from label42 to label43 with label44;
+        catch java.lang.IndexOutOfBoundsException from label07 to label16 with label45;
+        catch java.io.IOException from label47 to label48 with label49;
+        catch java.lang.Throwable from label07 to label16 with label50;
+        catch java.lang.Throwable from label20 to label21 with label50;
+        catch java.lang.Throwable from label25 to label26 with label50;
+        catch java.lang.Throwable from label30 to label31 with label50;
+        catch java.lang.Throwable from label35 to label36 with label50;
+        catch java.lang.Throwable from label40 to label41 with label50;
+        catch java.lang.Throwable from label45 to label46 with label50;
+        catch java.io.IOException from label52 to label53 with label54;
+        catch java.lang.Throwable from label50 to label51 with label50;
+        catch java.lang.Throwable from label02 to label05 with label58;
+        catch java.lang.Throwable from label07 to label57 with label58;
+        catch java.lang.Throwable from label58 to label59 with label58;
+        catch java.lang.Throwable from label01 to label06 with label62;
+        catch java.lang.Throwable from label07 to label61 with label62;
+        catch java.lang.Throwable from label62 to label63 with label62;
+    }
+
+    void readPackage(org.xmlpull.v1.XmlPullParser) throws java.lang.NumberFormatException, org.xmlpull.v1.XmlPullParserException, java.io.IOException
+    {
+        com.android.server.AppOpsService this;
+        org.xmlpull.v1.XmlPullParser parser;
+        java.lang.String pkgName, tagName, $r2, $r4;
+        int outerDepth, type, $i0, $i2;
+        boolean $z0;
+        java.lang.StringBuilder $r0, $r1, $r3;
+
+        this := @this: com.android.server.AppOpsService;
+
+        parser := @parameter0: org.xmlpull.v1.XmlPullParser;
+
+        pkgName = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "n");
+
+        outerDepth = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+     label1:
+        $i0 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int next()>();
+
+        type = $i0;
+
+        if $i0 == 1 goto label6;
+
+        if type != 3 goto label2;
+
+        $i2 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+        if $i2 <= outerDepth goto label6;
+
+     label2:
+        if type == 3 goto label1;
+
+        if type != 4 goto label3;
+
+        goto label1;
+
+     label3:
+        tagName = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $z0 = virtualinvoke tagName.<java.lang.String: boolean equals(java.lang.Object)>("uid");
+
+        if $z0 == 0 goto label4;
+
+        virtualinvoke this.<com.android.server.AppOpsService: void readUid(org.xmlpull.v1.XmlPullParser,java.lang.String)>(parser, pkgName);
+
+        goto label5;
+
+     label4:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown element under <pkg>: ");
+
+        $r2 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r4);
+
+        staticinvoke <com.android.internal.util.XmlUtils: void skipCurrentTag(org.xmlpull.v1.XmlPullParser)>(parser);
+
+     label5:
+        goto label1;
+
+     label6:
+        return;
+    }
+
+    void readUid(org.xmlpull.v1.XmlPullParser, java.lang.String) throws java.lang.NumberFormatException, org.xmlpull.v1.XmlPullParserException, java.io.IOException
+    {
+        com.android.server.AppOpsService this;
+        org.xmlpull.v1.XmlPullParser parser;
+        java.lang.String pkgName, isPrivilegedString, tagName, mode, dur, $r0, $r4, $r5, $r6, time#8, time#9;
+        int uid, $i0, $i2, $i3, $i6, $i7, $i8, $i9, $i10, $i12, packageManager#6, appInfo#7;
+        com.android.server.AppOpsService$Op op, $r7;
+        java.lang.StringBuilder $r1, $r2, $r3;
+        boolean $z0, isPrivileged#1, $z1;
+        java.lang.Object $r8, $r9;
+        android.util.SparseArray $r10, $r14;
+        java.util.HashMap $r12, pkgOps#10;
+        com.android.server.AppOpsService$Ops $r13, ops#11;
+        long $l4, $l5;
+        android.content.pm.IPackageManager $r15, packageManager#2;
+        android.os.RemoteException $r16, packageManager#5;
+        android.content.pm.ApplicationInfo appInfo#3;
+
+        this := @this: com.android.server.AppOpsService;
+
+        parser := @parameter0: org.xmlpull.v1.XmlPullParser;
+
+        pkgName := @parameter1: java.lang.String;
+
+        $r0 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "n");
+
+        uid = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        isPrivilegedString = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "p");
+
+        isPrivileged#1 = 0;
+
+        if isPrivilegedString != null goto label08;
+
+     label01:
+        packageManager#2 = staticinvoke <android.app.ActivityThread: android.content.pm.IPackageManager getPackageManager()>();
+
+        if packageManager#2 == null goto label05;
+
+        $r15 = staticinvoke <android.app.ActivityThread: android.content.pm.IPackageManager getPackageManager()>();
+
+        $i10 = staticinvoke <android.os.UserHandle: int getUserId(int)>(uid);
+
+        appInfo#3 = interfaceinvoke $r15.<android.content.pm.IPackageManager: android.content.pm.ApplicationInfo getApplicationInfo(java.lang.String,int,int)>(pkgName, 0, $i10);
+
+        if appInfo#3 == null goto label04;
+
+        $i9 = appInfo#3.<android.content.pm.ApplicationInfo: int flags>;
+
+        $i12 = $i9 & 1073741824;
+
+        if $i12 == 0 goto label02;
+
+        $z1 = 1;
+
+        goto label03;
+
+     label02:
+        $z1 = 0;
+
+     label03:
+        isPrivileged#1 = $z1;
+
+     label04:
+        goto label06;
+
+     label05:
+        return;
+
+     label06:
+        goto label09;
+
+     label07:
+        $r16 := @caughtexception;
+
+        packageManager#5 = $r16;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("AppOps", "Could not contact PackageManager", packageManager#5);
+
+        goto label09;
+
+     label08:
+        isPrivileged#1 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(isPrivilegedString);
+
+     label09:
+        packageManager#6 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+     label10:
+        $i0 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int next()>();
+
+        appInfo#7 = $i0;
+
+        if $i0 == 1 goto label21;
+
+        if appInfo#7 != 3 goto label11;
+
+        $i7 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: int getDepth()>();
+
+        if $i7 <= packageManager#6 goto label21;
+
+     label11:
+        if appInfo#7 == 3 goto label10;
+
+        if appInfo#7 != 4 goto label12;
+
+        goto label10;
+
+     label12:
+        tagName = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $z0 = virtualinvoke tagName.<java.lang.String: boolean equals(java.lang.Object)>("op");
+
+        if $z0 == 0 goto label19;
+
+        $r7 = new com.android.server.AppOpsService$Op;
+
+        $r6 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "n");
+
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r6);
+
+        specialinvoke $r7.<com.android.server.AppOpsService$Op: void <init>(int,java.lang.String,int)>(uid, pkgName, $i2);
+
+        op = $r7;
+
+        mode = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "m");
+
+        if mode == null goto label13;
+
+        $i8 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(mode);
+
+        op.<com.android.server.AppOpsService$Op: int mode> = $i8;
+
+     label13:
+        time#8 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "t");
+
+        if time#8 == null goto label14;
+
+        $l5 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>(time#8);
+
+        op.<com.android.server.AppOpsService$Op: long time> = $l5;
+
+     label14:
+        time#9 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "r");
+
+        if time#9 == null goto label15;
+
+        $l4 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>(time#9);
+
+        op.<com.android.server.AppOpsService$Op: long rejectTime> = $l4;
+
+     label15:
+        dur = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getAttributeValue(java.lang.String,java.lang.String)>(null, "d");
+
+        if dur == null goto label16;
+
+        $i6 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(dur);
+
+        op.<com.android.server.AppOpsService$Op: int duration> = $i6;
+
+     label16:
+        $r10 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r8 = virtualinvoke $r10.<android.util.SparseArray: java.lang.Object get(int)>(uid);
+
+        pkgOps#10 = (java.util.HashMap) $r8;
+
+        if pkgOps#10 != null goto label17;
+
+        $r12 = new java.util.HashMap;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw8()>();
+
+        specialinvoke $r12.<java.util.HashMap: void <init>()>();
+
+        pkgOps#10 = $r12;
+
+        $r14 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        virtualinvoke $r14.<android.util.SparseArray: void put(int,java.lang.Object)>(uid, pkgOps#10);
+
+     label17:
+        $r9 = virtualinvoke pkgOps#10.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(pkgName);
+
+        ops#11 = (com.android.server.AppOpsService$Ops) $r9;
+
+        if ops#11 != null goto label18;
+
+        $r13 = new com.android.server.AppOpsService$Ops;
+
+        specialinvoke $r13.<com.android.server.AppOpsService$Ops: void <init>(java.lang.String,int,boolean)>(pkgName, uid, isPrivileged#1);
+
+        ops#11 = $r13;
+
+        virtualinvoke pkgOps#10.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(pkgName, ops#11);
+
+     label18:
+        $i3 = op.<com.android.server.AppOpsService$Op: int op>;
+
+        virtualinvoke ops#11.<com.android.server.AppOpsService$Ops: void put(int,java.lang.Object)>($i3, op);
+
+        goto label20;
+
+     label19:
+        $r1 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw8()>();
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown element under <pkg>: ");
+
+        $r4 = interfaceinvoke parser.<org.xmlpull.v1.XmlPullParser: java.lang.String getName()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r5);
+
+        staticinvoke <com.android.internal.util.XmlUtils: void skipCurrentTag(org.xmlpull.v1.XmlPullParser)>(parser);
+
+     label20:
+        goto label10;
+
+     label21:
+        return;
+
+        catch android.os.RemoteException from label01 to label05 with label07;
+    }
+
+    void writeState()
+    {
+        com.android.server.AppOpsService this, ops#5;
+        android.util.AtomicFile l1, $r0, $r1, $r6, $r44;
+        java.util.List allOps, ops#8;
+        java.io.FileOutputStream stream;
+        android.app.AppOpsManager$PackageOps pkg;
+        int dur, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i10, i#4, ops#9;
+        java.lang.Throwable l14, $r41, $r42, op#7;
+        com.android.internal.util.FastXmlSerializer $r2, e#2;
+        java.lang.Boolean $r3;
+        java.lang.String $r8, $r11, $r12, $r15, $r21, $r23, $r25, $r28, $r29, $r32, $r43, lastPkg#3;
+        java.lang.Object $r9, $r18;
+        boolean $z0, $z1;
+        byte $b8, $b9;
+        java.lang.StringBuilder $r33, $r34, $r35;
+        java.io.IOException $r38, $r40, e#1, e#13;
+        com.android.server.AppOpsService$Ops ops#6;
+        android.app.AppOpsManager$OpEntry op#10;
+        long time#11, time#12;
+
+        this := @this: com.android.server.AppOpsService;
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.AtomicFile mFile>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label01:
+        allOps = virtualinvoke this.<com.android.server.AppOpsService: java.util.List getPackagesForOps(int[])>(null);
+
+     label02:
+        $r1 = this.<com.android.server.AppOpsService: android.util.AtomicFile mFile>;
+
+        stream = virtualinvoke $r1.<android.util.AtomicFile: java.io.FileOutputStream startWrite()>();
+
+     label03:
+        goto label06;
+
+     label04:
+        $r38 := @caughtexception;
+
+        e#1 = $r38;
+
+        $r33 = new java.lang.StringBuilder;
+
+        specialinvoke $r33.<java.lang.StringBuilder: void <init>()>();
+
+        $r35 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to write state: ");
+
+        $r34 = virtualinvoke $r35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e#1);
+
+        $r43 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String)>("AppOps", $r43);
+
+        exitmonitor l1;
+
+     label05:
+        return;
+
+     label06:
+        $r2 = new com.android.internal.util.FastXmlSerializer;
+
+        specialinvoke $r2.<com.android.internal.util.FastXmlSerializer: void <init>()>();
+
+        e#2 = $r2;
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: void setOutput(java.io.OutputStream,java.lang.String)>(stream, "utf-8");
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: void startDocument(java.lang.String,java.lang.Boolean)>(null, $r3);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer startTag(java.lang.String,java.lang.String)>(null, "app-ops");
+
+        if allOps == null goto label24;
+
+        lastPkg#3 = null;
+
+        i#4 = 0;
+
+     label07:
+        $i0 = interfaceinvoke allOps.<java.util.List: int size()>();
+
+        if i#4 >= $i0 goto label23;
+
+        $r9 = interfaceinvoke allOps.<java.util.List: java.lang.Object get(int)>(i#4);
+
+        pkg = (android.app.AppOpsManager$PackageOps) $r9;
+
+        $r8 = virtualinvoke pkg.<android.app.AppOpsManager$PackageOps: java.lang.String getPackageName()>();
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean equals(java.lang.Object)>(lastPkg#3);
+
+        if $z0 != 0 goto label09;
+
+        if lastPkg#3 == null goto label08;
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, "pkg");
+
+     label08:
+        lastPkg#3 = virtualinvoke pkg.<android.app.AppOpsManager$PackageOps: java.lang.String getPackageName()>();
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer startTag(java.lang.String,java.lang.String)>(null, "pkg");
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "n", lastPkg#3);
+
+     label09:
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer startTag(java.lang.String,java.lang.String)>(null, "uid");
+
+        $i1 = virtualinvoke pkg.<android.app.AppOpsManager$PackageOps: int getUid()>();
+
+        $r11 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i1);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "n", $r11);
+
+        ops#5 = this;
+
+        entermonitor this;
+
+     label10:
+        $i2 = virtualinvoke pkg.<android.app.AppOpsManager$PackageOps: int getUid()>();
+
+        $r12 = virtualinvoke pkg.<android.app.AppOpsManager$PackageOps: java.lang.String getPackageName()>();
+
+        ops#6 = specialinvoke this.<com.android.server.AppOpsService: com.android.server.AppOpsService$Ops getOpsLocked(int,java.lang.String,boolean)>($i2, $r12, 0);
+
+        if ops#6 == null goto label11;
+
+        $z1 = ops#6.<com.android.server.AppOpsService$Ops: boolean isPrivileged>;
+
+        $r29 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>($z1);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "p", $r29);
+
+        goto label12;
+
+     label11:
+        $r15 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(0);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "p", $r15);
+
+     label12:
+        exitmonitor ops#5;
+
+     label13:
+        goto label16;
+
+     label14:
+        $r42 := @caughtexception;
+
+        op#7 = $r42;
+
+        exitmonitor ops#5;
+
+     label15:
+        throw op#7;
+
+     label16:
+        ops#8 = virtualinvoke pkg.<android.app.AppOpsManager$PackageOps: java.util.List getOps()>();
+
+        ops#9 = 0;
+
+     label17:
+        $i3 = interfaceinvoke ops#8.<java.util.List: int size()>();
+
+        if ops#9 >= $i3 goto label22;
+
+        $r18 = interfaceinvoke ops#8.<java.util.List: java.lang.Object get(int)>(ops#9);
+
+        op#10 = (android.app.AppOpsManager$OpEntry) $r18;
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer startTag(java.lang.String,java.lang.String)>(null, "op");
+
+        $i4 = virtualinvoke op#10.<android.app.AppOpsManager$OpEntry: int getOp()>();
+
+        $r21 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i4);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "n", $r21);
+
+        $i7 = virtualinvoke op#10.<android.app.AppOpsManager$OpEntry: int getMode()>();
+
+        $i6 = virtualinvoke op#10.<android.app.AppOpsManager$OpEntry: int getOp()>();
+
+        $i5 = staticinvoke <android.app.AppOpsManager: int opToDefaultMode(int)>($i6);
+
+        if $i7 == $i5 goto label18;
+
+        $i10 = virtualinvoke op#10.<android.app.AppOpsManager$OpEntry: int getMode()>();
+
+        $r32 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i10);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "m", $r32);
+
+     label18:
+        time#11 = virtualinvoke op#10.<android.app.AppOpsManager$OpEntry: long getTime()>();
+
+        $b9 = time#11 cmp 0L;
+
+        if $b9 == 0 goto label19;
+
+        $r28 = staticinvoke <java.lang.Long: java.lang.String toString(long)>(time#11);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "t", $r28);
+
+     label19:
+        time#12 = virtualinvoke op#10.<android.app.AppOpsManager$OpEntry: long getRejectTime()>();
+
+        $b8 = time#12 cmp 0L;
+
+        if $b8 == 0 goto label20;
+
+        $r23 = staticinvoke <java.lang.Long: java.lang.String toString(long)>(time#12);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "r", $r23);
+
+     label20:
+        dur = virtualinvoke op#10.<android.app.AppOpsManager$OpEntry: int getDuration()>();
+
+        if dur == 0 goto label21;
+
+        $r25 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>(dur);
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer attribute(java.lang.String,java.lang.String,java.lang.String)>(null, "d", $r25);
+
+     label21:
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, "op");
+
+        ops#9 = ops#9 + 1;
+
+        goto label17;
+
+     label22:
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, "uid");
+
+        i#4 = i#4 + 1;
+
+        goto label07;
+
+     label23:
+        if lastPkg#3 == null goto label24;
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, "pkg");
+
+     label24:
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: org.xmlpull.v1.XmlSerializer endTag(java.lang.String,java.lang.String)>(null, "app-ops");
+
+        interfaceinvoke e#2.<org.xmlpull.v1.XmlSerializer: void endDocument()>();
+
+        $r6 = this.<com.android.server.AppOpsService: android.util.AtomicFile mFile>;
+
+        virtualinvoke $r6.<android.util.AtomicFile: void finishWrite(java.io.FileOutputStream)>(stream);
+
+     label25:
+        goto label27;
+
+     label26:
+        $r40 := @caughtexception;
+
+        e#13 = $r40;
+
+        staticinvoke <android.util.Slog: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("AppOps", "Failed to write state, restoring backup.", e#13);
+
+        $r44 = this.<com.android.server.AppOpsService: android.util.AtomicFile mFile>;
+
+        virtualinvoke $r44.<android.util.AtomicFile: void failWrite(java.io.FileOutputStream)>(stream);
+
+     label27:
+        exitmonitor l1;
+
+     label28:
+        goto label31;
+
+     label29:
+        $r41 := @caughtexception;
+
+        l14 = $r41;
+
+        exitmonitor l1;
+
+     label30:
+        throw l14;
+
+     label31:
+        return;
+
+        catch java.io.IOException from label02 to label03 with label04;
+        catch java.lang.Throwable from label10 to label13 with label14;
+        catch java.lang.Throwable from label14 to label15 with label14;
+        catch java.io.IOException from label06 to label25 with label26;
+        catch java.lang.Throwable from label01 to label05 with label29;
+        catch java.lang.Throwable from label06 to label28 with label29;
+        catch java.lang.Throwable from label29 to label30 with label29;
+    }
+
+    protected void dump(java.io.FileDescriptor, java.io.PrintWriter, java.lang.String[])
+    {
+        com.android.server.AppOpsService this, l4;
+        java.io.FileDescriptor fd;
+        java.io.PrintWriter pw;
+        java.lang.String[] args;
+        long now, $l12, $l14, $l15, $l19, $l20, $l21, $l22;
+        com.android.server.AppOpsService$Restriction r;
+        android.content.Context $r0;
+        java.lang.Throwable l16, $r63;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i16, $i17, $i18, $i23, $i24, $i25, $i26, $i27, $i28, $i29, $i30, $i31, $i32, $i33, $i34, $i35, $i36, $i37, $i38, $i39, $i40, i#2, j#4, i#5, j#7, i#8, i#9, j#11, callbacks#14, i#17, usage#18, j#19, i#20, i#24;
+        android.util.SparseArray $r2, $r6, $r7, $r8, $r10, $r16, $r17, $r20, $r46, $r54, $r56, op#16;
+        android.util.ArrayMap $r3, $r4, $r5, $r25, $r31, $r32, $r39, $r40, $r42, $r44, $r49, $r50;
+        java.util.Collection $r9;
+        java.lang.Object $r11, $r13, $r15, $r19, $r21, $r23, $r29, $r33, $r37, $r41, $r43, $r45, $r47, $r51, $r52, $r53;
+        java.lang.String $r12, $r14, $r18, $r24, $r34, $r35, $r48, $r55, $r57, j#15;
+        boolean $z0, $z1, needSep#1, i#13;
+        byte $b11, $b13;
+        android.util.ArraySet $r22, $r26, $r27;
+        java.util.ArrayList $r28, $r30, $r36, $r38, callbacks#3, callbacks#6;
+        java.lang.StringBuilder $r58, $r59, $r60, $r61, $r62;
+        com.android.server.AppOpsService$ClientState callbacks#10;
+        com.android.server.AppOpsService$Op op#12, usage#25;
+        java.util.HashMap callbacks#21;
+        java.util.Iterator j#22;
+        com.android.server.AppOpsService$Ops op#23;
+
+        this := @this: com.android.server.AppOpsService;
+
+        fd := @parameter0: java.io.FileDescriptor;
+
+        pw := @parameter1: java.io.PrintWriter;
+
+        args := @parameter2: java.lang.String[];
+
+        $r0 = this.<com.android.server.AppOpsService: android.content.Context mContext>;
+
+        $i0 = virtualinvoke $r0.<android.content.Context: int checkCallingOrSelfPermission(java.lang.String)>("android.permission.DUMP");
+
+        if $i0 == 0 goto label01;
+
+        $r62 = new java.lang.StringBuilder;
+
+        specialinvoke $r62.<java.lang.StringBuilder: void <init>()>();
+
+        $r61 = virtualinvoke $r62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Permission Denial: can\'t dump ApOps service from from pid=");
+
+        $i40 = staticinvoke <android.os.Binder: int getCallingPid()>();
+
+        $r60 = virtualinvoke $r61.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i40);
+
+        $r59 = virtualinvoke $r60.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", uid=");
+
+        $i39 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $r58 = virtualinvoke $r59.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i39);
+
+        $r57 = virtualinvoke $r58.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>($r57);
+
+        return;
+
+     label01:
+        l4 = this;
+
+        entermonitor this;
+
+     label02:
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("Current AppOps Service state:");
+
+        now = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        needSep#1 = 0;
+
+        $r2 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $i1 = virtualinvoke $r2.<android.util.SparseArray: int size()>();
+
+        if $i1 <= 0 goto label06;
+
+        needSep#1 = 1;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("  Op mode watchers:");
+
+        i#2 = 0;
+
+     label03:
+        $r46 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $i38 = virtualinvoke $r46.<android.util.SparseArray: int size()>();
+
+        if i#2 >= $i38 goto label06;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("    Op ");
+
+        $r56 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $i37 = virtualinvoke $r56.<android.util.SparseArray: int keyAt(int)>(i#2);
+
+        $r55 = staticinvoke <android.app.AppOpsManager: java.lang.String opToName(int)>($i37);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>($r55);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>(":");
+
+        $r54 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpModeWatchers>;
+
+        $r53 = virtualinvoke $r54.<android.util.SparseArray: java.lang.Object valueAt(int)>(i#2);
+
+        callbacks#3 = (java.util.ArrayList) $r53;
+
+        j#4 = 0;
+
+     label04:
+        $i36 = virtualinvoke callbacks#3.<java.util.ArrayList: int size()>();
+
+        if j#4 >= $i36 goto label05;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("      #");
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(int)>(j#4);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(": ");
+
+        $r52 = virtualinvoke callbacks#3.<java.util.ArrayList: java.lang.Object get(int)>(j#4);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.Object)>($r52);
+
+        j#4 = j#4 + 1;
+
+        goto label04;
+
+     label05:
+        i#2 = i#2 + 1;
+
+        goto label03;
+
+     label06:
+        $r3 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $i2 = virtualinvoke $r3.<android.util.ArrayMap: int size()>();
+
+        if $i2 <= 0 goto label10;
+
+        needSep#1 = 1;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("  Package mode watchers:");
+
+        i#5 = 0;
+
+     label07:
+        $r39 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $i33 = virtualinvoke $r39.<android.util.ArrayMap: int size()>();
+
+        if i#5 >= $i33 goto label10;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("    Pkg ");
+
+        $r50 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $r51 = virtualinvoke $r50.<android.util.ArrayMap: java.lang.Object keyAt(int)>(i#5);
+
+        $r48 = (java.lang.String) $r51;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>($r48);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>(":");
+
+        $r49 = this.<com.android.server.AppOpsService: android.util.ArrayMap mPackageModeWatchers>;
+
+        $r47 = virtualinvoke $r49.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#5);
+
+        callbacks#6 = (java.util.ArrayList) $r47;
+
+        j#7 = 0;
+
+     label08:
+        $i35 = virtualinvoke callbacks#6.<java.util.ArrayList: int size()>();
+
+        if j#7 >= $i35 goto label09;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("      #");
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(int)>(j#7);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(": ");
+
+        $r45 = virtualinvoke callbacks#6.<java.util.ArrayList: java.lang.Object get(int)>(j#7);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.Object)>($r45);
+
+        j#7 = j#7 + 1;
+
+        goto label08;
+
+     label09:
+        i#5 = i#5 + 1;
+
+        goto label07;
+
+     label10:
+        $r4 = this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers>;
+
+        $i3 = virtualinvoke $r4.<android.util.ArrayMap: int size()>();
+
+        if $i3 <= 0 goto label12;
+
+        needSep#1 = 1;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("  All mode watchers:");
+
+        i#8 = 0;
+
+     label11:
+        $r44 = this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers>;
+
+        $i34 = virtualinvoke $r44.<android.util.ArrayMap: int size()>();
+
+        if i#8 >= $i34 goto label12;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("    ");
+
+        $r42 = this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers>;
+
+        $r43 = virtualinvoke $r42.<android.util.ArrayMap: java.lang.Object keyAt(int)>(i#8);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.Object)>($r43);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(" -> ");
+
+        $r40 = this.<com.android.server.AppOpsService: android.util.ArrayMap mModeWatchers>;
+
+        $r41 = virtualinvoke $r40.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#8);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.Object)>($r41);
+
+        i#8 = i#8 + 1;
+
+        goto label11;
+
+     label12:
+        $r5 = this.<com.android.server.AppOpsService: android.util.ArrayMap mClients>;
+
+        $i4 = virtualinvoke $r5.<android.util.ArrayMap: int size()>();
+
+        if $i4 <= 0 goto label16;
+
+        needSep#1 = 1;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("  Clients:");
+
+        i#9 = 0;
+
+     label13:
+        $r25 = this.<com.android.server.AppOpsService: android.util.ArrayMap mClients>;
+
+        $i29 = virtualinvoke $r25.<android.util.ArrayMap: int size()>();
+
+        if i#9 >= $i29 goto label16;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("    ");
+
+        $r31 = this.<com.android.server.AppOpsService: android.util.ArrayMap mClients>;
+
+        $r33 = virtualinvoke $r31.<android.util.ArrayMap: java.lang.Object keyAt(int)>(i#9);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.Object)>($r33);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>(":");
+
+        $r32 = this.<com.android.server.AppOpsService: android.util.ArrayMap mClients>;
+
+        $r29 = virtualinvoke $r32.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#9);
+
+        callbacks#10 = (com.android.server.AppOpsService$ClientState) $r29;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("      ");
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.Object)>(callbacks#10);
+
+        $r28 = callbacks#10.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        if $r28 == null goto label15;
+
+        $r30 = callbacks#10.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        $i28 = virtualinvoke $r30.<java.util.ArrayList: int size()>();
+
+        if $i28 <= 0 goto label15;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("      Started ops:");
+
+        j#11 = 0;
+
+     label14:
+        $r36 = callbacks#10.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        $i32 = virtualinvoke $r36.<java.util.ArrayList: int size()>();
+
+        if j#11 >= $i32 goto label15;
+
+        $r38 = callbacks#10.<com.android.server.AppOpsService$ClientState: java.util.ArrayList mStartedOps>;
+
+        $r37 = virtualinvoke $r38.<java.util.ArrayList: java.lang.Object get(int)>(j#11);
+
+        op#12 = (com.android.server.AppOpsService$Op) $r37;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("        ");
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("uid=");
+
+        $i30 = op#12.<com.android.server.AppOpsService$Op: int uid>;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(int)>($i30);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(" pkg=");
+
+        $r34 = op#12.<com.android.server.AppOpsService$Op: java.lang.String packageName>;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>($r34);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(" op=");
+
+        $i31 = op#12.<com.android.server.AppOpsService$Op: int op>;
+
+        $r35 = staticinvoke <android.app.AppOpsManager: java.lang.String opToName(int)>($i31);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>($r35);
+
+        j#11 = j#11 + 1;
+
+        goto label14;
+
+     label15:
+        i#9 = i#9 + 1;
+
+        goto label13;
+
+     label16:
+        $r6 = this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions>;
+
+        $i5 = virtualinvoke $r6.<android.util.SparseArray: int size()>();
+
+        if $i5 <= 0 goto label23;
+
+        i#13 = 0;
+
+        callbacks#14 = 0;
+
+     label17:
+        $r17 = this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions>;
+
+        $i24 = virtualinvoke $r17.<android.util.SparseArray: int size()>();
+
+        if callbacks#14 >= $i24 goto label23;
+
+        $r16 = this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions>;
+
+        $i23 = virtualinvoke $r16.<android.util.SparseArray: int keyAt(int)>(callbacks#14);
+
+        j#15 = staticinvoke <android.app.AppOpsManager: java.lang.String opToName(int)>($i23);
+
+        $r20 = this.<com.android.server.AppOpsService: android.util.SparseArray mAudioRestrictions>;
+
+        $r21 = virtualinvoke $r20.<android.util.SparseArray: java.lang.Object valueAt(int)>(callbacks#14);
+
+        op#16 = (android.util.SparseArray) $r21;
+
+        i#17 = 0;
+
+     label18:
+        $i26 = virtualinvoke op#16.<android.util.SparseArray: int size()>();
+
+        if i#17 >= $i26 goto label22;
+
+        if i#13 != 0 goto label19;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("  Audio Restrictions:");
+
+        i#13 = 1;
+
+        needSep#1 = 1;
+
+     label19:
+        usage#18 = virtualinvoke op#16.<android.util.SparseArray: int keyAt(int)>(i#17);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("    ");
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(j#15);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(" usage=");
+
+        $r18 = staticinvoke <android.media.AudioAttributes: java.lang.String usageToString(int)>(usage#18);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>($r18);
+
+        $r19 = virtualinvoke op#16.<android.util.SparseArray: java.lang.Object valueAt(int)>(i#17);
+
+        r = (com.android.server.AppOpsService$Restriction) $r19;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(": mode=");
+
+        $i25 = r.<com.android.server.AppOpsService$Restriction: int mode>;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(int)>($i25);
+
+        $r26 = r.<com.android.server.AppOpsService$Restriction: android.util.ArraySet exceptionPackages>;
+
+        $z1 = virtualinvoke $r26.<android.util.ArraySet: boolean isEmpty()>();
+
+        if $z1 != 0 goto label21;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>("      Exceptions:");
+
+        j#19 = 0;
+
+     label20:
+        $r27 = r.<com.android.server.AppOpsService$Restriction: android.util.ArraySet exceptionPackages>;
+
+        $i27 = virtualinvoke $r27.<android.util.ArraySet: int size()>();
+
+        if j#19 >= $i27 goto label21;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("        ");
+
+        $r22 = r.<com.android.server.AppOpsService$Restriction: android.util.ArraySet exceptionPackages>;
+
+        $r23 = virtualinvoke $r22.<android.util.ArraySet: java.lang.Object valueAt(int)>(j#19);
+
+        $r24 = (java.lang.String) $r23;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>($r24);
+
+        j#19 = j#19 + 1;
+
+        goto label20;
+
+     label21:
+        i#17 = i#17 + 1;
+
+        goto label18;
+
+     label22:
+        callbacks#14 = callbacks#14 + 1;
+
+        goto label17;
+
+     label23:
+        if needSep#1 == 0 goto label24;
+
+        virtualinvoke pw.<java.io.PrintWriter: void println()>();
+
+     label24:
+        i#20 = 0;
+
+     label25:
+        $r7 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $i7 = virtualinvoke $r7.<android.util.SparseArray: int size()>();
+
+        if i#20 >= $i7 goto label34;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("  Uid ");
+
+        $r8 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $i6 = virtualinvoke $r8.<android.util.SparseArray: int keyAt(int)>(i#20);
+
+        staticinvoke <android.os.UserHandle: void formatUid(java.io.PrintWriter,int)>(pw, $i6);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>(":");
+
+        $r10 = this.<com.android.server.AppOpsService: android.util.SparseArray mUidOps>;
+
+        $r11 = virtualinvoke $r10.<android.util.SparseArray: java.lang.Object valueAt(int)>(i#20);
+
+        callbacks#21 = (java.util.HashMap) $r11;
+
+        $r9 = virtualinvoke callbacks#21.<java.util.HashMap: java.util.Collection values()>();
+
+        j#22 = interfaceinvoke $r9.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label26:
+        $z0 = interfaceinvoke j#22.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label33;
+
+        $r13 = interfaceinvoke j#22.<java.util.Iterator: java.lang.Object next()>();
+
+        op#23 = (com.android.server.AppOpsService$Ops) $r13;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("    Package ");
+
+        $r12 = op#23.<com.android.server.AppOpsService$Ops: java.lang.String packageName>;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>($r12);
+
+        virtualinvoke pw.<java.io.PrintWriter: void println(java.lang.String)>(":");
+
+        i#24 = 0;
+
+     label27:
+        $i8 = virtualinvoke op#23.<com.android.server.AppOpsService$Ops: int size()>();
+
+        if i#24 >= $i8 goto label32;
+
+        $r15 = virtualinvoke op#23.<com.android.server.AppOpsService$Ops: java.lang.Object valueAt(int)>(i#24);
+
+        usage#25 = (com.android.server.AppOpsService$Op) $r15;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("      ");
+
+        $i10 = usage#25.<com.android.server.AppOpsService$Op: int op>;
+
+        $r14 = staticinvoke <android.app.AppOpsManager: java.lang.String opToName(int)>($i10);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>($r14);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(": mode=");
+
+        $i9 = usage#25.<com.android.server.AppOpsService$Op: int mode>;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(int)>($i9);
+
+        $l14 = usage#25.<com.android.server.AppOpsService$Op: long time>;
+
+        $b13 = $l14 cmp 0L;
+
+        if $b13 == 0 goto label28;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("; time=");
+
+        $l20 = usage#25.<com.android.server.AppOpsService$Op: long time>;
+
+        $l19 = now - $l20;
+
+        staticinvoke <android.util.TimeUtils: void formatDuration(long,java.io.PrintWriter)>($l19, pw);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(" ago");
+
+     label28:
+        $l12 = usage#25.<com.android.server.AppOpsService$Op: long rejectTime>;
+
+        $b11 = $l12 cmp 0L;
+
+        if $b11 == 0 goto label29;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("; rejectTime=");
+
+        $l22 = usage#25.<com.android.server.AppOpsService$Op: long rejectTime>;
+
+        $l21 = now - $l22;
+
+        staticinvoke <android.util.TimeUtils: void formatDuration(long,java.io.PrintWriter)>($l21, pw);
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(" ago");
+
+     label29:
+        $i18 = usage#25.<com.android.server.AppOpsService$Op: int duration>;
+
+        if $i18 != -1 goto label30;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>(" (running)");
+
+        goto label31;
+
+     label30:
+        $i17 = usage#25.<com.android.server.AppOpsService$Op: int duration>;
+
+        if $i17 == 0 goto label31;
+
+        virtualinvoke pw.<java.io.PrintWriter: void print(java.lang.String)>("; duration=");
+
+        $i16 = usage#25.<com.android.server.AppOpsService$Op: int duration>;
+
+        $l15 = (long) $i16;
+
+        staticinvoke <android.util.TimeUtils: void formatDuration(long,java.io.PrintWriter)>($l15, pw);
+
+     label31:
+        virtualinvoke pw.<java.io.PrintWriter: void println()>();
+
+        i#24 = i#24 + 1;
+
+        goto label27;
+
+     label32:
+        goto label26;
+
+     label33:
+        i#20 = i#20 + 1;
+
+        goto label25;
+
+     label34:
+        exitmonitor l4;
+
+     label35:
+        goto label38;
+
+     label36:
+        $r63 := @caughtexception;
+
+        l16 = $r63;
+
+        exitmonitor l4;
+
+     label37:
+        throw l16;
+
+     label38:
+        return;
+
+        catch java.lang.Throwable from label02 to label35 with label36;
+        catch java.lang.Throwable from label36 to label37 with label36;
+    }
+
+    public void setUserRestrictions(android.os.Bundle, int) throws android.os.RemoteException
+    {
+        com.android.server.AppOpsService this;
+        android.os.Bundle restrictions;
+        int userHandle, $i0, i#2;
+        java.lang.String restriction;
+        android.util.SparseArray $r0, $r2;
+        java.lang.Object $r1;
+        boolean $z0;
+        boolean[] opRestrictions#1;
+
+        this := @this: com.android.server.AppOpsService;
+
+        restrictions := @parameter0: android.os.Bundle;
+
+        userHandle := @parameter1: int;
+
+        specialinvoke this.<com.android.server.AppOpsService: void checkSystemUid(java.lang.String)>("setUserRestrictions");
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpRestrictions>;
+
+        $r1 = virtualinvoke $r0.<android.util.SparseArray: java.lang.Object get(int)>(userHandle);
+
+        opRestrictions#1 = (boolean[]) $r1;
+
+        if opRestrictions#1 != null goto label1;
+
+        opRestrictions#1 = newarray (boolean)[48];
+
+        $r2 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpRestrictions>;
+
+        virtualinvoke $r2.<android.util.SparseArray: void put(int,java.lang.Object)>(userHandle, opRestrictions#1);
+
+     label1:
+        i#2 = 0;
+
+     label2:
+        $i0 = lengthof opRestrictions#1;
+
+        if i#2 >= $i0 goto label5;
+
+        restriction = staticinvoke <android.app.AppOpsManager: java.lang.String opToRestriction(int)>(i#2);
+
+        if restriction == null goto label3;
+
+        $z0 = virtualinvoke restrictions.<android.os.Bundle: boolean getBoolean(java.lang.String,boolean)>(restriction, 0);
+
+        opRestrictions#1[i#2] = $z0;
+
+        goto label4;
+
+     label3:
+        opRestrictions#1[i#2] = 0;
+
+     label4:
+        i#2 = i#2 + 1;
+
+        goto label2;
+
+     label5:
+        return;
+    }
+
+    public void removeUser(int) throws android.os.RemoteException
+    {
+        com.android.server.AppOpsService this;
+        int userHandle;
+        android.util.SparseArray $r0;
+
+        this := @this: com.android.server.AppOpsService;
+
+        userHandle := @parameter0: int;
+
+        specialinvoke this.<com.android.server.AppOpsService: void checkSystemUid(java.lang.String)>("removeUser");
+
+        $r0 = this.<com.android.server.AppOpsService: android.util.SparseArray mOpRestrictions>;
+
+        virtualinvoke $r0.<android.util.SparseArray: void remove(int)>(userHandle);
+
+        return;
+    }
+
+    private void checkSystemUid(java.lang.String)
+    {
+        com.android.server.AppOpsService this;
+        java.lang.String function, $r4;
+        int uid;
+        java.lang.SecurityException $r0;
+        java.lang.StringBuilder $r1, $r2, $r3;
+
+        this := @this: com.android.server.AppOpsService;
+
+        function := @parameter0: java.lang.String;
+
+        uid = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        if uid == 1000 goto label1;
+
+        $r0 = new java.lang.SecurityException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(function);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" must by called by the system");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.SecurityException: void <init>(java.lang.String)>($r4);
+
+        throw $r0;
+
+     label1:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.AppOpsService: long WRITE_DELAY> = 1800000L;
+
+        <com.android.server.AppOpsService: boolean DEBUG> = 0;
+
+        <com.android.server.AppOpsService: java.lang.String TAG> = "AppOps";
+
+        return;
+    }
+}

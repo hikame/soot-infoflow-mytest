@@ -1,0 +1,358 @@
+public class com.android.server.pm.PackageKeySetData extends java.lang.Object
+{
+    static final long KEYSET_UNASSIGNED;
+    private long mProperSigningKeySet;
+    private long[] mUpgradeKeySets;
+    private final android.util.ArrayMap mKeySetAliases;
+
+    void <init>()
+    {
+        com.android.server.pm.PackageKeySetData this;
+        android.util.ArrayMap $r0;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = new android.util.ArrayMap;
+
+        specialinvoke $r0.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases> = $r0;
+
+        this.<com.android.server.pm.PackageKeySetData: long mProperSigningKeySet> = -1L;
+
+        return;
+    }
+
+    void <init>(com.android.server.pm.PackageKeySetData)
+    {
+        com.android.server.pm.PackageKeySetData this, original;
+        android.util.ArrayMap $r0, $r3, $r4;
+        long $l0;
+        long[] $r1, $r2;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        original := @parameter0: com.android.server.pm.PackageKeySetData;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = new android.util.ArrayMap;
+
+        specialinvoke $r0.<android.util.ArrayMap: void <init>()>();
+
+        this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases> = $r0;
+
+        $l0 = original.<com.android.server.pm.PackageKeySetData: long mProperSigningKeySet>;
+
+        this.<com.android.server.pm.PackageKeySetData: long mProperSigningKeySet> = $l0;
+
+        $r1 = original.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets>;
+
+        $r2 = staticinvoke <com.android.internal.util.ArrayUtils: long[] cloneOrNull(long[])>($r1);
+
+        this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets> = $r2;
+
+        $r4 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        $r3 = original.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        virtualinvoke $r4.<android.util.ArrayMap: void putAll(android.util.ArrayMap)>($r3);
+
+        return;
+    }
+
+    protected void setProperSigningKeySet(long)
+    {
+        com.android.server.pm.PackageKeySetData this;
+        long ks;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        ks := @parameter0: long;
+
+        this.<com.android.server.pm.PackageKeySetData: long mProperSigningKeySet> = ks;
+
+        return;
+    }
+
+    protected long getProperSigningKeySet()
+    {
+        com.android.server.pm.PackageKeySetData this;
+        long $l0;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        $l0 = this.<com.android.server.pm.PackageKeySetData: long mProperSigningKeySet>;
+
+        return $l0;
+    }
+
+    protected void addUpgradeKeySet(java.lang.String)
+    {
+        com.android.server.pm.PackageKeySetData this;
+        java.lang.String alias, $r7;
+        java.lang.Long ks;
+        android.util.ArrayMap $r0;
+        java.lang.Object $r1;
+        java.lang.IllegalArgumentException $r2;
+        java.lang.StringBuilder $r3, $r4, $r5, $r6;
+        long[] $r8, $r9;
+        long $l0;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        alias := @parameter0: java.lang.String;
+
+        if alias != null goto label1;
+
+        return;
+
+     label1:
+        $r0 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        $r1 = virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(alias);
+
+        ks = (java.lang.Long) $r1;
+
+        if ks == null goto label2;
+
+        $r8 = this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets>;
+
+        $l0 = virtualinvoke ks.<java.lang.Long: long longValue()>();
+
+        $r9 = staticinvoke <com.android.internal.util.ArrayUtils: long[] appendLong(long[],long)>($r8, $l0);
+
+        this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets> = $r9;
+
+        goto label3;
+
+     label2:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Upgrade keyset alias ");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(alias);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("does not refer to a defined keyset alias!");
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r7);
+
+        throw $r2;
+
+     label3:
+        return;
+    }
+
+    protected void addUpgradeKeySetById(long)
+    {
+        com.android.server.pm.PackageKeySetData this;
+        long ks;
+        long[] $r0, $r1;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        ks := @parameter0: long;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets>;
+
+        $r1 = staticinvoke <com.android.internal.util.ArrayUtils: long[] appendLong(long[],long)>($r0, ks);
+
+        this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets> = $r1;
+
+        return;
+    }
+
+    protected void removeAllUpgradeKeySets()
+    {
+        com.android.server.pm.PackageKeySetData this;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets> = null;
+
+        return;
+    }
+
+    protected long[] getUpgradeKeySets()
+    {
+        com.android.server.pm.PackageKeySetData this;
+        long[] $r0;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets>;
+
+        return $r0;
+    }
+
+    protected android.util.ArrayMap getAliases()
+    {
+        com.android.server.pm.PackageKeySetData this;
+        android.util.ArrayMap $r0;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        return $r0;
+    }
+
+    protected void setAliases(android.util.ArrayMap)
+    {
+        com.android.server.pm.PackageKeySetData this;
+        android.util.ArrayMap newAliases, $r0;
+        int newAliasSize, i#1;
+        java.lang.Object $r1, $r2;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        newAliases := @parameter0: android.util.ArrayMap;
+
+        virtualinvoke this.<com.android.server.pm.PackageKeySetData: void removeAllDefinedKeySets()>();
+
+        newAliasSize = virtualinvoke newAliases.<android.util.ArrayMap: int size()>();
+
+        i#1 = 0;
+
+     label1:
+        if i#1 >= newAliasSize goto label2;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        $r1 = virtualinvoke newAliases.<android.util.ArrayMap: java.lang.Object keyAt(int)>(i#1);
+
+        $r2 = virtualinvoke newAliases.<android.util.ArrayMap: java.lang.Object valueAt(int)>(i#1);
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, $r2);
+
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    protected void addDefinedKeySet(long, java.lang.String)
+    {
+        com.android.server.pm.PackageKeySetData this;
+        long ks;
+        java.lang.String alias;
+        android.util.ArrayMap $r0;
+        java.lang.Long $r1;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        ks := @parameter0: long;
+
+        alias := @parameter1: java.lang.String;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(ks);
+
+        virtualinvoke $r0.<android.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(alias, $r1);
+
+        return;
+    }
+
+    protected void removeAllDefinedKeySets()
+    {
+        com.android.server.pm.PackageKeySetData this;
+        int aliasSize, i#1;
+        android.util.ArrayMap $r0, $r1;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        aliasSize = virtualinvoke $r0.<android.util.ArrayMap: int size()>();
+
+        i#1 = 0;
+
+     label1:
+        if i#1 >= aliasSize goto label2;
+
+        $r1 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        virtualinvoke $r1.<android.util.ArrayMap: java.lang.Object removeAt(int)>(i#1);
+
+        i#1 = i#1 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    protected boolean isUsingDefinedKeySets()
+    {
+        com.android.server.pm.PackageKeySetData this;
+        android.util.ArrayMap $r0;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: android.util.ArrayMap mKeySetAliases>;
+
+        $i0 = virtualinvoke $r0.<android.util.ArrayMap: int size()>();
+
+        if $i0 <= 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    protected boolean isUsingUpgradeKeySets()
+    {
+        com.android.server.pm.PackageKeySetData this;
+        long[] $r0, $r1;
+        int $i0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageKeySetData;
+
+        $r0 = this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets>;
+
+        if $r0 == null goto label1;
+
+        $r1 = this.<com.android.server.pm.PackageKeySetData: long[] mUpgradeKeySets>;
+
+        $i0 = lengthof $r1;
+
+        if $i0 <= 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.pm.PackageKeySetData: long KEYSET_UNASSIGNED> = -1L;
+
+        return;
+    }
+}

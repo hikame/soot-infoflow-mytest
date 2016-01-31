@@ -1,0 +1,31 @@
+final class com.android.phone.PhoneInterfaceManager$IncomingThirdPartyCallArgs extends java.lang.Object
+{
+    public final android.content.ComponentName component;
+    public final java.lang.String callId;
+    public final java.lang.String callerDisplayName;
+
+    public void <init>(android.content.ComponentName, java.lang.String, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager$IncomingThirdPartyCallArgs this;
+        android.content.ComponentName component;
+        java.lang.String callId, callerDisplayName;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$IncomingThirdPartyCallArgs;
+
+        component := @parameter0: android.content.ComponentName;
+
+        callId := @parameter1: java.lang.String;
+
+        callerDisplayName := @parameter2: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.phone.PhoneInterfaceManager$IncomingThirdPartyCallArgs: android.content.ComponentName component> = component;
+
+        this.<com.android.phone.PhoneInterfaceManager$IncomingThirdPartyCallArgs: java.lang.String callId> = callId;
+
+        this.<com.android.phone.PhoneInterfaceManager$IncomingThirdPartyCallArgs: java.lang.String callerDisplayName> = callerDisplayName;
+
+        return;
+    }
+}

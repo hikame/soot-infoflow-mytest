@@ -1,0 +1,78 @@
+class com.android.server.LockSettingsService$4 extends java.lang.Object implements com.android.server.LockSettingsService$CredentialUtil
+{
+    final com.android.server.LockSettingsService this$0;
+
+    void <init>(com.android.server.LockSettingsService)
+    {
+        com.android.server.LockSettingsService$4 this;
+        com.android.server.LockSettingsService l1;
+
+        this := @this: com.android.server.LockSettingsService$4;
+
+        l1 := @parameter0: com.android.server.LockSettingsService;
+
+        this.<com.android.server.LockSettingsService$4: com.android.server.LockSettingsService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setCredential(java.lang.String, java.lang.String, int) throws android.os.RemoteException
+    {
+        com.android.server.LockSettingsService$4 this;
+        java.lang.String password, oldPassword;
+        int userId;
+        com.android.server.LockSettingsService $r0;
+
+        this := @this: com.android.server.LockSettingsService$4;
+
+        password := @parameter0: java.lang.String;
+
+        oldPassword := @parameter1: java.lang.String;
+
+        userId := @parameter2: int;
+
+        $r0 = this.<com.android.server.LockSettingsService$4: com.android.server.LockSettingsService this$0>;
+
+        virtualinvoke $r0.<com.android.server.LockSettingsService: void setLockPassword(java.lang.String,java.lang.String,int)>(password, oldPassword, userId);
+
+        return;
+    }
+
+    public byte[] toHash(java.lang.String, int)
+    {
+        com.android.server.LockSettingsService$4 this;
+        java.lang.String password;
+        int userId;
+        com.android.server.LockSettingsService $r0;
+        com.android.internal.widget.LockPatternUtils $r1;
+        byte[] $r2;
+
+        this := @this: com.android.server.LockSettingsService$4;
+
+        password := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = this.<com.android.server.LockSettingsService$4: com.android.server.LockSettingsService this$0>;
+
+        $r1 = staticinvoke <com.android.server.LockSettingsService: com.android.internal.widget.LockPatternUtils access$300(com.android.server.LockSettingsService)>($r0);
+
+        $r2 = virtualinvoke $r1.<com.android.internal.widget.LockPatternUtils: byte[] passwordToHash(java.lang.String,int)>(password, userId);
+
+        return $r2;
+    }
+
+    public java.lang.String adjustForKeystore(java.lang.String)
+    {
+        com.android.server.LockSettingsService$4 this;
+        java.lang.String password;
+
+        this := @this: com.android.server.LockSettingsService$4;
+
+        password := @parameter0: java.lang.String;
+
+        return password;
+    }
+}

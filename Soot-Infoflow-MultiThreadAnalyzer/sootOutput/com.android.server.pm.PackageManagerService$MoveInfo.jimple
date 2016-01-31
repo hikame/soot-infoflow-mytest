@@ -1,0 +1,57 @@
+class com.android.server.pm.PackageManagerService$MoveInfo extends java.lang.Object
+{
+    final int moveId;
+    final java.lang.String fromUuid;
+    final java.lang.String toUuid;
+    final java.lang.String packageName;
+    final java.lang.String dataAppName;
+    final int appId;
+    final java.lang.String seinfo;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    public void <init>(com.android.server.pm.PackageManagerService, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, java.lang.String)
+    {
+        com.android.server.pm.PackageManagerService$MoveInfo this;
+        com.android.server.pm.PackageManagerService l1;
+        int moveId, appId;
+        java.lang.String fromUuid, toUuid, packageName, dataAppName, seinfo;
+
+        this := @this: com.android.server.pm.PackageManagerService$MoveInfo;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        moveId := @parameter1: int;
+
+        fromUuid := @parameter2: java.lang.String;
+
+        toUuid := @parameter3: java.lang.String;
+
+        packageName := @parameter4: java.lang.String;
+
+        dataAppName := @parameter5: java.lang.String;
+
+        appId := @parameter6: int;
+
+        seinfo := @parameter7: java.lang.String;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: int moveId> = moveId;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String fromUuid> = fromUuid;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String toUuid> = toUuid;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String packageName> = packageName;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String dataAppName> = dataAppName;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: int appId> = appId;
+
+        this.<com.android.server.pm.PackageManagerService$MoveInfo: java.lang.String seinfo> = seinfo;
+
+        return;
+    }
+}

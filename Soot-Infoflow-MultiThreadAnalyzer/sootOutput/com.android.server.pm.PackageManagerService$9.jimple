@@ -1,0 +1,308 @@
+class com.android.server.pm.PackageManagerService$9 extends java.lang.Object implements java.lang.Runnable
+{
+    final int val$currentStatus;
+    final com.android.server.pm.PackageManagerService$InstallArgs val$args;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, int, com.android.server.pm.PackageManagerService$InstallArgs)
+    {
+        com.android.server.pm.PackageManagerService$9 this;
+        com.android.server.pm.PackageManagerService l1;
+        int l2;
+        com.android.server.pm.PackageManagerService$InstallArgs l3;
+
+        this := @this: com.android.server.pm.PackageManagerService$9;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: int;
+
+        l3 := @parameter2: com.android.server.pm.PackageManagerService$InstallArgs;
+
+        this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$9: int val$currentStatus> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService$InstallArgs val$args> = l3;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$9 this;
+        com.android.server.pm.PackageManagerService$PackageInstalledInfo res, $r2;
+        int token, $i0, $i1, $i2, $i3, $i4, $i5, $i7, $i8, $i10, $i12, $i14, flags#6;
+        com.android.server.pm.PackageManagerService$PostInstallData data, $r13;
+        com.android.server.pm.PackageManagerService $r0, $r3, $r5, $r11, $r12, $r14, $r17, $r19, $r21, $r24, $r28, $r30;
+        com.android.server.pm.PackageManagerService$PackageHandler $r1, $r18, $r22;
+        com.android.server.pm.PackageManagerService$PackageRemovedInfo $r4, $r6;
+        android.content.pm.PackageParser$Package $r7, $r10, $r23;
+        java.lang.String $r8, $r26;
+        android.content.pm.ApplicationInfo $r9, $r25;
+        com.android.server.pm.PackageManagerService$InstallArgs $r15, $r29, $r31, $r33;
+        android.util.SparseArray $r16;
+        android.os.IBinder $r20;
+        boolean $z1, $z2, update#4, $z3, doRestore#8;
+        java.lang.Object $r27, update#1;
+        java.lang.Throwable $r32, flags#2;
+        java.lang.Exception $r34, e#11;
+        android.os.RemoteException $r35, e#10;
+        android.app.backup.IBackupManager bm#9;
+        android.os.Message bm#12;
+
+        this := @this: com.android.server.pm.PackageManagerService$9;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        virtualinvoke $r1.<com.android.server.pm.PackageManagerService$PackageHandler: void removeCallbacks(java.lang.Runnable)>(this);
+
+        $r2 = new com.android.server.pm.PackageManagerService$PackageInstalledInfo;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        specialinvoke $r2.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: void <init>(com.android.server.pm.PackageManagerService)>($r3);
+
+        res = $r2;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$9: int val$currentStatus>;
+
+        res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode> = $i0;
+
+        res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int uid> = -1;
+
+        res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: android.content.pm.PackageParser$Package pkg> = null;
+
+        $r4 = new com.android.server.pm.PackageManagerService$PackageRemovedInfo;
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        specialinvoke $r4.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: void <init>(com.android.server.pm.PackageManagerService)>($r5);
+
+        res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: com.android.server.pm.PackageManagerService$PackageRemovedInfo removedInfo> = $r4;
+
+        $i1 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode>;
+
+        if $i1 != 1 goto label06;
+
+        $r29 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService$InstallArgs val$args>;
+
+        $i8 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode>;
+
+        virtualinvoke $r29.<com.android.server.pm.PackageManagerService$InstallArgs: int doPreInstall(int)>($i8);
+
+        $r28 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r27 = $r28.<com.android.server.pm.PackageManagerService: java.lang.Object mInstallLock>;
+
+        update#1 = $r27;
+
+        entermonitor $r27;
+
+     label01:
+        $r30 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r31 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService$InstallArgs val$args>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService: void access$3300(com.android.server.pm.PackageManagerService,com.android.server.pm.PackageManagerService$InstallArgs,com.android.server.pm.PackageManagerService$PackageInstalledInfo)>($r30, $r31, res);
+
+        exitmonitor update#1;
+
+     label02:
+        goto label05;
+
+     label03:
+        $r32 := @caughtexception;
+
+        flags#2 = $r32;
+
+        exitmonitor update#1;
+
+     label04:
+        throw flags#2;
+
+     label05:
+        $r33 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService$InstallArgs val$args>;
+
+        $i12 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode>;
+
+        $i10 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int uid>;
+
+        virtualinvoke $r33.<com.android.server.pm.PackageManagerService$InstallArgs: int doPostInstall(int,int)>($i12, $i10);
+
+     label06:
+        $r6 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: com.android.server.pm.PackageManagerService$PackageRemovedInfo removedInfo>;
+
+        $r8 = $r6.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: java.lang.String removedPackage>;
+
+        if $r8 == null goto label07;
+
+        $z2 = 1;
+
+        goto label08;
+
+     label07:
+        $z2 = 0;
+
+     label08:
+        update#4 = $z2;
+
+        $r7 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: android.content.pm.PackageParser$Package pkg>;
+
+        if $r7 != null goto label09;
+
+        $i14 = 0;
+
+        goto label10;
+
+     label09:
+        $r10 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: android.content.pm.PackageParser$Package pkg>;
+
+        $r9 = $r10.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i14 = $r9.<android.content.pm.ApplicationInfo: int flags>;
+
+     label10:
+        flags#6 = $i14;
+
+        if update#4 != 0 goto label11;
+
+        $i7 = flags#6 & 32768;
+
+        if $i7 == 0 goto label11;
+
+        $z3 = 1;
+
+        goto label12;
+
+     label11:
+        $z3 = 0;
+
+     label12:
+        doRestore#8 = $z3;
+
+        $r11 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $i2 = $r11.<com.android.server.pm.PackageManagerService: int mNextInstallToken>;
+
+        if $i2 >= 0 goto label13;
+
+        $r24 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r24.<com.android.server.pm.PackageManagerService: int mNextInstallToken> = 1;
+
+     label13:
+        $r12 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $i3 = $r12.<com.android.server.pm.PackageManagerService: int mNextInstallToken>;
+
+        $i4 = $i3 + 1;
+
+        $r12.<com.android.server.pm.PackageManagerService: int mNextInstallToken> = $i4;
+
+        token = $i3;
+
+        $r13 = new com.android.server.pm.PackageManagerService$PostInstallData;
+
+        $r14 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r15 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService$InstallArgs val$args>;
+
+        specialinvoke $r13.<com.android.server.pm.PackageManagerService$PostInstallData: void <init>(com.android.server.pm.PackageManagerService,com.android.server.pm.PackageManagerService$InstallArgs,com.android.server.pm.PackageManagerService$PackageInstalledInfo)>($r14, $r15, res);
+
+        data = $r13;
+
+        $r17 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r16 = $r17.<com.android.server.pm.PackageManagerService: android.util.SparseArray mRunningInstalls>;
+
+        virtualinvoke $r16.<android.util.SparseArray: void put(int,java.lang.Object)>(token, data);
+
+        $i5 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: int returnCode>;
+
+        if $i5 != 1 goto label20;
+
+        if doRestore#8 == 0 goto label20;
+
+        $r20 = staticinvoke <android.os.ServiceManager: android.os.IBinder getService(java.lang.String)>("backup");
+
+        bm#9 = staticinvoke <android.app.backup.IBackupManager$Stub: android.app.backup.IBackupManager asInterface(android.os.IBinder)>($r20);
+
+        if bm#9 == null goto label19;
+
+     label14:
+        $z1 = interfaceinvoke bm#9.<android.app.backup.IBackupManager: boolean isBackupServiceActive(int)>(0);
+
+        if $z1 == 0 goto label15;
+
+        $r23 = res.<com.android.server.pm.PackageManagerService$PackageInstalledInfo: android.content.pm.PackageParser$Package pkg>;
+
+        $r25 = $r23.<android.content.pm.PackageParser$Package: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $r26 = $r25.<android.content.pm.ApplicationInfo: java.lang.String packageName>;
+
+        interfaceinvoke bm#9.<android.app.backup.IBackupManager: void restoreAtInstall(java.lang.String,int)>($r26, token);
+
+        goto label16;
+
+     label15:
+        doRestore#8 = 0;
+
+     label16:
+        goto label20;
+
+     label17:
+        $r35 := @caughtexception;
+
+        goto label20;
+
+     label18:
+        $r34 := @caughtexception;
+
+        e#11 = $r34;
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("PackageManager", "Exception trying to enqueue restore", e#11);
+
+        doRestore#8 = 0;
+
+        goto label20;
+
+     label19:
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw6()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw11()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("PackageManager", "Backup Manager not found!");
+
+        doRestore#8 = 0;
+
+     label20:
+        if doRestore#8 != 0 goto label21;
+
+        $r19 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r18 = $r19.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        bm#12 = virtualinvoke $r18.<com.android.server.pm.PackageManagerService$PackageHandler: android.os.Message obtainMessage(int,int,int)>(9, token, 0);
+
+        $r21 = this.<com.android.server.pm.PackageManagerService$9: com.android.server.pm.PackageManagerService this$0>;
+
+        $r22 = $r21.<com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$PackageHandler mHandler>;
+
+        virtualinvoke $r22.<com.android.server.pm.PackageManagerService$PackageHandler: boolean sendMessage(android.os.Message)>(bm#12);
+
+     label21:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label03;
+        catch java.lang.Throwable from label03 to label04 with label03;
+        catch android.os.RemoteException from label14 to label16 with label17;
+        catch java.lang.Exception from label14 to label16 with label18;
+    }
+}

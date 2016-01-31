@@ -1,0 +1,42 @@
+public final class com.android.server.AppOpsService$Op extends java.lang.Object
+{
+    public final int uid;
+    public final java.lang.String packageName;
+    public final int op;
+    public int mode;
+    public int duration;
+    public long time;
+    public long rejectTime;
+    public int nesting;
+
+    public void <init>(int, java.lang.String, int)
+    {
+        com.android.server.AppOpsService$Op this;
+        int _uid, _op, $i0, $i1;
+        java.lang.String _packageName;
+
+        this := @this: com.android.server.AppOpsService$Op;
+
+        _uid := @parameter0: int;
+
+        _packageName := @parameter1: java.lang.String;
+
+        _op := @parameter2: int;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.AppOpsService$Op: int uid> = _uid;
+
+        this.<com.android.server.AppOpsService$Op: java.lang.String packageName> = _packageName;
+
+        this.<com.android.server.AppOpsService$Op: int op> = _op;
+
+        $i0 = this.<com.android.server.AppOpsService$Op: int op>;
+
+        $i1 = staticinvoke <android.app.AppOpsManager: int opToDefaultMode(int)>($i0);
+
+        this.<com.android.server.AppOpsService$Op: int mode> = $i1;
+
+        return;
+    }
+}

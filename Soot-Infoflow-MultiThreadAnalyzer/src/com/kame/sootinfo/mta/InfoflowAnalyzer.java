@@ -1,7 +1,12 @@
 package com.kame.sootinfo.mta;
 
 import heros.solver.CountingThreadPoolExecutor;
+import kame.soot.info.SourceSinkType;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,8 +44,10 @@ import soot.UnitBox;
 import soot.Value;
 import soot.ValueBox;
 import soot.jimple.AssignStmt;
+import soot.jimple.DefinitionStmt;
 import soot.jimple.IdentityStmt;
 import soot.jimple.IfStmt;
+import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.NullConstant;
 import soot.jimple.Stmt;
@@ -79,7 +86,6 @@ import soot.jimple.infoflow.util.SystemClassHandler;
 import soot.jimple.internal.JEqExpr;
 import soot.jimple.internal.JimpleLocalBox;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
-import soot.kame.SourceSinkType;
 import soot.options.Options;
 import soot.tagkit.StringTag;
 import soot.tagkit.Tag;
@@ -131,7 +137,7 @@ public class InfoflowAnalyzer {
 		None
 	}
 	
-	public void start() {
+	public void start() throws Exception {
         int numThreads = Runtime.getRuntime().availableProcessors();
 		CountingThreadPoolExecutor executor = createExecutor(numThreads);
 		// Initialize the memory manager
@@ -295,14 +301,20 @@ public class InfoflowAnalyzer {
 		
 		computeTaintPaths(res);		
 		
-		if (results == null || results.getResults().isEmpty())
+		if (results == null || results.getResults().isEmpty()){
 			logger.warn("[KM-Results] No results found.");
+			String sqlCmd = String.format("update %s set result = \"none\" where signature = \"%s\"", 
+					MTAScene.v().getCurrentService(), MTAScene.v().getTargetList().get(0));
+			MTAScene.v().getDBStatement().executeUpdate(sqlCmd);
+		}
 		else for (ResultSinkInfo sink : results.getResults().keySet()) {
 			Set<ResultSourceInfo> interestingSources = results.getResults().get(sink);
 			interestingSources = new HashSet<ResultSourceInfo>(interestingSources);
 			if(interestingSources == null || interestingSources.isEmpty())
 				continue;
 			if(checkForMultiThread(sink, interestingSources).isEmpty())
+				continue;
+			if(checkForNotNullChecker(sink, interestingSources).isEmpty())
 				continue;
 			Map<ResultSourceInfo, Set<SootClass>> scExMap = checkForExceptionHandler(sink, interestingSources);
 			if(scExMap == null){	//返回null代表是我们自己的publish的sink
@@ -312,9 +324,6 @@ public class InfoflowAnalyzer {
 			if(scExMap.isEmpty())
 				continue;
 			
-			logger.info("[KM-Results] The sink {} in method {} was called with values from the following sources:",
-                    sink, iCfg.getMethodOf(sink.getSink()).getSignature() );
-			
 			outputExceptionSinkResults(sink, scExMap);
 		}
 		
@@ -322,10 +331,38 @@ public class InfoflowAnalyzer {
 			handler.onResultsAvailable(iCfg, results);
 		
 		maxMemoryConsumption = Math.max(maxMemoryConsumption, getUsedMemory());
-		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");
+		System.out.println("Maximum memory consumption: " + maxMemoryConsumption / 1E6 + " MB");	//TODO
+		String cmd = String.format("update %s set memoryCost = %1.0f, timeCost = %d where signature = \"%s\"", 
+				MTAScene.v().getCurrentService(),
+				maxMemoryConsumption / 1E6,
+				(System.currentTimeMillis() - MTAScene.v().getStartTime())/1000,
+				MTAScene.v().getTargetList().get(0));
+		MTAScene.v().getDBStatement().execute(cmd);
 	}
 
-	private void outputExceptionSinkResults(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) {
+	private void outputExceptionSinkResults(ResultSinkInfo sink, Map<ResultSourceInfo, Set<SootClass>> scExMap) throws Exception {
+		String queryCmd = String.format("select _id from %s where signature = \"%s\"", 
+				MTAScene.v().getCurrentService(), MTAScene.v().getTargetList().get(0));
+		ResultSet rs = MTAScene.v().getDBStatement().executeQuery(queryCmd);
+		rs.next();
+		int id = rs.getInt(1);
+		rs.close();
+		File outputFile = new File(MTAScene.v().getResultFolder(), MTAScene.v().getCurrentService() + "_" + id);
+
+		String updateCmd = String.format("update %s set result = \"%s\" where signature = \"%s\"", 
+				MTAScene.v().getCurrentService(), outputFile.getAbsolutePath(), MTAScene.v().getTargetList().get(0));
+		MTAScene.v().getDBStatement().executeUpdate(updateCmd);
+		
+		FileWriter fw = new FileWriter(outputFile, true);
+		fw.write("Service: " + MTAScene.v().getCurrentService() + "\n");
+		fw.write("ID: " + id + "\n");
+		fw.write("Signature: " + MTAScene.v().getTargetList().get(0) + "\n");
+		
+		logger.info("[KM-Results] The sink {} in method {} was called with values from the following sources:",
+                sink, iCfg.getMethodOf(sink.getSink()).getSignature());
+		fw.write(String.format("The sink %s in method %s was called with values from the following sources:\n", 
+				sink.toString(),
+				iCfg.getMethodOf(sink.getSink()).getSignature()));		
 		Set<ResultSourceInfo> sourceSet = scExMap.keySet();
 		for (ResultSourceInfo source : sourceSet) {
 			String exceptionStr = "";
@@ -335,11 +372,16 @@ public class InfoflowAnalyzer {
 			
 			logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
 			logger.info("-- Exceptions: " + exceptionStr.substring(2));
+			fw.write(String.format("- %s in method %s\n", 
+					source, iCfg.getMethodOf(source.getSource()).getSignature()));	
+			fw.write(String.format("-- Exceptions: %s\n", exceptionStr.substring(2)));
 			
 			if (source.getPath() == null) {
 				continue;
 			}
 			logger.info("\ton Path: ");
+			fw.write("\ton Path: \n");
+			
 			Stmt[] pathes = source.getPath();
 			AccessPath[] aps = source.getPathAccessPaths();
 			int size = pathes.length;
@@ -347,20 +389,26 @@ public class InfoflowAnalyzer {
 				logger.info("\t -> " + iCfg.getMethodOf(pathes[count]));
 				logger.info("\t\t -> AP: " + aps[count]);
 				logger.info("\t\t -> PT: " + pathes[count]);
+				
+				fw.write("\t -> " + iCfg.getMethodOf(pathes[count]));
+				fw.write("\n\t\t -> AP: " + aps[count]);
+				fw.write("\n\t\t -> PT: " + pathes[count]);
 			}
 		}
+		fw.write("\n********************************************\n");
+		fw.close();
 	}
 
 	private Map<ResultSourceInfo, Set<SootClass>> checkForExceptionHandler(ResultSinkInfo sink,
-			Set<ResultSourceInfo> intSources) {
+			Set<ResultSourceInfo> intSources) throws SQLException {
 		Map<ResultSourceInfo, Set<SootClass>> scExMap = new HashMap<ResultSourceInfo, Set<SootClass>>();
 		Stmt sinkStmt = sink.getSink();
 		
 		MyStmtTag sinkTag = (MyStmtTag) sinkStmt.getTag(MyStmtTag.class.getSimpleName());
 		Set<SourceSinkType> sinkTypes = sinkTag.getSinkTypes();
-		sinkTypes.remove(SourceSinkType.MyTestPublish);	//我们不必处理此类
-		if(sinkTypes.size() == 1 && sinkTypes.contains(SourceSinkType.MyTestPublish))	
-			return null;
+//		sinkTypes.remove(SourceSinkType.MyTestPublish);	//我们不必处理此类
+//		if(sinkTypes.size() == 1 && sinkTypes.contains(SourceSinkType.MyTestPublish))	
+//			return null;
 
 		Set<SootClass> targetExceptions = new HashSet<SootClass>();		
 		for(SourceSinkType st : sinkTypes){
@@ -382,8 +430,20 @@ public class InfoflowAnalyzer {
 			
 			if(interestingSource)
 				scExMap.put(rsi, tgExs);
-			else
+			else{
+				String queryCmd = String.format("select exceptionHandled from %s where signature = \"%s\"", 
+						MTAScene.v().getCurrentService(), MTAScene.v().getTargetList().get(0));
+				ResultSet rs = MTAScene.v().getDBStatement().executeQuery(queryCmd);
+				String org = "";
+				while(rs.next()){	//there should be only one row.
+					org = org + rs.getString(1) + ";";
+				}
+				String newValue = org + rsi.getSource();
+				String updateCmd = String.format("update %s set exceptionHandled = \"%s\" where signature = \"%s\"", 
+						MTAScene.v().getCurrentService(), newValue, MTAScene.v().getTargetList().get(0));
+				MTAScene.v().getDBStatement().executeUpdate(updateCmd);
 				intSources.remove(rsi);
+			}
 		}
 		return scExMap;
 	}
@@ -434,7 +494,6 @@ public class InfoflowAnalyzer {
 
 	private void outputPublishSinkResults(ResultSinkInfo sink, Set<ResultSourceInfo> interestingResults) {
 		//TODO output the MySourceSinkTag.sourceActiveInvokeTree if exist.
-		
 		for (ResultSourceInfo source : interestingResults) {
 			logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getSource()).getSignature());
 			if (source.getPath() == null) {
@@ -451,10 +510,50 @@ public class InfoflowAnalyzer {
 			}
 		}
 	}
+	
+	private Set<ResultSourceInfo> checkForNotNullChecker(ResultSinkInfo sink, Set<ResultSourceInfo> intSources) throws SQLException {
+		MyStmtTag sinkTag = (MyStmtTag) sink.getSink().getTag(MyStmtTag.class.getSimpleName());
+		if(!sinkTag.getSinkTypes().contains(SourceSinkType.NullPointerException))
+			return intSources;
+		for(Object obj : intSources.toArray()){
+			ResultSourceInfo rsi = (ResultSourceInfo) obj;
+			DefinitionStmt ds = (DefinitionStmt)rsi.getSource();
+			Value sourceValue = ds.getLeftOp();
+			boolean checked = false;
+			Stmt[] paths = rsi.getPath();
+			out: for(Stmt pt : paths){
+				if(!pt.containsInvokeExpr())
+					continue;
+				InvokeExpr ie = pt.getInvokeExpr();
+				if(!ie.getMethod().getName().equals("checkNotNull"))
+					continue;
+				for(Value val : ie.getArgs()){
+					if(val.equals(sourceValue)){
+						checked = true;
+						break out;
+					}
+				}
+			}
+			if(checked){
+				String queryCmd = String.format("select checkedParameter from %s where signature = \"%s\"", 
+						MTAScene.v().getCurrentService(), MTAScene.v().getTargetList().get(0));
+				ResultSet rs = MTAScene.v().getDBStatement().executeQuery(queryCmd);
+				String org = "";
+				rs.next();	//there should be only one row.
+				org = org + rs.getString(1) + ";";
+				rs.close();
+				String newValue = org + rsi.getSource();
+				String updateCmd = String.format("update %s set checkedParameter = \"%s\" where signature = \"%s\"", 
+						MTAScene.v().getCurrentService(), newValue, MTAScene.v().getTargetList().get(0));
+				MTAScene.v().getDBStatement().executeUpdate(updateCmd);
+				
+				intSources.remove(rsi);
+			}
+		}
+		return intSources;
+	}
 
-
-
-	private Set<ResultSourceInfo> checkForMultiThread(ResultSinkInfo sink, Set<ResultSourceInfo> intSources) {
+	private Set<ResultSourceInfo> checkForMultiThread(ResultSinkInfo sink, Set<ResultSourceInfo> intSources) throws SQLException {
 		for(Object obj : intSources.toArray()){
 			ResultSourceInfo rsi = (ResultSourceInfo) obj;
 			Stmt[] paths = rsi.getPath();
@@ -472,15 +571,34 @@ public class InfoflowAnalyzer {
 				}
 					
 			}
-			if(multiThreadCounter < 0)	
+			if(multiThreadCounter < 0)
 				intSources.remove(rsi);
 			else if(multiThreadCounter == 0){
 				Stmt sourceStmt = rsi.getSource();
-				MyStmtTag sourceStmtTag = (MyStmtTag)sourceStmt.getTag(MyStmtTag.class.getSimpleName());
 				MyInvokeTree invokeTree = getMultiThreadInvokeTree(sourceStmt, true);
 				if(invokeTree.head == null)
 					intSources.remove(rsi);
-				sourceStmtTag.setSourceActiveInvokeTree(invokeTree);
+				else{
+					MyStmtTag sourceStmtTag = MyStmtTag.getStmtTag(sourceStmt);
+					sourceStmtTag.setSourceActiveInvokeTree(invokeTree);
+				}
+			}
+			
+			if(intSources.contains(rsi)){	//this is a multithread situation
+				String updateCmd = String.format("update %s set multiThread = 1 where signature = \"%s\"", 
+						MTAScene.v().getCurrentService(), MTAScene.v().getTargetList().get(0));
+				MTAScene.v().getDBStatement().executeUpdate(updateCmd);
+			}
+			else{
+				String queryCmd = String.format("select errorsInMain from %s where signature = \"%s\"", 
+						MTAScene.v().getCurrentService(), MTAScene.v().getTargetList().get(0));
+				ResultSet rs = MTAScene.v().getDBStatement().executeQuery(queryCmd);
+				rs.next();	//there should be only one row.
+				int value = rs.getInt(1) + 1;
+				rs.close();
+				String updateCmd = String.format("update %s set errorsInMain = %d, multiThread = 0 where signature = \"%s\"", 
+						MTAScene.v().getCurrentService(), value, MTAScene.v().getTargetList().get(0));
+				MTAScene.v().getDBStatement().executeUpdate(updateCmd);
 			}
 		}
 		return intSources;
@@ -587,7 +705,6 @@ public class InfoflowAnalyzer {
 
 	private void getMethodsForSeedsIncremental(SootMethod sm,
 			Set<SootMethod> doneSet, List<SootMethod> seeds, IInfoflowCFG icfg) {
-		assert Scene.v().hasFastHierarchy();
 		if (!sm.isConcrete() || !sm.getDeclaringClass().isApplicationClass() || !doneSet.add(sm))
 			return;
 		seeds.add(sm);

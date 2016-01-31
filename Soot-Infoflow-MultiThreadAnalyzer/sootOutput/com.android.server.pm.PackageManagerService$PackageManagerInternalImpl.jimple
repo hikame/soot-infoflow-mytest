@@ -1,0 +1,546 @@
+class com.android.server.pm.PackageManagerService$PackageManagerInternalImpl extends android.content.pm.PackageManagerInternal
+{
+    final com.android.server.pm.PackageManagerService this$0;
+
+    private void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        com.android.server.pm.PackageManagerService l1;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<android.content.pm.PackageManagerInternal: void <init>()>();
+
+        return;
+    }
+
+    public void setLocationPackagesProvider(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+        android.util.ArrayMap l2, $r1;
+        java.lang.Throwable l3, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void setLocationPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)>(provider);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l3 = $r4;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setImePackagesProvider(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+        android.util.ArrayMap l2, $r1;
+        java.lang.Throwable l3, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void setImePackagesProviderLPr(android.content.pm.PackageManagerInternal$PackagesProvider)>(provider);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l3 = $r4;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setVoiceInteractionPackagesProvider(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+        android.util.ArrayMap l2, $r1;
+        java.lang.Throwable l3, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void setVoiceInteractionPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)>(provider);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l3 = $r4;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setSmsAppPackagesProvider(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+        android.util.ArrayMap l2, $r1;
+        java.lang.Throwable l3, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void setSmsAppPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)>(provider);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l3 = $r4;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setDialerAppPackagesProvider(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+        android.util.ArrayMap l2, $r1;
+        java.lang.Throwable l3, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void setDialerAppPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)>(provider);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l3 = $r4;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setSimCallManagerPackagesProvider(android.content.pm.PackageManagerInternal$PackagesProvider)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        android.content.pm.PackageManagerInternal$PackagesProvider provider;
+        android.util.ArrayMap l2, $r1;
+        java.lang.Throwable l3, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$PackagesProvider;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void setSimCallManagerPackagesProviderLPw(android.content.pm.PackageManagerInternal$PackagesProvider)>(provider);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l3 = $r4;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setSyncAdapterPackagesprovider(android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider provider;
+        android.util.ArrayMap l2, $r1;
+        java.lang.Throwable l3, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        provider := @parameter0: android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void setSyncAdapterPackagesProviderLPw(android.content.pm.PackageManagerInternal$SyncAdapterPackagesProvider)>(provider);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l3 = $r4;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void grantDefaultPermissionsToDefaultSmsApp(java.lang.String, int)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        java.lang.String packageName;
+        int userId;
+        android.util.ArrayMap l3, $r1;
+        java.lang.Throwable l4, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        packageName := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l3 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSmsAppLPr(java.lang.String,int)>(packageName, userId);
+
+        exitmonitor l3;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l4 = $r4;
+
+        exitmonitor l3;
+
+     label4:
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void grantDefaultPermissionsToDefaultDialerApp(java.lang.String, int)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        java.lang.String packageName;
+        int userId;
+        android.util.ArrayMap l3, $r1;
+        java.lang.Throwable l4, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        packageName := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l3 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultDialerAppLPr(java.lang.String,int)>(packageName, userId);
+
+        exitmonitor l3;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l4 = $r4;
+
+        exitmonitor l3;
+
+     label4:
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void grantDefaultPermissionsToDefaultSimCallManager(java.lang.String, int)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        java.lang.String packageName;
+        int userId;
+        android.util.ArrayMap l3, $r1;
+        java.lang.Throwable l4, $r4;
+        com.android.server.pm.PackageManagerService $r0, $r2;
+        com.android.server.pm.DefaultPermissionGrantPolicy $r3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        packageName := @parameter0: java.lang.String;
+
+        userId := @parameter1: int;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l3 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: com.android.server.pm.PackageManagerService this$0>;
+
+        $r3 = $r2.<com.android.server.pm.PackageManagerService: com.android.server.pm.DefaultPermissionGrantPolicy mDefaultPermissionPolicy>;
+
+        virtualinvoke $r3.<com.android.server.pm.DefaultPermissionGrantPolicy: void grantDefaultPermissionsToDefaultSimCallManagerLPr(java.lang.String,int)>(packageName, userId);
+
+        exitmonitor l3;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r4 := @caughtexception;
+
+        l4 = $r4;
+
+        exitmonitor l3;
+
+     label4:
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    void <init>(com.android.server.pm.PackageManagerService, com.android.server.pm.PackageManagerService$1)
+    {
+        com.android.server.pm.PackageManagerService$PackageManagerInternalImpl this;
+        com.android.server.pm.PackageManagerService x0;
+        com.android.server.pm.PackageManagerService$1 x1;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageManagerInternalImpl;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        x1 := @parameter1: com.android.server.pm.PackageManagerService$1;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$PackageManagerInternalImpl: void <init>(com.android.server.pm.PackageManagerService)>(x0);
+
+        return;
+    }
+}

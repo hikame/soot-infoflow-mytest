@@ -1,0 +1,39 @@
+class com.android.server.pm.PackageManagerService$IFVerificationParams extends java.lang.Object
+{
+    android.content.pm.PackageParser$Package pkg;
+    boolean replacing;
+    int userId;
+    int verifierUid;
+
+    public void <init>(android.content.pm.PackageParser$Package, boolean, int, int)
+    {
+        com.android.server.pm.PackageManagerService$IFVerificationParams this;
+        android.content.pm.PackageParser$Package _pkg;
+        boolean _replacing;
+        int _userId, _verifierUid;
+
+        this := @this: com.android.server.pm.PackageManagerService$IFVerificationParams;
+
+        _pkg := @parameter0: android.content.pm.PackageParser$Package;
+
+        _replacing := @parameter1: boolean;
+
+        _userId := @parameter2: int;
+
+        _verifierUid := @parameter3: int;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$IFVerificationParams: android.content.pm.PackageParser$Package pkg> = _pkg;
+
+        this.<com.android.server.pm.PackageManagerService$IFVerificationParams: boolean replacing> = _replacing;
+
+        this.<com.android.server.pm.PackageManagerService$IFVerificationParams: int userId> = _userId;
+
+        this.<com.android.server.pm.PackageManagerService$IFVerificationParams: boolean replacing> = _replacing;
+
+        this.<com.android.server.pm.PackageManagerService$IFVerificationParams: int verifierUid> = _verifierUid;
+
+        return;
+    }
+}

@@ -1,0 +1,132 @@
+class com.android.server.LocationManagerService$4 extends com.android.internal.content.PackageMonitor
+{
+    final com.android.server.LocationManagerService this$0;
+
+    void <init>(com.android.server.LocationManagerService)
+    {
+        com.android.server.LocationManagerService$4 this;
+        com.android.server.LocationManagerService l1;
+
+        this := @this: com.android.server.LocationManagerService$4;
+
+        l1 := @parameter0: com.android.server.LocationManagerService;
+
+        this.<com.android.server.LocationManagerService$4: com.android.server.LocationManagerService this$0> = l1;
+
+        specialinvoke this.<com.android.internal.content.PackageMonitor: void <init>()>();
+
+        return;
+    }
+
+    public void onPackageDisappeared(java.lang.String, int)
+    {
+        com.android.server.LocationManagerService$4 this;
+        java.lang.String packageName, $r7;
+        int reason;
+        java.lang.Object l3, $r1, $r6, $r8;
+        java.lang.Throwable l7, $r9;
+        com.android.server.LocationManagerService $r0, $r2, $r5;
+        java.util.HashMap $r3;
+        java.util.Collection $r4;
+        boolean $z0, $z1, $z3;
+        java.util.ArrayList $r10, deadReceivers#1;
+        java.util.Iterator i$#2, i$#4;
+        com.android.server.LocationManagerService$Receiver receiver#3, receiver#5;
+
+        this := @this: com.android.server.LocationManagerService$4;
+
+        packageName := @parameter0: java.lang.String;
+
+        reason := @parameter1: int;
+
+        $r0 = this.<com.android.server.LocationManagerService$4: com.android.server.LocationManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.LocationManagerService: java.lang.Object access$000(com.android.server.LocationManagerService)>($r0);
+
+        l3 = $r1;
+
+        entermonitor $r1;
+
+     label01:
+        deadReceivers#1 = null;
+
+        $r2 = this.<com.android.server.LocationManagerService$4: com.android.server.LocationManagerService this$0>;
+
+        $r3 = staticinvoke <com.android.server.LocationManagerService: java.util.HashMap access$100(com.android.server.LocationManagerService)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.util.HashMap: java.util.Collection values()>();
+
+        i$#2 = interfaceinvoke $r4.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label02:
+        $z0 = interfaceinvoke i$#2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label05;
+
+        $r8 = interfaceinvoke i$#2.<java.util.Iterator: java.lang.Object next()>();
+
+        receiver#3 = (com.android.server.LocationManagerService$Receiver) $r8;
+
+        $r7 = receiver#3.<com.android.server.LocationManagerService$Receiver: java.lang.String mPackageName>;
+
+        $z3 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>(packageName);
+
+        if $z3 == 0 goto label04;
+
+        if deadReceivers#1 != null goto label03;
+
+        $r10 = new java.util.ArrayList;
+
+        specialinvoke $r10.<java.util.ArrayList: void <init>()>();
+
+        deadReceivers#1 = $r10;
+
+     label03:
+        virtualinvoke deadReceivers#1.<java.util.ArrayList: boolean add(java.lang.Object)>(receiver#3);
+
+     label04:
+        goto label02;
+
+     label05:
+        if deadReceivers#1 == null goto label07;
+
+        i$#4 = virtualinvoke deadReceivers#1.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label06:
+        $z1 = interfaceinvoke i$#4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label07;
+
+        $r6 = interfaceinvoke i$#4.<java.util.Iterator: java.lang.Object next()>();
+
+        receiver#5 = (com.android.server.LocationManagerService$Receiver) $r6;
+
+        $r5 = this.<com.android.server.LocationManagerService$4: com.android.server.LocationManagerService this$0>;
+
+        staticinvoke <com.android.server.LocationManagerService: void access$1400(com.android.server.LocationManagerService,com.android.server.LocationManagerService$Receiver)>($r5, receiver#5);
+
+        goto label06;
+
+     label07:
+        exitmonitor l3;
+
+     label08:
+        goto label11;
+
+     label09:
+        $r9 := @caughtexception;
+
+        l7 = $r9;
+
+        exitmonitor l3;
+
+     label10:
+        throw l7;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label01 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+}

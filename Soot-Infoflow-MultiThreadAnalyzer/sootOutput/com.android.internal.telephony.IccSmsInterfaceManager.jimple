@@ -1,0 +1,1174 @@
+public class com.android.internal.telephony.IccSmsInterfaceManager extends java.lang.Object
+{
+    static final java.lang.String LOG_TAG;
+    static final boolean DBG;
+    protected final java.lang.Object mLock;
+    protected boolean mSuccess;
+    private java.util.List mSms;
+    private com.android.internal.telephony.IccSmsInterfaceManager$CellBroadcastRangeManager mCellBroadcastRangeManager;
+    private com.android.internal.telephony.IccSmsInterfaceManager$CdmaBroadcastRangeManager mCdmaBroadcastRangeManager;
+    private static final int EVENT_LOAD_DONE;
+    private static final int EVENT_UPDATE_DONE;
+    protected static final int EVENT_SET_BROADCAST_ACTIVATION_DONE;
+    protected static final int EVENT_SET_BROADCAST_CONFIG_DONE;
+    private static final int SMS_CB_CODE_SCHEME_MIN;
+    private static final int SMS_CB_CODE_SCHEME_MAX;
+    protected com.android.internal.telephony.PhoneBase mPhone;
+    protected final android.content.Context mContext;
+    protected final android.app.AppOpsManager mAppOps;
+    private final android.os.UserManager mUserManager;
+    protected com.android.internal.telephony.SMSDispatcher mDispatcher;
+    protected android.os.Handler mHandler;
+
+    protected void <init>(com.android.internal.telephony.PhoneBase)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        com.android.internal.telephony.PhoneBase phone;
+        android.content.Context $r4, $r5, $r8;
+        java.lang.Object $r6, $r9, tmp$1451890794;
+        android.app.AppOpsManager $r7;
+        android.os.UserManager $r10;
+        com.android.internal.telephony.SmsUsageMonitor $r12;
+        com.android.internal.telephony.SmsStorageMonitor $r13;
+        com.android.internal.telephony.IccSmsInterfaceManager$CellBroadcastRangeManager tmp$1434917265;
+        com.android.internal.telephony.IccSmsInterfaceManager$CdmaBroadcastRangeManager tmp$443544564;
+        com.android.internal.telephony.IccSmsInterfaceManager$1 tmp$1914449546;
+        com.android.internal.telephony.ImsSMSDispatcher tmp$1701942628;
+        android.os.Handler tmp$1690932015;
+        com.android.internal.telephony.SMSDispatcher tmp$329783056;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        phone := @parameter0: com.android.internal.telephony.PhoneBase;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        tmp$1451890794 = new java.lang.Object;
+
+        specialinvoke tmp$1451890794.<java.lang.Object: void <init>()>();
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.Object mLock> = tmp$1451890794;
+
+        tmp$1434917265 = new com.android.internal.telephony.IccSmsInterfaceManager$CellBroadcastRangeManager;
+
+        specialinvoke tmp$1434917265.<com.android.internal.telephony.IccSmsInterfaceManager$CellBroadcastRangeManager: void <init>(com.android.internal.telephony.IccSmsInterfaceManager)>(this);
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.IccSmsInterfaceManager$CellBroadcastRangeManager mCellBroadcastRangeManager> = tmp$1434917265;
+
+        tmp$443544564 = new com.android.internal.telephony.IccSmsInterfaceManager$CdmaBroadcastRangeManager;
+
+        specialinvoke tmp$443544564.<com.android.internal.telephony.IccSmsInterfaceManager$CdmaBroadcastRangeManager: void <init>(com.android.internal.telephony.IccSmsInterfaceManager)>(this);
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.IccSmsInterfaceManager$CdmaBroadcastRangeManager mCdmaBroadcastRangeManager> = tmp$443544564;
+
+        tmp$1914449546 = new com.android.internal.telephony.IccSmsInterfaceManager$1;
+
+        specialinvoke tmp$1914449546.<com.android.internal.telephony.IccSmsInterfaceManager$1: void <init>(com.android.internal.telephony.IccSmsInterfaceManager)>(this);
+
+        tmp$1690932015 = (android.os.Handler) tmp$1914449546;
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: android.os.Handler mHandler> = tmp$1690932015;
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone> = phone;
+
+        $r4 = virtualinvoke phone.<com.android.internal.telephony.PhoneBase: android.content.Context getContext()>();
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: android.content.Context mContext> = $r4;
+
+        $r5 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.content.Context mContext>;
+
+        $r6 = virtualinvoke $r5.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("appops");
+
+        $r7 = (android.app.AppOpsManager) $r6;
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: android.app.AppOpsManager mAppOps> = $r7;
+
+        $r8 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.content.Context mContext>;
+
+        $r9 = virtualinvoke $r8.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("user");
+
+        $r10 = (android.os.UserManager) $r9;
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: android.os.UserManager mUserManager> = $r10;
+
+        tmp$1701942628 = new com.android.internal.telephony.ImsSMSDispatcher;
+
+        $r13 = phone.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.SmsStorageMonitor mSmsStorageMonitor>;
+
+        $r12 = phone.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.SmsUsageMonitor mSmsUsageMonitor>;
+
+        specialinvoke tmp$1701942628.<com.android.internal.telephony.ImsSMSDispatcher: void <init>(com.android.internal.telephony.PhoneBase,com.android.internal.telephony.SmsStorageMonitor,com.android.internal.telephony.SmsUsageMonitor)>(phone, $r13, $r12);
+
+        tmp$329783056 = (com.android.internal.telephony.SMSDispatcher) tmp$1701942628;
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher> = tmp$329783056;
+
+        return;
+    }
+
+    protected void markMessagesAsRead(java.util.ArrayList)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.util.ArrayList messages;
+        com.android.internal.telephony.uicc.IccFileHandler fh;
+        int count, n, $i1, $i2, $i3, $i4, i#1;
+        byte[] ba, nba, record;
+        com.android.internal.telephony.PhoneBase $r0;
+        java.lang.Object $r1;
+        byte $b0;
+        java.lang.StringBuilder $r2, $r3, $r4, $r5;
+        boolean $z0, $z1;
+        java.lang.String $r6;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        messages := @parameter0: java.util.ArrayList;
+
+        if messages != null goto label1;
+
+        return;
+
+     label1:
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        fh = virtualinvoke $r0.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.uicc.IccFileHandler getIccFileHandler()>();
+
+        if fh != null goto label3;
+
+        $z1 = staticinvoke <android.telephony.Rlog: boolean isLoggable(java.lang.String,int)>("SMS", 3);
+
+        if $z1 == 0 goto label2;
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>("markMessagesAsRead - aborting, no icc card present.");
+
+     label2:
+        return;
+
+     label3:
+        count = virtualinvoke messages.<java.util.ArrayList: int size()>();
+
+        i#1 = 0;
+
+     label4:
+        if i#1 >= count goto label6;
+
+        $r1 = virtualinvoke messages.<java.util.ArrayList: java.lang.Object get(int)>(i#1);
+
+        ba = (byte[]) $r1;
+
+        $b0 = ba[0];
+
+        if $b0 != 3 goto label5;
+
+        n = lengthof ba;
+
+        $i1 = n - 1;
+
+        nba = newarray (byte)[$i1];
+
+        $i2 = n - 1;
+
+        staticinvoke <java.lang.System: void arraycopy(byte[],int,byte[],int,int)>(ba, 1, nba, 0, $i2);
+
+        record = virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: byte[] makeSmsRecordData(int,byte[])>(1, nba);
+
+        $i3 = i#1 + 1;
+
+        virtualinvoke fh.<com.android.internal.telephony.uicc.IccFileHandler: void updateEFLinearFixed(int,int,byte[],java.lang.String,android.os.Message)>(28476, $i3, record, null, null);
+
+        $z0 = staticinvoke <android.telephony.Rlog: boolean isLoggable(java.lang.String,int)>("SMS", 3);
+
+        if $z0 == 0 goto label5;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SMS ");
+
+        $i4 = i#1 + 1;
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i4);
+
+        $r4 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" marked as read");
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>($r6);
+
+     label5:
+        i#1 = i#1 + 1;
+
+        goto label4;
+
+     label6:
+        return;
+    }
+
+    protected void updatePhoneObject(com.android.internal.telephony.PhoneBase)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        com.android.internal.telephony.PhoneBase phone;
+        com.android.internal.telephony.SMSDispatcher $r0;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        phone := @parameter0: com.android.internal.telephony.PhoneBase;
+
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone> = phone;
+
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher>;
+
+        virtualinvoke $r0.<com.android.internal.telephony.SMSDispatcher: void updatePhoneObject(com.android.internal.telephony.PhoneBase)>(phone);
+
+        return;
+    }
+
+    protected void enforceReceiveAndSend(java.lang.String)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String message;
+        android.content.Context $r0, $r1;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        message := @parameter0: java.lang.String;
+
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.content.Context mContext>;
+
+        virtualinvoke $r0.<android.content.Context: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.RECEIVE_SMS", message);
+
+        $r1 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.content.Context mContext>;
+
+        virtualinvoke $r1.<android.content.Context: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.SEND_SMS", message);
+
+        return;
+    }
+
+    public boolean updateMessageOnIccEf(java.lang.String, int, int, byte[])
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String callingPackage, $r6, $r11;
+        int index, status, $i0, $i1, $i2;
+        byte[] pdu, record;
+        java.lang.Object l5, $r12, $r15;
+        android.os.Message response;
+        java.lang.Throwable l9, $r19;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r5, $r7, $r8, $r9;
+        android.app.AppOpsManager $r10;
+        android.os.Handler $r13;
+        com.android.internal.telephony.PhoneBase $r14, $r16, $r17, $r21;
+        boolean $z0, $z1;
+        com.android.internal.telephony.CommandsInterface $r18, $r20;
+        java.lang.InterruptedException $r22, fh#2;
+        com.android.internal.telephony.uicc.IccFileHandler fh#1;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        index := @parameter1: int;
+
+        status := @parameter2: int;
+
+        pdu := @parameter3: byte[];
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("updateMessageOnIccEf: index=");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(index);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" status=");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(status);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ==> ");
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+
+        $r6 = staticinvoke <java.util.Arrays: java.lang.String toString(byte[])>(pdu);
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>($r11);
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void enforceReceiveAndSend(java.lang.String)>("Updating message on Icc");
+
+        $r10 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = virtualinvoke $r10.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(22, $i0, callingPackage);
+
+        if $i1 == 0 goto label01;
+
+        return 0;
+
+     label01:
+        $r12 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.Object mLock>;
+
+        l5 = $r12;
+
+        entermonitor $r12;
+
+     label02:
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: boolean mSuccess> = 0;
+
+        $r13 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.os.Handler mHandler>;
+
+        response = virtualinvoke $r13.<android.os.Handler: android.os.Message obtainMessage(int)>(2);
+
+        if status != 0 goto label04;
+
+        $r17 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $i2 = virtualinvoke $r17.<com.android.internal.telephony.PhoneBase: int getPhoneType()>();
+
+        if 1 != $i2 goto label03;
+
+        $r21 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $r18 = $r21.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.CommandsInterface mCi>;
+
+        interfaceinvoke $r18.<com.android.internal.telephony.CommandsInterface: void deleteSmsOnSim(int,android.os.Message)>(index, response);
+
+        goto label07;
+
+     label03:
+        $r16 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $r20 = $r16.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.CommandsInterface mCi>;
+
+        interfaceinvoke $r20.<com.android.internal.telephony.CommandsInterface: void deleteSmsOnRuim(int,android.os.Message)>(index, response);
+
+        goto label07;
+
+     label04:
+        $r14 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        fh#1 = virtualinvoke $r14.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.uicc.IccFileHandler getIccFileHandler()>();
+
+        if fh#1 != null goto label06;
+
+        virtualinvoke response.<android.os.Message: void recycle()>();
+
+        $z0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: boolean mSuccess>;
+
+        exitmonitor l5;
+
+     label05:
+        return $z0;
+
+     label06:
+        record = virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: byte[] makeSmsRecordData(int,byte[])>(status, pdu);
+
+        virtualinvoke fh#1.<com.android.internal.telephony.uicc.IccFileHandler: void updateEFLinearFixed(int,int,byte[],java.lang.String,android.os.Message)>(28476, index, record, null, response);
+
+     label07:
+        $r15 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.Object mLock>;
+
+        virtualinvoke $r15.<java.lang.Object: void wait()>();
+
+     label08:
+        goto label10;
+
+     label09:
+        $r22 := @caughtexception;
+
+        fh#2 = $r22;
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>("interrupted while trying to update by index");
+
+     label10:
+        exitmonitor l5;
+
+     label11:
+        goto label14;
+
+     label12:
+        $r19 := @caughtexception;
+
+        l9 = $r19;
+
+        exitmonitor l5;
+
+     label13:
+        throw l9;
+
+     label14:
+        $z1 = this.<com.android.internal.telephony.IccSmsInterfaceManager: boolean mSuccess>;
+
+        return $z1;
+
+        catch java.lang.InterruptedException from label07 to label08 with label09;
+        catch java.lang.Throwable from label02 to label05 with label12;
+        catch java.lang.Throwable from label06 to label11 with label12;
+        catch java.lang.Throwable from label12 to label13 with label12;
+    }
+
+    public boolean copyMessageToIccEf(java.lang.String, int, byte[], byte[])
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String callingPackage, $r5, $r7, $r12, $r19, $r21, $r24;
+        int status, $i0, $i1, $i2;
+        byte[] pdu, smsc;
+        java.lang.Object l5, $r13, $r17;
+        android.os.Message response;
+        java.lang.InterruptedException e, $r25;
+        java.lang.Throwable l8, $r23;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r6, $r8, $r9, $r10;
+        android.app.AppOpsManager $r11;
+        android.os.Handler $r14;
+        com.android.internal.telephony.PhoneBase $r15, $r16, $r22;
+        com.android.internal.telephony.CommandsInterface $r18, $r20;
+        boolean $z0;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        status := @parameter1: int;
+
+        pdu := @parameter2: byte[];
+
+        smsc := @parameter3: byte[];
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("copyMessageToIccEf: status=");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(status);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ==> ");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("pdu=(");
+
+        $r5 = staticinvoke <java.util.Arrays: java.lang.String toString(byte[])>(pdu);
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("), smsc=(");
+
+        $r7 = staticinvoke <java.util.Arrays: java.lang.String toString(byte[])>(smsc);
+
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>($r12);
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void enforceReceiveAndSend(java.lang.String)>("Copying message to Icc");
+
+        $r11 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = virtualinvoke $r11.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(22, $i0, callingPackage);
+
+        if $i1 == 0 goto label01;
+
+        return 0;
+
+     label01:
+        $r13 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.Object mLock>;
+
+        l5 = $r13;
+
+        entermonitor $r13;
+
+     label02:
+        this.<com.android.internal.telephony.IccSmsInterfaceManager: boolean mSuccess> = 0;
+
+        $r14 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.os.Handler mHandler>;
+
+        response = virtualinvoke $r14.<android.os.Handler: android.os.Message obtainMessage(int)>(2);
+
+        $r15 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $i2 = virtualinvoke $r15.<com.android.internal.telephony.PhoneBase: int getPhoneType()>();
+
+        if 1 != $i2 goto label03;
+
+        $r22 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $r20 = $r22.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.CommandsInterface mCi>;
+
+        $r21 = staticinvoke <com.android.internal.telephony.IccUtils: java.lang.String bytesToHexString(byte[])>(smsc);
+
+        $r24 = staticinvoke <com.android.internal.telephony.IccUtils: java.lang.String bytesToHexString(byte[])>(pdu);
+
+        interfaceinvoke $r20.<com.android.internal.telephony.CommandsInterface: void writeSmsToSim(int,java.lang.String,java.lang.String,android.os.Message)>(status, $r21, $r24, response);
+
+        goto label04;
+
+     label03:
+        $r16 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $r18 = $r16.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.CommandsInterface mCi>;
+
+        $r19 = staticinvoke <com.android.internal.telephony.IccUtils: java.lang.String bytesToHexString(byte[])>(pdu);
+
+        interfaceinvoke $r18.<com.android.internal.telephony.CommandsInterface: void writeSmsToRuim(int,java.lang.String,android.os.Message)>(status, $r19, response);
+
+     label04:
+        $r17 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.Object mLock>;
+
+        virtualinvoke $r17.<java.lang.Object: void wait()>();
+
+     label05:
+        goto label07;
+
+     label06:
+        $r25 := @caughtexception;
+
+        e = $r25;
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>("interrupted while trying to update by index");
+
+     label07:
+        exitmonitor l5;
+
+     label08:
+        goto label11;
+
+     label09:
+        $r23 := @caughtexception;
+
+        l8 = $r23;
+
+        exitmonitor l5;
+
+     label10:
+        throw l8;
+
+     label11:
+        $z0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: boolean mSuccess>;
+
+        return $z0;
+
+        catch java.lang.InterruptedException from label04 to label05 with label06;
+        catch java.lang.Throwable from label02 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public java.util.List getAllMessagesFromIccEf(java.lang.String)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String callingPackage;
+        java.lang.Object l2, $r2, $r5;
+        com.android.internal.telephony.uicc.IccFileHandler fh;
+        android.os.Message response;
+        java.lang.InterruptedException e, $r12;
+        java.lang.Throwable l6, $r11;
+        android.content.Context $r0;
+        android.app.AppOpsManager $r1;
+        int $i0, $i1;
+        com.android.internal.telephony.PhoneBase $r3;
+        android.os.Handler $r4;
+        java.util.List $r6, $r7, $r8, $r10, tmp$752268326;
+        java.util.ArrayList tmp$1541148314;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>("getAllMessagesFromEF");
+
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.content.Context mContext>;
+
+        virtualinvoke $r0.<android.content.Context: void enforceCallingOrSelfPermission(java.lang.String,java.lang.String)>("android.permission.RECEIVE_SMS", "Reading messages from Icc");
+
+        $r1 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = virtualinvoke $r1.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(21, $i0, callingPackage);
+
+        if $i1 == 0 goto label01;
+
+        tmp$1541148314 = new java.util.ArrayList;
+
+        specialinvoke tmp$1541148314.<java.util.ArrayList: void <init>()>();
+
+        tmp$752268326 = (java.util.List) tmp$1541148314;
+
+        return tmp$752268326;
+
+     label01:
+        $r2 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.Object mLock>;
+
+        l2 = $r2;
+
+        entermonitor $r2;
+
+     label02:
+        $r3 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        fh = virtualinvoke $r3.<com.android.internal.telephony.PhoneBase: com.android.internal.telephony.uicc.IccFileHandler getIccFileHandler()>();
+
+        if fh != null goto label04;
+
+        staticinvoke <android.telephony.Rlog: int e(java.lang.String,java.lang.String)>("IccSmsInterfaceManager", "Cannot load Sms records. No icc card?");
+
+        $r7 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.util.List mSms>;
+
+        if $r7 == null goto label04;
+
+        $r8 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.util.List mSms>;
+
+        interfaceinvoke $r8.<java.util.List: void clear()>();
+
+        $r10 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.util.List mSms>;
+
+        exitmonitor l2;
+
+     label03:
+        return $r10;
+
+     label04:
+        $r4 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.os.Handler mHandler>;
+
+        response = virtualinvoke $r4.<android.os.Handler: android.os.Message obtainMessage(int)>(1);
+
+        virtualinvoke fh.<com.android.internal.telephony.uicc.IccFileHandler: void loadEFLinearFixedAll(int,android.os.Message)>(28476, response);
+
+     label05:
+        $r5 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.Object mLock>;
+
+        virtualinvoke $r5.<java.lang.Object: void wait()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $r12 := @caughtexception;
+
+        e = $r12;
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>("interrupted while trying to load from the Icc");
+
+     label08:
+        exitmonitor l2;
+
+     label09:
+        goto label12;
+
+     label10:
+        $r11 := @caughtexception;
+
+        l6 = $r11;
+
+        exitmonitor l2;
+
+     label11:
+        throw l6;
+
+     label12:
+        $r6 = this.<com.android.internal.telephony.IccSmsInterfaceManager: java.util.List mSms>;
+
+        return $r6;
+
+        catch java.lang.InterruptedException from label05 to label06 with label07;
+        catch java.lang.Throwable from label02 to label03 with label10;
+        catch java.lang.Throwable from label04 to label09 with label10;
+        catch java.lang.Throwable from label10 to label11 with label10;
+    }
+
+    public void sendData(java.lang.String, java.lang.String, java.lang.String, int, byte[], android.app.PendingIntent, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String callingPackage, scAddr, $r11, $r17, destAddr#1, destAddr#2;
+        int destPort, $i0, $i1;
+        byte[] data;
+        android.app.PendingIntent sentIntent, deliveryIntent;
+        com.android.internal.telephony.PhoneBase $r0;
+        android.content.Context $r1;
+        boolean $z0;
+        android.app.AppOpsManager $r2;
+        java.lang.StringBuilder $r3, $r5, $r6, $r7, $r8, $r9, $r10, $r12, $r13, $r14, $r15, $r16, $r18;
+        com.android.internal.telephony.SMSDispatcher $r4;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        destAddr#1 := @parameter1: java.lang.String;
+
+        scAddr := @parameter2: java.lang.String;
+
+        destPort := @parameter3: int;
+
+        data := @parameter4: byte[];
+
+        sentIntent := @parameter5: android.app.PendingIntent;
+
+        deliveryIntent := @parameter6: android.app.PendingIntent;
+
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $r1 = virtualinvoke $r0.<com.android.internal.telephony.PhoneBase: android.content.Context getContext()>();
+
+        virtualinvoke $r1.<android.content.Context: void enforceCallingPermission(java.lang.String,java.lang.String)>("android.permission.SEND_SMS", "Sending SMS message");
+
+        $z0 = staticinvoke <android.telephony.Rlog: boolean isLoggable(java.lang.String,int)>("SMS", 2);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendData: destAddr=");
+
+        $r5 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(destAddr#1);
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" scAddr=");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(scAddr);
+
+        $r10 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" destPort=");
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(destPort);
+
+        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" data=\'");
+
+        $r11 = staticinvoke <com.android.internal.util.HexDump: java.lang.String toHexString(byte[])>(data);
+
+        $r14 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r11);
+
+        $r13 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' sentIntent=");
+
+        $r16 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(sentIntent);
+
+        $r15 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" deliveryIntent=");
+
+        $r18 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(deliveryIntent);
+
+        $r17 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>($r17);
+
+     label1:
+        $r2 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = virtualinvoke $r2.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(20, $i0, callingPackage);
+
+        if $i1 == 0 goto label2;
+
+        return;
+
+     label2:
+        destAddr#2 = specialinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.String filterDestAddress(java.lang.String)>(destAddr#1);
+
+        $r4 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher>;
+
+        virtualinvoke $r4.<com.android.internal.telephony.SMSDispatcher: void sendData(java.lang.String,java.lang.String,int,byte[],android.app.PendingIntent,android.app.PendingIntent)>(destAddr#2, scAddr, destPort, data, sentIntent, deliveryIntent);
+
+        return;
+    }
+
+    public void sendText(java.lang.String, java.lang.String, java.lang.String, java.lang.String, android.app.PendingIntent, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String callingPackage, scAddr, text, $r14, destAddr#1, destAddr#2;
+        android.app.PendingIntent sentIntent, deliveryIntent;
+        com.android.internal.telephony.PhoneBase $r0;
+        android.content.Context $r1;
+        boolean $z0;
+        android.app.AppOpsManager $r2;
+        int $i0, $i1;
+        com.android.internal.telephony.SMSDispatcher $r3;
+        java.lang.StringBuilder $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r15;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        destAddr#1 := @parameter1: java.lang.String;
+
+        scAddr := @parameter2: java.lang.String;
+
+        text := @parameter3: java.lang.String;
+
+        sentIntent := @parameter4: android.app.PendingIntent;
+
+        deliveryIntent := @parameter5: android.app.PendingIntent;
+
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $r1 = virtualinvoke $r0.<com.android.internal.telephony.PhoneBase: android.content.Context getContext()>();
+
+        virtualinvoke $r1.<android.content.Context: void enforceCallingPermission(java.lang.String,java.lang.String)>("android.permission.SEND_SMS", "Sending SMS message");
+
+        $z0 = staticinvoke <android.telephony.Rlog: boolean isLoggable(java.lang.String,int)>("SMS", 2);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendText: destAddr=");
+
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(destAddr#1);
+
+        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" scAddr=");
+
+        $r9 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(scAddr);
+
+        $r8 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" text=\'");
+
+        $r11 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(text);
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' sentIntent=");
+
+        $r13 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(sentIntent);
+
+        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" deliveryIntent=");
+
+        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(deliveryIntent);
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>($r14);
+
+     label1:
+        $r2 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i0 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i1 = virtualinvoke $r2.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(20, $i0, callingPackage);
+
+        if $i1 == 0 goto label2;
+
+        return;
+
+     label2:
+        destAddr#2 = specialinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.String filterDestAddress(java.lang.String)>(destAddr#1);
+
+        $r3 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher>;
+
+        virtualinvoke $r3.<com.android.internal.telephony.SMSDispatcher: void sendText(java.lang.String,java.lang.String,java.lang.String,android.app.PendingIntent,android.app.PendingIntent,android.net.Uri,java.lang.String)>(destAddr#2, scAddr, text, sentIntent, deliveryIntent, null, callingPackage);
+
+        return;
+    }
+
+    public void injectSmsPdu(byte[], java.lang.String, android.app.PendingIntent)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        byte[] pdu;
+        java.lang.String format, $r8;
+        android.app.PendingIntent receivedIntent;
+        boolean $z0;
+        com.android.internal.telephony.SMSDispatcher $r0;
+        java.lang.StringBuilder $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        pdu := @parameter0: byte[];
+
+        format := @parameter1: java.lang.String;
+
+        receivedIntent := @parameter2: android.app.PendingIntent;
+
+        specialinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void enforceCarrierPrivilege()>();
+
+        $z0 = staticinvoke <android.telephony.Rlog: boolean isLoggable(java.lang.String,int)>("SMS", 2);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("pdu: ");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(pdu);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n format=");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(format);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n receivedIntent=");
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(receivedIntent);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>($r8);
+
+     label1:
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher>;
+
+        virtualinvoke $r0.<com.android.internal.telephony.SMSDispatcher: void injectSmsPdu(byte[],java.lang.String,android.app.PendingIntent)>(pdu, format, receivedIntent);
+
+        return;
+    }
+
+    public void sendMultipartText(java.lang.String, java.lang.String, java.lang.String, java.util.List, java.util.List, java.util.List)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String callingPackage, scAddr, $r11, $r15, $r18, $r35, destAddr#1, part#4, destAddr#5, i$#7, i$#8;
+        java.util.List parts, sentIntents, deliveryIntents;
+        com.android.internal.telephony.PhoneBase $r0;
+        android.content.Context $r1;
+        boolean $z0, $z1, $z2, $z3;
+        android.app.AppOpsManager $r2;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, i#2, i#6;
+        java.util.ArrayList $r3, $r4, $r6;
+        com.android.internal.telephony.SMSDispatcher $r5, $r13;
+        java.lang.Object $r7, $r16, $r17, $r28;
+        java.lang.StringBuilder $r8, $r9, $r10, $r12, $r14, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r29, $r30, $r31, $r32, $r33, $r34;
+        java.util.Iterator i$#3;
+        android.app.PendingIntent part#9, singleDeliveryIntent#10;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        callingPackage := @parameter0: java.lang.String;
+
+        destAddr#1 := @parameter1: java.lang.String;
+
+        scAddr := @parameter2: java.lang.String;
+
+        parts := @parameter3: java.util.List;
+
+        sentIntents := @parameter4: java.util.List;
+
+        deliveryIntents := @parameter5: java.util.List;
+
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.PhoneBase mPhone>;
+
+        $r1 = virtualinvoke $r0.<com.android.internal.telephony.PhoneBase: android.content.Context getContext()>();
+
+        virtualinvoke $r1.<android.content.Context: void enforceCallingPermission(java.lang.String,java.lang.String)>("android.permission.SEND_SMS", "Sending SMS message");
+
+        $z0 = staticinvoke <android.telephony.Rlog: boolean isLoggable(java.lang.String,int)>("SMS", 2);
+
+        if $z0 == 0 goto label02;
+
+        i#2 = 0;
+
+        i$#3 = interfaceinvoke parts.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $z3 = interfaceinvoke i$#3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z3 == 0 goto label02;
+
+        $r28 = interfaceinvoke i$#3.<java.util.Iterator: java.lang.Object next()>();
+
+        part#4 = (java.lang.String) $r28;
+
+        $r27 = new java.lang.StringBuilder;
+
+        specialinvoke $r27.<java.lang.StringBuilder: void <init>()>();
+
+        $r26 = virtualinvoke $r27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendMultipartText: destAddr=");
+
+        $r25 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(destAddr#1);
+
+        $r31 = virtualinvoke $r25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", srAddr=");
+
+        $r30 = virtualinvoke $r31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(scAddr);
+
+        $r29 = virtualinvoke $r30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", part[");
+
+        $i11 = i#2;
+
+        i#2 = i#2 + 1;
+
+        $r32 = virtualinvoke $r29.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r33 = virtualinvoke $r32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]=");
+
+        $r34 = virtualinvoke $r33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(part#4);
+
+        $r35 = virtualinvoke $r34.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: void log(java.lang.String)>($r35);
+
+        goto label01;
+
+     label02:
+        $r2 = this.<com.android.internal.telephony.IccSmsInterfaceManager: android.app.AppOpsManager mAppOps>;
+
+        $i1 = staticinvoke <android.os.Binder: int getCallingUid()>();
+
+        $i0 = virtualinvoke $r2.<android.app.AppOpsManager: int noteOp(int,int,java.lang.String)>(20, $i1, callingPackage);
+
+        if $i0 == 0 goto label03;
+
+        return;
+
+     label03:
+        destAddr#5 = specialinvoke this.<com.android.internal.telephony.IccSmsInterfaceManager: java.lang.String filterDestAddress(java.lang.String)>(destAddr#1);
+
+        $i2 = interfaceinvoke parts.<java.util.List: int size()>();
+
+        if $i2 <= 1 goto label10;
+
+        $i3 = interfaceinvoke parts.<java.util.List: int size()>();
+
+        if $i3 >= 10 goto label10;
+
+        $z1 = staticinvoke <android.telephony.SmsMessage: boolean hasEmsSupport()>();
+
+        if $z1 != 0 goto label10;
+
+        i#6 = 0;
+
+     label04:
+        $i4 = interfaceinvoke parts.<java.util.List: int size()>();
+
+        if i#6 >= $i4 goto label09;
+
+        $r7 = interfaceinvoke parts.<java.util.List: java.lang.Object get(int)>(i#6);
+
+        i$#7 = (java.lang.String) $r7;
+
+        $z2 = staticinvoke <android.telephony.SmsMessage: boolean shouldAppendPageNumberAsPrefix()>();
+
+        if $z2 == 0 goto label05;
+
+        $r20 = new java.lang.StringBuilder;
+
+        specialinvoke $r20.<java.lang.StringBuilder: void <init>()>();
+
+        $i9 = i#6 + 1;
+
+        $r18 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i9);
+
+        $r19 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r18);
+
+        $r23 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $i10 = interfaceinvoke parts.<java.util.List: int size()>();
+
+        $r22 = virtualinvoke $r23.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i10);
+
+        $r21 = virtualinvoke $r22.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r24 = virtualinvoke $r21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(i$#7);
+
+        i$#8 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label05:
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $i5 = i#6 + 1;
+
+        $r11 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i5);
+
+        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r11);
+
+        $r10 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $i6 = interfaceinvoke parts.<java.util.List: int size()>();
+
+        $r14 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        $r15 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        i$#8 = virtualinvoke i$#7.<java.lang.String: java.lang.String concat(java.lang.String)>($r15);
+
+     label06:
+        part#9 = null;
+
+        if sentIntents == null goto label07;
+
+        $i7 = interfaceinvoke sentIntents.<java.util.List: int size()>();
+
+        if $i7 <= i#6 goto label07;
+
+        $r16 = interfaceinvoke sentIntents.<java.util.List: java.lang.Object get(int)>(i#6);
+
+        part#9 = (android.app.PendingIntent) $r16;
+
+     label07:
+        singleDeliveryIntent#10 = null;
+
+        if deliveryIntents == null goto label08;
+
+        $i8 = interfaceinvoke deliveryIntents.<java.util.List: int size()>();
+
+        if $i8 <= i#6 goto label08;
+
+        $r17 = interfaceinvoke deliveryIntents.<java.util.List: java.lang.Object get(int)>(i#6);
+
+        singleDeliveryIntent#10 = (android.app.PendingIntent) $r17;
+
+     label08:
+        $r13 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher>;
+
+        virtualinvoke $r13.<com.android.internal.telephony.SMSDispatcher: void sendText(java.lang.String,java.lang.String,java.lang.String,android.app.PendingIntent,android.app.PendingIntent,android.net.Uri,java.lang.String)>(destAddr#5, scAddr, i$#8, part#9, singleDeliveryIntent#10, null, callingPackage);
+
+        i#6 = i#6 + 1;
+
+        goto label04;
+
+     label09:
+        return;
+
+     label10:
+        $r5 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher>;
+
+        $r6 = (java.util.ArrayList) parts;
+
+        $r3 = (java.util.ArrayList) sentIntents;
+
+        $r4 = (java.util.ArrayList) deliveryIntents;
+
+        virtualinvoke $r5.<com.android.internal.telephony.SMSDispatcher: void sendMultipartText(java.lang.String,java.lang.String,java.util.ArrayList,java.util.ArrayList,java.util.ArrayList,android.net.Uri,java.lang.String)>(destAddr#5, scAddr, $r6, $r3, $r4, null, callingPackage);
+
+        return;
+    }
+
+    public int getPremiumSmsPermission(java.lang.String)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String packageName;
+        com.android.internal.telephony.SMSDispatcher $r0;
+        int $i0;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        packageName := @parameter0: java.lang.String;
+
+        $r0 = this.<com.android.internal.telephony.IccSmsInterfaceManager: com.android.internal.telephony.SMSDispatcher mDispatcher>;
+
+        $i0 = virtualinvoke $r0.<com.android.internal.telephony.SMSDispatcher: int getPremiumSmsPermission(java.lang.String)>(packageName);
+
+        return $i0;
+    }
+
+    public void setPremiumSmsPermission(java.lang.String, int)
+    {
+        com.android.internal.telephony.IccSmsInterfaceManager this;
+        java.lang.String packageName;
+        int permission;
+        com.android.internal.telephony.SMSDispatcher $r0;
+
+        this := @this: com.android.internal.telephony.IccSmsInterfaceManager;
+
+        packageName := @parameter0: java.lang.String;
+
+        permission := @param

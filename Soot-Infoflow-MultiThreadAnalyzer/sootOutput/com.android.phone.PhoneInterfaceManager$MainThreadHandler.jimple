@@ -1,0 +1,2768 @@
+final class com.android.phone.PhoneInterfaceManager$MainThreadHandler extends android.os.Handler
+{
+    final com.android.phone.PhoneInterfaceManager this$0;
+
+    private void <init>(com.android.phone.PhoneInterfaceManager)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        com.android.phone.PhoneInterfaceManager l1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        l1 := @parameter0: com.android.phone.PhoneInterfaceManager;
+
+        this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0> = l1;
+
+        specialinvoke this.<android.os.Handler: void <init>()>();
+
+        return;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message msg, onCompleted#5, onCompleted#21, onCompleted#30, onCompleted#37, onCompleted#43, onCompleted#49, onCompleted#61, onCompleted#63, onCompleted#68, onCompleted#71, onCompleted#73, onCompleted#75, onCompleted#80, onCompleted#83, onCompleted#88;
+        com.android.internal.telephony.uicc.UiccCard uiccCard;
+        int phoneType, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, $i13, $i14, $i15, $i16, $i17, $i18, $i19, $i20, $i21, $i22, $i23, $i25, $i26, $i27, $i28, $i29, $i30, $i32, answer_subId#11, end_subId#13, channelId#53, i#55, channelId#81;
+        java.lang.Throwable l17, l16, l19, l18, l21, l20, l23, l22, l25, l24, l26, $r21, $r35, $r38, $r39, $r63, $r71, $r74, $r82, $r89, $r92, $r107, $r127, $r133, $r135, $r153, $r154, $r157, $r158, $r160, $r171, $r173, $r176, $r178, $r198, $r219, $r220, $r224, $r225, $r226, $r227, $r229, $r240, $r241, $r242, $r243, $r244, $r245, $r246, $r247, $r248, $r249, $r250, end_subId#3, hungUp#9, result#16, channelId#20, selectResponse#25, i#29;
+        com.android.internal.telephony.uicc.UiccController $r0;
+        com.android.internal.telephony.Phone $r1, $r4, $r11, $r54, $r98, $r101, $r104, $r120, $r126, $r146, $r209, $r218, $r236;
+        com.android.phone.PhoneInterfaceManager $r2, $r3, $r14, $r56, $r97, $r102, $r105, $r119, $r125, $r145, $r203, $r208, $r217, $r233, $r235;
+        java.lang.Object $r5, $r7, $r9, $r12, $r13, $r15, $r18, $r22, $r23, $r24, $r27, $r28, $r34, $r36, $r37, $r46, $r47, $r48, $r49, $r50, $r55, $r57, $r58, $r60, $r64, $r65, $r75, $r77, $r86, $r87, $r88, $r91, $r94, $r95, $r99, $r100, $r103, $r110, $r111, $r112, $r114, $r116, $r117, $r121, $r123, $r134, $r136, $r137, $r138, $r143, $r144, $r147, $r149, $r150, $r151, $r159, $r161, $r162, $r166, $r167, $r177, $r181, $r182, $r186, $r187, $r188, $r191, $r192, $r197, $r211, $r215, $r231, $r232, $r237, $r238, $r239;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5, $z6, hungUp#14;
+        java.lang.Boolean $r6, $r207;
+        java.lang.String $r8, $r16, $r17, $r26, $r41, $r45, $r69, $r76, $r84, $r113, $r129, $r139, $r152, $r169, $r174, $r183, $r185, $r189, $r204, $r221;
+        byte[] $r19, $r30, $r33, $r51, $r61, $r66, $r67, $r78, $r115, $r124, $r142, $r193, $r196, $r213, selectResponse#54;
+        com.android.internal.telephony.uicc.IccIoResult $r20, $r29, $r32, $r53, $r62, $r79, $r141, $r190, $r195, $r212;
+        java.lang.StringBuilder $r40, $r42, $r44, $r70, $r72, $r73, $r81, $r83, $r85, $r106, $r108, $r109, $r128, $r130, $r132, $r168, $r170, $r172, $r179, $r180, $r184, $r199, $r201, $r202, $r222, $r223, $r234;
+        java.lang.Integer $r90, $r96, $r118, $r122, $r140, $r148, $r210, $r216;
+        android.telephony.IccOpenLogicalChannelResponse $r156, $r164, openChannelResp#56;
+        int[] $r165, result#52;
+        byte $b24, result#57;
+        java.lang.IllegalStateException $r200;
+        com.android.internal.telephony.CallManager $r205;
+        java.util.ArrayList $r230;
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest request#1, answer_subId#2, request#4, request#7, answer_subId#8, request#10, request#12, openChannelResp#15, request#17, openChannelResp#19, request#23, openChannelResp#24, request#26, openChannelResp#28, request#32, openChannelResp#33, request#34, openChannelResp#36, request#39, openChannelResp#40, request#41, openChannelResp#42, request#45, openChannelResp#46, request#47, openChannelResp#48, request#51, result#58, request#59, result#60, request#62, request#65, result#66, request#67, request#70, request#72, request#74, request#77, channelId#78, request#79, request#82, request#85, selectResponse#86, request#87;
+        android.os.AsyncResult ar#6, ar#22, ar#31, ar#38, ar#44, ar#50, ar#64, ar#76, ar#84;
+        com.android.phone.PhoneInterfaceManager$IccAPDUArgument iccArgument#18, iccArgument#27, iccArgument#35;
+        android.util.Pair result#69, selectResponse#89;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $r0 = staticinvoke <com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccController getInstance()>();
+
+        $r2 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r1 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r2);
+
+        $i0 = interfaceinvoke $r1.<com.android.internal.telephony.Phone: int getPhoneId()>();
+
+        uiccCard = virtualinvoke $r0.<com.android.internal.telephony.uicc.UiccController: com.android.internal.telephony.uicc.UiccCard getUiccCard(int)>($i0);
+
+        $i1 = msg.<android.os.Message: int what>;
+
+        tableswitch($i1)
+        {
+            case 1: goto label001;
+            case 2: goto label007;
+            case 3: goto label008;
+            case 4: goto label016;
+            case 5: goto label017;
+            case 6: goto label160;
+            case 7: goto label026;
+            case 8: goto label033;
+            case 9: goto label092;
+            case 10: goto label099;
+            case 11: goto label113;
+            case 12: goto label120;
+            case 13: goto label121;
+            case 14: goto label122;
+            case 15: goto label132;
+            case 16: goto label133;
+            case 17: goto label134;
+            case 18: goto label135;
+            case 19: goto label136;
+            case 20: goto label137;
+            case 21: goto label138;
+            case 22: goto label139;
+            case 23: goto label149;
+            case 24: goto label150;
+            case 25: goto label075;
+            case 26: goto label082;
+            case 27: goto label151;
+            case 28: goto label152;
+            case 29: goto label043;
+            case 30: goto label050;
+            case 31: goto label060;
+            case 32: goto label067;
+            case 33: goto label158;
+            case 34: goto label159;
+            default: goto label160;
+        };
+
+     label001:
+        $r5 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#1 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r5;
+
+        $r3 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r4 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$100(com.android.phone.PhoneInterfaceManager,com.android.phone.PhoneInterfaceManager$MainThreadRequest)>($r3, request#1);
+
+        $r7 = request#1.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r8 = (java.lang.String) $r7;
+
+        $z0 = interfaceinvoke $r4.<com.android.internal.telephony.Phone: boolean handlePinMmi(java.lang.String)>($r8);
+
+        $r6 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($z0);
+
+        request#1.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r6;
+
+        answer_subId#2 = request#1;
+
+        entermonitor request#1;
+
+     label002:
+        virtualinvoke request#1.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor answer_subId#2;
+
+     label003:
+        goto label006;
+
+     label004:
+        $r245 := @caughtexception;
+
+        end_subId#3 = $r245;
+
+        exitmonitor answer_subId#2;
+
+     label005:
+        throw end_subId#3;
+
+     label006:
+        goto label161;
+
+     label007:
+        $r237 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#4 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r237;
+
+        onCompleted#5 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(3, request#4);
+
+        $r235 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r236 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r235);
+
+        interfaceinvoke $r236.<com.android.internal.telephony.Phone: void getNeighboringCids(android.os.Message)>(onCompleted#5);
+
+        goto label161;
+
+     label008:
+        $r231 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#6 = (android.os.AsyncResult) $r231;
+
+        $r232 = ar#6.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#7 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r232;
+
+        $r229 = ar#6.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r229 != null goto label009;
+
+        $r238 = ar#6.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r238 == null goto label009;
+
+        $r239 = ar#6.<android.os.AsyncResult: java.lang.Object result>;
+
+        request#7.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r239;
+
+        goto label010;
+
+     label009:
+        $r230 = new java.util.ArrayList;
+
+        specialinvoke $r230.<java.util.ArrayList: void <init>(int)>(0);
+
+        request#7.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r230;
+
+     label010:
+        answer_subId#8 = request#7;
+
+        entermonitor request#7;
+
+     label011:
+        virtualinvoke request#7.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor answer_subId#8;
+
+     label012:
+        goto label015;
+
+     label013:
+        $r243 := @caughtexception;
+
+        hungUp#9 = $r243;
+
+        exitmonitor answer_subId#8;
+
+     label014:
+        throw hungUp#9;
+
+     label015:
+        goto label161;
+
+     label016:
+        $r211 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#10 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r211;
+
+        $r210 = request#10.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Integer subId>;
+
+        answer_subId#11 = virtualinvoke $r210.<java.lang.Integer: int intValue()>();
+
+        $r233 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$200(com.android.phone.PhoneInterfaceManager,int)>($r233, answer_subId#11);
+
+        goto label161;
+
+     label017:
+        $r215 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#12 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r215;
+
+        $r216 = request#12.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Integer subId>;
+
+        end_subId#13 = virtualinvoke $r216.<java.lang.Integer: int intValue()>();
+
+        $r217 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r218 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$300(com.android.phone.PhoneInterfaceManager,int)>($r217, end_subId#13);
+
+        phoneType = interfaceinvoke $r218.<com.android.internal.telephony.Phone: int getPhoneType()>();
+
+        if phoneType != 2 goto label018;
+
+        $r208 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r209 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$300(com.android.phone.PhoneInterfaceManager,int)>($r208, end_subId#13);
+
+        hungUp#14 = staticinvoke <com.android.phone.PhoneUtils: boolean hangupRingingAndActive(com.android.internal.telephony.Phone)>($r209);
+
+        goto label020;
+
+     label018:
+        if phoneType != 1 goto label019;
+
+        $r203 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r205 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.CallManager access$400(com.android.phone.PhoneInterfaceManager)>($r203);
+
+        hungUp#14 = staticinvoke <com.android.phone.PhoneUtils: boolean hangup(com.android.internal.telephony.CallManager)>($r205);
+
+        goto label020;
+
+     label019:
+        $r200 = new java.lang.IllegalStateException;
+
+        $r199 = new java.lang.StringBuilder;
+
+        specialinvoke $r199.<java.lang.StringBuilder: void <init>()>();
+
+        $r202 = virtualinvoke $r199.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected phone type: ");
+
+        $r201 = virtualinvoke $r202.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(phoneType);
+
+        $r204 = virtualinvoke $r201.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r200.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r204);
+
+        throw $r200;
+
+     label020:
+        $r207 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(hungUp#14);
+
+        request#12.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r207;
+
+        openChannelResp#15 = request#12;
+
+        entermonitor request#12;
+
+     label021:
+        virtualinvoke request#12.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#15;
+
+     label022:
+        goto label025;
+
+     label023:
+        $r249 := @caughtexception;
+
+        result#16 = $r249;
+
+        exitmonitor openChannelResp#15;
+
+     label024:
+        throw result#16;
+
+     label025:
+        goto label161;
+
+     label026:
+        $r187 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#17 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r187;
+
+        $r186 = request#17.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        iccArgument#18 = (com.android.phone.PhoneInterfaceManager$IccAPDUArgument) $r186;
+
+        if uiccCard != null goto label032;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccTransmitApduLogicalChannel: No UICC");
+
+        $r212 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r213 = (byte[]) null;
+
+        specialinvoke $r212.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r213);
+
+        request#17.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r212;
+
+        openChannelResp#19 = request#17;
+
+        entermonitor request#17;
+
+     label027:
+        virtualinvoke request#17.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#19;
+
+     label028:
+        goto label031;
+
+     label029:
+        $r226 := @caughtexception;
+
+        channelId#20 = $r226;
+
+        exitmonitor openChannelResp#19;
+
+     label030:
+        throw channelId#20;
+
+     label031:
+        goto label161;
+
+     label032:
+        onCompleted#21 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(8, request#17);
+
+        $i30 = iccArgument#18.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int channel>;
+
+        $i29 = iccArgument#18.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int cla>;
+
+        $i28 = iccArgument#18.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int command>;
+
+        $i27 = iccArgument#18.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p1>;
+
+        $i26 = iccArgument#18.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p2>;
+
+        $i25 = iccArgument#18.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p3>;
+
+        $r185 = iccArgument#18.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: java.lang.String data>;
+
+        virtualinvoke uiccCard.<com.android.internal.telephony.uicc.UiccCard: void iccTransmitApduLogicalChannel(int,int,int,int,int,int,java.lang.String,android.os.Message)>($i30, $i29, $i28, $i27, $i26, $i25, $r185, onCompleted#21);
+
+        goto label161;
+
+     label033:
+        $r192 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#22 = (android.os.AsyncResult) $r192;
+
+        $r197 = ar#22.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#23 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r197;
+
+        $r198 = ar#22.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r198 != null goto label034;
+
+        $r182 = ar#22.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r182 == null goto label034;
+
+        $r181 = ar#22.<android.os.AsyncResult: java.lang.Object result>;
+
+        request#23.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r181;
+
+        goto label037;
+
+     label034:
+        $r195 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r196 = (byte[]) null;
+
+        specialinvoke $r195.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r196);
+
+        request#23.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r195;
+
+        $r177 = ar#22.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r177 != null goto label035;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccTransmitApduLogicalChannel: Empty response");
+
+        goto label037;
+
+     label035:
+        $r176 = ar#22.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $z6 = $r176 instanceof com.android.internal.telephony.CommandException;
+
+        if $z6 == 0 goto label036;
+
+        $r180 = new java.lang.StringBuilder;
+
+        specialinvoke $r180.<java.lang.StringBuilder: void <init>()>();
+
+        $r179 = virtualinvoke $r180.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("iccTransmitApduLogicalChannel: CommandException: ");
+
+        $r178 = ar#22.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r184 = virtualinvoke $r179.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r178);
+
+        $r183 = virtualinvoke $r184.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r183);
+
+        goto label037;
+
+     label036:
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccTransmitApduLogicalChannel: Unknown exception");
+
+     label037:
+        openChannelResp#24 = request#23;
+
+        entermonitor request#23;
+
+     label038:
+        virtualinvoke request#23.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#24;
+
+     label039:
+        goto label042;
+
+     label040:
+        $r220 := @caughtexception;
+
+        selectResponse#25 = $r220;
+
+        exitmonitor openChannelResp#24;
+
+     label041:
+        throw selectResponse#25;
+
+     label042:
+        goto label161;
+
+     label043:
+        $r49 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#26 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r49;
+
+        $r48 = request#26.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        iccArgument#27 = (com.android.phone.PhoneInterfaceManager$IccAPDUArgument) $r48;
+
+        if uiccCard != null goto label049;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccTransmitApduBasicChannel: No UICC");
+
+        $r53 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r51 = (byte[]) null;
+
+        specialinvoke $r53.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r51);
+
+        request#26.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r53;
+
+        openChannelResp#28 = request#26;
+
+        entermonitor request#26;
+
+     label044:
+        virtualinvoke request#26.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#28;
+
+     label045:
+        goto label048;
+
+     label046:
+        $r224 := @caughtexception;
+
+        i#29 = $r224;
+
+        exitmonitor openChannelResp#28;
+
+     label047:
+        throw i#29;
+
+     label048:
+        goto label161;
+
+     label049:
+        onCompleted#30 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(30, request#26);
+
+        $i9 = iccArgument#27.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int cla>;
+
+        $i11 = iccArgument#27.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int command>;
+
+        $i10 = iccArgument#27.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p1>;
+
+        $i7 = iccArgument#27.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p2>;
+
+        $i8 = iccArgument#27.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p3>;
+
+        $r45 = iccArgument#27.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: java.lang.String data>;
+
+        virtualinvoke uiccCard.<com.android.internal.telephony.uicc.UiccCard: void iccTransmitApduBasicChannel(int,int,int,int,int,java.lang.String,android.os.Message)>($i9, $i11, $i10, $i7, $i8, $r45, onCompleted#30);
+
+        goto label161;
+
+     label050:
+        $r36 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#31 = (android.os.AsyncResult) $r36;
+
+        $r37 = ar#31.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#32 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r37;
+
+        $r38 = ar#31.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r38 != null goto label051;
+
+        $r47 = ar#31.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r47 == null goto label051;
+
+        $r46 = ar#31.<android.os.AsyncResult: java.lang.Object result>;
+
+        request#32.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r46;
+
+        goto label054;
+
+     label051:
+        $r32 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r33 = (byte[]) null;
+
+        specialinvoke $r32.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r33);
+
+        request#32.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r32;
+
+        $r34 = ar#31.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r34 != null goto label052;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccTransmitApduBasicChannel: Empty response");
+
+        goto label054;
+
+     label052:
+        $r35 = ar#31.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $z1 = $r35 instanceof com.android.internal.telephony.CommandException;
+
+        if $z1 == 0 goto label053;
+
+        $r44 = new java.lang.StringBuilder;
+
+        specialinvoke $r44.<java.lang.StringBuilder: void <init>()>();
+
+        $r40 = virtualinvoke $r44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("iccTransmitApduBasicChannel: CommandException: ");
+
+        $r39 = ar#31.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r42 = virtualinvoke $r40.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r39);
+
+        $r41 = virtualinvoke $r42.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r41);
+
+        goto label054;
+
+     label053:
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccTransmitApduBasicChannel: Unknown exception");
+
+     label054:
+        openChannelResp#33 = request#32;
+
+        entermonitor request#32;
+
+     label055:
+        virtualinvoke request#32.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#33;
+
+     label056:
+        goto label059;
+
+     label057:
+        $r227 := @caughtexception;
+
+        l16 = $r227;
+
+        exitmonitor openChannelResp#33;
+
+     label058:
+        throw l16;
+
+     label059:
+        goto label161;
+
+     label060:
+        $r28 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#34 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r28;
+
+        $r27 = request#34.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        iccArgument#35 = (com.android.phone.PhoneInterfaceManager$IccAPDUArgument) $r27;
+
+        if uiccCard != null goto label066;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccExchangeSimIO: No UICC");
+
+        $r29 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r30 = (byte[]) null;
+
+        specialinvoke $r29.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r30);
+
+        request#34.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r29;
+
+        openChannelResp#36 = request#34;
+
+        entermonitor request#34;
+
+     label061:
+        virtualinvoke request#34.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#36;
+
+     label062:
+        goto label065;
+
+     label063:
+        $r244 := @caughtexception;
+
+        l17 = $r244;
+
+        exitmonitor openChannelResp#36;
+
+     label064:
+        throw l17;
+
+     label065:
+        goto label161;
+
+     label066:
+        onCompleted#37 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(32, request#34);
+
+        $i2 = iccArgument#35.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int cla>;
+
+        $i6 = iccArgument#35.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int command>;
+
+        $i5 = iccArgument#35.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p1>;
+
+        $i4 = iccArgument#35.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p2>;
+
+        $i3 = iccArgument#35.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: int p3>;
+
+        $r26 = iccArgument#35.<com.android.phone.PhoneInterfaceManager$IccAPDUArgument: java.lang.String data>;
+
+        virtualinvoke uiccCard.<com.android.internal.telephony.uicc.UiccCard: void iccExchangeSimIO(int,int,int,int,int,java.lang.String,android.os.Message)>($i2, $i6, $i5, $i4, $i3, $r26, onCompleted#37);
+
+        goto label161;
+
+     label067:
+        $r15 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#38 = (android.os.AsyncResult) $r15;
+
+        $r22 = ar#38.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#39 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r22;
+
+        $r21 = ar#38.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r21 != null goto label068;
+
+        $r24 = ar#38.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r24 == null goto label068;
+
+        $r23 = ar#38.<android.os.AsyncResult: java.lang.Object result>;
+
+        request#39.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r23;
+
+        goto label069;
+
+     label068:
+        $r20 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r19 = (byte[]) null;
+
+        specialinvoke $r20.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r19);
+
+        request#39.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r20;
+
+     label069:
+        openChannelResp#40 = request#39;
+
+        entermonitor request#39;
+
+     label070:
+        virtualinvoke request#39.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#40;
+
+     label071:
+        goto label074;
+
+     label072:
+        $r241 := @caughtexception;
+
+        l18 = $r241;
+
+        exitmonitor openChannelResp#40;
+
+     label073:
+        throw l18;
+
+     label074:
+        goto label161;
+
+     label075:
+        $r75 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#41 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r75;
+
+        if uiccCard != null goto label081;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("sendEnvelopeWithStatus: No UICC");
+
+        $r79 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r78 = (byte[]) null;
+
+        specialinvoke $r79.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r78);
+
+        request#41.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r79;
+
+        openChannelResp#42 = request#41;
+
+        entermonitor request#41;
+
+     label076:
+        virtualinvoke request#41.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#42;
+
+     label077:
+        goto label080;
+
+     label078:
+        $r247 := @caughtexception;
+
+        l19 = $r247;
+
+        exitmonitor openChannelResp#42;
+
+     label079:
+        throw l19;
+
+     label080:
+        goto label161;
+
+     label081:
+        onCompleted#43 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(26, request#41);
+
+        $r77 = request#41.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r76 = (java.lang.String) $r77;
+
+        virtualinvoke uiccCard.<com.android.internal.telephony.uicc.UiccCard: void sendEnvelopeWithStatus(java.lang.String,android.os.Message)>($r76, onCompleted#43);
+
+        goto label161;
+
+     label082:
+        $r65 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#44 = (android.os.AsyncResult) $r65;
+
+        $r64 = ar#44.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#45 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r64;
+
+        $r63 = ar#44.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r63 != null goto label083;
+
+        $r87 = ar#44.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r87 == null goto label083;
+
+        $r86 = ar#44.<android.os.AsyncResult: java.lang.Object result>;
+
+        request#45.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r86;
+
+        goto label086;
+
+     label083:
+        $r62 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r61 = (byte[]) null;
+
+        specialinvoke $r62.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r61);
+
+        request#45.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r62;
+
+        $r60 = ar#44.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r60 != null goto label084;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("sendEnvelopeWithStatus: Empty response");
+
+        goto label086;
+
+     label084:
+        $r74 = ar#44.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $z2 = $r74 instanceof com.android.internal.telephony.CommandException;
+
+        if $z2 == 0 goto label085;
+
+        $r81 = new java.lang.StringBuilder;
+
+        specialinvoke $r81.<java.lang.StringBuilder: void <init>()>();
+
+        $r83 = virtualinvoke $r81.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendEnvelopeWithStatus: CommandException: ");
+
+        $r82 = ar#44.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r85 = virtualinvoke $r83.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r82);
+
+        $r84 = virtualinvoke $r85.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r84);
+
+        goto label086;
+
+     label085:
+        $r73 = new java.lang.StringBuilder;
+
+        specialinvoke $r73.<java.lang.StringBuilder: void <init>()>();
+
+        $r72 = virtualinvoke $r73.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sendEnvelopeWithStatus: exception:");
+
+        $r71 = ar#44.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r70 = virtualinvoke $r72.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r71);
+
+        $r69 = virtualinvoke $r70.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r69);
+
+     label086:
+        openChannelResp#46 = request#45;
+
+        entermonitor request#45;
+
+     label087:
+        virtualinvoke request#45.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#46;
+
+     label088:
+        goto label091;
+
+     label089:
+        $r242 := @caughtexception;
+
+        l20 = $r242;
+
+        exitmonitor openChannelResp#46;
+
+     label090:
+        throw l20;
+
+     label091:
+        goto label161;
+
+     label092:
+        $r188 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#47 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r188;
+
+        if uiccCard != null goto label098;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccOpenLogicalChannel: No UICC");
+
+        $r190 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r193 = (byte[]) null;
+
+        specialinvoke $r190.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r193);
+
+        request#47.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r190;
+
+        openChannelResp#48 = request#47;
+
+        entermonitor request#47;
+
+     label093:
+        virtualinvoke request#47.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor openChannelResp#48;
+
+     label094:
+        goto label097;
+
+     label095:
+        $r246 := @caughtexception;
+
+        l21 = $r246;
+
+        exitmonitor openChannelResp#48;
+
+     label096:
+        throw l21;
+
+     label097:
+        goto label161;
+
+     label098:
+        onCompleted#49 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(10, request#47);
+
+        $r191 = request#47.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r189 = (java.lang.String) $r191;
+
+        virtualinvoke uiccCard.<com.android.internal.telephony.uicc.UiccCard: void iccOpenLogicalChannel(java.lang.String,android.os.Message)>($r189, onCompleted#49);
+
+        goto label161;
+
+     label099:
+        $r162 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#50 = (android.os.AsyncResult) $r162;
+
+        $r161 = ar#50.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#51 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r161;
+
+        $r160 = ar#50.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r160 != null goto label102;
+
+        $r166 = ar#50.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r166 == null goto label102;
+
+        $r167 = ar#50.<android.os.AsyncResult: java.lang.Object result>;
+
+        $r165 = (int[]) $r167;
+
+        result#52 = (int[]) $r165;
+
+        channelId#53 = result#52[0];
+
+        selectResponse#54 = null;
+
+        $i20 = lengthof result#52;
+
+        if $i20 <= 1 goto label101;
+
+        $i19 = lengthof result#52;
+
+        $i17 = $i19 - 1;
+
+        selectResponse#54 = newarray (byte)[$i17];
+
+        i#55 = 1;
+
+     label100:
+        $i18 = lengthof result#52;
+
+        if i#55 >= $i18 goto label101;
+
+        $i22 = i#55 - 1;
+
+        $i23 = result#52[i#55];
+
+        $b24 = (byte) $i23;
+
+        selectResponse#54[$i22] = $b24;
+
+        i#55 = i#55 + 1;
+
+        goto label100;
+
+     label101:
+        $r164 = new android.telephony.IccOpenLogicalChannelResponse;
+
+        specialinvoke $r164.<android.telephony.IccOpenLogicalChannelResponse: void <init>(int,int,byte[])>(channelId#53, 1, selectResponse#54);
+
+        openChannelResp#56 = $r164;
+
+        goto label107;
+
+     label102:
+        $r159 = ar#50.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r159 != null goto label103;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccOpenLogicalChannel: Empty response");
+
+     label103:
+        $r158 = ar#50.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r158 == null goto label104;
+
+        $r172 = new java.lang.StringBuilder;
+
+        specialinvoke $r172.<java.lang.StringBuilder: void <init>()>();
+
+        $r170 = virtualinvoke $r172.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("iccOpenLogicalChannel: Exception: ");
+
+        $r171 = ar#50.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r168 = virtualinvoke $r170.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r171);
+
+        $r169 = virtualinvoke $r168.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r169);
+
+     label104:
+        result#57 = 4;
+
+        $r157 = ar#50.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r157 == null goto label106;
+
+        $r154 = ar#50.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $z5 = $r154 instanceof com.android.internal.telephony.CommandException;
+
+        if $z5 == 0 goto label106;
+
+        $r153 = ar#50.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r152 = virtualinvoke $r153.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        $i16 = virtualinvoke $r152.<java.lang.String: int compareTo(java.lang.String)>("MISSING_RESOURCE");
+
+        if $i16 != 0 goto label105;
+
+        result#57 = 2;
+
+        goto label106;
+
+     label105:
+        $r173 = ar#50.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r174 = virtualinvoke $r173.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        $i21 = virtualinvoke $r174.<java.lang.String: int compareTo(java.lang.String)>("NO_SUCH_ELEMENT");
+
+        if $i21 != 0 goto label106;
+
+        result#57 = 3;
+
+     label106:
+        $r156 = new android.telephony.IccOpenLogicalChannelResponse;
+
+        specialinvoke $r156.<android.telephony.IccOpenLogicalChannelResponse: void <init>(int,int,byte[])>(-1, result#57, null);
+
+        openChannelResp#56 = $r156;
+
+     label107:
+        request#51.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = openChannelResp#56;
+
+        result#58 = request#51;
+
+        entermonitor request#51;
+
+     label108:
+        virtualinvoke request#51.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor result#58;
+
+     label109:
+        goto label112;
+
+     label110:
+        $r248 := @caughtexception;
+
+        l22 = $r248;
+
+        exitmonitor result#58;
+
+     label111:
+        throw l22;
+
+     label112:
+        goto label161;
+
+     label113:
+        $r143 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#59 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r143;
+
+        if uiccCard != null goto label119;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("iccCloseLogicalChannel: No UICC");
+
+        $r141 = new com.android.internal.telephony.uicc.IccIoResult;
+
+        $r142 = (byte[]) null;
+
+        specialinvoke $r141.<com.android.internal.telephony.uicc.IccIoResult: void <init>(int,int,byte[])>(111, 0, $r142);
+
+        request#59.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r141;
+
+        result#60 = request#59;
+
+        entermonitor request#59;
+
+     label114:
+        virtualinvoke request#59.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor result#60;
+
+     label115:
+        goto label118;
+
+     label116:
+        $r250 := @caughtexception;
+
+        l23 = $r250;
+
+        exitmonitor result#60;
+
+     label117:
+        throw l23;
+
+     label118:
+        goto label161;
+
+     label119:
+        onCompleted#61 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(12, request#59);
+
+        $r144 = request#59.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r140 = (java.lang.Integer) $r144;
+
+        $i14 = virtualinvoke $r140.<java.lang.Integer: int intValue()>();
+
+        virtualinvoke uiccCard.<com.android.internal.telephony.uicc.UiccCard: void iccCloseLogicalChannel(int,android.os.Message)>($i14, onCompleted#61);
+
+        goto label161;
+
+     label120:
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void handleNullReturnEvent(android.os.Message,java.lang.String)>(msg, "iccCloseLogicalChannel");
+
+        goto label161;
+
+     label121:
+        $r151 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#62 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r151;
+
+        onCompleted#63 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(14, request#62);
+
+        $r145 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r146 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r145);
+
+        $r147 = request#62.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r148 = (java.lang.Integer) $r147;
+
+        $i15 = virtualinvoke $r148.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r146.<com.android.internal.telephony.Phone: void nvReadItem(int,android.os.Message)>($i15, onCompleted#63);
+
+        goto label161;
+
+     label122:
+        $r138 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#64 = (android.os.AsyncResult) $r138;
+
+        $r134 = ar#64.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#65 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r134;
+
+        $r133 = ar#64.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r133 != null goto label123;
+
+        $r149 = ar#64.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r149 == null goto label123;
+
+        $r150 = ar#64.<android.os.AsyncResult: java.lang.Object result>;
+
+        request#65.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r150;
+
+        goto label126;
+
+     label123:
+        request#65.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = "";
+
+        $r136 = ar#64.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r136 != null goto label124;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("nvReadItem: Empty response");
+
+        goto label126;
+
+     label124:
+        $r135 = ar#64.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $z4 = $r135 instanceof com.android.internal.telephony.CommandException;
+
+        if $z4 == 0 goto label125;
+
+        $r132 = new java.lang.StringBuilder;
+
+        specialinvoke $r132.<java.lang.StringBuilder: void <init>()>();
+
+        $r128 = virtualinvoke $r132.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("nvReadItem: CommandException: ");
+
+        $r127 = ar#64.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r130 = virtualinvoke $r128.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r127);
+
+        $r129 = virtualinvoke $r130.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r129);
+
+        goto label126;
+
+     label125:
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("nvReadItem: Unknown exception");
+
+     label126:
+        result#66 = request#65;
+
+        entermonitor request#65;
+
+     label127:
+        virtualinvoke request#65.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor result#66;
+
+     label128:
+        goto label131;
+
+     label129:
+        $r225 := @caughtexception;
+
+        l24 = $r225;
+
+        exitmonitor result#66;
+
+     label130:
+        throw l24;
+
+     label131:
+        goto label161;
+
+     label132:
+        $r116 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#67 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r116;
+
+        onCompleted#68 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(16, request#67);
+
+        $r114 = request#67.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        result#69 = (android.util.Pair) $r114;
+
+        $r119 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r120 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r119);
+
+        $r117 = result#69.<android.util.Pair: java.lang.Object first>;
+
+        $r118 = (java.lang.Integer) $r117;
+
+        $i13 = virtualinvoke $r118.<java.lang.Integer: int intValue()>();
+
+        $r137 = result#69.<android.util.Pair: java.lang.Object second>;
+
+        $r139 = (java.lang.String) $r137;
+
+        interfaceinvoke $r120.<com.android.internal.telephony.Phone: void nvWriteItem(int,java.lang.String,android.os.Message)>($i13, $r139, onCompleted#68);
+
+        goto label161;
+
+     label133:
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void handleNullReturnEvent(android.os.Message,java.lang.String)>(msg, "nvWriteItem");
+
+        goto label161;
+
+     label134:
+        $r121 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#70 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r121;
+
+        onCompleted#71 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(18, request#70);
+
+        $r125 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r126 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r125);
+
+        $r123 = request#70.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r124 = (byte[]) $r123;
+
+        $r115 = (byte[]) $r124;
+
+        interfaceinvoke $r126.<com.android.internal.telephony.Phone: void nvWriteCdmaPrl(byte[],android.os.Message)>($r115, onCompleted#71);
+
+        goto label161;
+
+     label135:
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void handleNullReturnEvent(android.os.Message,java.lang.String)>(msg, "nvWriteCdmaPrl");
+
+        goto label161;
+
+     label136:
+        $r100 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#72 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r100;
+
+        onCompleted#73 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(20, request#72);
+
+        $r105 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r104 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r105);
+
+        $r103 = request#72.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r122 = (java.lang.Integer) $r103;
+
+        $i12 = virtualinvoke $r122.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r104.<com.android.internal.telephony.Phone: void nvResetConfig(int,android.os.Message)>($i12, onCompleted#73);
+
+        goto label161;
+
+     label137:
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void handleNullReturnEvent(android.os.Message,java.lang.String)>(msg, "nvResetConfig");
+
+        goto label161;
+
+     label138:
+        $r110 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#74 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r110;
+
+        onCompleted#75 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(22, request#74);
+
+        $r102 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r101 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r102);
+
+        interfaceinvoke $r101.<com.android.internal.telephony.Phone: void getPreferredNetworkType(android.os.Message)>(onCompleted#75);
+
+        goto label161;
+
+     label139:
+        $r99 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#76 = (android.os.AsyncResult) $r99;
+
+        $r88 = ar#76.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#77 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r88;
+
+        $r89 = ar#76.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r89 != null goto label140;
+
+        $r112 = ar#76.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r112 == null goto label140;
+
+        $r111 = ar#76.<android.os.AsyncResult: java.lang.Object result>;
+
+        request#77.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r111;
+
+        goto label143;
+
+     label140:
+        $r90 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-1);
+
+        request#77.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r90;
+
+        $r91 = ar#76.<android.os.AsyncResult: java.lang.Object result>;
+
+        if $r91 != null goto label141;
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("getPreferredNetworkType: Empty response");
+
+        goto label143;
+
+     label141:
+        $r92 = ar#76.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $z3 = $r92 instanceof com.android.internal.telephony.CommandException;
+
+        if $z3 == 0 goto label142;
+
+        $r109 = new java.lang.StringBuilder;
+
+        specialinvoke $r109.<java.lang.StringBuilder: void <init>()>();
+
+        $r108 = virtualinvoke $r109.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("getPreferredNetworkType: CommandException: ");
+
+        $r107 = ar#76.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r106 = virtualinvoke $r108.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r107);
+
+        $r113 = virtualinvoke $r106.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r113);
+
+        goto label143;
+
+     label142:
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>("getPreferredNetworkType: Unknown exception");
+
+     label143:
+        channelId#78 = request#77;
+
+        entermonitor request#77;
+
+     label144:
+        virtualinvoke request#77.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor channelId#78;
+
+     label145:
+        goto label148;
+
+     label146:
+        $r219 := @caughtexception;
+
+        l25 = $r219;
+
+        exitmonitor channelId#78;
+
+     label147:
+        throw l25;
+
+     label148:
+        goto label161;
+
+     label149:
+        $r94 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#79 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r94;
+
+        onCompleted#80 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(24, request#79);
+
+        $r95 = request#79.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r96 = (java.lang.Integer) $r95;
+
+        channelId#81 = virtualinvoke $r96.<java.lang.Integer: int intValue()>();
+
+        $r97 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r98 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r97);
+
+        interfaceinvoke $r98.<com.android.internal.telephony.Phone: void setPreferredNetworkType(int,android.os.Message)>(channelId#81, onCompleted#80);
+
+        goto label161;
+
+     label150:
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void handleNullReturnEvent(android.os.Message,java.lang.String)>(msg, "setPreferredNetworkType");
+
+        goto label161;
+
+     label151:
+        $r57 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#82 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r57;
+
+        onCompleted#83 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(28, request#82);
+
+        $r56 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r54 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$000(com.android.phone.PhoneInterfaceManager)>($r56);
+
+        $r55 = request#82.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        $r67 = (byte[]) $r55;
+
+        $r66 = (byte[]) $r67;
+
+        interfaceinvoke $r54.<com.android.internal.telephony.Phone: void invokeOemRilRequestRaw(byte[],android.os.Message)>($r66, onCompleted#83);
+
+        goto label161;
+
+     label152:
+        $r50 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar#84 = (android.os.AsyncResult) $r50;
+
+        $r58 = ar#84.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request#85 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r58;
+
+        request#85.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = ar#84;
+
+        selectResponse#86 = request#85;
+
+        entermonitor request#85;
+
+     label153:
+        virtualinvoke request#85.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor selectResponse#86;
+
+     label154:
+        goto label157;
+
+     label155:
+        $r240 := @caughtexception;
+
+        l26 = $r240;
+
+        exitmonitor selectResponse#86;
+
+     label156:
+        throw l26;
+
+     label157:
+        goto label161;
+
+     label158:
+        $r9 = msg.<android.os.Message: java.lang.Object obj>;
+
+        request#87 = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r9;
+
+        onCompleted#88 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: android.os.Message obtainMessage(int,java.lang.Object)>(34, request#87);
+
+        $r13 = request#87.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object argument>;
+
+        selectResponse#89 = (android.util.Pair) $r13;
+
+        $r14 = this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: com.android.phone.PhoneInterfaceManager this$0>;
+
+        $r11 = staticinvoke <com.android.phone.PhoneInterfaceManager: com.android.internal.telephony.Phone access$100(com.android.phone.PhoneInterfaceManager,com.android.phone.PhoneInterfaceManager$MainThreadRequest)>($r14, request#87);
+
+        $r12 = selectResponse#89.<android.util.Pair: java.lang.Object first>;
+
+        $r16 = (java.lang.String) $r12;
+
+        $r18 = selectResponse#89.<android.util.Pair: java.lang.Object second>;
+
+        $r17 = (java.lang.String) $r18;
+
+        interfaceinvoke $r11.<com.android.internal.telephony.Phone: void setVoiceMailNumber(java.lang.String,java.lang.String,android.os.Message)>($r16, $r17, onCompleted#88);
+
+        goto label161;
+
+     label159:
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void handleNullReturnEvent(android.os.Message,java.lang.String)>(msg, "setVoicemailNumber");
+
+        goto label161;
+
+     label160:
+        $r234 = new java.lang.StringBuilder;
+
+        specialinvoke $r234.<java.lang.StringBuilder: void <init>()>();
+
+        $r223 = virtualinvoke $r234.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("MainThreadHandler: unexpected message code: ");
+
+        $i32 = msg.<android.os.Message: int what>;
+
+        $r222 = virtualinvoke $r223.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i32);
+
+        $r221 = virtualinvoke $r222.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("PhoneInterfaceManager", $r221);
+
+     label161:
+        return;
+
+        catch java.lang.Throwable from label002 to label003 with label004;
+        catch java.lang.Throwable from label004 to label005 with label004;
+        catch java.lang.Throwable from label011 to label012 with label013;
+        catch java.lang.Throwable from label013 to label014 with label013;
+        catch java.lang.Throwable from label021 to label022 with label023;
+        catch java.lang.Throwable from label023 to label024 with label023;
+        catch java.lang.Throwable from label027 to label028 with label029;
+        catch java.lang.Throwable from label029 to label030 with label029;
+        catch java.lang.Throwable from label038 to label039 with label040;
+        catch java.lang.Throwable from label040 to label041 with label040;
+        catch java.lang.Throwable from label044 to label045 with label046;
+        catch java.lang.Throwable from label046 to label047 with label046;
+        catch java.lang.Throwable from label055 to label056 with label057;
+        catch java.lang.Throwable from label057 to label058 with label057;
+        catch java.lang.Throwable from label061 to label062 with label063;
+        catch java.lang.Throwable from label063 to label064 with label063;
+        catch java.lang.Throwable from label070 to label071 with label072;
+        catch java.lang.Throwable from label072 to label073 with label072;
+        catch java.lang.Throwable from label076 to label077 with label078;
+        catch java.lang.Throwable from label078 to label079 with label078;
+        catch java.lang.Throwable from label087 to label088 with label089;
+        catch java.lang.Throwable from label089 to label090 with label089;
+        catch java.lang.Throwable from label093 to label094 with label095;
+        catch java.lang.Throwable from label095 to label096 with label095;
+        catch java.lang.Throwable from label108 to label109 with label110;
+        catch java.lang.Throwable from label110 to label111 with label110;
+        catch java.lang.Throwable from label114 to label115 with label116;
+        catch java.lang.Throwable from label116 to label117 with label116;
+        catch java.lang.Throwable from label127 to label128 with label129;
+        catch java.lang.Throwable from label129 to label130 with label129;
+        catch java.lang.Throwable from label144 to label145 with label146;
+        catch java.lang.Throwable from label146 to label147 with label146;
+        catch java.lang.Throwable from label153 to label154 with label155;
+        catch java.lang.Throwable from label155 to label156 with label155;
+    }
+
+    private void handleNullReturnEvent(android.os.Message, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message msg;
+        java.lang.String command, $r9, $r16;
+        android.os.AsyncResult ar;
+        com.android.phone.PhoneInterfaceManager$MainThreadRequest request, l5;
+        java.lang.Throwable l6, $r2, $r4, $r14, $r17;
+        java.lang.Object $r0, $r1;
+        java.lang.Boolean $r3, $r15;
+        boolean $z0;
+        java.lang.StringBuilder $r5, $r6, $r7, $r10, $r11, $r12, $r13;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        command := @parameter1: java.lang.String;
+
+        $r0 = msg.<android.os.Message: java.lang.Object obj>;
+
+        ar = (android.os.AsyncResult) $r0;
+
+        $r1 = ar.<android.os.AsyncResult: java.lang.Object userObj>;
+
+        request = (com.android.phone.PhoneInterfaceManager$MainThreadRequest) $r1;
+
+        $r2 = ar.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        if $r2 != null goto label1;
+
+        $r15 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        request.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r15;
+
+        goto label3;
+
+     label1:
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        request.<com.android.phone.PhoneInterfaceManager$MainThreadRequest: java.lang.Object result> = $r3;
+
+        $r4 = ar.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $z0 = $r4 instanceof com.android.internal.telephony.CommandException;
+
+        if $z0 == 0 goto label2;
+
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(command);
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": CommandException: ");
+
+        $r14 = ar.<android.os.AsyncResult: java.lang.Throwable exception>;
+
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r14);
+
+        $r16 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r16);
+
+        goto label3;
+
+     label2:
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(command);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Unknown exception");
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.android.phone.PhoneInterfaceManager: void access$500(java.lang.String)>($r9);
+
+     label3:
+        l5 = request;
+
+        entermonitor request;
+
+     label4:
+        virtualinvoke request.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor l5;
+
+     label5:
+        goto label8;
+
+     label6:
+        $r17 := @caughtexception;
+
+        l6 = $r17;
+
+        exitmonitor l5;
+
+     label7:
+        throw l6;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label4 to label5 with label6;
+        catch java.lang.Throwable from label6 to label7 with label6;
+    }
+
+    void <init>(com.android.phone.PhoneInterfaceManager, com.android.phone.PhoneInterfaceManager$1)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        com.android.phone.PhoneInterfaceManager x0;
+        com.android.phone.PhoneInterfaceManager$1 x1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        x0 := @parameter0: com.android.phone.PhoneInterfaceManager;
+
+        x1 := @parameter1: com.android.phone.PhoneInterfaceManager$1;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void <init>(com.android.phone.PhoneInterfaceManager)>(x0);
+
+        return;
+    }
+
+    void dispatchMessage(android.os.Message)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message msg;
+        java.lang.Runnable $r0;
+        android.os.Handler$Callback $r1, $r2;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        $r0 = msg.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        staticinvoke <android.os.Handler: void handleCallback(android.os.Message)>(msg);
+
+        goto label3;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        if $r1 == null goto label2;
+
+        $r2 = this.<android.os.Handler: android.os.Handler$Callback mCallback>;
+
+        $z0 = interfaceinvoke $r2.<android.os.Handler$Callback: boolean handleMessage(android.os.Message)>(msg);
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void handleMessage(android.os.Message)>(msg);
+
+     label3:
+        return;
+    }
+
+    void <init>()
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void <init>(android.os.Handler$Callback,boolean)>(null, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Handler$Callback)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Handler$Callback callback;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void <init>(android.os.Handler$Callback,boolean)>(callback, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Looper)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Looper looper;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        looper := @parameter0: android.os.Looper;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, null, 0);
+
+        return;
+    }
+
+    void <init>(android.os.Looper, android.os.Handler$Callback)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void <init>(android.os.Looper,android.os.Handler$Callback,boolean)>(looper, callback, 0);
+
+        return;
+    }
+
+    void <init>(boolean)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        boolean async;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        async := @parameter0: boolean;
+
+        specialinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void <init>(android.os.Handler$Callback,boolean)>(null, async);
+
+        return;
+    }
+
+    void <init>(android.os.Handler$Callback, boolean)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.Looper $r0, $r1, $r2;
+        android.os.MessageQueue $r3;
+        java.lang.RuntimeException $r4;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        callback := @parameter0: android.os.Handler$Callback;
+
+        async := @parameter1: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = $r0;
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r1 != null goto label1;
+
+        $r4 = new java.lang.RuntimeException;
+
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String)>("Can\'t create handler inside thread that has not called Looper.prepare()");
+
+        throw $r4;
+
+     label1:
+        $r2 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r3 = $r2.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r3;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = callback;
+
+        this.<android.os.Handler: boolean mAsynchronous> = async;
+
+        return;
+    }
+
+    void <init>(android.os.Looper, android.os.Handler$Callback, boolean)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Looper looper;
+        android.os.Handler$Callback callback;
+        boolean async;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        looper := @parameter0: android.os.Looper;
+
+        callback := @parameter1: android.os.Handler$Callback;
+
+        async := @parameter2: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<android.os.Handler: android.os.Looper mLooper> = looper;
+
+        $r0 = looper.<android.os.Looper: android.os.MessageQueue mQueue>;
+
+        this.<android.os.Handler: android.os.MessageQueue mQueue> = $r0;
+
+        this.<android.os.Handler: android.os.Handler$Callback mCallback> = callback;
+
+        this.<android.os.Handler: boolean mAsynchronous> = async;
+
+        return;
+    }
+
+    java.lang.String getMessageName(android.os.Message)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message message;
+        java.lang.Runnable $r0, $r6;
+        java.lang.StringBuilder $r1, $r2, $r4;
+        int $i0;
+        java.lang.String $r3, $r5, $r8;
+        java.lang.Class $r7;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        if $r0 == null goto label1;
+
+        $r6 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        $r7 = virtualinvoke $r6.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r8 = virtualinvoke $r7.<java.lang.Class: java.lang.String getName()>();
+
+        return $r8;
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0x");
+
+        $i0 = message.<android.os.Message: int what>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+    }
+
+    android.os.Message obtainMessage()
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler)>(this);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        android.os.Message result;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        result = new android.os.Message;
+
+        specialinvoke result.<android.os.Message: void <init>()>();
+
+        result.<android.os.Message: int what> = what;
+
+        result.<android.os.Message: android.os.Handler target> = this;
+
+        return result;
+    }
+
+    android.os.Message obtainMessage(int, java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        obj := @parameter1: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,java.lang.Object)>(this, what, obj);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int, int, int)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what, arg1, arg2;
+        android.os.Message $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int)>(this, what, arg1, arg2);
+
+        return $r0;
+    }
+
+    android.os.Message obtainMessage(int, int, int, java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what, arg1, arg2;
+        java.lang.Object obj;
+        android.os.Message $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        arg1 := @parameter1: int;
+
+        arg2 := @parameter2: int;
+
+        obj := @parameter3: java.lang.Object;
+
+        $r0 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,int,int,java.lang.Object)>(this, what, arg1, arg2, obj);
+
+        return $r0;
+    }
+
+    boolean post(java.lang.Runnable)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable param0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtTime(java.lang.Runnable, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtTime(java.lang.Runnable, java.lang.Object, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable param0;
+        java.lang.Object param1;
+        long param2;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: java.lang.Object;
+
+        param2 := @parameter2: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postDelayed(java.lang.Runnable, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable param0;
+        long param1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        param1 := @parameter1: long;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean postAtFrontOfQueue(java.lang.Runnable)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable param0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        param0 := @parameter0: java.lang.Runnable;
+
+        interfaceinvoke param0.<java.lang.Runnable: void run()>();
+
+        return 1;
+    }
+
+    boolean runWithScissors(java.lang.Runnable, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable r;
+        long timeout;
+        android.os.Handler$BlockingRunnable br, $r2;
+        byte $b0;
+        android.os.Looper $r0, $r1;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r3, $r4;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        timeout := @parameter1: long;
+
+        if r != null goto label1;
+
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("runnable must not be null");
+
+        throw $r4;
+
+     label1:
+        $b0 = timeout cmp 0L;
+
+        if $b0 >= 0 goto label2;
+
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("timeout must be non-negative");
+
+        throw $r3;
+
+     label2:
+        $r0 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        $r1 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r0 != $r1 goto label3;
+
+        interfaceinvoke r.<java.lang.Runnable: void run()>();
+
+        return 1;
+
+     label3:
+        $r2 = new android.os.Handler$BlockingRunnable;
+
+        specialinvoke $r2.<android.os.Handler$BlockingRunnable: void <init>(java.lang.Runnable)>(r);
+
+        br = $r2;
+
+        $z0 = virtualinvoke br.<android.os.Handler$BlockingRunnable: boolean postAndWait(android.os.Handler,long)>(this, timeout);
+
+        return $z0;
+    }
+
+    void removeCallbacks(java.lang.Runnable)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return;
+    }
+
+    void removeCallbacks(java.lang.Runnable, java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, token);
+
+        return;
+    }
+
+    boolean sendMessage(android.os.Message)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message msg;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendEmptyMessage(int)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: boolean sendEmptyMessageDelayed(int,long)>(what, 0L);
+
+        return $z0;
+    }
+
+    boolean sendEmptyMessageDelayed(int, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        long delayMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        delayMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: boolean sendMessageDelayed(android.os.Message,long)>(msg, delayMillis);
+
+        return $z0;
+    }
+
+    boolean sendEmptyMessageAtTime(int, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        long uptimeMillis;
+        android.os.Message msg;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        uptimeMillis := @parameter1: long;
+
+        msg = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        msg.<android.os.Message: int what> = what;
+
+        $z0 = virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: boolean sendMessageAtTime(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z0;
+    }
+
+    boolean sendMessageDelayed(android.os.Message, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message msg;
+        long param1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        param1 := @parameter1: long;
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendMessageAtTime(android.os.Message, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message msg;
+        long param1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        param1 := @parameter1: long;
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean sendMessageAtFrontOfQueue(android.os.Message)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Message msg;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        msg := @parameter0: android.os.Message;
+
+        virtualinvoke this.<com.android.phone.PhoneInterfaceManager$MainThreadHandler: void dispatchMessage(android.os.Message)>(msg);
+
+        return 1;
+    }
+
+    boolean enqueueMessage(android.os.MessageQueue, android.os.Message, long)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.MessageQueue queue;
+        android.os.Message msg;
+        long uptimeMillis;
+        boolean $z0, $z1;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        queue := @parameter0: android.os.MessageQueue;
+
+        msg := @parameter1: android.os.Message;
+
+        uptimeMillis := @parameter2: long;
+
+        msg.<android.os.Message: android.os.Handler target> = this;
+
+        $z0 = this.<android.os.Handler: boolean mAsynchronous>;
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke msg.<android.os.Message: void setAsynchronous(boolean)>(1);
+
+     label1:
+        $z1 = virtualinvoke queue.<android.os.MessageQueue: boolean enqueueMessage(android.os.Message,long)>(msg, uptimeMillis);
+
+        return $z1;
+    }
+
+    void removeMessages(int)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return;
+    }
+
+    void removeMessages(int, java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return;
+    }
+
+    void removeCallbacksAndMessages(java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Object token;
+        android.os.MessageQueue $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        token := @parameter0: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        virtualinvoke $r0.<android.os.MessageQueue: void removeCallbacksAndMessages(android.os.Handler,java.lang.Object)>(this, token);
+
+        return;
+    }
+
+    boolean hasMessages(int)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, null);
+
+        return $z0;
+    }
+
+    boolean hasMessages(int, java.lang.Object)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        int what;
+        java.lang.Object object;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        what := @parameter0: int;
+
+        object := @parameter1: java.lang.Object;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,int,java.lang.Object)>(this, what, object);
+
+        return $z0;
+    }
+
+    boolean hasCallbacks(java.lang.Runnable)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.Runnable r;
+        android.os.MessageQueue $r0;
+        boolean $z0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        $z0 = virtualinvoke $r0.<android.os.MessageQueue: boolean hasMessages(android.os.Handler,java.lang.Runnable,java.lang.Object)>(this, r, null);
+
+        return $z0;
+    }
+
+    android.os.Looper getLooper()
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.Looper $r0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        $r0 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        return $r0;
+    }
+
+    void dump(android.util.Printer, java.lang.String)
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.util.Printer pw;
+        java.lang.String prefix, $r5, $r11, $r14;
+        java.lang.StringBuilder $r0, $r1, $r2, $r3, $r4, $r7, $r9, $r10, $r12, $r13, $r15;
+        long $l0;
+        android.os.Looper $r6, $r8;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        pw := @parameter0: android.util.Printer;
+
+        prefix := @parameter1: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(this);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" @ ");
+
+        $l0 = staticinvoke <android.os.SystemClock: long uptimeMillis()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r5);
+
+        $r6 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        if $r6 != null goto label1;
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r15 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("looper uninitialized");
+
+        $r14 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke pw.<android.util.Printer: void println(java.lang.String)>($r14);
+
+        goto label2;
+
+     label1:
+        $r8 = this.<android.os.Handler: android.os.Looper mLooper>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<android.os.Looper: void dump(android.util.Printer,java.lang.String)>(pw, $r11);
+
+     label2:
+        return;
+    }
+
+    java.lang.String toString()
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        java.lang.StringBuilder $r0, $r1, $r4, $r5, $r7, $r8;
+        java.lang.Class $r2;
+        java.lang.String $r3, $r6, $r9;
+        int $i0;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Handler (");
+
+        $r2 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") {");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r9;
+    }
+
+    android.os.IMessenger getIMessenger()
+    {
+        com.android.phone.PhoneInterfaceManager$MainThreadHandler this;
+        android.os.MessageQueue l1, $r0;
+        java.lang.Throwable l2, $r5;
+        android.os.IMessenger $r1, $r3, $r4, tmp$95051321;
+        android.os.Handler$MessengerImpl tmp$440373088;
+
+        this := @this: com.android.phone.PhoneInterfaceManager$MainThreadHandler;
+
+        $r0 = this.<android.os.Handler: android.os.MessageQueue mQueue>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        if $r1 == null goto label3;
+
+        $r4 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label2:
+        return $r4;
+
+     label3:
+        tmp$440373088 = new android.os.Handler$MessengerImpl;
+
+        specialinvoke tmp$440373088.<android.os.Handler$MessengerImpl: void <init>(android.os.Handler,android.os.Handler$1)>(this, null);
+
+        tmp$95051321 = (android.os.IMessenger) tmp$440373088;
+
+        this.<android.os.Handler: android.os.IMessenger mMessenger> = tmp$95051321;
+
+        $r3 = this.<android.os.Handler: android.os.IMessenger mMessenger>;
+
+        exitmonitor l1;
+
+     label4:
+        return $r3;
+
+     label5:
+        $r5 := @caughtexception;
+
+        l2 = $r5;
+
+        exitmonitor l1;
+
+     label6:
+        throw l2;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    android.os.Message getPostMessage(java.lang.Runnable)
+    {
+        java.lang.Runnable r;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    android.os.Message getPostMessage(java.lang.Runnable, java.lang.Object)
+    {
+        java.lang.Runnable r;
+        java.lang.Object token;
+        android.os.Message m;
+
+        r := @parameter0: java.lang.Runnable;
+
+        token := @parameter1: java.lang.Object;
+
+        m = staticinvoke <android.os.Message: android.os.Message obtain()>();
+
+        m.<android.os.Message: java.lang.Object obj> = token;
+
+        m.<android.os.Message: java.lang.Runnable callback> = r;
+
+        return m;
+    }
+
+    void handleCallback(android.os.Message)
+    {
+        android.os.Message message;
+        java.lang.Runnable $r0;
+
+        message := @parameter0: android.os.Message;
+
+        $r0 = message.<android.os.Message: java.lang.Runnable callback>;
+
+        interfaceinvoke $r0.<java.lang.Runnable: void run()>();
+
+        return;
+    }
+}

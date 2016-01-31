@@ -1,0 +1,231 @@
+public abstract class com.android.server.SystemService extends java.lang.Object
+{
+    public static final int PHASE_WAIT_FOR_DEFAULT_DISPLAY;
+    public static final int PHASE_LOCK_SETTINGS_READY;
+    public static final int PHASE_SYSTEM_SERVICES_READY;
+    public static final int PHASE_ACTIVITY_MANAGER_READY;
+    public static final int PHASE_THIRD_PARTY_APPS_CAN_START;
+    public static final int PHASE_BOOT_COMPLETED;
+    private final android.content.Context mContext;
+
+    public void <init>(android.content.Context)
+    {
+        com.android.server.SystemService this;
+        android.content.Context context;
+
+        this := @this: com.android.server.SystemService;
+
+        context := @parameter0: android.content.Context;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.SystemService: android.content.Context mContext> = context;
+
+        return;
+    }
+
+    public final android.content.Context getContext()
+    {
+        com.android.server.SystemService this;
+        android.content.Context $r0;
+
+        this := @this: com.android.server.SystemService;
+
+        $r0 = this.<com.android.server.SystemService: android.content.Context mContext>;
+
+        return $r0;
+    }
+
+    public final boolean isSafeMode()
+    {
+        com.android.server.SystemService this;
+        com.android.server.SystemServiceManager $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.SystemService;
+
+        $r0 = specialinvoke this.<com.android.server.SystemService: com.android.server.SystemServiceManager getManager()>();
+
+        $z0 = virtualinvoke $r0.<com.android.server.SystemServiceManager: boolean isSafeMode()>();
+
+        return $z0;
+    }
+
+    public abstract void onStart();
+
+    public void onBootPhase(int)
+    {
+        com.android.server.SystemService this;
+        int phase;
+
+        this := @this: com.android.server.SystemService;
+
+        phase := @parameter0: int;
+
+        return;
+    }
+
+    public void onStartUser(int)
+    {
+        com.android.server.SystemService this;
+        int userHandle;
+
+        this := @this: com.android.server.SystemService;
+
+        userHandle := @parameter0: int;
+
+        return;
+    }
+
+    public void onSwitchUser(int)
+    {
+        com.android.server.SystemService this;
+        int userHandle;
+
+        this := @this: com.android.server.SystemService;
+
+        userHandle := @parameter0: int;
+
+        return;
+    }
+
+    public void onStopUser(int)
+    {
+        com.android.server.SystemService this;
+        int userHandle;
+
+        this := @this: com.android.server.SystemService;
+
+        userHandle := @parameter0: int;
+
+        return;
+    }
+
+    public void onCleanupUser(int)
+    {
+        com.android.server.SystemService this;
+        int userHandle;
+
+        this := @this: com.android.server.SystemService;
+
+        userHandle := @parameter0: int;
+
+        return;
+    }
+
+    protected final void publishBinderService(java.lang.String, android.os.IBinder)
+    {
+        com.android.server.SystemService this;
+        java.lang.String name;
+        android.os.IBinder service;
+
+        this := @this: com.android.server.SystemService;
+
+        name := @parameter0: java.lang.String;
+
+        service := @parameter1: android.os.IBinder;
+
+        virtualinvoke this.<com.android.server.SystemService: void publishBinderService(java.lang.String,android.os.IBinder,boolean)>(name, service, 0);
+
+        return;
+    }
+
+    protected final void publishBinderService(java.lang.String, android.os.IBinder, boolean)
+    {
+        com.android.server.SystemService this;
+        java.lang.String name;
+        android.os.IBinder service;
+        boolean allowIsolated;
+
+        this := @this: com.android.server.SystemService;
+
+        name := @parameter0: java.lang.String;
+
+        service := @parameter1: android.os.IBinder;
+
+        allowIsolated := @parameter2: boolean;
+
+        staticinvoke <android.os.ServiceManager: void addService(java.lang.String,android.os.IBinder,boolean)>(name, service, allowIsolated);
+
+        return;
+    }
+
+    protected final android.os.IBinder getBinderService(java.lang.String)
+    {
+        com.android.server.SystemService this;
+        java.lang.String name;
+        android.os.IBinder $r0;
+
+        this := @this: com.android.server.SystemService;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = staticinvoke <android.os.ServiceManager: android.os.IBinder getService(java.lang.String)>(name);
+
+        return $r0;
+    }
+
+    protected final void publishLocalService(java.lang.Class, java.lang.Object)
+    {
+        com.android.server.SystemService this;
+        java.lang.Class type;
+        java.lang.Object service;
+
+        this := @this: com.android.server.SystemService;
+
+        type := @parameter0: java.lang.Class;
+
+        service := @parameter1: java.lang.Object;
+
+        staticinvoke <com.android.server.LocalServices: void addService(java.lang.Class,java.lang.Object)>(type, service);
+
+        return;
+    }
+
+    protected final java.lang.Object getLocalService(java.lang.Class)
+    {
+        com.android.server.SystemService this;
+        java.lang.Class type;
+        java.lang.Object $r0;
+
+        this := @this: com.android.server.SystemService;
+
+        type := @parameter0: java.lang.Class;
+
+        $r0 = staticinvoke <com.android.server.LocalServices: java.lang.Object getService(java.lang.Class)>(type);
+
+        return $r0;
+    }
+
+    private com.android.server.SystemServiceManager getManager()
+    {
+        com.android.server.SystemService this;
+        java.lang.Object $r0;
+        com.android.server.SystemServiceManager $r1;
+
+        this := @this: com.android.server.SystemService;
+
+        $r0 = staticinvoke <com.android.server.LocalServices: java.lang.Object getService(java.lang.Class)>(class "com/android/server/SystemServiceManager");
+
+        $r1 = (com.android.server.SystemServiceManager) $r0;
+
+        return $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.SystemService: int PHASE_BOOT_COMPLETED> = 1000;
+
+        <com.android.server.SystemService: int PHASE_THIRD_PARTY_APPS_CAN_START> = 600;
+
+        <com.android.server.SystemService: int PHASE_ACTIVITY_MANAGER_READY> = 550;
+
+        <com.android.server.SystemService: int PHASE_SYSTEM_SERVICES_READY> = 500;
+
+        <com.android.server.SystemService: int PHASE_LOCK_SETTINGS_READY> = 480;
+
+        <com.android.server.SystemService: int PHASE_WAIT_FOR_DEFAULT_DISPLAY> = 100;
+
+        return;
+    }
+}

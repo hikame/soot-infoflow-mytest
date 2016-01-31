@@ -1,0 +1,597 @@
+public abstract class com.android.internal.telephony.ISub$Stub extends android.os.Binder implements com.android.internal.telephony.ISub
+{
+    private static final java.lang.String DESCRIPTOR;
+    static final int TRANSACTION_getAllSubInfoList;
+    static final int TRANSACTION_getAllSubInfoCount;
+    static final int TRANSACTION_getActiveSubscriptionInfo;
+    static final int TRANSACTION_getActiveSubscriptionInfoForIccId;
+    static final int TRANSACTION_getActiveSubscriptionInfoForSimSlotIndex;
+    static final int TRANSACTION_getActiveSubscriptionInfoList;
+    static final int TRANSACTION_getActiveSubInfoCount;
+    static final int TRANSACTION_getActiveSubInfoCountMax;
+    static final int TRANSACTION_addSubInfoRecord;
+    static final int TRANSACTION_setIconTint;
+    static final int TRANSACTION_setDisplayName;
+    static final int TRANSACTION_setDisplayNameUsingSrc;
+    static final int TRANSACTION_setDisplayNumber;
+    static final int TRANSACTION_setDataRoaming;
+    static final int TRANSACTION_getSlotId;
+    static final int TRANSACTION_getSubId;
+    static final int TRANSACTION_getDefaultSubId;
+    static final int TRANSACTION_clearSubInfo;
+    static final int TRANSACTION_getPhoneId;
+    static final int TRANSACTION_getDefaultDataSubId;
+    static final int TRANSACTION_setDefaultDataSubId;
+    static final int TRANSACTION_getDefaultVoiceSubId;
+    static final int TRANSACTION_setDefaultVoiceSubId;
+    static final int TRANSACTION_getDefaultSmsSubId;
+    static final int TRANSACTION_setDefaultSmsSubId;
+    static final int TRANSACTION_clearDefaultsForInactiveSubIds;
+    static final int TRANSACTION_getActiveSubIdList;
+    static final int TRANSACTION_getSimStateForSubscriber;
+
+    public void <init>()
+    {
+        com.android.internal.telephony.ISub$Stub this;
+
+        this := @this: com.android.internal.telephony.ISub$Stub;
+
+        specialinvoke this.<android.os.Binder: void <init>()>();
+
+        virtualinvoke this.<com.android.internal.telephony.ISub$Stub: void attachInterface(android.os.IInterface,java.lang.String)>(this, "com.android.internal.telephony.ISub");
+
+        return;
+    }
+
+    public static com.android.internal.telephony.ISub asInterface(android.os.IBinder)
+    {
+        android.os.IBinder obj;
+        android.os.IInterface iin;
+        boolean $z0;
+        com.android.internal.telephony.ISub $r1, tmp$1833413841;
+        com.android.internal.telephony.ISub$Stub$Proxy tmp$799255368;
+
+        obj := @parameter0: android.os.IBinder;
+
+        if obj != null goto label1;
+
+        return null;
+
+     label1:
+        iin = interfaceinvoke obj.<android.os.IBinder: android.os.IInterface queryLocalInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        if iin == null goto label2;
+
+        $z0 = iin instanceof com.android.internal.telephony.ISub;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (com.android.internal.telephony.ISub) iin;
+
+        return $r1;
+
+     label2:
+        tmp$799255368 = new com.android.internal.telephony.ISub$Stub$Proxy;
+
+        specialinvoke tmp$799255368.<com.android.internal.telephony.ISub$Stub$Proxy: void <init>(android.os.IBinder)>(obj);
+
+        tmp$1833413841 = (com.android.internal.telephony.ISub) tmp$799255368;
+
+        return tmp$1833413841;
+    }
+
+    public android.os.IBinder asBinder()
+    {
+        com.android.internal.telephony.ISub$Stub this;
+
+        this := @this: com.android.internal.telephony.ISub$Stub;
+
+        return this;
+    }
+
+    public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException
+    {
+        com.android.internal.telephony.ISub$Stub this;
+        int code, flags, _result, _result#2, _result#3, _result#7, _result#10, _result#11, _result#13, _result#14, _result#15, _result#16, _result#17, _result#19, _result#20, _result#22, _result#25, _result#26, _result#27, _result#28, _result#29, _result#30, _result#31, _result#32, _result#34, _result#35, _result#36, _result#37, _result#38, _result#39, _result#40, _result#41, _result#42, _result#43, _result#45, _result#46;
+        android.os.Parcel data, reply;
+        boolean $z0;
+        java.util.List _result#1, _result#9;
+        android.telephony.SubscriptionInfo _result#4, _result#6, _result#8;
+        java.lang.String _result#5, _result#12, _result#18, _result#21, _result#24;
+        long _result#23;
+        int[] _result#33, _result#44;
+
+        this := @this: com.android.internal.telephony.ISub$Stub;
+
+        code := @parameter0: int;
+
+        data := @parameter1: android.os.Parcel;
+
+        reply := @parameter2: android.os.Parcel;
+
+        flags := @parameter3: int;
+
+        lookupswitch(code)
+        {
+            case 1: goto label02;
+            case 2: goto label03;
+            case 3: goto label04;
+            case 4: goto label07;
+            case 5: goto label10;
+            case 6: goto label13;
+            case 7: goto label14;
+            case 8: goto label15;
+            case 9: goto label16;
+            case 10: goto label17;
+            case 11: goto label18;
+            case 12: goto label19;
+            case 13: goto label20;
+            case 14: goto label21;
+            case 15: goto label22;
+            case 16: goto label23;
+            case 17: goto label24;
+            case 18: goto label25;
+            case 19: goto label26;
+            case 20: goto label27;
+            case 21: goto label28;
+            case 22: goto label29;
+            case 23: goto label30;
+            case 24: goto label31;
+            case 25: goto label32;
+            case 26: goto label33;
+            case 27: goto label34;
+            case 28: goto label35;
+            case 1598968902: goto label01;
+            default: goto label36;
+        };
+
+     label01:
+        virtualinvoke reply.<android.os.Parcel: void writeString(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        return 1;
+
+     label02:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#1 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: java.util.List getAllSubInfoList()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeTypedList(java.util.List)>(_result#1);
+
+        return 1;
+
+     label03:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#2 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getAllSubInfoCount()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#2);
+
+        return 1;
+
+     label04:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#3 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#4 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: android.telephony.SubscriptionInfo getActiveSubscriptionInfo(int)>(_result#3);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#4 == null goto label05;
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke _result#4.<android.telephony.SubscriptionInfo: void writeToParcel(android.os.Parcel,int)>(reply, 1);
+
+        goto label06;
+
+     label05:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(0);
+
+     label06:
+        return 1;
+
+     label07:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#5 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#6 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: android.telephony.SubscriptionInfo getActiveSubscriptionInfoForIccId(java.lang.String)>(_result#5);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#6 == null goto label08;
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke _result#6.<android.telephony.SubscriptionInfo: void writeToParcel(android.os.Parcel,int)>(reply, 1);
+
+        goto label09;
+
+     label08:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(0);
+
+     label09:
+        return 1;
+
+     label10:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#7 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#8 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: android.telephony.SubscriptionInfo getActiveSubscriptionInfoForSimSlotIndex(int)>(_result#7);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        if _result#8 == null goto label11;
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(1);
+
+        virtualinvoke _result#8.<android.telephony.SubscriptionInfo: void writeToParcel(android.os.Parcel,int)>(reply, 1);
+
+        goto label12;
+
+     label11:
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(0);
+
+     label12:
+        return 1;
+
+     label13:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#9 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: java.util.List getActiveSubscriptionInfoList()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeTypedList(java.util.List)>(_result#9);
+
+        return 1;
+
+     label14:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#10 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getActiveSubInfoCount()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#10);
+
+        return 1;
+
+     label15:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#11 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getActiveSubInfoCountMax()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#11);
+
+        return 1;
+
+     label16:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#12 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#13 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#14 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int addSubInfoRecord(java.lang.String,int)>(_result#12, _result#13);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#14);
+
+        return 1;
+
+     label17:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#15 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#16 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#17 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int setIconTint(int,int)>(_result#15, _result#16);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#17);
+
+        return 1;
+
+     label18:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#18 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#19 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#20 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int setDisplayName(java.lang.String,int)>(_result#18, _result#19);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#20);
+
+        return 1;
+
+     label19:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#21 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#22 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#23 = virtualinvoke data.<android.os.Parcel: long readLong()>();
+
+        _result = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int setDisplayNameUsingSrc(java.lang.String,int,long)>(_result#21, _result#22, _result#23);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result);
+
+        return 1;
+
+     label20:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#24 = virtualinvoke data.<android.os.Parcel: java.lang.String readString()>();
+
+        _result#25 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#26 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int setDisplayNumber(java.lang.String,int)>(_result#24, _result#25);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#26);
+
+        return 1;
+
+     label21:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#27 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#28 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#29 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int setDataRoaming(int,int)>(_result#27, _result#28);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#29);
+
+        return 1;
+
+     label22:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#30 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#31 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getSlotId(int)>(_result#30);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#31);
+
+        return 1;
+
+     label23:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#32 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#33 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int[] getSubId(int)>(_result#32);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeIntArray(int[])>(_result#33);
+
+        return 1;
+
+     label24:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#34 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getDefaultSubId()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#34);
+
+        return 1;
+
+     label25:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#35 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int clearSubInfo()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#35);
+
+        return 1;
+
+     label26:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#36 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#37 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getPhoneId(int)>(_result#36);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#37);
+
+        return 1;
+
+     label27:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#38 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getDefaultDataSubId()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#38);
+
+        return 1;
+
+     label28:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#39 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        virtualinvoke this.<com.android.internal.telephony.ISub$Stub: void setDefaultDataSubId(int)>(_result#39);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label29:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#40 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getDefaultVoiceSubId()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#40);
+
+        return 1;
+
+     label30:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#41 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        virtualinvoke this.<com.android.internal.telephony.ISub$Stub: void setDefaultVoiceSubId(int)>(_result#41);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label31:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#42 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getDefaultSmsSubId()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#42);
+
+        return 1;
+
+     label32:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#43 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        virtualinvoke this.<com.android.internal.telephony.ISub$Stub: void setDefaultSmsSubId(int)>(_result#43);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label33:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        virtualinvoke this.<com.android.internal.telephony.ISub$Stub: void clearDefaultsForInactiveSubIds()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        return 1;
+
+     label34:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#44 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int[] getActiveSubIdList()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeIntArray(int[])>(_result#44);
+
+        return 1;
+
+     label35:
+        virtualinvoke data.<android.os.Parcel: void enforceInterface(java.lang.String)>("com.android.internal.telephony.ISub");
+
+        _result#45 = virtualinvoke data.<android.os.Parcel: int readInt()>();
+
+        _result#46 = virtualinvoke this.<com.android.internal.telephony.ISub$Stub: int getSimStateForSubscriber(int)>(_result#45);
+
+        virtualinvoke reply.<android.os.Parcel: void writeNoException()>();
+
+        virtualinvoke reply.<android.os.Parcel: void writeInt(int)>(_result#46);
+
+        return 1;
+
+     label36:
+        $z0 = specialinvoke this.<android.os.Binder: boolean onTransact(int,android.os.Parcel,android.os.Parcel,int)>(code, data, reply, flags);
+
+        return $z0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getSimStateForSubscriber> = 28;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getActiveSubIdList> = 27;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_clearDefaultsForInactiveSubIds> = 26;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setDefaultSmsSubId> = 25;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getDefaultSmsSubId> = 24;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setDefaultVoiceSubId> = 23;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getDefaultVoiceSubId> = 22;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setDefaultDataSubId> = 21;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getDefaultDataSubId> = 20;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getPhoneId> = 19;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_clearSubInfo> = 18;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getDefaultSubId> = 17;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getSubId> = 16;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getSlotId> = 15;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setDataRoaming> = 14;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setDisplayNumber> = 13;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setDisplayNameUsingSrc> = 12;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setDisplayName> = 11;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_setIconTint> = 10;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_addSubInfoRecord> = 9;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getActiveSubInfoCountMax> = 8;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getActiveSubInfoCount> = 7;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getActiveSubscriptionInfoList> = 6;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getActiveSubscriptionInfoForSimSlotIndex> = 5;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getActiveSubscriptionInfoForIccId> = 4;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getActiveSubscriptionInfo> = 3;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getAllSubInfoCount> = 2;
+
+        <com.android.internal.telephony.ISub$Stub: int TRANSACTION_getAllSubInfoList> = 1;
+
+        <com.android.internal.telephony.ISub$Stub: java.lang.String DESCRIPTOR> = "com.android.internal.telephony.ISub";
+
+        return;
+    }
+}

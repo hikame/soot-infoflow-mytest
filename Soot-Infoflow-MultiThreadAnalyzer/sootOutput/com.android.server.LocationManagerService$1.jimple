@@ -1,0 +1,97 @@
+class com.android.server.LocationManagerService$1 extends android.app.AppOpsManager$OnOpChangedInternalListener
+{
+    final com.android.server.LocationManagerService this$0;
+
+    void <init>(com.android.server.LocationManagerService)
+    {
+        com.android.server.LocationManagerService$1 this;
+        com.android.server.LocationManagerService l1;
+
+        this := @this: com.android.server.LocationManagerService$1;
+
+        l1 := @parameter0: com.android.server.LocationManagerService;
+
+        this.<com.android.server.LocationManagerService$1: com.android.server.LocationManagerService this$0> = l1;
+
+        specialinvoke this.<android.app.AppOpsManager$OnOpChangedInternalListener: void <init>()>();
+
+        return;
+    }
+
+    public void onOpChanged(int, java.lang.String)
+    {
+        com.android.server.LocationManagerService$1 this;
+        int op;
+        java.lang.String packageName;
+        java.lang.Object l3, $r1, $r7;
+        java.util.Iterator i$;
+        com.android.server.LocationManagerService$Receiver receiver;
+        java.lang.Throwable l6, $r6;
+        com.android.server.LocationManagerService $r0, $r2, $r5;
+        java.util.HashMap $r3;
+        java.util.Collection $r4;
+        boolean $z0;
+
+        this := @this: com.android.server.LocationManagerService$1;
+
+        op := @parameter0: int;
+
+        packageName := @parameter1: java.lang.String;
+
+        $r0 = this.<com.android.server.LocationManagerService$1: com.android.server.LocationManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.LocationManagerService: java.lang.Object access$000(com.android.server.LocationManagerService)>($r0);
+
+        l3 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.LocationManagerService$1: com.android.server.LocationManagerService this$0>;
+
+        $r3 = staticinvoke <com.android.server.LocationManagerService: java.util.HashMap access$100(com.android.server.LocationManagerService)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.util.HashMap: java.util.Collection values()>();
+
+        i$ = interfaceinvoke $r4.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke i$.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r7 = interfaceinvoke i$.<java.util.Iterator: java.lang.Object next()>();
+
+        receiver = (com.android.server.LocationManagerService$Receiver) $r7;
+
+        virtualinvoke receiver.<com.android.server.LocationManagerService$Receiver: void updateMonitoring(boolean)>(1);
+
+        goto label2;
+
+     label3:
+        $r5 = this.<com.android.server.LocationManagerService$1: com.android.server.LocationManagerService this$0>;
+
+        staticinvoke <com.android.server.LocationManagerService: void access$200(com.android.server.LocationManagerService)>($r5);
+
+        exitmonitor l3;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r6 := @caughtexception;
+
+        l6 = $r6;
+
+        exitmonitor l3;
+
+     label6:
+        throw l6;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+}

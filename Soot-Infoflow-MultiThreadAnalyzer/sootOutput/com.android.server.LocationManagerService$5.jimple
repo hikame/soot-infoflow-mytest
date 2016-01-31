@@ -1,0 +1,78 @@
+class com.android.server.LocationManagerService$5 extends android.content.BroadcastReceiver
+{
+    final com.android.server.LocationManagerService this$0;
+
+    void <init>(com.android.server.LocationManagerService)
+    {
+        com.android.server.LocationManagerService$5 this;
+        com.android.server.LocationManagerService l1;
+
+        this := @this: com.android.server.LocationManagerService$5;
+
+        l1 := @parameter0: com.android.server.LocationManagerService;
+
+        this.<com.android.server.LocationManagerService$5: com.android.server.LocationManagerService this$0> = l1;
+
+        specialinvoke this.<android.content.BroadcastReceiver: void <init>()>();
+
+        return;
+    }
+
+    public void onReceive(android.content.Context, android.content.Intent)
+    {
+        com.android.server.LocationManagerService$5 this;
+        android.content.Context context;
+        android.content.Intent intent;
+        java.lang.String action, $r0, $r1, $r4;
+        boolean $z0, $z1, $z2;
+        com.android.server.LocationManagerService $r2, $r3, $r5;
+        int $i0, $i1;
+
+        this := @this: com.android.server.LocationManagerService$5;
+
+        context := @parameter0: android.content.Context;
+
+        intent := @parameter1: android.content.Intent;
+
+        action = virtualinvoke intent.<android.content.Intent: java.lang.String getAction()>();
+
+        $r0 = "android.intent.action.USER_SWITCHED";
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(action);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = this.<com.android.server.LocationManagerService$5: com.android.server.LocationManagerService this$0>;
+
+        $i1 = virtualinvoke intent.<android.content.Intent: int getIntExtra(java.lang.String,int)>("android.intent.extra.user_handle", 0);
+
+        staticinvoke <com.android.server.LocationManagerService: void access$500(com.android.server.LocationManagerService,int)>($r5, $i1);
+
+        goto label3;
+
+     label1:
+        $r1 = "android.intent.action.MANAGED_PROFILE_ADDED";
+
+        $z1 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(action);
+
+        if $z1 != 0 goto label2;
+
+        $r4 = "android.intent.action.MANAGED_PROFILE_REMOVED";
+
+        $z2 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>(action);
+
+        if $z2 == 0 goto label3;
+
+     label2:
+        $r3 = this.<com.android.server.LocationManagerService$5: com.android.server.LocationManagerService this$0>;
+
+        $r2 = this.<com.android.server.LocationManagerService$5: com.android.server.LocationManagerService this$0>;
+
+        $i0 = staticinvoke <com.android.server.LocationManagerService: int access$600(com.android.server.LocationManagerService)>($r2);
+
+        virtualinvoke $r3.<com.android.server.LocationManagerService: void updateUserProfiles(int)>($i0);
+
+     label3:
+        return;
+    }
+}

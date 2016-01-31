@@ -1,0 +1,9 @@
+interface  com.android.server.pm.PackageManagerService$IntentFilterVerifier extends java.lang.Object
+{
+
+    public abstract boolean addOneIntentFilterVerification(int, int, int, android.content.IntentFilter, java.lang.String);
+
+    public abstract void startVerifications(int);
+
+    public abstract void receiveVerificationResponse(int);
+}

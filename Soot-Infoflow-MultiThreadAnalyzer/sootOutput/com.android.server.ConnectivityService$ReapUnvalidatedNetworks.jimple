@@ -1,0 +1,84 @@
+final enum class com.android.server.ConnectivityService$ReapUnvalidatedNetworks extends java.lang.Enum
+{
+    public static final enum com.android.server.ConnectivityService$ReapUnvalidatedNetworks REAP;
+    public static final enum com.android.server.ConnectivityService$ReapUnvalidatedNetworks DONT_REAP;
+    private static final com.android.server.ConnectivityService$ReapUnvalidatedNetworks[] $VALUES;
+
+    public static com.android.server.ConnectivityService$ReapUnvalidatedNetworks[] values()
+    {
+        com.android.server.ConnectivityService$ReapUnvalidatedNetworks[] $r0, $r2;
+        java.lang.Object $r1;
+
+        $r0 = <com.android.server.ConnectivityService$ReapUnvalidatedNetworks: com.android.server.ConnectivityService$ReapUnvalidatedNetworks[] $VALUES>;
+
+        $r1 = virtualinvoke $r0.<java.lang.Object: java.lang.Object clone()>();
+
+        $r2 = (com.android.server.ConnectivityService$ReapUnvalidatedNetworks[]) $r1;
+
+        return $r2;
+    }
+
+    public static com.android.server.ConnectivityService$ReapUnvalidatedNetworks valueOf(java.lang.String)
+    {
+        java.lang.String name;
+        java.lang.Enum $r0;
+        com.android.server.ConnectivityService$ReapUnvalidatedNetworks $r1;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = staticinvoke <java.lang.Enum: java.lang.Enum valueOf(java.lang.Class,java.lang.String)>(class "com/android/server/ConnectivityService$ReapUnvalidatedNetworks", name);
+
+        $r1 = (com.android.server.ConnectivityService$ReapUnvalidatedNetworks) $r0;
+
+        return $r1;
+    }
+
+    private void <init>(java.lang.String, int)
+    {
+        com.android.server.ConnectivityService$ReapUnvalidatedNetworks this;
+        java.lang.String l1;
+        int l2;
+
+        this := @this: com.android.server.ConnectivityService$ReapUnvalidatedNetworks;
+
+        l1 := @parameter0: java.lang.String;
+
+        l2 := @parameter1: int;
+
+        specialinvoke this.<java.lang.Enum: void <init>(java.lang.String,int)>(l1, l2);
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        com.android.server.ConnectivityService$ReapUnvalidatedNetworks $r0, $r1, $r3, $r4;
+        com.android.server.ConnectivityService$ReapUnvalidatedNetworks[] $r2;
+
+        $r0 = new com.android.server.ConnectivityService$ReapUnvalidatedNetworks;
+
+        specialinvoke $r0.<com.android.server.ConnectivityService$ReapUnvalidatedNetworks: void <init>(java.lang.String,int)>("REAP", 0);
+
+        <com.android.server.ConnectivityService$ReapUnvalidatedNetworks: com.android.server.ConnectivityService$ReapUnvalidatedNetworks REAP> = $r0;
+
+        $r1 = new com.android.server.ConnectivityService$ReapUnvalidatedNetworks;
+
+        specialinvoke $r1.<com.android.server.ConnectivityService$ReapUnvalidatedNetworks: void <init>(java.lang.String,int)>("DONT_REAP", 1);
+
+        <com.android.server.ConnectivityService$ReapUnvalidatedNetworks: com.android.server.ConnectivityService$ReapUnvalidatedNetworks DONT_REAP> = $r1;
+
+        $r2 = newarray (com.android.server.ConnectivityService$ReapUnvalidatedNetworks)[2];
+
+        $r3 = <com.android.server.ConnectivityService$ReapUnvalidatedNetworks: com.android.server.ConnectivityService$ReapUnvalidatedNetworks REAP>;
+
+        $r2[0] = $r3;
+
+        $r4 = <com.android.server.ConnectivityService$ReapUnvalidatedNetworks: com.android.server.ConnectivityService$ReapUnvalidatedNetworks DONT_REAP>;
+
+        $r2[1] = $r4;
+
+        <com.android.server.ConnectivityService$ReapUnvalidatedNetworks: com.android.server.ConnectivityService$ReapUnvalidatedNetworks[] $VALUES> = $r2;
+
+        return;
+    }
+}

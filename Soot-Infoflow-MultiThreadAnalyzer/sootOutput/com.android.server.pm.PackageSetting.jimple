@@ -1,0 +1,233 @@
+final class com.android.server.pm.PackageSetting extends com.android.server.pm.PackageSettingBase
+{
+    int appId;
+    android.content.pm.PackageParser$Package pkg;
+    com.android.server.pm.SharedUserSetting sharedUser;
+
+    void <init>(java.lang.String, java.lang.String, java.io.File, java.io.File, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, int, int)
+    {
+        com.android.server.pm.PackageSetting this;
+        java.lang.String name, realName, legacyNativeLibraryPathString, primaryCpuAbiString, secondaryCpuAbiString, cpuAbiOverrideString;
+        java.io.File codePath, resourcePath;
+        int pVersionCode, pkgFlags, privateFlags;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        name := @parameter0: java.lang.String;
+
+        realName := @parameter1: java.lang.String;
+
+        codePath := @parameter2: java.io.File;
+
+        resourcePath := @parameter3: java.io.File;
+
+        legacyNativeLibraryPathString := @parameter4: java.lang.String;
+
+        primaryCpuAbiString := @parameter5: java.lang.String;
+
+        secondaryCpuAbiString := @parameter6: java.lang.String;
+
+        cpuAbiOverrideString := @parameter7: java.lang.String;
+
+        pVersionCode := @parameter8: int;
+
+        pkgFlags := @parameter9: int;
+
+        privateFlags := @parameter10: int;
+
+        specialinvoke this.<com.android.server.pm.PackageSettingBase: void <init>(java.lang.String,java.lang.String,java.io.File,java.io.File,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int)>(name, realName, codePath, resourcePath, legacyNativeLibraryPathString, primaryCpuAbiString, secondaryCpuAbiString, cpuAbiOverrideString, pVersionCode, pkgFlags, privateFlags);
+
+        return;
+    }
+
+    void <init>(com.android.server.pm.PackageSetting)
+    {
+        com.android.server.pm.PackageSetting this, orig;
+        int $i0;
+        android.content.pm.PackageParser$Package $r0;
+        com.android.server.pm.SharedUserSetting $r1;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        orig := @parameter0: com.android.server.pm.PackageSetting;
+
+        specialinvoke this.<com.android.server.pm.PackageSettingBase: void <init>(com.android.server.pm.PackageSettingBase)>(orig);
+
+        $i0 = orig.<com.android.server.pm.PackageSetting: int appId>;
+
+        this.<com.android.server.pm.PackageSetting: int appId> = $i0;
+
+        $r0 = orig.<com.android.server.pm.PackageSetting: android.content.pm.PackageParser$Package pkg>;
+
+        this.<com.android.server.pm.PackageSetting: android.content.pm.PackageParser$Package pkg> = $r0;
+
+        $r1 = orig.<com.android.server.pm.PackageSetting: com.android.server.pm.SharedUserSetting sharedUser>;
+
+        this.<com.android.server.pm.PackageSetting: com.android.server.pm.SharedUserSetting sharedUser> = $r1;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        com.android.server.pm.PackageSetting this;
+        java.lang.StringBuilder $r0, $r1, $r3, $r4, $r6, $r7, $r8, $r9;
+        int $i0, $i1;
+        java.lang.String $r2, $r5, $r10;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PackageSetting{");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r5 = this.<com.android.server.pm.PackageSetting: java.lang.String name>;
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $i1 = this.<com.android.server.pm.PackageSetting: int appId>;
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r10;
+    }
+
+    public com.android.server.pm.PermissionsState getPermissionsState()
+    {
+        com.android.server.pm.PackageSetting this;
+        com.android.server.pm.SharedUserSetting $r0, $r1;
+        com.android.server.pm.PermissionsState $r2;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        $r0 = this.<com.android.server.pm.PackageSetting: com.android.server.pm.SharedUserSetting sharedUser>;
+
+        if $r0 == null goto label1;
+
+        $r1 = this.<com.android.server.pm.PackageSetting: com.android.server.pm.SharedUserSetting sharedUser>;
+
+        $r2 = virtualinvoke $r1.<com.android.server.pm.SharedUserSetting: com.android.server.pm.PermissionsState getPermissionsState()>();
+
+        goto label2;
+
+     label1:
+        $r2 = specialinvoke this.<com.android.server.pm.PackageSettingBase: com.android.server.pm.PermissionsState getPermissionsState()>();
+
+     label2:
+        return $r2;
+    }
+
+    public boolean isPrivileged()
+    {
+        com.android.server.pm.PackageSetting this;
+        int $i0, $i1;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        $i0 = this.<com.android.server.pm.PackageSetting: int pkgPrivateFlags>;
+
+        $i1 = $i0 & 8;
+
+        if $i1 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean isForwardLocked()
+    {
+        com.android.server.pm.PackageSetting this;
+        int $i0, $i1;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        $i0 = this.<com.android.server.pm.PackageSetting: int pkgPrivateFlags>;
+
+        $i1 = $i0 & 4;
+
+        if $i1 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean isSystem()
+    {
+        com.android.server.pm.PackageSetting this;
+        int $i0, $i1;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        $i0 = this.<com.android.server.pm.PackageSetting: int pkgFlags>;
+
+        $i1 = $i0 & 1;
+
+        if $i1 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean isSharedUser()
+    {
+        com.android.server.pm.PackageSetting this;
+        com.android.server.pm.SharedUserSetting $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageSetting;
+
+        $r0 = this.<com.android.server.pm.PackageSetting: com.android.server.pm.SharedUserSetting sharedUser>;
+
+        if $r0 == null goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+}

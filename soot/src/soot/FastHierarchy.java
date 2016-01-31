@@ -248,7 +248,8 @@ public class FastHierarchy
             if (!(parent instanceof ArrayType))
             	return false;
             ArrayType aparent = (ArrayType) parent;
-                                                
+            if(aparent == null || aparent.baseType == null)
+            	return false;
             // You can store a int[][] in a Object[]. Yuck!
             // Also, you can store a Interface[] in a Object[]
             if( achild.numDimensions == aparent.numDimensions ) {

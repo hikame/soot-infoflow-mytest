@@ -1,0 +1,68 @@
+class com.android.server.pm.PackageManagerService$24 extends android.content.pm.IPackageMoveObserver$Stub
+{
+    final int val$realMoveId;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, int)
+    {
+        com.android.server.pm.PackageManagerService$24 this;
+        com.android.server.pm.PackageManagerService l1;
+        int l2;
+
+        this := @this: com.android.server.pm.PackageManagerService$24;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: int;
+
+        this.<com.android.server.pm.PackageManagerService$24: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$24: int val$realMoveId> = l2;
+
+        specialinvoke this.<android.content.pm.IPackageMoveObserver$Stub: void <init>()>();
+
+        return;
+    }
+
+    public void onCreated(int, android.os.Bundle)
+    {
+        com.android.server.pm.PackageManagerService$24 this;
+        int moveId;
+        android.os.Bundle extras;
+
+        this := @this: com.android.server.pm.PackageManagerService$24;
+
+        moveId := @parameter0: int;
+
+        extras := @parameter1: android.os.Bundle;
+
+        return;
+    }
+
+    public void onStatusChanged(int, int, long)
+    {
+        com.android.server.pm.PackageManagerService$24 this;
+        int moveId, status, $i0;
+        long estMillis;
+        com.android.server.pm.PackageManagerService $r0;
+        com.android.server.pm.PackageManagerService$MoveCallbacks $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$24;
+
+        moveId := @parameter0: int;
+
+        status := @parameter1: int;
+
+        estMillis := @parameter2: long;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$24: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.server.pm.PackageManagerService$MoveCallbacks access$6000(com.android.server.pm.PackageManagerService)>($r0);
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$24: int val$realMoveId>;
+
+        staticinvoke <com.android.server.pm.PackageManagerService$MoveCallbacks: void access$6100(com.android.server.pm.PackageManagerService$MoveCallbacks,int,int,long)>($r1, $i0, status, estMillis);
+
+        return;
+    }
+}

@@ -1,0 +1,1198 @@
+final class com.android.server.LocationManagerService$Receiver extends java.lang.Object implements android.os.IBinder$DeathRecipient, android.app.PendingIntent$OnFinished
+{
+    final int mUid;
+    final int mPid;
+    final java.lang.String mPackageName;
+    final int mAllowedResolutionLevel;
+    final android.location.ILocationListener mListener;
+    final android.app.PendingIntent mPendingIntent;
+    final android.os.WorkSource mWorkSource;
+    final boolean mHideFromAppOps;
+    final java.lang.Object mKey;
+    final java.util.HashMap mUpdateRecords;
+    boolean mOpMonitoring;
+    boolean mOpHighPowerMonitoring;
+    int mPendingBroadcasts;
+    android.os.PowerManager$WakeLock mWakeLock;
+    final com.android.server.LocationManagerService this$0;
+
+    void <init>(com.android.server.LocationManagerService, android.location.ILocationListener, android.app.PendingIntent, int, int, java.lang.String, android.os.WorkSource, boolean)
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        com.android.server.LocationManagerService l1;
+        android.location.ILocationListener listener;
+        android.app.PendingIntent intent;
+        int pid, uid, $i0, $i1, $i2;
+        java.lang.String packageName, $r5;
+        boolean hideFromAppOps;
+        java.util.HashMap $r0;
+        android.os.PowerManager $r1;
+        android.os.PowerManager$WakeLock $r2, $r3;
+        android.os.WorkSource $r4, workSource#1;
+        android.os.IBinder $r6;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        l1 := @parameter0: com.android.server.LocationManagerService;
+
+        listener := @parameter1: android.location.ILocationListener;
+
+        intent := @parameter2: android.app.PendingIntent;
+
+        pid := @parameter3: int;
+
+        uid := @parameter4: int;
+
+        packageName := @parameter5: java.lang.String;
+
+        workSource#1 := @parameter6: android.os.WorkSource;
+
+        hideFromAppOps := @parameter7: boolean;
+
+        this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = new java.util.HashMap;
+
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+
+        this.<com.android.server.LocationManagerService$Receiver: java.util.HashMap mUpdateRecords> = $r0;
+
+        this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener> = listener;
+
+        this.<com.android.server.LocationManagerService$Receiver: android.app.PendingIntent mPendingIntent> = intent;
+
+        if listener == null goto label1;
+
+        $r6 = interfaceinvoke listener.<android.location.ILocationListener: android.os.IBinder asBinder()>();
+
+        this.<com.android.server.LocationManagerService$Receiver: java.lang.Object mKey> = $r6;
+
+        goto label2;
+
+     label1:
+        this.<com.android.server.LocationManagerService$Receiver: java.lang.Object mKey> = intent;
+
+     label2:
+        $i0 = staticinvoke <com.android.server.LocationManagerService: int access$600(com.android.server.LocationManagerService,int,int)>(l1, pid, uid);
+
+        this.<com.android.server.LocationManagerService$Receiver: int mAllowedResolutionLevel> = $i0;
+
+        this.<com.android.server.LocationManagerService$Receiver: int mUid> = uid;
+
+        this.<com.android.server.LocationManagerService$Receiver: int mPid> = pid;
+
+        this.<com.android.server.LocationManagerService$Receiver: java.lang.String mPackageName> = packageName;
+
+        if workSource#1 == null goto label3;
+
+        $i1 = virtualinvoke workSource#1.<android.os.WorkSource: int size()>();
+
+        if $i1 > 0 goto label3;
+
+        workSource#1 = null;
+
+     label3:
+        this.<com.android.server.LocationManagerService$Receiver: android.os.WorkSource mWorkSource> = workSource#1;
+
+        this.<com.android.server.LocationManagerService$Receiver: boolean mHideFromAppOps> = hideFromAppOps;
+
+        virtualinvoke this.<com.android.server.LocationManagerService$Receiver: void updateMonitoring(boolean)>(1);
+
+        $r1 = staticinvoke <com.android.server.LocationManagerService: android.os.PowerManager access$700(com.android.server.LocationManagerService)>(l1);
+
+        $r2 = virtualinvoke $r1.<android.os.PowerManager: android.os.PowerManager$WakeLock newWakeLock(int,java.lang.String)>(1, "LocationManagerService");
+
+        this.<com.android.server.LocationManagerService$Receiver: android.os.PowerManager$WakeLock mWakeLock> = $r2;
+
+        if workSource#1 != null goto label4;
+
+        $r4 = new android.os.WorkSource;
+
+        $i2 = this.<com.android.server.LocationManagerService$Receiver: int mUid>;
+
+        $r5 = this.<com.android.server.LocationManagerService$Receiver: java.lang.String mPackageName>;
+
+        specialinvoke $r4.<android.os.WorkSource: void <init>(int,java.lang.String)>($i2, $r5);
+
+        workSource#1 = $r4;
+
+     label4:
+        $r3 = this.<com.android.server.LocationManagerService$Receiver: android.os.PowerManager$WakeLock mWakeLock>;
+
+        virtualinvoke $r3.<android.os.PowerManager$WakeLock: void setWorkSource(android.os.WorkSource)>(workSource#1);
+
+        return;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        com.android.server.LocationManagerService$Receiver this, $r0;
+        java.lang.Object otherObj, $r1, $r2;
+        boolean $z0, $z1;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        otherObj := @parameter0: java.lang.Object;
+
+        $z0 = otherObj instanceof com.android.server.LocationManagerService$Receiver;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = this.<com.android.server.LocationManagerService$Receiver: java.lang.Object mKey>;
+
+        $r0 = (com.android.server.LocationManagerService$Receiver) otherObj;
+
+        $r1 = $r0.<com.android.server.LocationManagerService$Receiver: java.lang.Object mKey>;
+
+        $z1 = virtualinvoke $r2.<java.lang.Object: boolean equals(java.lang.Object)>($r1);
+
+        return $z1;
+
+     label1:
+        return 0;
+    }
+
+    public int hashCode()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        java.lang.Object $r0;
+        int $i0;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: java.lang.Object mKey>;
+
+        $i0 = virtualinvoke $r0.<java.lang.Object: int hashCode()>();
+
+        return $i0;
+    }
+
+    public java.lang.String toString()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        java.lang.StringBuilder s, $r0, $r12;
+        java.util.Iterator i$;
+        java.lang.String p, $r2, $r10, $r16;
+        int $i0;
+        android.location.ILocationListener $r4;
+        java.util.HashMap $r6, $r11;
+        java.util.Set $r7;
+        boolean $z0;
+        java.lang.Object $r9, $r14;
+        com.android.server.LocationManagerService$UpdateRecord $r13;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        s = $r0;
+
+        virtualinvoke s.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Reciever[");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke s.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        if $r4 == null goto label1;
+
+        virtualinvoke s.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" listener");
+
+        goto label2;
+
+     label1:
+        virtualinvoke s.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" intent");
+
+     label2:
+        $r6 = this.<com.android.server.LocationManagerService$Receiver: java.util.HashMap mUpdateRecords>;
+
+        $r7 = virtualinvoke $r6.<java.util.HashMap: java.util.Set keySet()>();
+
+        i$ = interfaceinvoke $r7.<java.util.Set: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke i$.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r9 = interfaceinvoke i$.<java.util.Iterator: java.lang.Object next()>();
+
+        p = (java.lang.String) $r9;
+
+        $r12 = virtualinvoke s.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r11 = this.<com.android.server.LocationManagerService$Receiver: java.util.HashMap mUpdateRecords>;
+
+        $r14 = virtualinvoke $r11.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(p);
+
+        $r13 = (com.android.server.LocationManagerService$UpdateRecord) $r14;
+
+        $r16 = virtualinvoke $r13.<com.android.server.LocationManagerService$UpdateRecord: java.lang.String toString()>();
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r16);
+
+        goto label3;
+
+     label4:
+        virtualinvoke s.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r10 = virtualinvoke s.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r10;
+    }
+
+    public void updateMonitoring(boolean)
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        boolean allow, $z0, $z1, $z2, $z3, $z4, $z5, $z6, $z7, requestingLocation#1, requestingHighPowerLocation#2, i$#6;
+        com.android.server.location.LocationProviderInterface locationProvider;
+        com.android.internal.location.ProviderProperties properties, $r14;
+        android.content.Intent $r0, updateRecord#7;
+        com.android.server.LocationManagerService $r1, $r8, $r10;
+        android.os.UserHandle $r2;
+        android.content.Context $r3;
+        java.util.Collection $r4;
+        java.util.HashMap $r5, $r9;
+        java.lang.String $r6, $r12;
+        java.lang.Object $r7, $r11;
+        android.location.LocationRequest $r13;
+        int $i0;
+        long $l1;
+        byte $b2;
+        java.util.Iterator i$#3;
+        com.android.server.LocationManagerService$UpdateRecord updateRecord#4;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        allow := @parameter0: boolean;
+
+        $z0 = this.<com.android.server.LocationManagerService$Receiver: boolean mHideFromAppOps>;
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        requestingLocation#1 = 0;
+
+        requestingHighPowerLocation#2 = 0;
+
+        if allow == 0 goto label6;
+
+        $r5 = this.<com.android.server.LocationManagerService$Receiver: java.util.HashMap mUpdateRecords>;
+
+        $r4 = virtualinvoke $r5.<java.util.HashMap: java.util.Collection values()>();
+
+        i$#3 = interfaceinvoke $r4.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $z6 = interfaceinvoke i$#3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z6 == 0 goto label6;
+
+        $r7 = interfaceinvoke i$#3.<java.util.Iterator: java.lang.Object next()>();
+
+        updateRecord#4 = (com.android.server.LocationManagerService$UpdateRecord) $r7;
+
+        $r8 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r6 = updateRecord#4.<com.android.server.LocationManagerService$UpdateRecord: java.lang.String mProvider>;
+
+        $z7 = staticinvoke <com.android.server.LocationManagerService: boolean access$800(com.android.server.LocationManagerService,java.lang.String)>($r8, $r6);
+
+        if $z7 == 0 goto label5;
+
+        requestingLocation#1 = 1;
+
+        $r10 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r9 = staticinvoke <com.android.server.LocationManagerService: java.util.HashMap access$900(com.android.server.LocationManagerService)>($r10);
+
+        $r12 = updateRecord#4.<com.android.server.LocationManagerService$UpdateRecord: java.lang.String mProvider>;
+
+        $r11 = virtualinvoke $r9.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r12);
+
+        locationProvider = (com.android.server.location.LocationProviderInterface) $r11;
+
+        if locationProvider == null goto label3;
+
+        $r14 = interfaceinvoke locationProvider.<com.android.server.location.LocationProviderInterface: com.android.internal.location.ProviderProperties getProperties()>();
+
+        goto label4;
+
+     label3:
+        $r14 = null;
+
+     label4:
+        properties = $r14;
+
+        if properties == null goto label5;
+
+        $i0 = properties.<com.android.internal.location.ProviderProperties: int mPowerRequirement>;
+
+        if $i0 != 3 goto label5;
+
+        $r13 = updateRecord#4.<com.android.server.LocationManagerService$UpdateRecord: android.location.LocationRequest mRequest>;
+
+        $l1 = virtualinvoke $r13.<android.location.LocationRequest: long getInterval()>();
+
+        $b2 = $l1 cmp 300000L;
+
+        if $b2 >= 0 goto label5;
+
+        requestingHighPowerLocation#2 = 1;
+
+        goto label6;
+
+     label5:
+        goto label2;
+
+     label6:
+        $z1 = this.<com.android.server.LocationManagerService$Receiver: boolean mOpMonitoring>;
+
+        $z2 = specialinvoke this.<com.android.server.LocationManagerService$Receiver: boolean updateMonitoring(boolean,boolean,int)>(requestingLocation#1, $z1, 41);
+
+        this.<com.android.server.LocationManagerService$Receiver: boolean mOpMonitoring> = $z2;
+
+        i$#6 = this.<com.android.server.LocationManagerService$Receiver: boolean mOpHighPowerMonitoring>;
+
+        $z3 = this.<com.android.server.LocationManagerService$Receiver: boolean mOpHighPowerMonitoring>;
+
+        $z4 = specialinvoke this.<com.android.server.LocationManagerService$Receiver: boolean updateMonitoring(boolean,boolean,int)>(requestingHighPowerLocation#2, $z3, 42);
+
+        this.<com.android.server.LocationManagerService$Receiver: boolean mOpHighPowerMonitoring> = $z4;
+
+        $z5 = this.<com.android.server.LocationManagerService$Receiver: boolean mOpHighPowerMonitoring>;
+
+        if $z5 == i$#6 goto label7;
+
+        $r0 = new android.content.Intent;
+
+        specialinvoke $r0.<android.content.Intent: void <init>(java.lang.String)>("android.location.HIGH_POWER_REQUEST_CHANGE");
+
+        updateRecord#7 = $r0;
+
+        $r1 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r3 = staticinvoke <com.android.server.LocationManagerService: android.content.Context access$1000(com.android.server.LocationManagerService)>($r1);
+
+        $r2 = <android.os.UserHandle: android.os.UserHandle ALL>;
+
+        virtualinvoke $r3.<android.content.Context: void sendBroadcastAsUser(android.content.Intent,android.os.UserHandle)>(updateRecord#7, $r2);
+
+     label7:
+        return;
+    }
+
+    private boolean updateMonitoring(boolean, boolean, int)
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        boolean allowMonitoring, currentlyMonitoring, $z0;
+        int op, $i0, $i1, $i2, $i3, $i4;
+        com.android.server.LocationManagerService $r0, $r3, $r6;
+        android.app.AppOpsManager $r1, $r4, $r7;
+        java.lang.String $r2, $r5, $r8;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        allowMonitoring := @parameter0: boolean;
+
+        currentlyMonitoring := @parameter1: boolean;
+
+        op := @parameter2: int;
+
+        if currentlyMonitoring != 0 goto label3;
+
+        if allowMonitoring == 0 goto label5;
+
+        $r6 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r7 = staticinvoke <com.android.server.LocationManagerService: android.app.AppOpsManager access$1100(com.android.server.LocationManagerService)>($r6);
+
+        $i4 = this.<com.android.server.LocationManagerService$Receiver: int mUid>;
+
+        $r8 = this.<com.android.server.LocationManagerService$Receiver: java.lang.String mPackageName>;
+
+        $i3 = virtualinvoke $r7.<android.app.AppOpsManager: int startOpNoThrow(int,int,java.lang.String)>(op, $i4, $r8);
+
+        if $i3 != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+
+     label3:
+        if allowMonitoring == 0 goto label4;
+
+        $r3 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r4 = staticinvoke <com.android.server.LocationManagerService: android.app.AppOpsManager access$1100(com.android.server.LocationManagerService)>($r3);
+
+        $i1 = this.<com.android.server.LocationManagerService$Receiver: int mUid>;
+
+        $r5 = this.<com.android.server.LocationManagerService$Receiver: java.lang.String mPackageName>;
+
+        $i2 = virtualinvoke $r4.<android.app.AppOpsManager: int checkOpNoThrow(int,int,java.lang.String)>(op, $i1, $r5);
+
+        if $i2 == 0 goto label5;
+
+     label4:
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.LocationManagerService: android.app.AppOpsManager access$1100(com.android.server.LocationManagerService)>($r0);
+
+        $i0 = this.<com.android.server.LocationManagerService$Receiver: int mUid>;
+
+        $r2 = this.<com.android.server.LocationManagerService$Receiver: java.lang.String mPackageName>;
+
+        virtualinvoke $r1.<android.app.AppOpsManager: void finishOp(int,int,java.lang.String)>(op, $i0, $r2);
+
+        return 0;
+
+     label5:
+        return currentlyMonitoring;
+    }
+
+    public boolean isListener()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        android.location.ILocationListener $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        if $r0 == null goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public boolean isPendingIntent()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        android.app.PendingIntent $r0;
+        boolean $z0;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.app.PendingIntent mPendingIntent>;
+
+        if $r0 == null goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public android.location.ILocationListener getListener()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        android.location.ILocationListener $r0, $r2;
+        java.lang.IllegalStateException $r1;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        if $r0 == null goto label1;
+
+        $r2 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        return $r2;
+
+     label1:
+        $r1 = new java.lang.IllegalStateException;
+
+        specialinvoke $r1.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Request for non-existent listener");
+
+        throw $r1;
+    }
+
+    public boolean callStatusChangedLocked(java.lang.String, int, android.os.Bundle)
+    {
+        com.android.server.LocationManagerService$Receiver this, e#1, e#5;
+        java.lang.String provider, $r11;
+        int status, $i0;
+        android.os.Bundle extras, $r2;
+        java.lang.Throwable l6, $r15, $r18, e#2;
+        android.location.ILocationListener $r0, $r14;
+        android.content.Intent $r1, e#4;
+        com.android.server.LocationManagerService $r6, $r9, $r12;
+        android.app.PendingIntent $r7;
+        android.content.Context $r8;
+        com.android.server.LocationManagerService$LocationWorkerHandler $r10;
+        android.app.PendingIntent$CanceledException $r16, e#6;
+        android.os.RemoteException $r17, e#3;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        provider := @parameter0: java.lang.String;
+
+        status := @parameter1: int;
+
+        extras := @parameter2: android.os.Bundle;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        if $r0 == null goto label08;
+
+     label01:
+        e#1 = this;
+
+        entermonitor this;
+
+     label02:
+        $r14 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        interfaceinvoke $r14.<android.location.ILocationListener: void onStatusChanged(java.lang.String,int,android.os.Bundle)>(provider, status, extras);
+
+        specialinvoke this.<com.android.server.LocationManagerService$Receiver: void incrementPendingBroadcastsLocked()>();
+
+        exitmonitor e#1;
+
+     label03:
+        goto label06;
+
+     label04:
+        $r15 := @caughtexception;
+
+        e#2 = $r15;
+
+        exitmonitor e#1;
+
+     label05:
+        throw e#2;
+
+     label06:
+        goto label16;
+
+     label07:
+        $r17 := @caughtexception;
+
+        return 0;
+
+     label08:
+        $r1 = new android.content.Intent;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        specialinvoke $r1.<android.content.Intent: void <init>()>();
+
+        e#4 = $r1;
+
+        $r2 = new android.os.Bundle;
+
+        specialinvoke $r2.<android.os.Bundle: void <init>(android.os.Bundle)>(extras);
+
+        virtualinvoke e#4.<android.content.Intent: android.content.Intent putExtras(android.os.Bundle)>($r2);
+
+        virtualinvoke e#4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("status", status);
+
+     label09:
+        e#5 = this;
+
+        entermonitor this;
+
+     label10:
+        $r7 = this.<com.android.server.LocationManagerService$Receiver: android.app.PendingIntent mPendingIntent>;
+
+        $r6 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r8 = staticinvoke <com.android.server.LocationManagerService: android.content.Context access$1000(com.android.server.LocationManagerService)>($r6);
+
+        $r9 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r10 = staticinvoke <com.android.server.LocationManagerService: com.android.server.LocationManagerService$LocationWorkerHandler access$1200(com.android.server.LocationManagerService)>($r9);
+
+        $r12 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $i0 = this.<com.android.server.LocationManagerService$Receiver: int mAllowedResolutionLevel>;
+
+        $r11 = staticinvoke <com.android.server.LocationManagerService: java.lang.String access$1300(com.android.server.LocationManagerService,int)>($r12, $i0);
+
+        virtualinvoke $r7.<android.app.PendingIntent: void send(android.content.Context,int,android.content.Intent,android.app.PendingIntent$OnFinished,android.os.Handler,java.lang.String)>($r8, 0, e#4, this, $r10, $r11);
+
+        specialinvoke this.<com.android.server.LocationManagerService$Receiver: void incrementPendingBroadcastsLocked()>();
+
+        exitmonitor e#5;
+
+     label11:
+        goto label14;
+
+     label12:
+        $r18 := @caughtexception;
+
+        l6 = $r18;
+
+        exitmonitor e#5;
+
+     label13:
+        throw l6;
+
+     label14:
+        goto label16;
+
+     label15:
+        $r16 := @caughtexception;
+
+        return 0;
+
+     label16:
+        return 1;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label04 to label05 with label04;
+        catch android.os.RemoteException from label01 to label06 with label07;
+        catch java.lang.Throwable from label10 to label11 with label12;
+        catch java.lang.Throwable from label12 to label13 with label12;
+        catch android.app.PendingIntent$CanceledException from label09 to label14 with label15;
+    }
+
+    public boolean callLocationChangedLocked(android.location.Location)
+    {
+        com.android.server.LocationManagerService$Receiver this, e#1, e#5;
+        android.location.Location location, tmp$1407789418, tmp$614472150;
+        java.lang.Throwable l4, $r15, $r17, e#2;
+        android.location.ILocationListener $r0, $r13;
+        com.android.server.LocationManagerService $r5, $r8, $r11;
+        android.app.PendingIntent $r6;
+        android.content.Context $r7;
+        int $i0;
+        com.android.server.LocationManagerService$LocationWorkerHandler $r9;
+        java.lang.String $r10;
+        android.app.PendingIntent$CanceledException $r16, e#6;
+        android.os.RemoteException $r18, e#3;
+        android.content.Intent e#4, tmp$461870700;
+        android.os.Parcelable tmp$1891127328;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        location := @parameter0: android.location.Location;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        if $r0 == null goto label08;
+
+     label01:
+        e#1 = this;
+
+        entermonitor this;
+
+     label02:
+        $r13 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        tmp$1407789418 = new android.location.Location;
+
+        specialinvoke tmp$1407789418.<android.location.Location: void <init>(android.location.Location)>(location);
+
+        interfaceinvoke $r13.<android.location.ILocationListener: void onLocationChanged(android.location.Location)>(tmp$1407789418);
+
+        specialinvoke this.<com.android.server.LocationManagerService$Receiver: void incrementPendingBroadcastsLocked()>();
+
+        exitmonitor e#1;
+
+     label03:
+        goto label06;
+
+     label04:
+        $r17 := @caughtexception;
+
+        e#2 = $r17;
+
+        exitmonitor e#1;
+
+     label05:
+        throw e#2;
+
+     label06:
+        goto label16;
+
+     label07:
+        $r18 := @caughtexception;
+
+        return 0;
+
+     label08:
+        tmp$461870700 = new android.content.Intent;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        specialinvoke tmp$461870700.<android.content.Intent: void <init>()>();
+
+        e#4 = tmp$461870700;
+
+        tmp$614472150 = new android.location.Location;
+
+        specialinvoke tmp$614472150.<android.location.Location: void <init>(android.location.Location)>(location);
+
+        tmp$1891127328 = (android.os.Parcelable) tmp$614472150;
+
+        virtualinvoke e#4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("location", tmp$1891127328);
+
+     label09:
+        e#5 = this;
+
+        entermonitor this;
+
+     label10:
+        $r6 = this.<com.android.server.LocationManagerService$Receiver: android.app.PendingIntent mPendingIntent>;
+
+        $r5 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r7 = staticinvoke <com.android.server.LocationManagerService: android.content.Context access$1000(com.android.server.LocationManagerService)>($r5);
+
+        $r8 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r9 = staticinvoke <com.android.server.LocationManagerService: com.android.server.LocationManagerService$LocationWorkerHandler access$1200(com.android.server.LocationManagerService)>($r8);
+
+        $r11 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $i0 = this.<com.android.server.LocationManagerService$Receiver: int mAllowedResolutionLevel>;
+
+        $r10 = staticinvoke <com.android.server.LocationManagerService: java.lang.String access$1300(com.android.server.LocationManagerService,int)>($r11, $i0);
+
+        virtualinvoke $r6.<android.app.PendingIntent: void send(android.content.Context,int,android.content.Intent,android.app.PendingIntent$OnFinished,android.os.Handler,java.lang.String)>($r7, 0, e#4, this, $r9, $r10);
+
+        specialinvoke this.<com.android.server.LocationManagerService$Receiver: void incrementPendingBroadcastsLocked()>();
+
+        exitmonitor e#5;
+
+     label11:
+        goto label14;
+
+     label12:
+        $r15 := @caughtexception;
+
+        l4 = $r15;
+
+        exitmonitor e#5;
+
+     label13:
+        throw l4;
+
+     label14:
+        goto label16;
+
+     label15:
+        $r16 := @caughtexception;
+
+        return 0;
+
+     label16:
+        return 1;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label04 to label05 with label04;
+        catch android.os.RemoteException from label01 to label06 with label07;
+        catch java.lang.Throwable from label10 to label11 with label12;
+        catch java.lang.Throwable from label12 to label13 with label12;
+        catch android.app.PendingIntent$CanceledException from label09 to label14 with label15;
+    }
+
+    public boolean callProviderEnabledLocked(java.lang.String, boolean)
+    {
+        com.android.server.LocationManagerService$Receiver this, e#1, e#5;
+        java.lang.String provider, $r10;
+        boolean enabled;
+        java.lang.Throwable l5, $r14, $r17, e#2;
+        android.location.ILocationListener $r0, $r11, $r13;
+        android.content.Intent $r1, e#4;
+        com.android.server.LocationManagerService $r4, $r7, $r9;
+        android.app.PendingIntent $r5;
+        android.content.Context $r6;
+        com.android.server.LocationManagerService$LocationWorkerHandler $r8;
+        int $i0;
+        android.app.PendingIntent$CanceledException $r15, e#6;
+        android.os.RemoteException $r16, e#3;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        provider := @parameter0: java.lang.String;
+
+        enabled := @parameter1: boolean;
+
+        virtualinvoke this.<com.android.server.LocationManagerService$Receiver: void updateMonitoring(boolean)>(1);
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        if $r0 == null goto label10;
+
+     label01:
+        e#1 = this;
+
+        entermonitor this;
+
+     label02:
+        if enabled == 0 goto label03;
+
+        $r13 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        interfaceinvoke $r13.<android.location.ILocationListener: void onProviderEnabled(java.lang.String)>(provider);
+
+        goto label04;
+
+     label03:
+        $r11 = this.<com.android.server.LocationManagerService$Receiver: android.location.ILocationListener mListener>;
+
+        interfaceinvoke $r11.<android.location.ILocationListener: void onProviderDisabled(java.lang.String)>(provider);
+
+     label04:
+        specialinvoke this.<com.android.server.LocationManagerService$Receiver: void incrementPendingBroadcastsLocked()>();
+
+        exitmonitor e#1;
+
+     label05:
+        goto label08;
+
+     label06:
+        $r14 := @caughtexception;
+
+        e#2 = $r14;
+
+        exitmonitor e#1;
+
+     label07:
+        throw e#2;
+
+     label08:
+        goto label18;
+
+     label09:
+        $r16 := @caughtexception;
+
+        return 0;
+
+     label10:
+        $r1 = new android.content.Intent;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw2()>();
+
+        specialinvoke $r1.<android.content.Intent: void <init>()>();
+
+        e#4 = $r1;
+
+        virtualinvoke e#4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("providerEnabled", enabled);
+
+     label11:
+        e#5 = this;
+
+        entermonitor this;
+
+     label12:
+        $r5 = this.<com.android.server.LocationManagerService$Receiver: android.app.PendingIntent mPendingIntent>;
+
+        $r4 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r6 = staticinvoke <com.android.server.LocationManagerService: android.content.Context access$1000(com.android.server.LocationManagerService)>($r4);
+
+        $r7 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r8 = staticinvoke <com.android.server.LocationManagerService: com.android.server.LocationManagerService$LocationWorkerHandler access$1200(com.android.server.LocationManagerService)>($r7);
+
+        $r9 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $i0 = this.<com.android.server.LocationManagerService$Receiver: int mAllowedResolutionLevel>;
+
+        $r10 = staticinvoke <com.android.server.LocationManagerService: java.lang.String access$1300(com.android.server.LocationManagerService,int)>($r9, $i0);
+
+        virtualinvoke $r5.<android.app.PendingIntent: void send(android.content.Context,int,android.content.Intent,android.app.PendingIntent$OnFinished,android.os.Handler,java.lang.String)>($r6, 0, e#4, this, $r8, $r10);
+
+        specialinvoke this.<com.android.server.LocationManagerService$Receiver: void incrementPendingBroadcastsLocked()>();
+
+        exitmonitor e#5;
+
+     label13:
+        goto label16;
+
+     label14:
+        $r17 := @caughtexception;
+
+        l5 = $r17;
+
+        exitmonitor e#5;
+
+     label15:
+        throw l5;
+
+     label16:
+        goto label18;
+
+     label17:
+        $r15 := @caughtexception;
+
+        return 0;
+
+     label18:
+        return 1;
+
+        catch java.lang.Throwable from label02 to label05 with label06;
+        catch java.lang.Throwable from label06 to label07 with label06;
+        catch android.os.RemoteException from label01 to label08 with label09;
+        catch java.lang.Throwable from label12 to label13 with label14;
+        catch java.lang.Throwable from label14 to label15 with label14;
+        catch android.app.PendingIntent$CanceledException from label11 to label16 with label17;
+    }
+
+    public void binderDied()
+    {
+        com.android.server.LocationManagerService$Receiver this, l1#2;
+        java.lang.Throwable l2, l3, $r4, $r5;
+        boolean $z0;
+        com.android.server.LocationManagerService $r0, $r2;
+        java.lang.Object $r1, l1#1;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $z0 = <com.android.server.LocationManagerService: boolean D>;
+
+        if $z0 == 0 goto label01;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("LocationManagerService", "Location listener died");
+
+     label01:
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.LocationManagerService: java.lang.Object access$000(com.android.server.LocationManagerService)>($r0);
+
+        l1#1 = $r1;
+
+        entermonitor $r1;
+
+     label02:
+        $r2 = this.<com.android.server.LocationManagerService$Receiver: com.android.server.LocationManagerService this$0>;
+
+        staticinvoke <com.android.server.LocationManagerService: void access$1400(com.android.server.LocationManagerService,com.android.server.LocationManagerService$Receiver)>($r2, this);
+
+        exitmonitor l1#1;
+
+     label03:
+        goto label06;
+
+     label04:
+        $r4 := @caughtexception;
+
+        l2 = $r4;
+
+        exitmonitor l1#1;
+
+     label05:
+        throw l2;
+
+     label06:
+        l1#2 = this;
+
+        entermonitor this;
+
+     label07:
+        virtualinvoke this.<com.android.server.LocationManagerService$Receiver: void clearPendingBroadcastsLocked()>();
+
+        exitmonitor l1#2;
+
+     label08:
+        goto label11;
+
+     label09:
+        $r5 := @caughtexception;
+
+        l3 = $r5;
+
+        exitmonitor l1#2;
+
+     label10:
+        throw l3;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label04 to label05 with label04;
+        catch java.lang.Throwable from label07 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public void onSendFinished(android.app.PendingIntent, android.content.Intent, int, java.lang.String, android.os.Bundle)
+    {
+        com.android.server.LocationManagerService$Receiver this, l6;
+        android.app.PendingIntent pendingIntent;
+        android.content.Intent intent;
+        int resultCode;
+        java.lang.String resultData;
+        android.os.Bundle resultExtras;
+        java.lang.Throwable l7, $r1;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        pendingIntent := @parameter0: android.app.PendingIntent;
+
+        intent := @parameter1: android.content.Intent;
+
+        resultCode := @parameter2: int;
+
+        resultData := @parameter3: java.lang.String;
+
+        resultExtras := @parameter4: android.os.Bundle;
+
+        l6 = this;
+
+        entermonitor this;
+
+     label1:
+        specialinvoke this.<com.android.server.LocationManagerService$Receiver: void decrementPendingBroadcastsLocked()>();
+
+        exitmonitor l6;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r1 := @caughtexception;
+
+        l7 = $r1;
+
+        exitmonitor l6;
+
+     label4:
+        throw l7;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    private void incrementPendingBroadcastsLocked()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        int $i0, $i1;
+        android.os.PowerManager$WakeLock $r0;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $i0 = this.<com.android.server.LocationManagerService$Receiver: int mPendingBroadcasts>;
+
+        $i1 = $i0 + 1;
+
+        this.<com.android.server.LocationManagerService$Receiver: int mPendingBroadcasts> = $i1;
+
+        if $i0 != 0 goto label1;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.os.PowerManager$WakeLock mWakeLock>;
+
+        virtualinvoke $r0.<android.os.PowerManager$WakeLock: void acquire()>();
+
+     label1:
+        return;
+    }
+
+    private void decrementPendingBroadcastsLocked()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        int $i0, $i1;
+        android.os.PowerManager$WakeLock $r0, $r1;
+        boolean $z0;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $i0 = this.<com.android.server.LocationManagerService$Receiver: int mPendingBroadcasts>;
+
+        $i1 = $i0 - 1;
+
+        this.<com.android.server.LocationManagerService$Receiver: int mPendingBroadcasts> = $i1;
+
+        if $i1 != 0 goto label1;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.os.PowerManager$WakeLock mWakeLock>;
+
+        $z0 = virtualinvoke $r0.<android.os.PowerManager$WakeLock: boolean isHeld()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<com.android.server.LocationManagerService$Receiver: android.os.PowerManager$WakeLock mWakeLock>;
+
+        virtualinvoke $r1.<android.os.PowerManager$WakeLock: void release()>();
+
+     label1:
+        return;
+    }
+
+    public void clearPendingBroadcastsLocked()
+    {
+        com.android.server.LocationManagerService$Receiver this;
+        int $i0;
+        android.os.PowerManager$WakeLock $r0, $r1;
+        boolean $z0;
+
+        this := @this: com.android.server.LocationManagerService$Receiver;
+
+        $i0 = this.<com.android.server.LocationManagerService$Receiver: int mPendingBroadcasts>;
+
+        if $i0 <= 0 goto label1;
+
+        this.<com.android.server.LocationManagerService$Receiver: int mPendingBroadcasts> = 0;
+
+        $r0 = this.<com.android.server.LocationManagerService$Receiver: android.os.PowerManager$WakeLock mWakeLock>;
+
+        $z0 = virtualinvoke $r0.<android.os.PowerManager$WakeLock: boolean isHeld()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<com.android.server.LocationManagerService$Receiver: android.os.PowerManager$WakeLock mWakeLock>;
+
+        virtualinvoke $r1.<android.os.PowerManager$WakeLock: void release()>();
+
+     label1:
+        return;
+    }
+
+    static void access$1500(com.android.server.LocationManagerService$Receiver)
+    {
+        com.android.server.LocationManagerService$Receiver x0;
+
+        x0 := @parameter0: com.android.server.LocationManagerService$Receiver;
+
+        specialinvoke x0.<com.android.server.LocationManagerService$Receiver: void decrementPendingBroadcastsLocked()>();
+
+        return;
+    }
+}

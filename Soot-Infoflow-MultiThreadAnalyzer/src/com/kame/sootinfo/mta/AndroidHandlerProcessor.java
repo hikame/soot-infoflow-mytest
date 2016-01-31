@@ -1,6 +1,5 @@
 package com.kame.sootinfo.mta;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,42 +10,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.kame.sootinfo.mta.tags.MyMethodTag;
-import com.kame.sootinfo.mta.tags.MyStmtTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.kame.sootinfo.mta.tags.MyMethodTag;
 import soot.Body;
-import soot.IdentityUnit;
 import soot.Kind;
 import soot.Local;
-import soot.MethodOrMethodContext;
 import soot.PatchingChain;
-import soot.PointsToSet;
 import soot.PrimType;
 import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.Trap;
-import soot.Type;
 import soot.Unit;
-import soot.UnitBox;
 import soot.Value;
 import soot.ValueBox;
 import soot.jimple.AssignStmt;
 import soot.jimple.DefinitionStmt;
-import soot.jimple.GotoStmt;
-import soot.jimple.IfStmt;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
-import soot.jimple.InterfaceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.LookupSwitchStmt;
 import soot.jimple.NewExpr;
 import soot.jimple.ParameterRef;
-import soot.jimple.ReturnVoidStmt;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
@@ -54,26 +44,16 @@ import soot.jimple.SwitchStmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
-import soot.jimple.infoflow.solver.cfg.IInfoflowCFG.UnitContainer;
 import soot.jimple.internal.JAssignStmt;
-import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
-import soot.jimple.internal.JNopStmt;
-import soot.jimple.internal.JSpecialInvokeExpr;
-import soot.jimple.internal.JStaticInvokeExpr;
-import soot.jimple.internal.JTableSwitchStmt;
-import soot.jimple.internal.JTrap;
 import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
-import soot.options.Options;
-import soot.toolkits.graph.DirectedGraph;
-import soot.util.Chain;
-import soot.util.HashChain;
 
 /**
  * @throws Exception */
 public class AndroidHandlerProcessor {
+	private final static int FAILEDCASECODE = -1000;
 	private static AndroidHandlerProcessor thisOnly;
 	static public AndroidHandlerProcessor v(){
 		if(thisOnly == null){
@@ -87,9 +67,10 @@ public class AndroidHandlerProcessor {
 		return thisOnly;
 	}
 	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	SootClass handlerClass = Scene.v().getSootClass("android.os.Handler");
 	SootClass messageClass = Scene.v().getSootClass("android.os.Message");
-	String dispatchSubSignature = "void dispatchMessage(android.os.Message)";
 	IInfoflowCFG iCfg = ControlFlowGraphManager.v().getInfoflowCFG();
 	CallGraph cg = Scene.v().getCallGraph();
 	
@@ -107,118 +88,197 @@ public class AndroidHandlerProcessor {
 		sendMsgSet = Arrays.asList(sendMsgMethods);
 	}
 	
-	List<String> obtainMsgSet;
+	List<String> handlerObtainMsgSet;
 	{
 		String[] obtainMsgMethods = {
 				"android.os.Message obtainMessage(int)",
 				"android.os.Message obtainMessage(int,java.lang.Object)",
 				"android.os.Message obtainMessage(int,int,int)",
-				"android.os.Message obtainMessage(int,int,int,java.lang.Object)",
+				"android.os.Message obtainMessage(int,int,int,java.lang.Object)"
 		};
-		obtainMsgSet = Arrays.asList(obtainMsgMethods);
+		handlerObtainMsgSet = Arrays.asList(obtainMsgMethods);
 	}
 	
-	SootMethod sendToTarget = Scene.v().getMethod("<android.os.Message: void sendToTarget()>");
-
-	public void handleDispatchMsg() {
+	List<String> msgObtainMsgSet;
+	{
+		String[] obtainMsgMethods = {
+				"android.os.Message obtain(android.os.Handler,int)",
+				"android.os.Message obtain(android.os.Handler,int,java.lang.Object)",
+				"android.os.Message obtain(android.os.Handler,int,int,int)",
+				"android.os.Message obtain(android.os.Handler,int,int,int,java.lang.Object)"
+		};
+		msgObtainMsgSet = Arrays.asList(obtainMsgMethods);
+	}
+	
+	private class CreateMethodReference{
+		int casecode;
+		SootMethod referenceMethod;
+		SwitchStmt switchStmt;
+		
+		CreateMethodReference(int code, SootMethod refMethod, SwitchStmt switchStmt){
+			this.casecode = code;
+			this.referenceMethod = refMethod;
+			this.switchStmt = switchStmt;
+		}
+	}
+	
+	public void run() {
 		Map<Stmt, Integer> maps = findSendMSGCallerWithCaseCode();
+		Map<SootMethod, CreateMethodReference> toCreateMap = new HashMap<SootMethod, CreateMethodReference>();
 		for(Stmt smCaller : maps.keySet()){
-			boolean isMsgToTarget = smCaller.getInvokeExpr().getMethod().equals(this.sendToTarget);
+			boolean isMsgToTarget = smCaller.getInvokeExpr().getMethod().equals(Scene.v().getMethod("<android.os.Message: void sendToTarget()>"));
 			SootClass handlerChild = null;
 			if(isMsgToTarget)	//message.sendToTarget()
-				handlerChild = getHandlerChildFromMessage(smCaller);
+				handlerChild = getTargetHandlerOfMessage(smCaller);
 			else
 				handlerChild = iCfg.getCalleesOfCallAt(smCaller).iterator().next().getDeclaringClass();
 			int codecase = maps.get(smCaller);
+			if(codecase == FAILEDCASECODE)	//TODO do some records!
+				continue;
+			//ok, one '_' for separation, two for '$' in handlerChild name, three for codecase when it is negative
 			String suffix = "_" + handlerChild.getShortName().replace("$", "__") + "_" + codecase;
-			String newDispatchSubSig = dispatchSubSignature.replace("(", suffix + "(");
+			suffix = suffix.replace("-", "___");
+			
+			String newDispatchSubSig = "void dispatchMessage(android.os.Message)".replace("(", suffix + "(");
+			//we use newDispatch to replace the original invoke statement of hanlder.sendMessage...
+			//normally, the handling codes of a message will contain a switch statement.
+			//we will generate a replacement of the handnlingMethods(body of it will be generate out of this for circulation)
+			//moreover, change the path between it and dispatchMessage_xxx_codecase
 			SootMethod newDispatch = handlerChild.getMethodUnsafe(newDispatchSubSig);
 			if(newDispatch != null){	//The newDispatch has already been added!
 				replaceSendMessage(smCaller, newDispatch, suffix);
 				continue;
 			}
-			//create new methods and replace them starting from dispatch() method.
-			SootMethod dispathMsgOfChild = handlerChild.getMethod(dispatchSubSignature);
+
+			//find the handling code of message, record the call path and find the switch statement if there is one.
+			SootMethod dispathMsgOfChild = handlerChild.getMethod("void dispatchMessage(android.os.Message)");
 			Map<SwitchStmt, Set<SootMethod>> pathRecords = new HashMap<SwitchStmt, Set<SootMethod>>(); 
 			List<SwitchStmt> switchStmts = searchSwitchStmt(dispathMsgOfChild, dispathMsgOfChild.getActiveBody().getParameterLocal(0), new ArrayList<SootMethod>(), pathRecords);
-			ensureSwitchStmtsSafe(switchStmts);//TODO do some record;
+			ensureSwitchStmtsSafe(switchStmts);
+			//normally the switchStmts only has one member.
 			for(SwitchStmt swStmt : switchStmts){
-				SootMethod orgMethod = iCfg.getMethodOf(swStmt); 
-				Body orgbody = orgMethod.getActiveBody();
-				SootClass sc = orgMethod.getDeclaringClass();
-				SootMethod newMethod = new SootMethod(
-						orgMethod.getName() + "_" + dispathMsgOfChild.getDeclaringClass().getShortName().replace("$", "__") + "_" + codecase, 
-						orgMethod.getParameterTypes(), 
-						orgMethod.getReturnType());
-
-				assert (sc.getMethodUnsafe(newMethod.getSubSignature()) == null);
-				sc.addMethod(newMethod);
-				newMethod.setDeclaringClass(sc);
+				SootMethod realHandler = iCfg.getMethodOf(swStmt);
+				SootClass classOfHandler = realHandler.getDeclaringClass();
 				
-				MyBodyCloneFactory bcf = new MyBodyCloneFactory(null, orgbody);
-				bcf.getNewBody().setMethod(newMethod);
-				newMethod.setActiveBody(bcf.getNewBody());
-				bcf.addUnits(null, orgbody.getUnits().getFirst(), swStmt);
-				Unit target = null;
-				if(swStmt instanceof TableSwitchStmt){
-					TableSwitchStmt tss = (TableSwitchStmt)swStmt;
-					if(codecase >= tss.getLowIndex() && codecase <= tss.getHighIndex())
-						target = swStmt.getTarget(codecase - tss.getLowIndex());
-					else
-						target = swStmt.getDefaultTarget();
-				}
-				else if(swStmt instanceof LookupSwitchStmt){
-					int index = 0;
-					LookupSwitchStmt lss = (LookupSwitchStmt) swStmt;
-					while(index < lss.getTargets().size()){
-						if(lss.getLookupValue(index) == codecase){
-							target = lss.getTarget(index);
-							break;
-						}
-						index++;
-					}
-					if(target == null)
-						target = lss.getDefaultTarget();
-				}
-				assert target != null;
-				bcf.addUnits(bcf.getSubstituteOfStop(), target, null);
-				bcf.completeNewTraps();
-
-				CallGraphManager.optimizeCG(newMethod.getActiveBody());
-				iCfg.notifyMethodChanged(newMethod);
-
-				//by now, have successifully created the new body!
-				//replace the orgMethod invoke path with new one.
+				//generate a replacement method of a simplified realHandler
+//				String suffix = "_" + handlerChild.getShortName().replace("$", "__") + "_" + codecase;
+				SootMethod newHandler = new SootMethod(
+						realHandler.getName() + suffix, 
+						realHandler.getParameterTypes(), 
+						realHandler.getReturnType());
+				if(classOfHandler.getMethodUnsafe(newHandler.getSubSignature()) != null)
+					throw new RuntimeException(String.format("%s exist but %s not!", newHandler.getSignature(), newDispatchSubSig));
+				classOfHandler.addMethod(newHandler);
+				newHandler.setDeclaringClass(classOfHandler);
+				
+				toCreateMap.put(newHandler, new CreateMethodReference(codecase, realHandler, swStmt));
+				
 				Set<SootMethod> records = pathRecords.get(swStmt);
 				records.add(dispathMsgOfChild);
-				createAlongRecords(records, newMethod, orgMethod, suffix);
+				createAlongRecords(records, newHandler, realHandler, suffix);
 			}
-			newDispatch = handlerChild.getMethod(newDispatchSubSig);
-			replaceSendMessage(smCaller, newDispatch, suffix);
+			newDispatch = handlerChild.getMethodUnsafe(newDispatchSubSig);
+			if(newDispatch != null)
+				replaceSendMessage(smCaller, newDispatch, suffix);
 		}
+		//let's generate the methods in toCreateMap
+		//the create target if key, the reference is value.
+		for(SootMethod toCreate : toCreateMap.keySet()){
+			CreateMethodReference ref = toCreateMap.get(toCreate);
+			Body refBody = ref.referenceMethod.getActiveBody();
+			MyBodyCloneFactory cloneFactory = new MyBodyCloneFactory(null, refBody);
+			cloneFactory.getNewBody().setMethod(toCreate);
+			toCreate.setActiveBody(cloneFactory.getNewBody());
+			//add units before switch statement.
+			cloneFactory.addUnits(null, refBody.getUnits().getFirst(), ref.switchStmt);
+			Unit target = null;
+			if(ref.switchStmt instanceof TableSwitchStmt){
+				TableSwitchStmt tss = (TableSwitchStmt)ref.switchStmt;
+				if(ref.casecode >= tss.getLowIndex() && ref.casecode <= tss.getHighIndex())
+					target = ref.switchStmt.getTarget(ref.casecode - tss.getLowIndex());
+				else
+					target = ref.switchStmt.getDefaultTarget();
+			}
+			else if(ref.switchStmt instanceof LookupSwitchStmt){
+				int index = 0;
+				LookupSwitchStmt lss = (LookupSwitchStmt) ref.switchStmt;
+				while(index < lss.getTargets().size()){
+					if(lss.getLookupValue(index) == ref.casecode){
+						target = lss.getTarget(index);
+						break;
+					}
+					index++;
+				}
+				if(target == null)
+					target = lss.getDefaultTarget();
+			}
+			if(target == null)
+				throw new RuntimeException("Can not find the target codes for " + ref.switchStmt + ". (CODE: " + ref.casecode + ")");
+			cloneFactory.addUnits(cloneFactory.getSubstituteOfStop(), target, null);
+			cloneFactory.completeNewTraps();
+			
+			CallGraphManager.optimizeCG(toCreate.getActiveBody());
+			iCfg.notifyMethodChanged(toCreate);
+		}
+		
 		Scene.v().getOrMakeFastHierarchy();
 	}
 
 
 
-	private SootClass getHandlerChildFromMessage(Stmt smCaller) {
-		Collection<SootMethod> sms = iCfg.getCalleesOfCallAt(smCaller);
-		assert sms.size() == 1;
+	private SootClass getTargetHandlerOfMessage(Stmt sendToTargetCaller) {
+		Collection<SootMethod> sms = iCfg.getCalleesOfCallAt(sendToTargetCaller);
+		if(sms.size() != 1)
+			throw new RuntimeException("The callees are more than one: " + sendToTargetCaller);
 		SootMethod sendToTarget = sms.iterator().next();
+		
 		Set<Unit> callStmts = iCfg.getCallsFromWithin(sendToTarget);
-		assert callStmts.size() == 1;
+		if(callStmts.size() != 1)
+			throw new RuntimeException("The call statements in target method is more than one: " + sendToTarget);
 		Unit unit = callStmts.iterator().next();
 		Collection<SootMethod> sendMsgs = iCfg.getCalleesOfCallAt(unit);
-		assert sendMsgs.size() == 1;
+		
+		if(sendMsgs.size() != 1){
+			SootClass targetClass = parseMsgTarget(sendToTargetCaller, ((InstanceInvokeExpr)sendToTargetCaller.getInvokeExpr()).getBase());
+			if(targetClass != null)
+				return targetClass;
+			SootMethod handlerSendMsg = Scene.v().getMethod("<android.os.Handler: boolean sendMessage(android.os.Message)>");
+			boolean flag = true;
+			while(flag)
+				flag = sendMsgs.remove(handlerSendMsg);
+			if(sendMsgs.size() != 1)
+				throw new RuntimeException("The callee size of " + sendToTarget + "is wrong: " + sendMsgs.size());
+		}
 		SootMethod sendMessage = sendMsgs.iterator().next();
 		SootClass handlerChild = sendMessage.getDeclaringClass();
 		return handlerChild;
 	}
 
+	private SootClass parseMsgTarget(Unit unit, Value msg) {
+		for(Unit pred : iCfg.getPredsOf(unit)){
+			List<ValueBox> defBoxes = pred.getDefBoxes();
+			if(iCfg.isStartPoint(pred))
+				return null;
+			for(ValueBox box : defBoxes){
+				if(box.getValue().equals(msg))
+					if(((Stmt)pred).containsInvokeExpr()){
+						SootClass sc = ((Stmt)pred).getInvokeExpr().getMethod().getDeclaringClass();
+						if(ClassResolveManager.v().getHandlerChildren().contains(sc))
+							return sc;
+					}
+			}
+			SootClass result = parseMsgTarget(pred, msg);
+			if(result != null)
+				return result;
+		}
+		return null;
+	}
+
+	/*change the call statement of orgMethod to new method in the methods of pathRecords*/
 	private void createAlongRecords(Set<SootMethod> pathRecords, SootMethod newMethod, SootMethod orgMethod, String suffix) {
 		Collection<Unit> callUnits = iCfg.getCallersOf(orgMethod);
 		for(Unit callUnit : callUnits){
-			SootMethod orgCaller = iCfg.getMethodOf(callUnit);			
+			SootMethod orgCaller = iCfg.getMethodOf(callUnit);	
 			if(!pathRecords.contains(orgCaller))
 				continue;
 			
@@ -246,7 +306,7 @@ public class AndroidHandlerProcessor {
 				callerClass.addMethod(newCaller);
 				Body newCallerBody = (Body) orgCaller.getActiveBody().clone();
 				newCaller.setActiveBody(newCallerBody);
-				if(!orgCaller.getSubSignature().equals(dispatchSubSignature))
+				if(!orgCaller.getSubSignature().equals("void dispatchMessage(android.os.Message)"))
 					createAlongRecords(pathRecords, newCaller, orgCaller, suffix);
 				
 				for(int i = 0; i < orgUnits.size(); i++){	//configure the call graph
@@ -278,8 +338,9 @@ public class AndroidHandlerProcessor {
 		}
 	}
 
-	private void replaceSendMessage(Stmt smCaller, SootMethod newDispatch, String suffix) {
+	private void replaceSendMessage(Stmt smCaller, SootMethod newDispatch, String suffix) {		
  		SootMethod callerMethod = iCfg.getMethodOf(smCaller);
+ 		logger.info(String.format("Replace %s in %s with %s", smCaller.toString(), callerMethod.getSignature(), newDispatch.getSignature()));
 		Body callerBody = callerMethod.getActiveBody();
 		PatchingChain<Unit> callerUnits = callerBody.getUnits();
 		
@@ -290,6 +351,8 @@ public class AndroidHandlerProcessor {
 //		Value param0 = iie.getArg(0);
 		List<Value> pl = new ArrayList<Value>();
 		InstanceInvokeExpr newIIE = null;
+		
+//		Stmt insertPos = (Stmt) callerUnits.getPredOf(smCaller);
 		if(index < 0){	//msg.sendtotarget
 			SootClass msgCls = ((RefType) base.getType()).getSootClass();
 			SootMethod getTargetMethod = msgCls.getMethod("android.os.Handler getTarget()");
@@ -308,6 +371,7 @@ public class AndroidHandlerProcessor {
 			AssignStmt assignStmt = Jimple.v().newAssignStmt(hdObj, getTargetExper);
 			callerUnits.insertBefore(assignStmt, smCaller);
 			cg.addEdge(new Edge(callerMethod, assignStmt, getTargetMethod));
+			iCfg.notifyMethodChanged(callerMethod);
 			pl.add(base);
 			newIIE = new JVirtualInvokeExpr(hdObj, newDispatch.makeRef(), pl);
 		}
@@ -331,6 +395,7 @@ public class AndroidHandlerProcessor {
 					localName = localName + count;
 					break;
 				}
+				count++;
 			}
 			
 			Local msgObj = Jimple.v().newLocal(localName, RefType.v(messageClass));
@@ -338,10 +403,13 @@ public class AndroidHandlerProcessor {
 			NewExpr newExpr = Jimple.v().newNewExpr(RefType.v(messageClass));
 			AssignStmt assignStmt = Jimple.v().newAssignStmt(msgObj, newExpr);
 			callerUnits.insertBefore(assignStmt, smCaller);
+			cg.addEdge(new Edge(callerMethod, assignStmt, Scene.v().getMethod("<android.os.Message: void <clinit>()>"), Kind.CLINIT));
+			iCfg.notifyMethodChanged(callerMethod);
 			SpecialInvokeExpr vInvokeExpr = Jimple.v().newSpecialInvokeExpr(msgObj, msgInit.makeRef());
 			Stmt msgInitStmt = Jimple.v().newInvokeStmt(vInvokeExpr);
 			callerUnits.insertBefore(msgInitStmt, smCaller);
 			cg.addEdge(new Edge(callerMethod, msgInitStmt, msgInit));
+			iCfg.notifyMethodChanged(callerMethod);
 			pl.add(msgObj);
 			newIIE = new JVirtualInvokeExpr(base, newDispatch.makeRef(), pl);
 		}
@@ -351,22 +419,14 @@ public class AndroidHandlerProcessor {
 			replacementStmt = new JAssignStmt(left, newIIE);
 		}else if(smCaller instanceof InvokeStmt)
 			replacementStmt = new JInvokeStmt(newIIE);
-		else//TODO record this
+		else
 			throw new RuntimeException("switchContainerInvoker is neighter InvokeStmt or AssignStmt.");
 		callerUnits.swapWith(smCaller, replacementStmt);
 		
-//		cg.addEdge(new Edge(callerMethod, replacementStmt, newDispatch));
-		cg.removeAllEdgesOutOf(smCaller);
-		cg.swapEdgesOutOf(smCaller, replacementStmt);
-		iCfg.notifyMethodChanged(callerMethod);
 		CallGraphManager.optimizeCG(callerMethod.getActiveBody());
-		
-//		Iterator<Edge> tmp = cg.edgesOutOf(callerMethod);
-//		List<Edge> tmpList = new ArrayList<Edge>();
-//		while(tmp.hasNext())
-//			tmpList.add(tmp.next());
-//		Set<Unit> tmp0 = iCfg.getCallsFromWithin(callerMethod);
-//		SootMethod tmp = iCfg.getMethodOf(smCaller);
+		cg.addEdge(new Edge(callerMethod, replacementStmt, newDispatch));
+		cg.removeAllEdgesOutOf(smCaller);
+		iCfg.notifyMethodChanged(callerMethod);
 		return;
 	}
 
@@ -374,7 +434,8 @@ public class AndroidHandlerProcessor {
 		Set<SootMethod> container = new HashSet<SootMethod>();
 		for(Stmt st : switchStmts){
 			SootMethod sm = iCfg.getMethodOf(st);
-			assert !container.contains(sm);
+			if(container.contains(sm))
+				throw new RuntimeException("More than one target swtich statements belongs to one method.");
 			container.add(sm);
 		}
 	}
@@ -384,11 +445,11 @@ public class AndroidHandlerProcessor {
 
 		List<SootClass> children = ClassResolveManager.v().getHandlerChildren();
 		for(SootClass child : children){
-			SootMethod dispatchInChild = child.getMethod(dispatchSubSignature);
+			SootMethod dispatchInChild = child.getMethod("void dispatchMessage(android.os.Message)");
 			Set<Stmt> realCallers = findRealCaller(dispatchInChild);
 				for(Stmt rc : realCallers){
 					List<Integer> codes = null;
-					if(rc.getInvokeExpr().getMethod().equals(this.sendToTarget)){	//message.sendToTarget() situation
+					if(rc.getInvokeExpr().getMethod().equals(Scene.v().getMethod("<android.os.Message: void sendToTarget()>"))){	//message.sendToTarget() situation
 						Value msgValue = ((InstanceInvokeExpr)rc.getInvokeExpr()).getBase();
 						codes = parseCaseCodes(rc, msgValue, new ArrayList<SootMethod>());
 					}
@@ -400,9 +461,24 @@ public class AndroidHandlerProcessor {
 						}
 						codes = parseCaseCodes(rc, rc.getInvokeExpr().getArg(0), new ArrayList<SootMethod>());
 					}
-
-					assert codes != null && codes.size() == 1;	//RECORDS!
-					result.put(rc, codes.get(0));
+					
+					if(codes == null){
+						result.put(rc, FAILEDCASECODE);
+						return result;
+//						throw new RuntimeException("The codes for massage object can not be parsed out." + rc);
+						
+					}
+					List<Integer> realCodes = new ArrayList<Integer>();
+					for(Integer i : codes){
+						if(!realCodes.contains(i))
+							realCodes.add(i);
+					}
+					if(realCodes.size() != 1){
+						result.put(rc, FAILEDCASECODE);
+						return result;
+					}
+//						throw new RuntimeException("The codes for massage object can not be parsed out." + rc);
+					result.put(rc, realCodes.get(0));
 				}
 		}
 		return result;
@@ -411,11 +487,16 @@ public class AndroidHandlerProcessor {
 	private Set<Stmt> findRealCaller(SootMethod method) {
 		Set<Stmt> result = new HashSet<Stmt>();
 		for(Unit caller : iCfg.getCallersOf(method)){
-			SootMethod callerMethod = iCfg.getMethodOf(caller);
+			SootMethod callerMethod = null;
+			try{
+				callerMethod = iCfg.getMethodOf(caller);
+			}catch(Exception e){
+				continue;
+			}
 			String subSignature = callerMethod.getSubSignature();
 			if(sendMsgSet.contains(subSignature))
 				result.addAll(findRealCaller(callerMethod));
-			else if(callerMethod.equals(this.sendToTarget))
+			else if(callerMethod.equals(Scene.v().getMethod("<android.os.Message: void sendToTarget()>")))
 				result.addAll(findRealCaller(callerMethod));
 			else if(ClassResolveManager.v().getResolvedMethods().contains(callerMethod.getSignature()))
 				result.add((Stmt) caller);
@@ -423,11 +504,20 @@ public class AndroidHandlerProcessor {
 		return result;
 	}
 	
-	private boolean isObtMsgInvoker(Value val) {
+	private boolean isMsgObtMsgInvoker(Value val) {
 		if(!(val instanceof InvokeExpr))
 			return false;
 		SootMethod sm = ((InvokeExpr)val).getMethod();
-		if(!this.obtainMsgSet.contains(sm.getSubSignature()))
+		if(!this.msgObtainMsgSet.contains(sm.getSubSignature()))
+			return false;
+		return sm.getDeclaringClass().equals(Scene.v().getSootClass("android.os.Message"));
+	}
+	
+	private boolean isHandlerObtMsgInvoker(Value val) {
+		if(!(val instanceof InvokeExpr))
+			return false;
+		SootMethod sm = ((InvokeExpr)val).getMethod();
+		if(!this.handlerObtainMsgSet.contains(sm.getSubSignature()))
 			return false;
 		
 		boolean isHandlerChild = Scene.v().getActiveHierarchy().isClassSubclassOf(sm.getDeclaringClass(), handlerClass);
@@ -441,10 +531,17 @@ public class AndroidHandlerProcessor {
         	Value left = ((DefinitionStmt) u).getLeftOp();
     		Value right = ((DefinitionStmt) u).getRightOp();
         	if(left.equals(val)){	//msg has been tainted. return anyway.
-        		if(isObtMsgInvoker(right)){//is it an obtainMessage method
+        		if(isHandlerObtMsgInvoker(right)){//is it an Handler.obtainMessage method
 	        		Value whatValue = ((VirtualInvokeExpr) right).getArgs().get(0);
-	    			if(!(whatValue instanceof IntConstant))	//TODO record this!
-	    				System.out.println("[E] Message is not get by a constant value: " + u);
+	    			if(!(whatValue instanceof IntConstant))
+	    				throw new RuntimeException("Message is not initialled in a normal way: " + u);
+	    			else
+	    				result.add(((IntConstant) whatValue).value);
+        		}
+        		else if(isMsgObtMsgInvoker(right)){// Message.obtain()
+	        		Value whatValue = ((StaticInvokeExpr) right).getArgs().get(1);
+	    			if(!(whatValue instanceof IntConstant))
+	    				throw new RuntimeException("Message is not initialled in a normal way: " + u);
 	    			else
 	    				result.add(((IntConstant) whatValue).value);
         		}
@@ -458,7 +555,9 @@ public class AndroidHandlerProcessor {
     						result.addAll(parseCaseCodes(callUnit, actualPrm, checkedList));
     					}
     				}
-    			}//TODO record this! msg = foo();
+    			}else{
+//    			TODO	throw new RuntimeException("Message is not initialled in a normal way: " + u);
+    			}
         		return result;
         	}
         	else if(left instanceof InstanceFieldRef){//maybe msg.what = x;
@@ -468,7 +567,8 @@ public class AndroidHandlerProcessor {
         			if(right instanceof IntConstant){	//when sendEmptyMessage is invoked with constant，the assign statement is also IntConstant
         				result.add(((IntConstant) right).value);
         			}
-//        			else	//TODO do record about unresolved msg.what.
+        			else
+        				throw new RuntimeException("Message is not initialled in a normal way: " + u);
         			return result;	//msg.what has already been tainted.
         		}
         	}
@@ -543,6 +643,8 @@ public class AndroidHandlerProcessor {
 		if(callees.size() == 0)
 			return result;
 		for(SootMethod cle : callees){	//invoke parent.foo() may result in more than one callees targeted at child.foo().
+			if(cle.getSubSignature().equals("void <clinit>()"))
+				continue;
 			Local prm = cle.getActiveBody().getParameterLocal(index);
 			result.addAll(searchSwitchStmt(cle, prm, checkedList, pathRecords));
 			for(SwitchStmt ss : result)

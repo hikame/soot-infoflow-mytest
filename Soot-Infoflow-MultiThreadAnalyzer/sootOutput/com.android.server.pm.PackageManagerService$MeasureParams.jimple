@@ -1,0 +1,339 @@
+class com.android.server.pm.PackageManagerService$MeasureParams extends com.android.server.pm.PackageManagerService$HandlerParams
+{
+    private final android.content.pm.PackageStats mStats;
+    private boolean mSuccess;
+    private final android.content.pm.IPackageStatsObserver mObserver;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    public void <init>(com.android.server.pm.PackageManagerService, android.content.pm.PackageStats, android.content.pm.IPackageStatsObserver)
+    {
+        com.android.server.pm.PackageManagerService$MeasureParams this;
+        com.android.server.pm.PackageManagerService l1;
+        android.content.pm.PackageStats stats;
+        android.content.pm.IPackageStatsObserver observer;
+        android.os.UserHandle $r0;
+        int $i0;
+
+        this := @this: com.android.server.pm.PackageManagerService$MeasureParams;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        stats := @parameter1: android.content.pm.PackageStats;
+
+        observer := @parameter2: android.content.pm.IPackageStatsObserver;
+
+        this.<com.android.server.pm.PackageManagerService$MeasureParams: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        $r0 = new android.os.UserHandle;
+
+        $i0 = stats.<android.content.pm.PackageStats: int userHandle>;
+
+        specialinvoke $r0.<android.os.UserHandle: void <init>(int)>($i0);
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$HandlerParams: void <init>(com.android.server.pm.PackageManagerService,android.os.UserHandle)>(l1, $r0);
+
+        this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.IPackageStatsObserver mObserver> = observer;
+
+        this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats> = stats;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        com.android.server.pm.PackageManagerService$MeasureParams this;
+        java.lang.StringBuilder $r0, $r1, $r3, $r4, $r7, $r8;
+        int $i0;
+        java.lang.String $r2, $r6, $r9;
+        android.content.pm.PackageStats $r5;
+
+        this := @this: com.android.server.pm.PackageManagerService$MeasureParams;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("MeasureParams{");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(this);
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r6 = $r5.<android.content.pm.PackageStats: java.lang.String packageName>;
+
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r9;
+    }
+
+    void handleStartCopy() throws android.os.RemoteException
+    {
+        com.android.server.pm.PackageManagerService$MeasureParams this;
+        com.android.server.pm.PackageManagerService $r0, $r6, $r10, $r17, $r26, $r28;
+        java.lang.Object $r1, mounted#1;
+        android.content.pm.PackageStats $r2, $r3, $r4, $r8, $r12, $r14, $r16, $r18, $r20, $r23, $r25, $r27, $r32, $r34;
+        int $i0, $i1;
+        java.lang.String $r5, $r7, $r13, $r21, $r29, $r31, $r35, status#4;
+        boolean $z0, $z1, $z2, $z3, $z4, mounted#3, $z5;
+        android.os.Environment$UserEnvironment $r9, status#6;
+        com.android.internal.app.IMediaContainerService $r11, $r19, $r24, $r33;
+        long $l2, $l3, $l4, $l5, $l6, $l7, $l8;
+        java.io.File[] $r15, $r22, $r30, $r36;
+        java.lang.Throwable $r37, status#2;
+
+        this := @this: com.android.server.pm.PackageManagerService$MeasureParams;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MeasureParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: java.lang.Object mInstallLock>;
+
+        mounted#1 = $r1;
+
+        entermonitor $r1;
+
+     label01:
+        $r6 = this.<com.android.server.pm.PackageManagerService$MeasureParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r5 = $r2.<android.content.pm.PackageStats: java.lang.String packageName>;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $i0 = $r3.<android.content.pm.PackageStats: int userHandle>;
+
+        $r4 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $z0 = staticinvoke <com.android.server.pm.PackageManagerService: boolean access$3400(com.android.server.pm.PackageManagerService,java.lang.String,int,android.content.pm.PackageStats)>($r6, $r5, $i0, $r4);
+
+        this.<com.android.server.pm.PackageManagerService$MeasureParams: boolean mSuccess> = $z0;
+
+        exitmonitor mounted#1;
+
+     label02:
+        goto label05;
+
+     label03:
+        $r37 := @caughtexception;
+
+        status#2 = $r37;
+
+        exitmonitor mounted#1;
+
+     label04:
+        throw status#2;
+
+     label05:
+        $z1 = this.<com.android.server.pm.PackageManagerService$MeasureParams: boolean mSuccess>;
+
+        if $z1 == 0 goto label11;
+
+        $z2 = staticinvoke <android.os.Environment: boolean isExternalStorageEmulated()>();
+
+        if $z2 == 0 goto label06;
+
+        mounted#3 = 1;
+
+        goto label10;
+
+     label06:
+        status#4 = staticinvoke <android.os.Environment: java.lang.String getExternalStorageState()>();
+
+        $r7 = "mounted";
+
+        $z3 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>(status#4);
+
+        if $z3 != 0 goto label07;
+
+        $r35 = "mounted_ro";
+
+        $z4 = virtualinvoke $r35.<java.lang.String: boolean equals(java.lang.Object)>(status#4);
+
+        if $z4 == 0 goto label08;
+
+     label07:
+        $z5 = 1;
+
+        goto label09;
+
+     label08:
+        $z5 = 0;
+
+     label09:
+        mounted#3 = $z5;
+
+     label10:
+        if mounted#3 == 0 goto label11;
+
+        $r9 = new android.os.Environment$UserEnvironment;
+
+        $r8 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $i1 = $r8.<android.content.pm.PackageStats: int userHandle>;
+
+        specialinvoke $r9.<android.os.Environment$UserEnvironment: void <init>(int)>($i1);
+
+        status#6 = $r9;
+
+        $r12 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r10 = this.<com.android.server.pm.PackageManagerService$MeasureParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r11 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r10);
+
+        $r14 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r13 = $r14.<android.content.pm.PackageStats: java.lang.String packageName>;
+
+        $r15 = virtualinvoke status#6.<android.os.Environment$UserEnvironment: java.io.File[] buildExternalStorageAppCacheDirs(java.lang.String)>($r13);
+
+        $l2 = staticinvoke <com.android.server.pm.PackageManagerService: long access$3500(com.android.internal.app.IMediaContainerService,java.io.File[])>($r11, $r15);
+
+        $r12.<android.content.pm.PackageStats: long externalCacheSize> = $l2;
+
+        $r16 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r17 = this.<com.android.server.pm.PackageManagerService$MeasureParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r19 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r17);
+
+        $r18 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r21 = $r18.<android.content.pm.PackageStats: java.lang.String packageName>;
+
+        $r22 = virtualinvoke status#6.<android.os.Environment$UserEnvironment: java.io.File[] buildExternalStorageAppDataDirs(java.lang.String)>($r21);
+
+        $l3 = staticinvoke <com.android.server.pm.PackageManagerService: long access$3500(com.android.internal.app.IMediaContainerService,java.io.File[])>($r19, $r22);
+
+        $r16.<android.content.pm.PackageStats: long externalDataSize> = $l3;
+
+        $r20 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $l4 = $r20.<android.content.pm.PackageStats: long externalDataSize>;
+
+        $r23 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $l6 = $r23.<android.content.pm.PackageStats: long externalCacheSize>;
+
+        $l5 = $l4 - $l6;
+
+        $r20.<android.content.pm.PackageStats: long externalDataSize> = $l5;
+
+        $r27 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r26 = this.<com.android.server.pm.PackageManagerService$MeasureParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r24 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r26);
+
+        $r25 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r29 = $r25.<android.content.pm.PackageStats: java.lang.String packageName>;
+
+        $r30 = virtualinvoke status#6.<android.os.Environment$UserEnvironment: java.io.File[] buildExternalStorageAppMediaDirs(java.lang.String)>($r29);
+
+        $l7 = staticinvoke <com.android.server.pm.PackageManagerService: long access$3500(com.android.internal.app.IMediaContainerService,java.io.File[])>($r24, $r30);
+
+        $r27.<android.content.pm.PackageStats: long externalMediaSize> = $l7;
+
+        $r34 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r28 = this.<com.android.server.pm.PackageManagerService$MeasureParams: com.android.server.pm.PackageManagerService this$0>;
+
+        $r33 = staticinvoke <com.android.server.pm.PackageManagerService: com.android.internal.app.IMediaContainerService access$700(com.android.server.pm.PackageManagerService)>($r28);
+
+        $r32 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r31 = $r32.<android.content.pm.PackageStats: java.lang.String packageName>;
+
+        $r36 = virtualinvoke status#6.<android.os.Environment$UserEnvironment: java.io.File[] buildExternalStorageAppObbDirs(java.lang.String)>($r31);
+
+        $l8 = staticinvoke <com.android.server.pm.PackageManagerService: long access$3500(com.android.internal.app.IMediaContainerService,java.io.File[])>($r33, $r36);
+
+        $r34.<android.content.pm.PackageStats: long externalObbSize> = $l8;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label03;
+        catch java.lang.Throwable from label03 to label04 with label03;
+    }
+
+    void handleReturnCode()
+    {
+        com.android.server.pm.PackageManagerService$MeasureParams this;
+        android.os.RemoteException e, $r3;
+        android.content.pm.IPackageStatsObserver $r0, $r2;
+        boolean $z0;
+        android.content.pm.PackageStats $r1;
+
+        this := @this: com.android.server.pm.PackageManagerService$MeasureParams;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.IPackageStatsObserver mObserver>;
+
+        if $r0 == null goto label4;
+
+     label1:
+        $r2 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.IPackageStatsObserver mObserver>;
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $z0 = this.<com.android.server.pm.PackageManagerService$MeasureParams: boolean mSuccess>;
+
+        interfaceinvoke $r2.<android.content.pm.IPackageStatsObserver: void onGetStatsCompleted(android.content.pm.PackageStats,boolean)>($r1, $z0);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r3 := @caughtexception;
+
+        e = $r3;
+
+        staticinvoke <android.util.Slog: int i(java.lang.String,java.lang.String)>("PackageManager", "Observer no longer exists.");
+
+     label4:
+        return;
+
+        catch android.os.RemoteException from label1 to label2 with label3;
+    }
+
+    void handleServiceError()
+    {
+        com.android.server.pm.PackageManagerService$MeasureParams this;
+        java.lang.StringBuilder $r0, $r1, $r4, $r5;
+        android.content.pm.PackageStats $r2;
+        java.lang.String $r3, $r6;
+
+        this := @this: com.android.server.pm.PackageManagerService$MeasureParams;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not measure application ");
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$MeasureParams: android.content.pm.PackageStats mStats>;
+
+        $r3 = $r2.<android.content.pm.PackageStats: java.lang.String packageName>;
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" external storage");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Slog: int e(java.lang.String,java.lang.String)>("PackageManager", $r6);
+
+        return;
+    }
+}

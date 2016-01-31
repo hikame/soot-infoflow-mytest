@@ -1,0 +1,56 @@
+final class com.android.server.IntentResolver$1 extends java.lang.Object implements java.util.Comparator
+{
+
+    void <init>()
+    {
+        com.android.server.IntentResolver$1 this;
+
+        this := @this: com.android.server.IntentResolver$1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public int compare(java.lang.Object, java.lang.Object)
+    {
+        com.android.server.IntentResolver$1 this;
+        java.lang.Object o1, o2;
+        int q1, q2;
+        android.content.IntentFilter $r0, $r1;
+        byte $b0;
+
+        this := @this: com.android.server.IntentResolver$1;
+
+        o1 := @parameter0: java.lang.Object;
+
+        o2 := @parameter1: java.lang.Object;
+
+        $r0 = (android.content.IntentFilter) o1;
+
+        q1 = virtualinvoke $r0.<android.content.IntentFilter: int getPriority()>();
+
+        $r1 = (android.content.IntentFilter) o2;
+
+        q2 = virtualinvoke $r1.<android.content.IntentFilter: int getPriority()>();
+
+        if q1 <= q2 goto label1;
+
+        $b0 = -1;
+
+        goto label3;
+
+     label1:
+        if q1 >= q2 goto label2;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label2:
+        $b0 = 0;
+
+     label3:
+        return $b0;
+    }
+}

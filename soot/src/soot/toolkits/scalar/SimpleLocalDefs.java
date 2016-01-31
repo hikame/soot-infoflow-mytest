@@ -205,7 +205,6 @@ public class SimpleLocalDefs implements LocalDefs {
 					if (!g.getExceptionalPredsOf(to).isEmpty()) {
 						// exception handler reached
 						assert g.getUnexceptionalPredsOf(to).isEmpty();
-
 						// look if there is a real exception edge
 						for (ExceptionDest<Unit> exd : g.getExceptionDests(from)) {
 							Trap trap = exd.getTrap();

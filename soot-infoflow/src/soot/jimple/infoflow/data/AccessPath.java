@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import kame.soot.info.SourceSinkType;
 import soot.Local;
 import soot.SootField;
 import soot.Type;
@@ -24,7 +25,6 @@ import soot.jimple.ArrayRef;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.StaticFieldRef;
 import soot.jimple.Stmt;
-import soot.kame.SourceSinkType;
 import soot.util.ArraySet;
 
 /**

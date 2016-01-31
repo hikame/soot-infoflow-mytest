@@ -82,8 +82,8 @@ public class ContextInsensitiveBuilder {
             reachables = cgb.reachables();
         }
         for( final SootClass c : Scene.v().getClasses()) {
-	    handleClass( c );
-	}
+		    handleClass( c );
+		}
         while(callEdges.hasNext()) {
             Edge e = callEdges.next();
             if(!e.getTgt().method().getDeclaringClass().isPhantom()) {

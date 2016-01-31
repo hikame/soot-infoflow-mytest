@@ -7,9 +7,9 @@ import java.util.Set;
 
 import com.kame.sootinfo.mta.MyInvokeTree;
 
+import kame.soot.info.SourceSinkType;
 import soot.Value;
 import soot.jimple.Stmt;
-import soot.kame.SourceSinkType;
 import soot.tagkit.AttributeValueException;
 import soot.tagkit.Tag;
 
@@ -66,5 +66,14 @@ public class MyStmtTag implements Tag{
     
     public void setSourceActiveInvokeTree(MyInvokeTree mit){
     	sourceActiveInvokeTree = mit;
+    }
+    
+    static public MyStmtTag getStmtTag(Stmt stmt){
+		MyStmtTag result = (MyStmtTag) stmt.getTag(MyStmtTag.class.getSimpleName());
+		if(result != null)
+			return result;
+		result = new MyStmtTag();
+		stmt.addTag(result);
+		return result;
     }
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import com.kame.sootinfo.mta.ControlFlowGraphManager;
 import com.kame.sootinfo.mta.InfoflowAnalyzer;
 
+import kame.soot.info.SourceSinkType;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
@@ -26,7 +27,6 @@ import soot.jimple.infoflow.data.AccessPath;
 import soot.jimple.infoflow.handlers.TaintPropagationHandler;
 import soot.jimple.infoflow.solver.IMemoryManager;
 import soot.jimple.infoflow.solver.cfg.IInfoflowCFG;
-import soot.kame.SourceSinkType;
 
 public class MyTaintPropagationHandler implements TaintPropagationHandler {
 	Map<Abstraction, Set<Abstraction>> childrenMap = new HashMap<Abstraction, Set<Abstraction>>();
@@ -42,8 +42,6 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 	private IMemoryManager<Abstraction> memoryManager;
 	@Override
 	public Abstraction notifyFlowIn(Unit stmt, Abstraction taint, IInfoflowCFG cfg, FlowFunctionType type) {
-//		Map<Stmt, Set<SourceSinkType>> taint.getAccessPath().getSourceTypeReduceMap()
-		
 		Map<Stmt, Set<SourceSinkType>> map = taint.getAccessPath().getSourceTypeReduceMapDirectly();
 		if(map == null)
 			return taint;
@@ -203,7 +201,7 @@ public class MyTaintPropagationHandler implements TaintPropagationHandler {
 		// 特别是基于信号量的线程间同步还会由于某些线程需要等待现有线程被执行完毕才能继续进行导致卡死
 		// 因此我们除了进行简单的sleep之外也别无他法了……
 		try {
-			Thread.sleep(100);
+			Thread.sleep(50);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -1,0 +1,70 @@
+class com.android.server.LocationManagerService$2 extends android.database.ContentObserver
+{
+    final com.android.server.LocationManagerService this$0;
+
+    void <init>(com.android.server.LocationManagerService, android.os.Handler)
+    {
+        com.android.server.LocationManagerService$2 this;
+        com.android.server.LocationManagerService l1;
+        android.os.Handler x0;
+
+        this := @this: com.android.server.LocationManagerService$2;
+
+        l1 := @parameter0: com.android.server.LocationManagerService;
+
+        x0 := @parameter1: android.os.Handler;
+
+        this.<com.android.server.LocationManagerService$2: com.android.server.LocationManagerService this$0> = l1;
+
+        specialinvoke this.<android.database.ContentObserver: void <init>(android.os.Handler)>(x0);
+
+        return;
+    }
+
+    public void onChange(boolean)
+    {
+        com.android.server.LocationManagerService$2 this;
+        boolean selfChange;
+        java.lang.Object l2, $r1;
+        java.lang.Throwable l3, $r3;
+        com.android.server.LocationManagerService $r0, $r2;
+
+        this := @this: com.android.server.LocationManagerService$2;
+
+        selfChange := @parameter0: boolean;
+
+        $r0 = this.<com.android.server.LocationManagerService$2: com.android.server.LocationManagerService this$0>;
+
+        $r1 = staticinvoke <com.android.server.LocationManagerService: java.lang.Object access$000(com.android.server.LocationManagerService)>($r0);
+
+        l2 = $r1;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = this.<com.android.server.LocationManagerService$2: com.android.server.LocationManagerService this$0>;
+
+        staticinvoke <com.android.server.LocationManagerService: void access$300(com.android.server.LocationManagerService)>($r2);
+
+        exitmonitor l2;
+
+     label2:
+        goto label5;
+
+     label3:
+        $r3 := @caughtexception;
+
+        l3 = $r3;
+
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

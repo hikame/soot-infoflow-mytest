@@ -71,10 +71,6 @@ public class SootResolver {
 		
 		if (Options.v().src_prec() != Options.src_prec_apk_c_j) {
 			program = new Program();
-			
-//Change by Kame
-//program.options().setOption("-verbose");
-//			program.state().reset();
 	
 			program.initBytecodeReader(new BytecodeParser());
 			program.initJavaParser(new JavaParser() {
@@ -219,14 +215,17 @@ public class SootResolver {
 		if(name.endsWith("Exception")){
 			if(Options.v().debug())
 				G.v().out.println(String.format("[KM] %s maybe a subclass of Exception. Resolve it normally.", sc.toString()));
-			bringToHierarchy_ORIGINAL(sc);
-			return;
+			if(list.indexOf(name) < 0)
+				list.add(name);
 		}
 		
-		int index = name.indexOf("$");
-		if(index > 0)
-			name = name.substring(0, index);
-		
+//		int index = name.indexOf("$");
+//		String outClassName = null;
+//		if(index > 0)
+//			outClassName = name.substring(0, index);
+//		
+//		if((outClassName != null && list.contains(outClassName))
+//				|| list.contains(name)){
 		if(list.contains(name)){
 			if(Options.v().debug())
 				G.v().out.println(String.format("[KM] %s is in the non-phantom list. Resolve it normally.", sc.toString()));

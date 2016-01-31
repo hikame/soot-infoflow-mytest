@@ -57,6 +57,8 @@ import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
 import soot.jimple.toolkits.pointer.SideEffectAnalysis;
 import soot.options.CGOptions;
 import soot.options.Options;
+import soot.tagkit.InnerClassTag;
+import soot.tagkit.Tag;
 import soot.toolkits.exceptions.PedanticThrowAnalysis;
 import soot.toolkits.exceptions.ThrowAnalysis;
 import soot.toolkits.exceptions.UnitThrowAnalysis;

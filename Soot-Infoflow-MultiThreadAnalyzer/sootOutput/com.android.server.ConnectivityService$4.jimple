@@ -1,0 +1,50 @@
+class com.android.server.ConnectivityService$4 extends android.content.BroadcastReceiver
+{
+    final com.android.server.ConnectivityService this$0;
+
+    void <init>(com.android.server.ConnectivityService)
+    {
+        com.android.server.ConnectivityService$4 this;
+        com.android.server.ConnectivityService l1;
+
+        this := @this: com.android.server.ConnectivityService$4;
+
+        l1 := @parameter0: com.android.server.ConnectivityService;
+
+        this.<com.android.server.ConnectivityService$4: com.android.server.ConnectivityService this$0> = l1;
+
+        specialinvoke this.<android.content.BroadcastReceiver: void <init>()>();
+
+        return;
+    }
+
+    public void onReceive(android.content.Context, android.content.Intent)
+    {
+        com.android.server.ConnectivityService$4 this;
+        android.content.Context context, $r2;
+        android.content.Intent intent;
+        com.android.server.ConnectivityService $r0, $r1;
+        boolean $z0;
+
+        this := @this: com.android.server.ConnectivityService$4;
+
+        context := @parameter0: android.content.Context;
+
+        intent := @parameter1: android.content.Intent;
+
+        $r0 = this.<com.android.server.ConnectivityService$4: com.android.server.ConnectivityService this$0>;
+
+        $z0 = virtualinvoke $r0.<com.android.server.ConnectivityService: boolean updateLockdownVpn()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<com.android.server.ConnectivityService$4: com.android.server.ConnectivityService this$0>;
+
+        $r2 = staticinvoke <com.android.server.ConnectivityService: android.content.Context access$800(com.android.server.ConnectivityService)>($r1);
+
+        virtualinvoke $r2.<android.content.Context: void unregisterReceiver(android.content.BroadcastReceiver)>(this);
+
+     label1:
+        return;
+    }
+}

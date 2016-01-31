@@ -1,0 +1,32 @@
+class com.android.server.pm.PackageManagerService$PostInstallData extends java.lang.Object
+{
+    public com.android.server.pm.PackageManagerService$InstallArgs args;
+    public com.android.server.pm.PackageManagerService$PackageInstalledInfo res;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, com.android.server.pm.PackageManagerService$InstallArgs, com.android.server.pm.PackageManagerService$PackageInstalledInfo)
+    {
+        com.android.server.pm.PackageManagerService$PostInstallData this;
+        com.android.server.pm.PackageManagerService l1;
+        com.android.server.pm.PackageManagerService$InstallArgs _a;
+        com.android.server.pm.PackageManagerService$PackageInstalledInfo _r;
+
+        this := @this: com.android.server.pm.PackageManagerService$PostInstallData;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        _a := @parameter1: com.android.server.pm.PackageManagerService$InstallArgs;
+
+        _r := @parameter2: com.android.server.pm.PackageManagerService$PackageInstalledInfo;
+
+        this.<com.android.server.pm.PackageManagerService$PostInstallData: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$PostInstallData: com.android.server.pm.PackageManagerService$InstallArgs args> = _a;
+
+        this.<com.android.server.pm.PackageManagerService$PostInstallData: com.android.server.pm.PackageManagerService$PackageInstalledInfo res> = _r;
+
+        return;
+    }
+}

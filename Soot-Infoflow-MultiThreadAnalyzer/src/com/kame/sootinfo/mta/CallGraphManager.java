@@ -1,13 +1,19 @@
 package com.kame.sootinfo.mta;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 
+import kame.soot.UnresolvedClassException;
 import soot.Body;
+import soot.G;
 import soot.Pack;
 import soot.PackManager;
 import soot.Scene;
 import soot.SootClass;
+import soot.SootMethod;
+import soot.SootMethodRef;
+import soot.jimple.InvokeExpr;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
 import soot.jimple.infoflow.cfg.LibraryClassPatcher;
@@ -24,11 +30,11 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
 public class CallGraphManager {
 	private CallGraphManager(){}
 	private static CallGraphManager thisOnly;
+	private int MAXRETRYTIMES = 30;
 
 	static public CallGraphManager v(){
 		if(thisOnly == null){
 			thisOnly = new CallGraphManager();
-			configCallGraphAlgorithm(null);
 		}
 		return thisOnly;
 	}
@@ -44,8 +50,11 @@ public class CallGraphManager {
 	
 	/**
 	 * Constructs the callgraph
+	 * @throws Exception 
 	 */
-	public void constructCallgraph(Body target) {
+	public void constructCallgraph() throws Exception {
+		configCallGraphAlgorithm(null);
+		
 		// Some configuration options do not really make sense in combination
 		if (config.getEnableStaticFieldTracking()
 				&& InfoflowConfiguration.getAccessPathLength() == 0)
@@ -69,7 +78,6 @@ public class CallGraphManager {
 		
         // To cope with broken APK files, we convert all classes that are still
         // dangling after resolution into phantoms
-        // ����˵���е�DANGLING��Ҫת��ΪBODIES�����Phantom��
         for (SootClass sc : Scene.v().getClasses())
         	if (sc.resolvingLevel() == SootClass.DANGLING) {
         		sc.setResolvingLevel(SootClass.BODIES);
@@ -81,13 +89,14 @@ public class CallGraphManager {
         // application already provides us with a CG.
 		if (config.getCallgraphAlgorithm() != CallgraphAlgorithm.OnDemand
 				&& !Scene.v().hasCallGraph()) {
-			PackManager.v().getPack("wjpp").apply();
-	        if(target == null){
-		        PackManager.v().getPack("cg").apply();
-	        }
-	        else{
-		        PackManager.v().getPack("cg").apply(target);
-	        }
+			int count = 0;
+			while(true){
+				if(applyPacks(count))
+					break;
+				count++;
+			}
+//			PackManager.v().getPack("wjpp").apply();
+//	        PackManager.v().getPack("cg").apply();
 		}
 		
 		// Run the preprocessors
@@ -95,10 +104,53 @@ public class CallGraphManager {
             tr.onAfterCallgraphConstruction();
 	}
 
-	public void constructCallgraph() {
-		constructCallgraph(null);
+	private void resetG() throws Exception{
+		G anotherG = new G();
+		G global = G.v();
+		for(Field f : G.class.getFields()){
+			Object value = f.get(anotherG);
+			try{f.set(global, value);}catch(Exception e){}
+		}
+		G.v().ClassHierarchy_classHierarchyMap.clear();
+		G.v().MethodContext_map.clear();
 	}
-	
+
+	private boolean applyPacks(int times) throws Exception {
+		try{
+			PackManager.v().getPack("wjpp").apply();
+	        PackManager.v().getPack("cg").apply();
+	        return true;
+		}catch(UnresolvedClassException e){
+			String msg = e.getMessage();
+			if(!msg.startsWith("[KM-Unresolved] "))
+				throw e;
+			String toResolve = msg.replace("[KM-Unresolved] ", "");
+			if(Options.v().debug_resolver())
+				System.out.println(msg + ": " + Scene.v().getSootClass(toResolve.substring(1, toResolve.indexOf(":"))).isPhantom());
+			Options.v().set_whole_program(false);
+			
+			SootMethod resolved = null;
+			if(times < MAXRETRYTIMES)
+				resolved = ClassResolveManager.v().extendResolving(toResolve, SootClass.SIGNATURES);
+			else
+				resolved = ClassResolveManager.v().extendResolving(toResolve, SootClass.BODIES);	//next time, it will not enter here.
+			if(times > MAXRETRYTIMES + 1)
+				throw new RuntimeException("Can not generate the call graph normally. Surpass the MAXRETRYTIMES limitation:" + times);
+			for(InvokeExpr ie : e.mrList)
+				ie.setMethodRef(resolved.makeRef());
+			
+			Options.v().set_whole_program(true);
+			
+			resetG();
+			Scene.v().releaseFastHierarchy();
+			Scene.v().releaseReachableMethods();
+			Scene.v().releaseCallGraph();
+			Scene.v().releaseSideEffectAnalysis();
+			Scene.v().releasePointsToAnalysis();
+			
+			return false;
+		}
+	}
 
 	static private void configCallGraphAlgorithm(String extraSeed) {
 		// Configure the callgraph algorithm

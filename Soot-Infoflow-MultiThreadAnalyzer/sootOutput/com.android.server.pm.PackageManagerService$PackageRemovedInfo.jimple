@@ -1,0 +1,122 @@
+class com.android.server.pm.PackageManagerService$PackageRemovedInfo extends java.lang.Object
+{
+    java.lang.String removedPackage;
+    int uid;
+    int removedAppId;
+    int[] removedUsers;
+    boolean isRemovedPackageSystemUpdate;
+    com.android.server.pm.PackageManagerService$InstallArgs args;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.PackageManagerService$PackageRemovedInfo this;
+        com.android.server.pm.PackageManagerService l1;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageRemovedInfo;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int uid> = -1;
+
+        this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int removedAppId> = -1;
+
+        this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int[] removedUsers> = null;
+
+        this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: boolean isRemovedPackageSystemUpdate> = 0;
+
+        this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: com.android.server.pm.PackageManagerService$InstallArgs args> = null;
+
+        return;
+    }
+
+    void sendBroadcast(boolean, boolean, boolean)
+    {
+        com.android.server.pm.PackageManagerService$PackageRemovedInfo this;
+        boolean fullRemove, replacing, removedForAllUsers;
+        android.os.Bundle extras, $r0;
+        int $i0, $i1, $i2;
+        java.lang.String $r1, $r5, $r9;
+        int[] $r2, $r4, $r7;
+        com.android.server.pm.PackageManagerService $r3, $r6, $r8;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageRemovedInfo;
+
+        fullRemove := @parameter0: boolean;
+
+        replacing := @parameter1: boolean;
+
+        removedForAllUsers := @parameter2: boolean;
+
+        $r0 = new android.os.Bundle;
+
+        specialinvoke $r0.<android.os.Bundle: void <init>(int)>(1);
+
+        extras = $r0;
+
+        $i0 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int removedAppId>;
+
+        if $i0 < 0 goto label1;
+
+        $i2 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int removedAppId>;
+
+        goto label2;
+
+     label1:
+        $i2 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int uid>;
+
+     label2:
+        virtualinvoke extras.<android.os.Bundle: void putInt(java.lang.String,int)>("android.intent.extra.UID", $i2);
+
+        virtualinvoke extras.<android.os.Bundle: void putBoolean(java.lang.String,boolean)>("android.intent.extra.DATA_REMOVED", fullRemove);
+
+        if replacing == 0 goto label3;
+
+        virtualinvoke extras.<android.os.Bundle: void putBoolean(java.lang.String,boolean)>("android.intent.extra.REPLACING", 1);
+
+     label3:
+        virtualinvoke extras.<android.os.Bundle: void putBoolean(java.lang.String,boolean)>("android.intent.extra.REMOVED_FOR_ALL_USERS", removedForAllUsers);
+
+        $r1 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: java.lang.String removedPackage>;
+
+        if $r1 == null goto label4;
+
+        $r6 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: com.android.server.pm.PackageManagerService this$0>;
+
+        $r5 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: java.lang.String removedPackage>;
+
+        $r4 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int[] removedUsers>;
+
+        virtualinvoke $r6.<com.android.server.pm.PackageManagerService: void sendPackageBroadcast(java.lang.String,java.lang.String,android.os.Bundle,java.lang.String,android.content.IIntentReceiver,int[])>("android.intent.action.PACKAGE_REMOVED", $r5, extras, null, null, $r4);
+
+        if fullRemove == 0 goto label4;
+
+        if replacing != 0 goto label4;
+
+        $r8 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: com.android.server.pm.PackageManagerService this$0>;
+
+        $r9 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: java.lang.String removedPackage>;
+
+        $r7 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int[] removedUsers>;
+
+        virtualinvoke $r8.<com.android.server.pm.PackageManagerService: void sendPackageBroadcast(java.lang.String,java.lang.String,android.os.Bundle,java.lang.String,android.content.IIntentReceiver,int[])>("android.intent.action.PACKAGE_FULLY_REMOVED", $r9, extras, null, null, $r7);
+
+     label4:
+        $i1 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int removedAppId>;
+
+        if $i1 < 0 goto label5;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: com.android.server.pm.PackageManagerService this$0>;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageRemovedInfo: int[] removedUsers>;
+
+        virtualinvoke $r3.<com.android.server.pm.PackageManagerService: void sendPackageBroadcast(java.lang.String,java.lang.String,android.os.Bundle,java.lang.String,android.content.IIntentReceiver,int[])>("android.intent.action.UID_REMOVED", null, extras, null, null, $r2);
+
+     label5:
+        return;
+    }
+}

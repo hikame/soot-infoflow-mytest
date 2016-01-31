@@ -1,0 +1,662 @@
+class com.android.server.pm.PackageManagerService$PackageUsage extends java.lang.Object
+{
+    private static final int WRITE_INTERVAL;
+    private final java.lang.Object mFileLock;
+    private final java.util.concurrent.atomic.AtomicLong mLastWritten;
+    private final java.util.concurrent.atomic.AtomicBoolean mBackgroundWriteRunning;
+    private boolean mIsHistoricalPackageUsageAvailable;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    private void <init>(com.android.server.pm.PackageManagerService)
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        com.android.server.pm.PackageManagerService l1;
+        java.lang.Object $r0;
+        java.util.concurrent.atomic.AtomicLong $r1;
+        java.util.concurrent.atomic.AtomicBoolean $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        this.<com.android.server.pm.PackageManagerService$PackageUsage: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = new java.lang.Object;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        this.<com.android.server.pm.PackageManagerService$PackageUsage: java.lang.Object mFileLock> = $r0;
+
+        $r1 = new java.util.concurrent.atomic.AtomicLong;
+
+        specialinvoke $r1.<java.util.concurrent.atomic.AtomicLong: void <init>(long)>(0L);
+
+        this.<com.android.server.pm.PackageManagerService$PackageUsage: java.util.concurrent.atomic.AtomicLong mLastWritten> = $r1;
+
+        $r2 = new java.util.concurrent.atomic.AtomicBoolean;
+
+        specialinvoke $r2.<java.util.concurrent.atomic.AtomicBoolean: void <init>(boolean)>(0);
+
+        this.<com.android.server.pm.PackageManagerService$PackageUsage: java.util.concurrent.atomic.AtomicBoolean mBackgroundWriteRunning> = $r2;
+
+        this.<com.android.server.pm.PackageManagerService$PackageUsage: boolean mIsHistoricalPackageUsageAvailable> = 1;
+
+        return;
+    }
+
+    boolean isHistoricalPackageUsageAvailable()
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        $z0 = this.<com.android.server.pm.PackageManagerService$PackageUsage: boolean mIsHistoricalPackageUsageAvailable>;
+
+        return $z0;
+    }
+
+    void write(boolean)
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        boolean force, $z0;
+        long $l0, $l1, $l2;
+        java.util.concurrent.atomic.AtomicLong $r0;
+        byte $b3;
+        java.util.concurrent.atomic.AtomicBoolean $r1;
+        com.android.server.pm.PackageManagerService$PackageUsage$1 $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        force := @parameter0: boolean;
+
+        if force == 0 goto label1;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$PackageUsage: void writeInternal()>();
+
+        return;
+
+     label1:
+        $l0 = staticinvoke <android.os.SystemClock: long elapsedRealtime()>();
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageUsage: java.util.concurrent.atomic.AtomicLong mLastWritten>;
+
+        $l1 = virtualinvoke $r0.<java.util.concurrent.atomic.AtomicLong: long get()>();
+
+        $l2 = $l0 - $l1;
+
+        $b3 = $l2 cmp 1800000L;
+
+        if $b3 >= 0 goto label2;
+
+        return;
+
+     label2:
+        $r1 = this.<com.android.server.pm.PackageManagerService$PackageUsage: java.util.concurrent.atomic.AtomicBoolean mBackgroundWriteRunning>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicBoolean: boolean compareAndSet(boolean,boolean)>(0, 1);
+
+        if $z0 == 0 goto label3;
+
+        $r2 = new com.android.server.pm.PackageManagerService$PackageUsage$1;
+
+        specialinvoke $r2.<com.android.server.pm.PackageManagerService$PackageUsage$1: void <init>(com.android.server.pm.PackageManagerService$PackageUsage,java.lang.String)>(this, "PackageUsage_DiskWriter");
+
+        virtualinvoke $r2.<com.android.server.pm.PackageManagerService$PackageUsage$1: void start()>();
+
+     label3:
+        return;
+    }
+
+    private void writeInternal()
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        android.util.ArrayMap l1, $r1, $r9;
+        java.lang.Object l2, $r2, $r11;
+        android.util.AtomicFile file;
+        java.lang.StringBuilder sb, $r7;
+        java.util.Iterator i$;
+        android.content.pm.PackageParser$Package pkg;
+        java.lang.Throwable l9, l10, $r18, $r22;
+        com.android.server.pm.PackageManagerService $r0, $r6;
+        java.io.File $r3;
+        java.io.BufferedOutputStream $r4, out#2;
+        java.lang.String $r5, $r14, $r16;
+        java.util.Collection $r8;
+        boolean $z0;
+        long $l1, $l2, $l4;
+        java.util.concurrent.atomic.AtomicLong $r10;
+        byte $b3;
+        java.nio.charset.Charset $r19;
+        byte[] $r20;
+        java.io.IOException $r21, out#3;
+        java.io.FileOutputStream f#1;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageUsage: com.android.server.pm.PackageManagerService this$0>;
+
+        $r1 = $r0.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        l1 = $r1;
+
+        entermonitor $r1;
+
+     label01:
+        $r2 = this.<com.android.server.pm.PackageManagerService$PackageUsage: java.lang.Object mFileLock>;
+
+        l2 = $r2;
+
+        entermonitor $r2;
+
+     label02:
+        file = specialinvoke this.<com.android.server.pm.PackageManagerService$PackageUsage: android.util.AtomicFile getFile()>();
+
+        f#1 = null;
+
+     label03:
+        f#1 = virtualinvoke file.<android.util.AtomicFile: java.io.FileOutputStream startWrite()>();
+
+        $r4 = new java.io.BufferedOutputStream;
+
+        specialinvoke $r4.<java.io.BufferedOutputStream: void <init>(java.io.OutputStream)>(f#1);
+
+        out#2 = $r4;
+
+        $r3 = virtualinvoke file.<android.util.AtomicFile: java.io.File getBaseFile()>();
+
+        $r5 = virtualinvoke $r3.<java.io.File: java.lang.String getPath()>();
+
+        staticinvoke <android.os.FileUtils: int setPermissions(java.lang.String,int,int,int)>($r5, 416, 1000, 1032);
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        sb = $r7;
+
+        $r6 = this.<com.android.server.pm.PackageManagerService$PackageUsage: com.android.server.pm.PackageManagerService this$0>;
+
+        $r9 = $r6.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        $r8 = virtualinvoke $r9.<android.util.ArrayMap: java.util.Collection values()>();
+
+        i$ = interfaceinvoke $r8.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label04:
+        $z0 = interfaceinvoke i$.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label06;
+
+        $r11 = interfaceinvoke i$.<java.util.Iterator: java.lang.Object next()>();
+
+        pkg = (android.content.pm.PackageParser$Package) $r11;
+
+        $l2 = pkg.<android.content.pm.PackageParser$Package: long mLastPackageUsageTimeInMills>;
+
+        $b3 = $l2 cmp 0L;
+
+        if $b3 != 0 goto label05;
+
+        goto label04;
+
+     label05:
+        virtualinvoke sb.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        $r14 = pkg.<android.content.pm.PackageParser$Package: java.lang.String packageName>;
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $l4 = pkg.<android.content.pm.PackageParser$Package: long mLastPackageUsageTimeInMills>;
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l4);
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        $r16 = virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r19 = <java.nio.charset.StandardCharsets: java.nio.charset.Charset US_ASCII>;
+
+        $r20 = virtualinvoke $r16.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($r19);
+
+        virtualinvoke out#2.<java.io.BufferedOutputStream: void write(byte[])>($r20);
+
+        goto label04;
+
+     label06:
+        virtualinvoke out#2.<java.io.BufferedOutputStream: void flush()>();
+
+        virtualinvoke file.<android.util.AtomicFile: void finishWrite(java.io.FileOutputStream)>(f#1);
+
+     label07:
+        goto label10;
+
+     label08:
+        $r21 := @caughtexception;
+
+        out#3 = $r21;
+
+        if f#1 == null goto label09;
+
+        virtualinvoke file.<android.util.AtomicFile: void failWrite(java.io.FileOutputStream)>(f#1);
+
+     label09:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("PackageManager", "Failed to write package usage times", out#3);
+
+     label10:
+        exitmonitor l2;
+
+     label11:
+        goto label14;
+
+     label12:
+        $r22 := @caughtexception;
+
+        l9 = $r22;
+
+        exitmonitor l2;
+
+     label13:
+        throw l9;
+
+     label14:
+        exitmonitor l1;
+
+     label15:
+        goto label18;
+
+     label16:
+        $r18 := @caughtexception;
+
+        l10 = $r18;
+
+        exitmonitor l1;
+
+     label17:
+        throw l10;
+
+     label18:
+        $r10 = this.<com.android.server.pm.PackageManagerService$PackageUsage: java.util.concurrent.atomic.AtomicLong mLastWritten>;
+
+        $l1 = staticinvoke <android.os.SystemClock: long elapsedRealtime()>();
+
+        virtualinvoke $r10.<java.util.concurrent.atomic.AtomicLong: void set(long)>($l1);
+
+        return;
+
+        catch java.io.IOException from label03 to label07 with label08;
+        catch java.lang.Throwable from label02 to label11 with label12;
+        catch java.lang.Throwable from label12 to label13 with label12;
+        catch java.lang.Throwable from label01 to label15 with label16;
+        catch java.lang.Throwable from label16 to label17 with label16;
+    }
+
+    void readLP()
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        java.lang.Object l1, $r0, $r7;
+        android.util.AtomicFile file;
+        java.lang.String packageName, timeInMillisString, $r6, $r11, $r18;
+        android.content.pm.PackageParser$Package pkg;
+        long timeInMillis, $l0;
+        java.lang.NumberFormatException e, $r16;
+        java.lang.Throwable l11, l12, $r21, $r22;
+        java.io.BufferedInputStream $r1, in#1;
+        java.lang.StringBuffer $r2, sb#2;
+        java.io.FileInputStream $r3;
+        android.util.ArrayMap $r4;
+        com.android.server.pm.PackageManagerService $r5;
+        java.io.IOException $r8, $r14, $r23, sb#4;
+        java.lang.StringBuilder $r9, $r10, $r12, $r15, $r17, $r19, $r20;
+        java.util.concurrent.atomic.AtomicLong $r13;
+        java.io.FileNotFoundException $r24, sb#3;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        $r0 = this.<com.android.server.pm.PackageManagerService$PackageUsage: java.lang.Object mFileLock>;
+
+        l1 = $r0;
+
+        entermonitor $r0;
+
+     label01:
+        file = specialinvoke this.<com.android.server.pm.PackageManagerService$PackageUsage: android.util.AtomicFile getFile()>();
+
+        in#1 = null;
+
+     label02:
+        $r1 = new java.io.BufferedInputStream;
+
+        $r3 = virtualinvoke file.<android.util.AtomicFile: java.io.FileInputStream openRead()>();
+
+        specialinvoke $r1.<java.io.BufferedInputStream: void <init>(java.io.InputStream)>($r3);
+
+        in#1 = $r1;
+
+        $r2 = new java.lang.StringBuffer;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw10()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+
+        sb#2 = $r2;
+
+     label03:
+        packageName = specialinvoke this.<com.android.server.pm.PackageManagerService$PackageUsage: java.lang.String readToken(java.io.InputStream,java.lang.StringBuffer,char)>(in#1, sb#2, 32);
+
+        if packageName != null goto label04;
+
+        goto label10;
+
+     label04:
+        timeInMillisString = specialinvoke this.<com.android.server.pm.PackageManagerService$PackageUsage: java.lang.String readToken(java.io.InputStream,java.lang.StringBuffer,char)>(in#1, sb#2, 10);
+
+        if timeInMillisString != null goto label05;
+
+        $r8 = new java.io.IOException;
+
+        $r10 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw10()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to find last usage time for package ");
+
+        $r12 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(packageName);
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.io.IOException: void <init>(java.lang.String)>($r11);
+
+        throw $r8;
+
+     label05:
+        $r5 = this.<com.android.server.pm.PackageManagerService$PackageUsage: com.android.server.pm.PackageManagerService this$0>;
+
+        $r4 = $r5.<com.android.server.pm.PackageManagerService: android.util.ArrayMap mPackages>;
+
+        $r7 = virtualinvoke $r4.<android.util.ArrayMap: java.lang.Object get(java.lang.Object)>(packageName);
+
+        pkg = (android.content.pm.PackageParser$Package) $r7;
+
+        if pkg != null goto label06;
+
+        goto label03;
+
+     label06:
+        $r6 = virtualinvoke timeInMillisString.<java.lang.String: java.lang.String toString()>();
+
+        timeInMillis = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r6);
+
+     label07:
+        goto label09;
+
+     label08:
+        $r16 := @caughtexception;
+
+        e = $r16;
+
+        $r14 = new java.io.IOException;
+
+        $r15 = new java.lang.StringBuilder;
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw10()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw0()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw1()>();
+
+        staticinvoke <FLOWDROID_EXCEPTIONS: void throw3()>();
+
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
+
+        $r19 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to parse ");
+
+        $r20 = virtualinvoke $r19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(timeInMillisString);
+
+        $r17 = virtualinvoke $r20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" as a long.");
+
+        $r18 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String,java.lang.Throwable)>($r18, e);
+
+        throw $r14;
+
+     label09:
+        pkg.<android.content.pm.PackageParser$Package: long mLastPackageUsageTimeInMills> = timeInMillis;
+
+        goto label03;
+
+     label10:
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.lang.AutoCloseable)>(in#1);
+
+        goto label17;
+
+     label11:
+        $r24 := @caughtexception;
+
+        this.<com.android.server.pm.PackageManagerService$PackageUsage: boolean mIsHistoricalPackageUsageAvailable> = 0;
+
+     label12:
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.lang.AutoCloseable)>(in#1);
+
+        goto label17;
+
+     label13:
+        $r23 := @caughtexception;
+
+        sb#4 = $r23;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("PackageManager", "Failed to read package usage times", sb#4);
+
+     label14:
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.lang.AutoCloseable)>(in#1);
+
+        goto label17;
+
+     label15:
+        $r21 := @caughtexception;
+
+        l11 = $r21;
+
+     label16:
+        staticinvoke <libcore.io.IoUtils: void closeQuietly(java.lang.AutoCloseable)>(in#1);
+
+        throw l11;
+
+     label17:
+        exitmonitor l1;
+
+     label18:
+        goto label21;
+
+     label19:
+        $r22 := @caughtexception;
+
+        l12 = $r22;
+
+        exitmonitor l1;
+
+     label20:
+        throw l12;
+
+     label21:
+        $r13 = this.<com.android.server.pm.PackageManagerService$PackageUsage: java.util.concurrent.atomic.AtomicLong mLastWritten>;
+
+        $l0 = staticinvoke <android.os.SystemClock: long elapsedRealtime()>();
+
+        virtualinvoke $r13.<java.util.concurrent.atomic.AtomicLong: void set(long)>($l0);
+
+        return;
+
+        catch java.lang.NumberFormatException from label06 to label07 with label08;
+        catch java.io.FileNotFoundException from label02 to label10 with label11;
+        catch java.io.IOException from label02 to label10 with label13;
+        catch java.lang.Throwable from label02 to label10 with label15;
+        catch java.lang.Throwable from label11 to label12 with label15;
+        catch java.lang.Throwable from label13 to label14 with label15;
+        catch java.lang.Throwable from label15 to label16 with label15;
+        catch java.lang.Throwable from label01 to label18 with label19;
+        catch java.lang.Throwable from label19 to label20 with label19;
+    }
+
+    private java.lang.String readToken(java.io.InputStream, java.lang.StringBuffer, char) throws java.io.IOException
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        java.io.InputStream in;
+        java.lang.StringBuffer sb;
+        char endOfToken, $c0;
+        int ch, $i1;
+        java.lang.String $r1;
+        java.io.IOException $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        in := @parameter0: java.io.InputStream;
+
+        sb := @parameter1: java.lang.StringBuffer;
+
+        endOfToken := @parameter2: char;
+
+        virtualinvoke sb.<java.lang.StringBuffer: void setLength(int)>(0);
+
+     label1:
+        ch = virtualinvoke in.<java.io.InputStream: int read()>();
+
+        if ch != -1 goto label3;
+
+        $i1 = virtualinvoke sb.<java.lang.StringBuffer: int length()>();
+
+        if $i1 != 0 goto label2;
+
+        return null;
+
+     label2:
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Unexpected EOF");
+
+        throw $r2;
+
+     label3:
+        if ch != endOfToken goto label4;
+
+        $r1 = virtualinvoke sb.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $r1;
+
+     label4:
+        $c0 = (char) ch;
+
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+
+        goto label1;
+    }
+
+    private android.util.AtomicFile getFile()
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        java.io.File dataDir, systemDir, fname, $r0, $r1;
+        android.util.AtomicFile $r2;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        dataDir = staticinvoke <android.os.Environment: java.io.File getDataDirectory()>();
+
+        $r0 = new java.io.File;
+
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>(dataDir, "system");
+
+        systemDir = $r0;
+
+        $r1 = new java.io.File;
+
+        specialinvoke $r1.<java.io.File: void <init>(java.io.File,java.lang.String)>(systemDir, "package-usage.list");
+
+        fname = $r1;
+
+        $r2 = new android.util.AtomicFile;
+
+        specialinvoke $r2.<android.util.AtomicFile: void <init>(java.io.File)>(fname);
+
+        return $r2;
+    }
+
+    void <init>(com.android.server.pm.PackageManagerService, com.android.server.pm.PackageManagerService$1)
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage this;
+        com.android.server.pm.PackageManagerService x0;
+        com.android.server.pm.PackageManagerService$1 x1;
+
+        this := @this: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        x1 := @parameter1: com.android.server.pm.PackageManagerService$1;
+
+        specialinvoke this.<com.android.server.pm.PackageManagerService$PackageUsage: void <init>(com.android.server.pm.PackageManagerService)>(x0);
+
+        return;
+    }
+
+    static void access$400(com.android.server.pm.PackageManagerService$PackageUsage)
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage x0;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        specialinvoke x0.<com.android.server.pm.PackageManagerService$PackageUsage: void writeInternal()>();
+
+        return;
+    }
+
+    static java.util.concurrent.atomic.AtomicBoolean access$500(com.android.server.pm.PackageManagerService$PackageUsage)
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage x0;
+        java.util.concurrent.atomic.AtomicBoolean $r0;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        $r0 = x0.<com.android.server.pm.PackageManagerService$PackageUsage: java.util.concurrent.atomic.AtomicBoolean mBackgroundWriteRunning>;
+
+        return $r0;
+    }
+
+    static boolean access$6302(com.android.server.pm.PackageManagerService$PackageUsage, boolean)
+    {
+        com.android.server.pm.PackageManagerService$PackageUsage x0;
+        boolean x1;
+
+        x0 := @parameter0: com.android.server.pm.PackageManagerService$PackageUsage;
+
+        x1 := @parameter1: boolean;
+
+        x0.<com.android.server.pm.PackageManagerService$PackageUsage: boolean mIsHistoricalPackageUsageAvailable> = x1;
+
+        return x1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.android.server.pm.PackageManagerService$PackageUsage: int WRITE_INTERVAL> = 1800000;
+
+        return;
+    }
+}

@@ -2,6 +2,7 @@ package com.kame.sootinfo.mta;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Statement;
 import java.util.List;
 
 import com.kame.sootinfo.mta.myplugin.MyIPCManager;
@@ -104,5 +105,45 @@ public class MTAScene {
 		if(ipcManager == null)
 			ipcManager = new MyIPCManager();	//TODO Do we need to implement this?
 		return ipcManager;
+	}
+
+	private boolean enableNatureSource;
+	public void enableNatureSource(boolean b) {
+		this.enableNatureSource = false;
+	}
+	public boolean isNatureSourceEnabled(){
+		return this.enableNatureSource;
+	}
+
+	Statement dbStatement = null;
+	public void setDBStatement(Statement stat) {
+		dbStatement = stat;
+	}
+	public Statement getDBStatement(){
+		return dbStatement;
+	}
+
+	String currentService = null;
+	public void setCurrentService(String serviceName) {
+		this.currentService = serviceName;
+	}
+	public String getCurrentService(){
+		return this.currentService;
+	}
+
+	long lastStartTime = -1; 
+	public void setStartTime(long currentTimeMillis) {
+		lastStartTime = currentTimeMillis;
+	}
+	public long getStartTime(){
+		return lastStartTime;
+	}
+
+	File resultFolder = null;
+	public void setResultFolder(File resultFolder) {
+		this.resultFolder = resultFolder;
+	}
+	public File getResultFolder(){
+		return this.resultFolder;
 	}
 }

@@ -1,0 +1,194 @@
+class com.android.server.pm.PackageManagerService$8 extends java.lang.Object implements java.lang.Runnable
+{
+    final int[] val$userIds;
+    final java.lang.String val$action;
+    final java.lang.String val$pkg;
+    final android.os.Bundle val$extras;
+    final java.lang.String val$targetPkg;
+    final android.content.IIntentReceiver val$finishedReceiver;
+    final com.android.server.pm.PackageManagerService this$0;
+
+    void <init>(com.android.server.pm.PackageManagerService, int[], java.lang.String, java.lang.String, android.os.Bundle, java.lang.String, android.content.IIntentReceiver)
+    {
+        com.android.server.pm.PackageManagerService$8 this;
+        com.android.server.pm.PackageManagerService l1;
+        int[] l2;
+        java.lang.String l3, l4, l6;
+        android.os.Bundle l5;
+        android.content.IIntentReceiver l7;
+
+        this := @this: com.android.server.pm.PackageManagerService$8;
+
+        l1 := @parameter0: com.android.server.pm.PackageManagerService;
+
+        l2 := @parameter1: int[];
+
+        l3 := @parameter2: java.lang.String;
+
+        l4 := @parameter3: java.lang.String;
+
+        l5 := @parameter4: android.os.Bundle;
+
+        l6 := @parameter5: java.lang.String;
+
+        l7 := @parameter6: android.content.IIntentReceiver;
+
+        this.<com.android.server.pm.PackageManagerService$8: com.android.server.pm.PackageManagerService this$0> = l1;
+
+        this.<com.android.server.pm.PackageManagerService$8: int[] val$userIds> = l2;
+
+        this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$action> = l3;
+
+        this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$pkg> = l4;
+
+        this.<com.android.server.pm.PackageManagerService$8: android.os.Bundle val$extras> = l5;
+
+        this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$targetPkg> = l6;
+
+        this.<com.android.server.pm.PackageManagerService$8: android.content.IIntentReceiver val$finishedReceiver> = null;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.android.server.pm.PackageManagerService$8 this;
+        int[] arr$, $r0, resolvedUserIds#2;
+        int len$, id, $i1, $i2, i$#3, uid#5, uid#6;
+        android.content.Intent intent, $r1;
+        java.lang.String $r2, $r3, $r5, $r10, $r14;
+        android.os.Bundle $r4, $r12;
+        android.content.IIntentReceiver $r7, $r9;
+        android.os.RemoteException $r16, am#8;
+        android.app.IActivityManager am#1;
+        android.net.Uri $r17;
+        boolean $z0;
+
+        this := @this: com.android.server.pm.PackageManagerService$8;
+
+     label01:
+        am#1 = staticinvoke <android.app.ActivityManagerNative: android.app.IActivityManager getDefault()>();
+
+        if am#1 != null goto label03;
+
+     label02:
+        return;
+
+     label03:
+        $r0 = this.<com.android.server.pm.PackageManagerService$8: int[] val$userIds>;
+
+        if $r0 != null goto label04;
+
+        resolvedUserIds#2 = interfaceinvoke am#1.<android.app.IActivityManager: int[] getRunningUserIds()>();
+
+        goto label05;
+
+     label04:
+        resolvedUserIds#2 = this.<com.android.server.pm.PackageManagerService$8: int[] val$userIds>;
+
+     label05:
+        arr$ = resolvedUserIds#2;
+
+        len$ = lengthof arr$;
+
+        i$#3 = 0;
+
+     label06:
+        if i$#3 >= len$ goto label14;
+
+        id = arr$[i$#3];
+
+        $r1 = new android.content.Intent;
+
+        $r3 = this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$action>;
+
+        $r2 = this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$pkg>;
+
+        if $r2 == null goto label07;
+
+        $r14 = this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$pkg>;
+
+        $r17 = staticinvoke <android.net.Uri: android.net.Uri fromParts(java.lang.String,java.lang.String,java.lang.String)>("package", $r14, null);
+
+        goto label08;
+
+     label07:
+        $r17 = null;
+
+     label08:
+        specialinvoke $r1.<android.content.Intent: void <init>(java.lang.String,android.net.Uri)>($r3, $r17);
+
+        intent = $r1;
+
+        $r4 = this.<com.android.server.pm.PackageManagerService$8: android.os.Bundle val$extras>;
+
+        if $r4 == null goto label09;
+
+        $r12 = this.<com.android.server.pm.PackageManagerService$8: android.os.Bundle val$extras>;
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent putExtras(android.os.Bundle)>($r12);
+
+     label09:
+        $r5 = this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$targetPkg>;
+
+        if $r5 == null goto label10;
+
+        $r10 = this.<com.android.server.pm.PackageManagerService$8: java.lang.String val$targetPkg>;
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>($r10);
+
+     label10:
+        uid#5 = virtualinvoke intent.<android.content.Intent: int getIntExtra(java.lang.String,int)>("android.intent.extra.UID", -1);
+
+        if uid#5 <= 0 goto label11;
+
+        $i1 = staticinvoke <android.os.UserHandle: int getUserId(int)>(uid#5);
+
+        if $i1 == id goto label11;
+
+        $i2 = staticinvoke <android.os.UserHandle: int getAppId(int)>(uid#5);
+
+        uid#6 = staticinvoke <android.os.UserHandle: int getUid(int,int)>(id, $i2);
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.intent.extra.UID", uid#6);
+
+     label11:
+        virtualinvoke intent.<android.content.Intent: android.content.Intent putExtra(java.lang.String,int)>("android.intent.extra.user_handle", id);
+
+        virtualinvoke intent.<android.content.Intent: android.content.Intent addFlags(int)>(67108864);
+
+        $r9 = this.<com.android.server.pm.PackageManagerService$8: android.content.IIntentReceiver val$finishedReceiver>;
+
+        $r7 = this.<com.android.server.pm.PackageManagerService$8: android.content.IIntentReceiver val$finishedReceiver>;
+
+        if $r7 == null goto label12;
+
+        $z0 = 1;
+
+        goto label13;
+
+     label12:
+        $z0 = 0;
+
+     label13:
+        interfaceinvoke am#1.<android.app.IActivityManager: int broadcastIntent(android.app.IApplicationThread,android.content.Intent,java.lang.String,android.content.IIntentReceiver,int,java.lang.String,android.os.Bundle,java.lang.String[],int,android.os.Bundle,boolean,boolean,int)>(null, intent, null, $r9, 0, null, null, null, -1, null, $z0, 0, id);
+
+        i$#3 = i$#3 + 1;
+
+        goto label06;
+
+     label14:
+        goto label16;
+
+     label15:
+        $r16 := @caughtexception;
+
+     label16:
+        return;
+
+        catch android.os.RemoteException from label01 to label02 with label15;
+        catch android.os.RemoteException from label03 to label14 with label15;
+    }
+}

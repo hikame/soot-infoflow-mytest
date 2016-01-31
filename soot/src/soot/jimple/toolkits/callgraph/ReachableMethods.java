@@ -19,7 +19,11 @@
 
 package soot.jimple.toolkits.callgraph;
 import soot.*;
+import soot.jimple.Stmt;
+
 import java.util.*;
+
+import kame.soot.UnresolvedClassException;
 import soot.util.queue.*;
 
 
@@ -55,9 +59,25 @@ public class ReachableMethods
             addMethod( (MethodOrMethodContext) methods.next() );
     }
     private void addMethod( MethodOrMethodContext m ) {
-            if( set.add( m ) ) {
-                reachables.add( m );
-            }
+        if( set.add( m ) ) {
+        	//Added by Kame Wang, 20160129
+        	SootMethod sm = m.method();
+			if(sm.getDeclaringClass().resolvingLevel() < SootClass.BODIES){
+				String sig = sm.getSignature();
+				SootClass sc = sm.getDeclaringClass();
+				UnresolvedClassException exception = new UnresolvedClassException("[KM-Unresolved] " + sig);
+				if(sc.isPhantom()){
+					Iterator<Edge> edges = cg.edgesInto(m);
+					while(edges.hasNext()){
+						Stmt stmt = edges.next().srcStmt();
+						if(stmt.containsInvokeExpr())
+							exception.mrList.add(stmt.getInvokeExpr());
+					}
+				}
+				throw exception;
+			}
+			reachables.add( m );
+        }
     }
     /** Causes the QueueReader objects to be filled up with any methods
      * that have become reachable since the last call. */
